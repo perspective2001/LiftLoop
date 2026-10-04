@@ -218,6 +218,13 @@ button{font:inherit}
   .drop-editor{grid-template-columns:minmax(0,1fr) 12px 56px auto;grid-column:2/-1}
 }
 
+
+/* Rolling 7-day consistency + suggested workout */
+.consistency-status{margin-top:10px;padding:8px 10px;border:1px solid #2e3542;background:#191e27;border-radius:11px;color:#9da7b5;font-size:10px;line-height:1.35}
+.consistency-status.met{border-color:#285045;background:#162720;color:#86e9c3}
+.tab.recommended{position:relative}
+.tab.recommended:after{content:"";position:absolute;top:6px;right:7px;width:6px;height:6px;border-radius:50%;background:var(--accent2)}
+
 </style>
 </head>
 <body>
@@ -246,13 +253,14 @@ button{font:inherit}
       </div>
       <div class="stats-mini">
         <div><strong id="workout-count">0</strong><span>WORKOUTS</span></div>
-        <div><strong id="streak-count">0</strong><span>DAY STREAK</span></div>
+        <div><strong id="streak-count">0/3</strong><span id="streak-label">LAST 7 DAYS</span></div>
       </div>
     </div>
     <div class="milestone">
       <div class="milestone-row"><span id="milestone-copy">0 / 5 to next milestone</span><span id="milestone-level">Level 5</span></div>
       <div class="milestone-track"><div class="milestone-fill" id="milestone-fill"></div></div>
     </div>
+    <div class="consistency-status" id="consistency-status">3 workouts in any rolling 7 days keeps your consistency goal alive.</div>
     <div class="recent-workouts">
       <div class="recent-title">RECENT WORKOUTS</div>
       <div class="recent-list" id="recent-workouts"><span class="history-empty">Complete a workout and it’ll show up here.</span></div>
@@ -904,7 +912,7 @@ button{font:inherit}
     </div>
   </section>
 
-  <p style="text-align:center;color:#697383;font-size:9px;margin:18px 0 6px">Build 2026.10.04.4 · per-set logging</p>
+  <p style="text-align:center;color:#697383;font-size:9px;margin:18px 0 6px">Build 2026.10.04.5 · rolling 3-in-7 goal</p>
   <p class="credit">
     Video demonstrations are embedded from their original YouTube sources. Previous vector artwork source:
     <a href="https://github.com/InlitX/GymMane" target="_blank" rel="noopener">GymMane</a>,
@@ -937,7 +945,42 @@ function showDay(id){
   if(id==='progress' && typeof renderProgress==='function') renderProgress();
 }
 $$('.tab').forEach(b=>b.addEventListener('click',()=>showDay(b.dataset.tab)));
-showDay(state.activeDay||'push');
+
+function workoutLastCompleted(day){
+  const rows=state.workoutHistory.filter(w=>w.day===day);
+  return rows.length ? Math.max(...rows.map(w=>Number(w.ts)||0)) : -Infinity;
+}
+function recommendedWorkoutDay(){
+  const baseOrder={push:0,pull:1,shoulders:2};
+  return ['push','pull','shoulders'].sort((a,b)=>{
+    const ta=workoutLastCompleted(a), tb=workoutLastCompleted(b);
+    if(ta!==tb) return ta-tb; // never-done / oldest first
+    return baseOrder[a]-baseOrder[b];
+  })[0];
+}
+function applyWorkoutPriority(openRecommended=false){
+  const nav=$('.tabs');
+  if(!nav) return 'push';
+  const progressBtn=$('.tab[data-tab="progress"]');
+  const ordered=['push','pull','shoulders'].sort((a,b)=>{
+    const ta=workoutLastCompleted(a), tb=workoutLastCompleted(b);
+    const base={push:0,pull:1,shoulders:2};
+    if(ta!==tb) return ta-tb;
+    return base[a]-base[b];
+  });
+  $$('.tab').forEach(b=>b.classList.remove('recommended'));
+  ordered.forEach(day=>{
+    const btn=$(`.tab[data-tab="${day}"]`);
+    if(btn) nav.appendChild(btn);
+  });
+  if(progressBtn) nav.appendChild(progressBtn);
+  const recommended=ordered[0]||'push';
+  const recBtn=$(`.tab[data-tab="${recommended}"]`);
+  if(recBtn) recBtn.classList.add('recommended');
+  if(openRecommended) showDay(recommended);
+  return recommended;
+}
+applyWorkoutPriority(true);
 
 
 const VIDEO_MAP={"incline-dumbbell-press":{"id":"oZVCBM9f8Eo","source":"PureGym"},"assisted-dip":{"id":"-p-vg_V7U_0","source":"Michael James Fitness"},"pec-deck":{"id":"eGjt4lk6g34","source":"PureGym"},"rope-tricep-pushdown":{"id":"LXkCrxn3caQ","source":"PureGym"},"bench-press":{"id":"lhMHmxKF_7s","source":"Future Health Club"},"decline-sit-up":{"id":"N7hf1_vcX5w","source":"PureGym"},"pull-up":{"id":"PHdHnZcbsB8","source":"PureGym"},"assisted-pull-up":{"id":"wFj808u2HWU","source":"PureGym"},"ez-bar-curl":{"id":"WXSNXrN2vcY","source":"Future Health Club"},"seated-row":{"id":"lJoozxC0Rns","source":"PureGym"},"bicep-curl":{"id":"kt2iGeJxElE","source":"Future Health Club"},"lat-pulldown":{"id":"JGeRYIZdojU","source":"PureGym"},"cross-body-hammer-curl":{"id":"buP9fSqWcw4","source":"OriGym"},"standing-dumbbell-press":{"id":"aI2hGzsAMXs","source":"PureGym"},"lateral-raise":{"id":"z-kOn7flIZg","source":"PureGym"},"cable-lateral-raise":{"id":"Z5FA9aq3L6A","source":"PureGym"},"reverse-pec-deck":{"id":"dT53N5ES4_U","source":"Arend Gelders"},"cable-rear-delt-fly":{"id":"ATSjVXoOgVg","source":"OriGym"},"russian-twist":{"id":"99T1EfpMwPA","source":"PureGym"},"lying-leg-raise":{"id":"l4kQd9eWclE","source":"Howcast"},"v-up":{"id":"YQVrOI0aT8w","source":"Future Health Club"},"push-up":{"id":"H594sWUfsn8","source":"Future Health Club"}};
@@ -1083,19 +1126,34 @@ function dayBefore(key){
   const x=new Date(y,m-1,d); x.setDate(x.getDate()-1);
   return localDateKey(x);
 }
-function streakCount(){
-  const dates=[...new Set(state.workoutHistory.map(w=>localDateKey(w.ts)))].sort().reverse();
-  if(!dates.length) return 0;
-  const today=localDateKey(new Date());
-  const yesterday=dayBefore(today);
-  let expected = dates[0]===today ? today : (dates[0]===yesterday ? yesterday : null);
-  if(!expected) return 0;
-  let n=0;
-  for(const date of dates){
-    if(date!==expected) break;
-    n++; expected=dayBefore(expected);
+function workoutsInRollingDays(days=7, endTs=Date.now()){
+  const windowMs=days*24*60*60*1000;
+  const start=endTs-windowMs;
+  return state.workoutHistory.filter(w=>{
+    const ts=Number(w.ts)||0;
+    return ts>start && ts<=endTs;
+  });
+}
+function rollingGoalCount(endTs=Date.now()){
+  return workoutsInRollingDays(7,endTs).length;
+}
+function rollingGoalMet(endTs=Date.now()){
+  return rollingGoalCount(endTs)>=3;
+}
+function rollingGoalMaintainedDays(){
+  if(!rollingGoalMet()) return 0;
+  const now=new Date();
+  // Count consecutive calendar days ending today where the trailing 7-day window
+  // still contained at least 3 completed workouts. Rest days do not break this.
+  let days=0;
+  for(let i=0;i<3650;i++){
+    const end=new Date(now);
+    end.setHours(23,59,59,999);
+    end.setDate(end.getDate()-i);
+    if(!rollingGoalMet(end.getTime())) break;
+    days++;
   }
-  return n;
+  return days;
 }
 function rankFor(level){
   if(level>=100) return 'Legend';
@@ -1113,7 +1171,23 @@ function renderGamify(){
   $('#level-label').textContent=level;
   $('#rank-label').textContent=rankFor(level);
   $('#workout-count').textContent=workouts;
-  $('#streak-count').textContent=streakCount();
+  const rollingCount=rollingGoalCount();
+  $('#streak-count').textContent=`${Math.min(rollingCount,3)}/3`;
+  $('#streak-label').textContent=rollingCount>=3?'7-DAY GOAL ✓':'LAST 7 DAYS';
+  const consistency=$('#consistency-status');
+  if(consistency){
+    const maintained=rollingGoalMaintainedDays();
+    consistency.classList.toggle('met',rollingCount>=3);
+    if(rollingCount>=3){
+      consistency.textContent=maintained>1
+        ? `Goal met · ${rollingCount} workouts in the last 7 days · maintained for ${maintained} days`
+        : `Goal met · ${rollingCount} workouts in the last 7 days`;
+    }else{
+      const remaining=Math.max(0,3-rollingCount);
+      consistency.textContent=`${rollingCount} of 3 workouts in the last 7 days · ${remaining} more to hit your rolling goal`;
+    }
+  }
+  applyWorkoutPriority(false);
 
   const milestone=Math.ceil(level/5)*5 || 5;
   const base=milestone-5;
@@ -1166,6 +1240,7 @@ $$('.finish-workout').forEach(btn=>btn.addEventListener('click',()=>{
   state.sessionCompleted[day]=true;
   save();
   renderGamify();
+  applyWorkoutPriority(false);
   renderProgress();
   const level=state.workoutHistory.length+1;
   showLevelToast(level);
