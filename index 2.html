@@ -1,0 +1,1195 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0e1015">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="LiftLoop">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" href="icon-180.png">
+<title>LiftLoop</title>
+<style>
+:root{--bg:#0e1015;--panel:#171a22;--panel2:#1d212b;--line:#2a2f3b;--text:#f4f6fa;--muted:#9aa3b2;--accent:#7884ff;--accent2:#69e7b8}
+*{box-sizing:border-box}
+html{scroll-padding-top:0}
+html{background:var(--bg)}
+body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif;-webkit-tap-highlight-color:transparent;overflow-x:hidden;overflow-y:auto;-webkit-overflow-scrolling:touch}
+button{font:inherit}
+.app{max-width:780px;margin:0 auto;padding:20px 12px 64px}
+.brand{display:flex;align-items:center;gap:12px;margin:2px 2px 17px}
+.brand img{width:48px;height:48px;border-radius:14px}
+.brand h1{margin:0;font-size:24px;letter-spacing:-.025em}
+.brand p{margin:3px 0 0;color:var(--muted);font-size:13px}
+.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;background:#12151c;padding:5px;border:1px solid var(--line);border-radius:15px;position:sticky;top:8px;z-index:10}
+.tab{border:0;border-radius:11px;padding:11px 6px;background:transparent;color:var(--muted);font-weight:800;font-size:12px;min-height:44px}
+.tab.active{background:var(--panel2);color:var(--text)}
+.day{display:none;margin-top:18px}
+.day.active{display:block}
+.day-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:5px 3px 12px}
+.day-head h2{font-size:21px;margin:0 0 3px;letter-spacing:-.02em}
+.day-head p{margin:0;color:var(--muted);font-size:13px}
+.progress-pill{min-width:50px;text-align:center;border:1px solid var(--line);background:var(--panel);padding:7px 9px;border-radius:999px;color:var(--accent2);font-weight:850;font-size:12px}
+.exercise-list{border:1px solid var(--line);border-radius:18px;overflow:hidden;background:var(--panel)}
+.exercise+.exercise{border-top:1px solid var(--line)}
+.exercise-head{width:100%;border:0;background:transparent;color:var(--text);display:grid;grid-template-columns:30px 1fr 28px;align-items:center;text-align:left;padding:14px 12px;min-height:66px}
+.ex-num{width:27px;height:27px;border-radius:9px;display:grid;place-items:center;background:#232837;color:var(--muted);font-size:12px;font-weight:850}
+.ex-main{min-width:0;padding:0 8px}
+.ex-name{display:block;font-size:15px;font-weight:780;line-height:1.25}
+.dose{display:block;color:var(--muted);font-size:12px;margin-top:4px}
+.chev{font-size:20px;color:var(--muted);transition:transform .2s}
+.exercise-head[aria-expanded="true"] .chev{transform:rotate(180deg)}
+.exercise-body{padding:0 13px 15px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px}
+.exercise-body[hidden]{display:none}
+.demo-wrap{align-self:start}
+.art-stage{position:relative;background:#f3f3f0;border-radius:15px;overflow:hidden;aspect-ratio:1/1;display:grid;place-items:center}
+.exercise-art{width:100%;height:100%;display:block;padding:5px}
+.exercise-art path{fill:#20242d}
+.art-loading,.art-error{position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:20px;color:#656d78;font-size:12px}
+.art-loading[hidden],.art-error[hidden]{display:none}
+.variant{display:flex;gap:5px;margin-top:7px;background:#222630;padding:4px;border-radius:11px}
+.variant-btn{flex:1;border:0;border-radius:8px;padding:8px 5px;background:transparent;color:#9ea7b5;font-weight:800;font-size:11px;min-height:38px}
+.variant-btn.active{background:#343a48;color:#fff}
+.right-col{padding:5px 2px 0}
+.tiny-label{font-size:10px;letter-spacing:.12em;font-weight:850;color:var(--muted)}
+.cues{margin:7px 0 12px;padding-left:18px;color:#d6dae3;font-size:13px;line-height:1.45}
+.cues li+li{margin-top:6px}
+.set-label{margin-top:8px}
+.sets{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+.set-dot{width:42px;height:42px;border-radius:12px;border:1px solid #343a48;background:#222630;color:#aeb6c5;font-weight:850}
+.set-dot.done{background:var(--accent2);color:#101510;border-color:var(--accent2)}
+.reset-day{display:block;margin:14px auto 0;border:0;background:transparent;color:var(--muted);font-size:12px;padding:10px}
+.credit{margin:20px auto 0;max-width:620px;text-align:center;color:#737d8c;font-size:10.5px;line-height:1.45}
+.credit a{color:#9ea7b5}
+@media(max-width:520px){
+  .exercise-body{grid-template-columns:1fr}
+  .right-col{padding:0 3px}
+}
+@media(prefers-reduced-motion:reduce){.chev{transition:none}}
+
+/* Progress / leveling */
+.gamify-card{margin-top:12px;border:1px solid var(--line);background:linear-gradient(180deg,#171b25,#14171e);border-radius:18px;padding:14px}
+.gamify-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.level-badge{display:flex;align-items:center;gap:10px;min-width:0}
+.level-orb{width:54px;height:54px;border-radius:17px;display:grid;place-items:center;background:#232a3a;border:1px solid #343c52;font-weight:900;font-size:19px}
+.level-copy{min-width:0}
+.level-copy .eyebrow{font-size:10px;letter-spacing:.12em;color:var(--muted);font-weight:850}
+.level-copy .level-title{font-size:17px;font-weight:900;margin-top:2px}
+.level-copy .rank{font-size:11px;color:var(--muted);margin-top:2px}
+.stats-mini{display:flex;gap:12px;text-align:right}
+.stats-mini strong{display:block;font-size:16px}
+.stats-mini span{display:block;color:var(--muted);font-size:10px;margin-top:2px}
+.milestone{margin-top:12px}
+.milestone-row{display:flex;justify-content:space-between;color:var(--muted);font-size:10px;margin-bottom:6px}
+.milestone-track{height:7px;background:#242a36;border-radius:99px;overflow:hidden}
+.milestone-fill{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:99px;transition:width .25s}
+.recent-workouts{margin-top:11px;padding-top:10px;border-top:1px solid var(--line)}
+.recent-title{font-size:10px;letter-spacing:.12em;color:var(--muted);font-weight:850;margin-bottom:7px}
+.recent-list{display:flex;gap:6px;overflow:auto;padding-bottom:2px}
+.history-chip{white-space:nowrap;border:1px solid #303746;background:#202530;border-radius:999px;padding:7px 9px;font-size:10px;color:#cfd5df}
+.history-empty{font-size:11px;color:var(--muted)}
+.finish-workout{width:100%;margin-top:14px;border:0;border-radius:14px;padding:14px 12px;background:linear-gradient(135deg,var(--accent),#6772e8);color:white;font-weight:900;min-height:49px;box-shadow:0 8px 24px rgba(70,80,180,.18)}
+.finish-workout:disabled{background:#252a35;color:#707988;box-shadow:none}
+.finish-workout.completed{background:#19362e;color:#7cf0c1;border:1px solid #2c5a4c}
+.level-toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom));transform:translate(-50%,30px);opacity:0;pointer-events:none;z-index:99;background:#f6f7fb;color:#10131a;border-radius:16px;padding:13px 18px;font-weight:900;box-shadow:0 14px 45px rgba(0,0,0,.35);transition:.25s}
+.level-toast.show{opacity:1;transform:translate(-50%,0)}
+.load-card{margin-top:11px;border:1px solid #303746;background:#141820;border-radius:13px;padding:10px}
+.load-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.load-title{font-size:10px;letter-spacing:.11em;font-weight:850;color:var(--muted)}
+.unit-toggle{border:1px solid #343b49;background:#222732;color:#d7dce5;border-radius:8px;padding:5px 8px;font-size:10px;font-weight:850}
+.load-entry{display:grid;grid-template-columns:34px 1fr 34px 52px;gap:6px;margin-top:8px;align-items:center}
+.load-step,.load-save{height:38px;border-radius:10px;border:1px solid #343b49;background:#242a35;color:#eef1f6;font-weight:900}
+.load-save{background:#30396f;border-color:#3d4888;font-size:11px}
+.load-input{width:100%;height:38px;border-radius:10px;border:1px solid #343b49;background:#0f1218;color:#fff;text-align:center;font-size:15px;font-weight:850;outline:none}
+.load-input:focus{border-color:#6570d5}
+.load-meta{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px}
+.metric{background:#20252e;border-radius:9px;padding:7px 8px}
+.metric span{display:block;font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.metric strong{display:block;font-size:12px;margin-top:2px}
+.trend-good{color:#7cf0c1}
+.trend-flat{color:#cbd1da}
+.trend-down{color:#f0b67c}
+.spark-wrap{margin-top:8px;height:34px}
+.spark{width:100%;height:34px;overflow:visible}
+.spark polyline{fill:none;stroke:#8790ff;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.spark circle{fill:#69e7b8}
+.load-history{margin-top:7px}
+.load-history summary{cursor:pointer;color:#aab2bf;font-size:10px;list-style:none}
+.load-history summary::-webkit-details-marker{display:none}
+.load-history-list{display:grid;gap:4px;margin-top:6px}
+.load-row{display:flex;justify-content:space-between;color:#adb5c1;font-size:10px;border-top:1px solid #282e38;padding-top:5px}
+.pr-pop{animation:prpulse .65s ease}
+@keyframes prpulse{0%{transform:scale(.96)}45%{transform:scale(1.04)}100%{transform:scale(1)}}
+@media(max-width:520px){
+  .gamify-top{align-items:flex-start}
+  .stats-mini{gap:8px}
+  .level-orb{width:49px;height:49px}
+  .load-entry{grid-template-columns:32px 1fr 32px 50px}
+}
+
+
+/* Real-video preview */
+.art-stage{aspect-ratio:16/9;background:#080a0e;border:1px solid #292f3a}
+.exercise-video{position:absolute;inset:0;width:100%;height:100%;border:0;background:#000}
+.video-source{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:6px;color:#788291;font-size:9.5px}
+.video-source a{color:#9ba4ff;text-decoration:none;font-weight:750}
+.video-pill{display:inline-flex;align-items:center;gap:5px;border:1px solid #303744;background:#1e232d;border-radius:999px;padding:5px 7px}
+.video-pill:before{content:"▶";font-size:8px}
+.exercise-art{display:none!important}
+.art-stage .art-loading{color:#8e98a7}
+.video-note{margin-top:6px;color:#737d8a;font-size:9px;line-height:1.35}
+
+</style>
+</head>
+<body>
+<main class="app">
+  <header class="brand">
+    <img src="icon-180.png" alt="LiftLoop logo">
+    <div><h1>LiftLoop</h1><p>Tap an exercise to watch the movement</p></div>
+  </header>
+
+  <nav class="tabs" aria-label="Workout days">
+    <button type="button" class="tab active" data-tab="push">Push</button>
+    <button type="button" class="tab" data-tab="pull">Pull</button>
+    <button type="button" class="tab" data-tab="shoulders">Shoulders + Core</button>
+  </nav>
+
+  <section class="gamify-card" aria-label="LiftLoop progress">
+    <div class="gamify-top">
+      <div class="level-badge">
+        <div class="level-orb"><span id="level-number">1</span></div>
+        <div class="level-copy">
+          <div class="eyebrow">LIFTLOOP LEVEL</div>
+          <div class="level-title">Level <span id="level-label">1</span></div>
+          <div class="rank" id="rank-label">Starting Line</div>
+        </div>
+      </div>
+      <div class="stats-mini">
+        <div><strong id="workout-count">0</strong><span>WORKOUTS</span></div>
+        <div><strong id="streak-count">0</strong><span>DAY STREAK</span></div>
+      </div>
+    </div>
+    <div class="milestone">
+      <div class="milestone-row"><span id="milestone-copy">0 / 5 to next milestone</span><span id="milestone-level">Level 5</span></div>
+      <div class="milestone-track"><div class="milestone-fill" id="milestone-fill"></div></div>
+    </div>
+    <div class="recent-workouts">
+      <div class="recent-title">RECENT WORKOUTS</div>
+      <div class="recent-list" id="recent-workouts"><span class="history-empty">Complete a workout and it’ll show up here.</span></div>
+    </div>
+  </section>
+
+
+  
+    <section class="day" id="day-push" data-day="push">
+      <div class="day-head">
+        <div><h2>Push Day</h2><p>Chest + Triceps + Core</p></div>
+        <div class="progress-pill"><span class="progress-count">0</span>%</div>
+      </div>
+      <div class="exercise-list">
+    <article class="exercise" data-day="push" data-art="incline-dumbbell-press">
+      <button type="button" class="exercise-head" aria-expanded="false">
+        <span class="ex-num">1</span>
+        <span class="ex-main"><span class="ex-name">Incline Dumbbell Bench Press</span><span class="dose">3 × 10</span></span>
+        <span class="chev">⌄</span>
+      </button>
+      <div class="exercise-body" hidden>
+        <div class="demo-wrap">
+          <div class="art-stage">
+            <div class="art-loading">Loading animation…</div>
+            <svg class="exercise-art" viewBox="0 0 512 512" role="img" aria-label="Exercise demonstration" hidden>
+              <path></path>
+            </svg>
+            <div class="art-error" hidden>Video unavailable. Use the form cues on the right.</div>
+          </div>
+          <div class="video-source" hidden><span class="video-pill"></span><a target="_blank" rel="noopener">Open video</a></div>
+          <div class="video-note">Exercise demo is streamed from the original source. Open the source video anytime for the full instruction.</div>
+          
+        </div>
+        <div class="right-col">
+          <div class="tiny-label">FORM KEYS</div>
+          <ul class="cues"><li>Set the bench to a moderate incline and keep your shoulder blades back.</li><li>Lower under control, then press the dumbbells up without bouncing.</li></ul>
+          <div class="tiny-label set-label">SETS / ROUNDS</div>
+          <div class="sets"><button type="button" class="set-dot" data-key="push-0-0" aria-label="Mark set or round 1 complete">1</button><button type="button" class="set-dot" data-key="push-0-1" aria-label="Mark set or round 2 complete">2</button><button type="button" class="set-dot" data-key="push-0-2" aria-label="Mark set or round 3 complete">3</button></div>
+        </div>
+      </div>
+    </article>
+    <article class="exercise" data-day="push" data-art="assisted-dip">
+      <button type="button" class="exercise-head" aria-expanded="false">
+        <span class="ex-num">2</span>
+        <span class="ex-main"><span class="ex-name">Assisted Dips</span><span class="dose">3 × 10</span></span>
+        <span class="chev">⌄</span>
+      </button>
+      <div class="exercise-body" hidden>
+        <div class="demo-wrap">
+          <div class="art-stage">
+            <div class="art-loading">Loading animation…</div>
+            <svg class="exercise-art" viewBox="0 0 512 512" role="img" aria-label="Exercise demonstration" hidden>
+              <path></path>
+            </svg>
+            <div class="art-error" hidden>Video unavailable. Use the form cues on the right.</div>
+          </div>
+          <div class="video-source" hidden><span class="video-pill"></span><a target="_blank" rel="noopener">Open video</a></div>
+          <div class="video-note">Exercise demo is streamed from the original source. Open the source video anytime for the full instruction.</div>
+          
+        </div>
+        <div class="right-col">
+          <div class="tiny-label">FORM KEYS</div>
+          <ul class="cues"><li>Use enough assistance to keep the movement smooth and controlled.</li><li>Lower under control, then press back to the top without shrugging.</li></ul>
+          <div class="tiny-label set-label">SETS / ROUNDS</div>
+          <div class="sets"><button type="button" class="set-dot" data-key="push-1-0" aria-label="Mark set or round 1 complete">1</button><button type="button" class="set-dot" data-key="push-1-1" aria-label="Mark set or round 2 complete">2</button><button type="button" class="set-dot" data-key="push-1-2" aria-label="Mark set or round 3 complete">3</button></div>
+        </div>
+      </div>
+    </article>
+    <article class="exercise" data-day="push" data-art="pec-deck">
+      <button type="button" class="exercise-head" aria-expanded="false">
+        <span class="ex-num">3</span>
+        <span class="ex-main"><span class="ex-name">Pec Fly</span><span class="dose">3 × 10</span></span>
+        <span class="chev">⌄</span>
+      </button>
+      <div class="exercise-body" hidden>
+        <div class="demo-wrap">
+          <div class="art-stage">
+            <div class="art-loading">Loading animation…</div>
+            <svg class="exercise-art" viewBox="0 0 512 512" role="img" aria-label="Exercise demonstration" hidden>
+              <path></path>
+            </svg>
+            <div class="art-error" hidden>Video unavailable. Use the form cues on the right.</div>
+          </div>
+          <div class="video-source" hidden><span class="video-pill"></span><a target="_blank" rel="noopener">Open video</a></div>
+          <div class="video-note">Exercise demo is streamed from the original source. Open the source video anytime for the full instruction.</div>
+          
+        </div>
+        <div class="right-col">
+          <div class="tiny-label">FORM KEYS</div>
+          <ul class="cues"><li>Keep your back against the pad and a soft bend in your elbows.</li><li>Bring the arms together smoothly, then control the stretch on the way back.</li></ul>
+          <div class="tiny-label set-label">SETS / ROUNDS</div>
+          <div class="sets"><button type="button" class="set-dot" data-key="push-2-0" aria-label="Mark set or round 1 complete">1</button><button type="button" class="set-dot" data-key="push-2-1" aria-label="Mark set or round 2 complete">2</button><button type="button" class="set-dot" data-key="push-2-2" aria-label="Mark set or round 3 complete">3</button></div>
+        </div>
+      </div>
+    </article>
+    <article class="exercise" data-day="push" data-art="rope-tricep-pushdown">
+      <button type="button" class="exercise-head" aria-expanded="false">
+        <span class="ex-num">4</span>
+        <span class="ex-main"><span class="ex-name">Tricep Pushdown</span><span class="dose">3 × 10</span></span>
+        <span class="chev">⌄</span>
+      </button>
+      <div class="exercise-body" hidden>
+        <div class="demo-wrap">
+          <div class="art-stage">
+            <div class="art-loading">Loading animation…</div>
+            <svg class="exercise-art" viewBox="0 0 512 512" role="img" aria-label="Exercise demonstration" hidden>
+              <path></path>
+            </svg>
+            <div class="art-error" hidden>Video unavailable. Use the form cues on the right.</div>
+          </div>
+          <div class="video-source" hidden><span class="video-pill"></span><a target="_blank" rel="noopener">Open video</a></div>
+          <div class="video-note">Exercise demo is streamed from the original source. Open the source video anytime for the full instruction.</div>
+          
+        </div>
+        <div class="right-col">
+          <div class="tiny-label">FORM KEYS</div>
+          <ul class="cues"><li>Keep your elbows pinned near your sides.</li><li>Move mainly at the elbow and finish with controlled extension.</li></ul>
+          <div class="tiny-label set-label">SETS / ROUNDS</div>
+          <div class="sets"><button type="button" class="set-dot" data-key="push-3-0" aria-label="Mark set or round 1 complete">1</button><button type="button" class="set-dot" data-key="push-3-1" aria-label="Mark set or round 2 complete">2</button><button type="button" class="set-dot" data-key="push-3-2" aria-label="Mark set or round 3 complete">3</button></div>
+        </div>
+      </div>
+    </article>
+    <article class="exercise" data-day="push" data-art="bench-press">
+      <button type="button" class="exercise-head" aria-expanded="false">
+        <span class="ex-num">5</span>
+        <span class="ex-main"><span class="ex-name">Flat Bench Press</span><span class="dose">3 × 10</span></span>
+        <span class="chev">⌄</span>
+      </button>
+      <div class="exercise-body" hidden>
+        <div class="demo-wrap">
+          <div class="art-stage">
+            <div class="art-loading">Loading animation…</div>
+            <svg class="exercise-art" viewBox="0 0 512 512" role="img" aria-label="Exercise demonstration" hidden>
+              <path></path>
+            </svg>
+            <div class="art-error" hidden>Video unavailable. Use the form cues on the right.</div>
+          </div>
+          <div class="video-source" hidden><span class="video-pill"></span><a target="_blank" rel="noopener">Open video</a></div>
+          <div class="video-note">Exercise demo is streamed from the original source. Open the source video anytime for the full instruction.</div>
+          
+        </div>
+        <div class="right-col">
+          <div class="tiny-label">FORM KEYS</div>
+          <ul class="cues"><li>Plant your feet and keep your shoulder blades set against the bench.</li><li>Lower the bar under control to your chest, then press back up.</li></ul>
+          <div class="tiny-label set-label">SETS / ROUNDS</div>
+          <div class="sets"><button type="button" class="set-dot" data-key="push-4-0" aria-label="Mark set or round 1 complete">1</button><button type="button" class="set-dot" data-key="push-4-1" aria-label="Mark set or round 2 complete">2</button><button type="button" class="set-dot" data-key="push-4-2" aria-label="Mark set or round 3 complete">3</button></div>
+        </div>
+      </div>
+    </article>
+    <article class="exercise" data-day="push" data-art="decline-sit-up">
+      <button type="button" class="exercise-head" aria-expanded="false">
+        <span class="ex-num">6</span>
+        <span class="ex-main"><span class="ex-name">Incline Sit-Ups</span><span class="dose">2 × 10</span></span>
+        <span class="chev">⌄</span>
+      </button>
+      <div class="exercise-body" hidden>
+        <div class="demo-wrap">
+          <div class="art-stage">
+            <div class="art-loading">Loading animation…</div>
+            <svg class="exercise-art" viewBox="0 0 512 512" role="img" aria-label="Exercise demonstration" hidden>
+              <path></path>
+            </svg>
+            <div class="art-error" hidden>Video unavailable. Use the form cues on the right.</div>
+          </div>
+          <div class="video-source" hidden><span class="video-pill"></span><a target="_blank" rel="noopener">Open video</a></div>
+          <div class="video-note">Exercise demo is streamed from the original source. Open the source video anytime for the full instruction.</div>
+          
+        </div>
+        <div class="right-col">
+          <div class="tiny-label">FORM KEYS</div>
+          <ul class="cues"><li>Brace your abs before each rep and avoid throwing yourself upward.</li><li>Lower back down slowly rather than dropping onto the bench.</li></ul>
+          <div class="tiny-label set-label">SETS / ROUNDS</div>
+          <div class="sets"><button type="button" class="set-dot" data-key="push-5-0" aria-label="Mark set or round 1 complete">1</button><button type="button" class="set-dot" data-key="push-5-1" aria-label="Mark set or round 2 complete">2</button></div>
+        </div>
+      </div>
+    </article></div>
+      <button type="button" class="finish-workout" data-finish="push">Finish Workout · +1 Level</button>
+      <button type="button" class="reset-day" data-reset="push">Reset Push Day</button>
+    </section>
+    <section class="day" id="day-pull" data-day="pull">
+      <div class="day-head">
+        <div><h2>Pull Day</h2><p>Back + Biceps + Core</p></div>
+        <div class="progress-pill"><span class="progress-count">0</span>%</div>
+      </div>
+      <div class="exercise-list">
+    <article class="exercise" data-day="pull" data-art="pull-up">
+      <button type="button" class="exercise-head" aria-expanded="false">
+        <span class="ex-num">1</span>
+        <span class="ex-main"><span class="ex-name">Pull-Ups / Assisted Pull-Ups</span><span class="dose">3 × 10</span></span>
+        <span class="chev">⌄</span>
+      </button>
+      <div class="exercise-body" hidden>
+        <div class="demo-wrap">
+          <div class="art-stage">
+            <div class="art-loading">Loading animation…</div>
+            <svg class="exercise-art" viewBox="0 0 512 512" role="img" aria-label="Exercise demonstration" hidden>
+              <path></path>
+            </svg>
+            <div class="art-error" hidden>Video unavailable. Use the form cues on the right.</div>
+          </div>
+          <div class="video-source" hidden><span class="video-pill"></span><a target="_blank" rel="noopener">Open video</a></div>
+          <div class="video-note">Exercise demo is streamed from the original source. Open the source video anytime for the full instruction.</div>
+          <div class="variant" role="group" aria-label="Exercise variation"><button type="button" class="variant-btn active" data-art="pull-up">Pull-Up</button><button type="button" class="variant-btn" data-art="assisted-pull-up">Assisted</button></div>
+        </div>
+        <div class="right-col">
+          <div class="tiny-label">FORM KEYS</div>
+          <ul class="cues"><li>Start by pulling your shoulders down away from your ears.</li><li>Drive your elbows down and avoid swinging to create momentum.</li></ul>
+          <div class="tiny-label set-label">SETS / ROUNDS</div>
+          <div class="sets"><button type="button" class="set-dot" data-key="pull-0-0" aria-label="Mark set or round 1 complete">1</button><button type="button" class="set-dot" data-key="pull-0-1" aria-label="Mark set or round 2 complete">2</button><button type="button" class="set-dot" data-key="pull-0-2" aria-label="Mark set or round 3 complete">3</button></div>
+        </div>
+      </div>
+    </article>
+    <article class="exercise" data-day="pull" data-art="ez-bar-curl">
+      <button type="button" class="exercise-head" aria-expanded="false">
+        <span class="ex-num">2</span>
+        <span class="ex-main"><span class="ex-name">Barbell Bicep Curl</span><span class="dose">3 × 10</span></span>
+        <span class="chev">⌄</span>
+      </button>
+      <div class="exercise-body" hidden>
+        <div class="demo-wrap">
+          <div class="art-stage">
+            <div class="art-loading">Loading animation…</div>
+            <svg class="exercise-art" viewBox="0 0 512 512" role="img" aria-label="Exercise demonstration" hidden>
+              <path></path>
+            </svg>
+            <div class="art-error" hidden>Video unavailable. Use the form cues on the right.</div>
+          </div>
+          <div class="video-source" hidden><span class="video-pill"></span><a target="_blank" rel="noopener">Open video</a></div>
+          <div class="video-note">Exercise demo is streamed from the original source. Open the source video anytime for the full instruction.</div>
+          
+        </div>
+        <div class="right-col">
+          <div class="tiny-label">FORM KEYS</div>
+          <ul class="cues"><li>Keep your upper arms mostly still beside your torso.</li><li>Curl without swinging your hips, then lower the bar under control.</li></ul>
+          <div class="tiny-label set-label">SETS / ROUNDS</div>
+          <div class="sets"><button type="button" class="set-dot" data-key="pull-1-0" aria-label="Mark set or round 1 complete">1</button><button type="button" class="set-dot" data-key="pull-1-1" aria-label="Mark set or round 2 complete">2</button><button type="button" class="set-dot" data-key="pull-1-2" aria-label="Mark set or round 3 complete">3</button></div>
+        </div>
+      </div>
+    </article>
+    <article class="exercise" data-day="pull" data-art="seated-row">
+      <button type="button" class="exercise-head" aria-expanded="false">
+        <span class="ex-num">3</span>
+        <span class="ex-main"><span class="ex-name">Seated Cable Row</span><span class="dose">3 × 10</span></span>
+        <span class="chev">⌄</span>
+      </button>
+      <div class="exercise-body" hidden>
+        <div class="demo-wrap">
+          <div class="art-stage">
+            <div class="art-loading">Loading animation…</div>
+            <svg class="exercise-art" viewBox="0 0 512 512" role="img" aria-label="Exercise demonstration" hidden>
+              <path></path>
+            </svg>
+            <div class="art-error" hidden>Video unavailable. Use the form cues on the right.</div>
+          </div>
+          <div class="video-source" hidden><span class="video-pill"></span><a target="_blank" rel="noopener">Open video</a></div>
+          <div class="video-note">Exercise demo is streamed from the original source. Open the source video anytime for the full instruction.</div>
+          
+        </div>
+        <div class="right-col">
+          <div class="tiny-label">FORM KEYS</div>
+          <ul class="cues"><li>Keep your chest tall and spine neutral.</li><li>Pull toward your torso, then extend without rounding hard forward.</li></ul>
+          <div class="tiny-label set-label">SETS / ROUNDS</div>
+          <div class="sets"><button type="button" class="set-dot" data-key="pull-2-0" aria-label="Mark set or round 1 complete">1</button><button type="button" class="set-dot" data-key="pull-2-1" aria-label="Mark set or round 2 complete">2</button><button type="button" class="set-dot" data-key="pull-2-2" aria-label="Mark set or round 3 complete">3</button></div>
+        </div>
+      </div>
+    </article>
+    <article class="exercise" data-day="pull" data-art="bicep-curl">
+      <button type="button" class="exercise-head" aria-expanded="false">
+        <span class="ex-num">4</span>
+        <span class="ex-main"><span class="ex-name">Alternating Bicep Curls</span><span class="dose">3 × 10</span></span>
+        <span class="chev">⌄</span>
+      </button>
+      <div class="exercise-body" hidden>
+        <div class="demo-wrap">
+          <div class="art-stage">
+            <div class="art-loading">Loading animation…</div>
+            <svg class="exercise-art" viewBox="0 0 512 512" role="img" aria-label="Exercise demonstration" hidden>
+              <path></path>
+            </svg>
+            <div class="art-error" hidden>Video unavailable. Use the form cues on the right.</div>
+          </div>
+          <div class="video-source" hidden><span class="video-pill"></span><a target="_blank" rel="noopener">Open video</a></div>
+          <div class="video-note">Exercise demo is streamed from the original source. Open the source video anytime for the full instruction.</div>
+          
+        </div>
+        <div class="right-col">
+          <div class="tiny-label">FORM KEYS</div>
+          <ul class="cues"><li>Alternate sides without leaning or twisting to help the weight up.</li><li>Keep each elbow close to your side and control the lowering phase.</li></ul>
+          <div class="tiny-label set-label">SETS / ROUNDS</div>
+          <div class="sets"><button type="button" class="set-dot" data-key="pull-3-0" aria-label="Mark set or round 1 complete">1</button><button type="button" class="set-dot" data-key="pull-3-1" aria-label="Mark set or round 2 complete">2</button><button type="button" class="set-dot" data-key="pull-3-2" aria-label="Mark set or round 3 complete">3</button></div>
+        </div>
+      </div>
+    </article>
+    <article class="exercise" data-day="pull" data-art="lat-pulldown">
+      <button type="button" class="exercise-head" aria-expanded="false">
+        <span class="ex-num">5</span>
+        <span class="ex-main"><span class="ex-name">Cable Lat Pulldown</span><span class="dose">3 × 10</span></span>
+        <span class="chev">⌄</span>
+      </button>
+      <div class="exercise-body" hidden>
+        <div class="demo-wrap">
+          <div class="art-stage">
+            <div class="art-loading">Loading animation…</div>
+            <svg class="exercise-art" viewBox="0 0 512 512" role="img" aria-label="Exercise demonstration" hidden>
+              <path></path>
+            </svg>
+            <div class="art-error" hidden>Video unavailable. Use the form cues on the right.</div>
+          </div>
+          <div class="video-source" hidden><span class="video-pill"></span><a target="_blank" rel="noopener">Open video</a></div>
+          <div class="video-note">Exercise demo is streamed from the original source. Open the source video anytime for the full instruction.</div>
+          
+        </div>
+        <div class="right-col">
+          <div class="tiny-label">FORM KEYS</div>
+          <ul class="cues"><li>Keep your chest up with only a slight lean back.</li><li>Drive your elbows down and pull the bar toward your upper chest.</li></ul>
+          <div class="tiny-label set-label">SETS / ROUNDS</div>
+          <div class="sets"><button type="button" class="set-dot" data-key="pull-4-0" aria-label="Mark set or round 1 complete">1</button><button type="button" class="set-dot" data-key="pull-4-1" aria-label="Mark set or round 2 complete">2</button><button type="button" class="set-dot" data-key="pull-4-2" aria-label="Mark set or round 3 complete">3</button></div>
+        </div>
+      </div>
+    </article>
+    <article class="exercise" data-day="pull" data-art="cross-body-hammer-curl">
+      <button type="button" class="exercise-head" aria-expanded="false">
+        <span class="ex-num">6</span>
+        <span class="ex-main"><span class="ex-name">Cross-Body Dumbbell Curl</span><span class="dose">3 × 10</span></span>
+        <span class="chev">⌄</span>
+      </button>
+      <div class="exercise-body" hidden>
+        <div class="demo-wrap">
+          <div class="art-stage">
+            <div class="art-loading">Loading animation…</div>
+            <svg class="exercise-art" viewBox="0 0 512 512" role="img" aria-label="Exercise demonstration" hidden>
+              <path></path>
+            </svg>
+            <div class="art-error" hidden>Video unavailable. Use the form cues on the right.</div>
+          </div>
+          <div class="video-source" hidden><span class="video-pill"></span><a target="_blank" rel="noopener">Open video</a></div>
+          <div class="video-note">Exercise demo is streamed from the original source. Open the source video anytime for the full instruction.</div>
+          
+        </div>
+        <div class="right-col">
+          <div class="tiny-label">FORM KEYS</div>
+          <ul class="cues"><li>Keep a neutral hammer grip and curl toward the opposite shoulder.</li><li>Avoid rotating your torso to move the weight.</li></ul>
+          <div class="tiny-label set-label">SETS / ROUNDS</div>
+          <div class="sets"><button type="button" class="set-dot" data-key="pull-5-0" aria-label="Mark set or round 1 complete">1</button><button type="button" class="set-dot" data-key="pull-5-1" aria-label="Mark set or round 2 complete">2</button><button type="button" class="set-dot" data-key="pull-5-2" aria-label="Mark set or round 3 complete">3</button></div>
+        </div>
+      </div>
+    </article>
+    <article class="exercise" data-day="pull" data-art="decline-sit-up">
+      <button type="button" class="exercise-head" aria-expanded="false">
+        <span class="ex-num">7</span>
+        <span class="ex-main"><span class="ex-name">Incline Sit-Ups</span><span class="dose">2–3 × 10</span></span>
+        <span class="chev">⌄</span>
+      </button>
+      <div class="exercise-body" hidden>
+        <div class="demo-wrap">
+          <div class="art-stage">
+            <div class="art-loading">Loading animation…</div>
+            <svg class="exercise-art" viewBox="0 0 512 512" role="img" aria-label="Exercise demonstration" hidden>
+              <path></path>
+            </svg>
+            <div class="art-error" hidden>Video unavailable. Use the form cues on the right.</div>
+          </div>
+          <div class="video-source" hidden><span class="video-pill"></span><a target="_blank" rel="noopener">Open video</a></div>
+          <div class="video-note">Exercise demo is streamed from the original source. Open the source video anytime for the full instruction.</div>
+          
+        </div>
+        <div class="right-col">
+          <div class="tiny-label">FORM KEYS</div>
+          <ul class="cues"><li>Brace before each rep and move through a comfortable range.</li><li>Lower slowly so gravity does not do the whole eccentric.</li></ul>
+          <div class="tiny-label set-label">SETS / ROUNDS</div>
+          <div class="sets"><button type="button" class="set-dot" data-key="pull-6-0" aria-label="Mark set or round 1 complete">1</button><button type="button" class="set-dot" data-key="pull-6-1" aria-label="Mark set or round 2 complete">2</button><button type="button" class="set-dot" data-key="pull-6-2" aria-label="Mark set or round 3 complete">3</button></div>
+        </div>
+      </div>
+    </article></div>
+      <button type="button" class="finish-workout" data-finish="pull">Finish Workout · +1 Level</button>
+      <button type="button" class="reset-day" data-reset="pull">Reset Pull Day</button>
+    </section>
+    <section class="day" id="day-shoulders" data-day="shoulders">
+      <div class="day-head">
+        <div><h2>Shoulders + Core</h2><p>Delts + Abs + Push-Up Circuit</p></div>
+        <div class="progress-pill"><span class="progress-count">0</span>%</div>
+      </div>
+      <div class="exercise-list">
+    <article class="exercise" data-day="shoulders" data-art="standing-dumbbell-press">
+      <button type="button" class="exercise-head" aria-expanded="false">
+        <span class="ex-num">1</span>
+        <span class="ex-main"><span class="ex-name">Dumbbell Shoulder Press</span><span class="dose">3 × 10</span></span>
+        <span class="chev">⌄</span>
+      </button>
+      <div class="exercise-body" hidden>
+        <div class="demo-wrap">
+          <div class="art-stage">
+            <div class="art-loading">Loading animation…</div>
+            <svg class="exercise-art" viewBox="0 0 512 512" role="img" aria-label="Exercise demonstration" hidden>
+              <path></path>
+            </svg>
+            <div class="art-error" hidden>Video unavailable. Use the form cues on the right.</div>
+          </div>
+          <div class="video-source" hidden><span class="video-pill"></span><a target="_blank" rel="noopener">Open video</a></div>
+          <div class="video-note">Exercise demo is streamed from the original source. Open the source video anytime for the full instruction.</div>
+          
+        </div>
+        <div class="right-col">
+          <div class="tiny-label">FORM KEYS</div>
+          <ul class="cues"><li>Keep your ribs controlled rather than arching hard through the lower back.</li><li>Press overhead smoothly and lower the dumbbells back to shoulder level.</li></ul>
+          <div class="tiny-label set-label">SETS / ROUNDS</div>
+          <div class="sets"><button type="button" class="set-dot" data-key="shoulders-0-0" aria-label="Mark set or round 1 complete">1</button><button type="button" class="set-dot" data-key="shoulders-0-1" aria-label="Mark set or round 2 complete">2</button><button type="button" class="set-dot" data-key="shoulders-0-2" aria-label="Mark set or round 3 complete">3</button></div>
+        </div>
+      </div>
+    </article>
+    <article class="exercise" data-day="shoulders" data-art="lateral-raise">
+      <button type="button" class="exercise-head" aria-expanded="false">
+        <span class="ex-num">2</span>
+        <span class="ex-main"><span class="ex-name">Lateral Raise</span><span class="dose">3 × 10</span></span>
+        <span class="chev">⌄</span>
+      </button>
+      <div class="exercise-body" hidden>
+        <div class="demo-wrap">
+          <div class="art-stage">
+            <div class="art-loading">Loading animation…</div>
+            <svg class="exercise-art" viewBox="0 0 512 512" role="img" aria-label="Exercise demonstration" hidden>
+              <path></path>
+            </svg>
+            <div class="art-error" hidden>Video unavailable. Use the form cues on the right.</div>
+          </div>
+          <div class="video-source" hidden><span class="video-pill"></span><a target="_blank" rel="noopener">Open video</a></div>
+          <div class="video-note">Exercise demo is streamed from the original source. Open the source video anytime for the full instruction.</div>
+          <div class="variant" role="group" aria-label="Exercise variation"><button type="button" class="variant-btn active" data-art="lateral-raise">Dumbbell</button><button type="button" class="variant-btn" data-art="cable-lateral-raise">Cable</button></div>
+        </div>
+        <div class="right-col">
+          <div class="tiny-label">FORM KEYS</div>
+          <ul class="cues"><li>Raise the arms out to the sides without shrugging your shoulders.</li><li>Use a weight you can control instead of swinging it up.</li></ul>
+          <div class="tiny-label set-label">SETS / ROUNDS</div>
+          <div class="sets"><button type="button" class="set-dot" data-key="shoulders-1-0" aria-label="Mark set or round 1 complete">1</button><button type="button" class="set-dot" data-key="shoulders-1-1" aria-label="Mark set or round 2 complete">2</button><button type="button" class="set-dot" data-key="shoulders-1-2" aria-label="Mark set or round 3 complete">3</button></div>
+        </div>
+      </div>
+    </article>
+    <article class="exercise" data-day="shoulders" data-art="reverse-pec-deck">
+      <button type="button" class="exercise-head" aria-expanded="false">
+        <span class="ex-num">3</span>
+        <span class="ex-main"><span class="ex-name">Rear Delt Fly</span><span class="dose">3 × 10</span></span>
+        <span class="chev">⌄</span>
+      </button>
+      <div class="exercise-body" hidden>
+        <div class="demo-wrap">
+          <div class="art-stage">
+            <div class="art-loading">Loading animation…</div>
+            <svg class="exercise-art" viewBox="0 0 512 512" role="img" aria-label="Exercise demonstration" hidden>
+              <path></path>
+            </svg>
+            <div class="art-error" hidden>Video unavailable. Use the form cues on the right.</div>
+          </div>
+          <div class="video-source" hidden><span class="video-pill"></span><a target="_blank" rel="noopener">Open video</a></div>
+          <div class="video-note">Exercise demo is streamed from the original source. Open the source video anytime for the full instruction.</div>
+          <div class="variant" role="group" aria-label="Exercise variation"><button type="button" class="variant-btn active" data-art="reverse-pec-deck">Machine</button><button type="button" class="variant-btn" data-art="cable-rear-delt-fly">Cable</button></div>
+        </div>
+        <div class="right-col">
+          <div class="tiny-label">FORM KEYS</div>
+          <ul class="cues"><li>Keep a soft elbow bend and lead the movement from the rear shoulders.</li><li>Open the arms under control without turning it into a row.</li></ul>
+          <div class="tiny-label set-label">SETS / ROUNDS</div>
+          <div class="sets"><button type="button" class="set-dot" data-key="shoulders-2-0" aria-label="Mark set or round 1 complete">1</button><button type="button" class="set-dot" data-key="shoulders-2-1" aria-label="Mark set or round 2 complete">2</button><button type="button" class="set-dot" data-key="shoulders-2-2" aria-label="Mark set or round 3 complete">3</button></div>
+        </div>
+      </div>
+    </article>
+    <article class="exercise" data-day="shoulders" data-art="decline-sit-up">
+      <button type="button" class="exercise-head" aria-expanded="false">
+        <span class="ex-num">4</span>
+        <span class="ex-main"><span class="ex-name">Incline Sit-Ups</span><span class="dose">2 × 10</span></span>
+        <span class="chev">⌄</span>
+      </button>
+      <div class="exercise-body" hidden>
+        <div class="demo-wrap">
+          <div class="art-stage">
+            <div class="art-loading">Loading animation…</div>
+            <svg class="exercise-art" viewBox="0 0 512 512" role="img" aria-label="Exercise demonstration" hidden>
+              <path></path>
+            </svg>
+            <div class="art-error" hidden>Video unavailable. Use the form cues on the right.</div>
+          </div>
+          <div class="video-source" hidden><span class="video-pill"></span><a target="_blank" rel="noopener">Open video</a></div>
+          <div class="video-note">Exercise demo is streamed from the original source. Open the source video anytime for the full instruction.</div>
+          
+        </div>
+        <div class="right-col">
+          <div class="tiny-label">FORM KEYS</div>
+          <ul class="cues"><li>Keep the reps controlled and brace before lifting your torso.</li><li>Lower slowly instead of dropping back onto the bench.</li></ul>
+          <div class="tiny-label set-label">SETS / ROUNDS</div>
+          <div class="sets"><button type="button" class="set-dot" data-key="shoulders-3-0" aria-label="Mark set or round 1 complete">1</button><button type="button" class="set-dot" data-key="shoulders-3-1" aria-label="Mark set or round 2 complete">2</button></div>
+        </div>
+      </div>
+    </article>
+    <article class="exercise" data-day="shoulders" data-art="russian-twist">
+      <button type="button" class="exercise-head" aria-expanded="false">
+        <span class="ex-num">5</span>
+        <span class="ex-main"><span class="ex-name">Russian Twists</span><span class="dose">Circuit · 2 rounds</span></span>
+        <span class="chev">⌄</span>
+      </button>
+      <div class="exercise-body" hidden>
+        <div class="demo-wrap">
+          <div class="art-stage">
+            <div class="art-loading">Loading animation…</div>
+            <svg class="exercise-art" viewBox="0 0 512 512" role="img" aria-label="Exercise demonstration" hidden>
+              <path></path>
+            </svg>
+            <div class="art-error" hidden>Video unavailable. Use the form cues on the right.</div>
+          </div>
+          <div class="video-source" hidden><span class="video-pill"></span><a target="_blank" rel="noopener">Open video</a></div>
+          <div class="video-note">Exercise demo is streamed from the original source. Open the source video anytime for the full instruction.</div>
+          
+        </div>
+        <div class="right-col">
+          <div class="tiny-label">FORM KEYS</div>
+          <ul class="cues"><li>Rotate through your torso rather than only moving your hands.</li><li>Stay tall through the chest and keep the movement controlled.</li></ul>
+          <div class="tiny-label set-label">SETS / ROUNDS</div>
+          <div class="sets"><button type="button" class="set-dot" data-key="shoulders-4-0" aria-label="Mark set or round 1 complete">1</button><button type="button" class="set-dot" data-key="shoulders-4-1" aria-label="Mark set or round 2 complete">2</button></div>
+        </div>
+      </div>
+    </article>
+    <article class="exercise" data-day="shoulders" data-art="lying-leg-raise">
+      <button type="button" class="exercise-head" aria-expanded="false">
+        <span class="ex-num">6</span>
+        <span class="ex-main"><span class="ex-name">Leg Raises</span><span class="dose">Circuit · 2 rounds</span></span>
+        <span class="chev">⌄</span>
+      </button>
+      <div class="exercise-body" hidden>
+        <div class="demo-wrap">
+          <div class="art-stage">
+            <div class="art-loading">Loading animation…</div>
+            <svg class="exercise-art" viewBox="0 0 512 512" role="img" aria-label="Exercise demonstration" hidden>
+              <path></path>
+            </svg>
+            <div class="art-error" hidden>Video unavailable. Use the form cues on the right.</div>
+          </div>
+          <div class="video-source" hidden><span class="video-pill"></span><a target="_blank" rel="noopener">Open video</a></div>
+          <div class="video-note">Exercise demo is streamed from the original source. Open the source video anytime for the full instruction.</div>
+          
+        </div>
+        <div class="right-col">
+          <div class="tiny-label">FORM KEYS</div>
+          <ul class="cues"><li>Keep your lower back controlled against the floor or bench.</li><li>Lower your legs only as far as you can without losing abdominal tension.</li></ul>
+          <div class="tiny-label set-label">SETS / ROUNDS</div>
+          <div class="sets"><button type="button" class="set-dot" data-key="shoulders-5-0" aria-label="Mark set or round 1 complete">1</button><button type="button" class="set-dot" data-key="shoulders-5-1" aria-label="Mark set or round 2 complete">2</button></div>
+        </div>
+      </div>
+    </article>
+    <article class="exercise" data-day="shoulders" data-art="v-up">
+      <button type="button" class="exercise-head" aria-expanded="false">
+        <span class="ex-num">7</span>
+        <span class="ex-main"><span class="ex-name">Jackknife Sit-Ups</span><span class="dose">Circuit · 2 rounds</span></span>
+        <span class="chev">⌄</span>
+      </button>
+      <div class="exercise-body" hidden>
+        <div class="demo-wrap">
+          <div class="art-stage">
+            <div class="art-loading">Loading animation…</div>
+            <svg class="exercise-art" viewBox="0 0 512 512" role="img" aria-label="Exercise demonstration" hidden>
+              <path></path>
+            </svg>
+            <div class="art-error" hidden>Video unavailable. Use the form cues on the right.</div>
+          </div>
+          <div class="video-source" hidden><span class="video-pill"></span><a target="_blank" rel="noopener">Open video</a></div>
+          <div class="video-note">Exercise demo is streamed from the original source. Open the source video anytime for the full instruction.</div>
+          
+        </div>
+        <div class="right-col">
+          <div class="tiny-label">FORM KEYS</div>
+          <ul class="cues"><li>Lift the upper body and legs together into a V position.</li><li>Control the return instead of dropping to the floor.</li></ul>
+          <div class="tiny-label set-label">SETS / ROUNDS</div>
+          <div class="sets"><button type="button" class="set-dot" data-key="shoulders-6-0" aria-label="Mark set or round 1 complete">1</button><button type="button" class="set-dot" data-key="shoulders-6-1" aria-label="Mark set or round 2 complete">2</button></div>
+        </div>
+      </div>
+    </article>
+    <article class="exercise" data-day="shoulders" data-art="push-up">
+      <button type="button" class="exercise-head" aria-expanded="false">
+        <span class="ex-num">8</span>
+        <span class="ex-main"><span class="ex-name">Push-Ups</span><span class="dose">Circuit · 2 rounds</span></span>
+        <span class="chev">⌄</span>
+      </button>
+      <div class="exercise-body" hidden>
+        <div class="demo-wrap">
+          <div class="art-stage">
+            <div class="art-loading">Loading animation…</div>
+            <svg class="exercise-art" viewBox="0 0 512 512" role="img" aria-label="Exercise demonstration" hidden>
+              <path></path>
+            </svg>
+            <div class="art-error" hidden>Video unavailable. Use the form cues on the right.</div>
+          </div>
+          <div class="video-source" hidden><span class="video-pill"></span><a target="_blank" rel="noopener">Open video</a></div>
+          <div class="video-note">Exercise demo is streamed from the original source. Open the source video anytime for the full instruction.</div>
+          
+        </div>
+        <div class="right-col">
+          <div class="tiny-label">FORM KEYS</div>
+          <ul class="cues"><li>Keep a straight line from your shoulders through your hips.</li><li>Lower with control and keep your elbows at a comfortable angle from your torso.</li></ul>
+          <div class="tiny-label set-label">SETS / ROUNDS</div>
+          <div class="sets"><button type="button" class="set-dot" data-key="shoulders-7-0" aria-label="Mark set or round 1 complete">1</button><button type="button" class="set-dot" data-key="shoulders-7-1" aria-label="Mark set or round 2 complete">2</button></div>
+        </div>
+      </div>
+    </article></div>
+      <button type="button" class="finish-workout" data-finish="shoulders">Finish Workout · +1 Level</button>
+      <button type="button" class="reset-day" data-reset="shoulders">Reset Shoulders + Core</button>
+    </section>
+
+  <p class="credit">
+    Video demonstrations are embedded from their original YouTube sources. Previous vector artwork source:
+    <a href="https://github.com/InlitX/GymMane" target="_blank" rel="noopener">GymMane</a>,
+    licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a>.
+    Use the form cues alongside the demonstration and a comfortable, controlled range of motion.
+  </p>
+</main>
+<div class="level-toast" id="level-toast">Level up!</div>
+
+<script>
+const $=(s,r=document)=>r.querySelector(s);
+const $$=(s,r=document)=>[...r.querySelectorAll(s)];
+
+let state={};
+try{ state=JSON.parse(localStorage.getItem('liftloop-state')||'{}'); }catch(e){ state={}; }
+const save=()=>{try{localStorage.setItem('liftloop-state',JSON.stringify(state));}catch(e){}};
+
+function showDay(id){
+  $$('.tab').forEach(b=>b.classList.toggle('active',b.dataset.tab===id));
+  $$('.day').forEach(s=>s.classList.toggle('active',s.dataset.day===id));
+  state.activeDay=id; save();
+}
+$$('.tab').forEach(b=>b.addEventListener('click',()=>showDay(b.dataset.tab)));
+showDay(state.activeDay||'push');
+
+
+const VIDEO_MAP={"incline-dumbbell-press":{"id":"oZVCBM9f8Eo","source":"PureGym"},"assisted-dip":{"id":"-p-vg_V7U_0","source":"Michael James Fitness"},"pec-deck":{"id":"eGjt4lk6g34","source":"PureGym"},"rope-tricep-pushdown":{"id":"LXkCrxn3caQ","source":"PureGym"},"bench-press":{"id":"lhMHmxKF_7s","source":"Future Health Club"},"decline-sit-up":{"id":"N7hf1_vcX5w","source":"PureGym"},"pull-up":{"id":"PHdHnZcbsB8","source":"PureGym"},"assisted-pull-up":{"id":"wFj808u2HWU","source":"PureGym"},"ez-bar-curl":{"id":"WXSNXrN2vcY","source":"Future Health Club"},"seated-row":{"id":"lJoozxC0Rns","source":"PureGym"},"bicep-curl":{"id":"kt2iGeJxElE","source":"Future Health Club"},"lat-pulldown":{"id":"JGeRYIZdojU","source":"PureGym"},"cross-body-hammer-curl":{"id":"buP9fSqWcw4","source":"OriGym"},"standing-dumbbell-press":{"id":"aI2hGzsAMXs","source":"PureGym"},"lateral-raise":{"id":"z-kOn7flIZg","source":"PureGym"},"cable-lateral-raise":{"id":"Z5FA9aq3L6A","source":"PureGym"},"reverse-pec-deck":{"id":"dT53N5ES4_U","source":"Arend Gelders"},"cable-rear-delt-fly":{"id":"ATSjVXoOgVg","source":"OriGym"},"russian-twist":{"id":"99T1EfpMwPA","source":"PureGym"},"lying-leg-raise":{"id":"l4kQd9eWclE","source":"Howcast"},"v-up":{"id":"YQVrOI0aT8w","source":"Future Health Club"},"push-up":{"id":"H594sWUfsn8","source":"Future Health Club"}};
+
+function stopAnimation(card){
+  const frame=$('.exercise-video',card);
+  if(frame) frame.remove();
+}
+
+function videoUrl(v){
+  const p=new URLSearchParams({
+    autoplay:'1',
+    mute:'1',
+    playsinline:'1',
+    rel:'0',
+    modestbranding:'1',
+    controls:'1',
+    loop:'1',
+    playlist:v.id
+  });
+  return `https://www.youtube-nocookie.com/embed/${v.id}?${p.toString()}`;
+}
+
+async function loadArt(card,key){
+  stopAnimation(card);
+  card.dataset.art=key;
+  const stage=$('.art-stage',card);
+  const loading=$('.art-loading',card);
+  const error=$('.art-error',card);
+  const svg=$('.exercise-art',card);
+  const source=$('.video-source',card);
+  if(svg) svg.hidden=true;
+  if(source) source.hidden=true;
+  error.hidden=true;
+  loading.hidden=false;
+  loading.textContent='Loading real exercise video…';
+
+  const v=VIDEO_MAP[key];
+  if(!v){
+    loading.hidden=true;
+    error.hidden=false;
+    error.textContent='No exact video match yet for this variation.';
+    return;
+  }
+
+  const iframe=document.createElement('iframe');
+  iframe.className='exercise-video';
+  iframe.title='Exercise demonstration video';
+  iframe.allow='autoplay; encrypted-media; picture-in-picture';
+  iframe.allowFullscreen=true;
+  iframe.referrerPolicy='strict-origin-when-cross-origin';
+  iframe.src=videoUrl(v);
+  iframe.addEventListener('load',()=>{ loading.hidden=true; },{once:true});
+  stage.appendChild(iframe);
+
+  if(source){
+    source.hidden=false;
+    $('.video-pill',source).textContent=v.source;
+    const link=$('a',source);
+    link.href=`https://www.youtube.com/watch?v=${v.id}`;
+  }
+}
+
+$$('.exercise-head').forEach(btn=>btn.addEventListener('click',async()=>{
+  const card=btn.closest('.exercise');
+  const body=btn.nextElementSibling;
+  const open=btn.getAttribute('aria-expanded')==='true';
+
+  $$('.exercise-head[aria-expanded="true"]').forEach(other=>{
+    if(other!==btn){
+      other.setAttribute('aria-expanded','false');
+      other.nextElementSibling.hidden=true;
+      stopAnimation(other.closest('.exercise'));
+    }
+  });
+
+  btn.setAttribute('aria-expanded',String(!open));
+  body.hidden=open;
+  if(open){stopAnimation(card);return;}
+  await loadArt(card,card.dataset.art);
+}));
+
+$$('.variant-btn').forEach(btn=>btn.addEventListener('click',async()=>{
+  const card=btn.closest('.exercise');
+  const group=btn.closest('.variant');
+  $$('.variant-btn',group).forEach(x=>x.classList.toggle('active',x===btn));
+  await loadArt(card,btn.dataset.art);
+}));
+
+function updateProgress(day){
+  const dots=$$(`.set-dot[data-key^="${day}-"]`);
+  const done=dots.filter(b=>b.classList.contains('done')).length;
+  const pct=dots.length?Math.round(done/dots.length*100):0;
+  const el=$(`#day-${day} .progress-count`);
+  if(el) el.textContent=pct;
+  if(typeof renderGamify==='function') renderGamify();
+}
+
+$$('.set-dot').forEach(btn=>{
+  if(state[btn.dataset.key]) btn.classList.add('done');
+  btn.addEventListener('click',()=>{
+    btn.classList.toggle('done');
+    state[btn.dataset.key]=btn.classList.contains('done');
+    save();
+    updateProgress(btn.dataset.key.split('-')[0]);
+  });
+});
+['push','pull','shoulders'].forEach(updateProgress);
+
+$$('.reset-day').forEach(btn=>btn.addEventListener('click',()=>{
+  const day=btn.dataset.reset;
+  $$(`.set-dot[data-key^="${day}-"]`).forEach(dot=>{
+    dot.classList.remove('done');
+    delete state[dot.dataset.key];
+  });
+  save(); updateProgress(day);
+}));
+
+// ---------- LiftLoop leveling + load tracking ----------
+state.workoutHistory = Array.isArray(state.workoutHistory) ? state.workoutHistory : [];
+state.weightLogs = state.weightLogs || {};
+state.sessionCompleted = state.sessionCompleted || {};
+state.weightUnit = state.weightUnit || 'lb';
+
+function localDateKey(value){
+  const d = value instanceof Date ? value : new Date(value);
+  const y=d.getFullYear(), m=String(d.getMonth()+1).padStart(2,'0'), day=String(d.getDate()).padStart(2,'0');
+  return `${y}-${m}-${day}`;
+}
+function dayBefore(key){
+  const [y,m,d]=key.split('-').map(Number);
+  const x=new Date(y,m-1,d); x.setDate(x.getDate()-1);
+  return localDateKey(x);
+}
+function streakCount(){
+  const dates=[...new Set(state.workoutHistory.map(w=>localDateKey(w.ts)))].sort().reverse();
+  if(!dates.length) return 0;
+  const today=localDateKey(new Date());
+  const yesterday=dayBefore(today);
+  let expected = dates[0]===today ? today : (dates[0]===yesterday ? yesterday : null);
+  if(!expected) return 0;
+  let n=0;
+  for(const date of dates){
+    if(date!==expected) break;
+    n++; expected=dayBefore(expected);
+  }
+  return n;
+}
+function rankFor(level){
+  if(level>=100) return 'Legend';
+  if(level>=50) return 'Elite';
+  if(level>=30) return 'Iron';
+  if(level>=20) return 'Veteran';
+  if(level>=10) return 'Grinder';
+  if(level>=5) return 'Builder';
+  return 'Starting Line';
+}
+function renderGamify(){
+  const workouts=state.workoutHistory.length;
+  const level=workouts+1;
+  $('#level-number').textContent=level;
+  $('#level-label').textContent=level;
+  $('#rank-label').textContent=rankFor(level);
+  $('#workout-count').textContent=workouts;
+  $('#streak-count').textContent=streakCount();
+
+  const milestone=Math.ceil(level/5)*5 || 5;
+  const base=milestone-5;
+  const within=level-base;
+  $('#milestone-copy').textContent=`${within} / 5 to next milestone`;
+  $('#milestone-level').textContent=`Level ${milestone}`;
+  $('#milestone-fill').style.width=`${Math.min(100,Math.max(0,within/5*100))}%`;
+
+  const recent=$('#recent-workouts');
+  recent.innerHTML='';
+  const items=[...state.workoutHistory].slice(-5).reverse();
+  if(!items.length){
+    recent.innerHTML='<span class="history-empty">Complete a workout and it’ll show up here.</span>';
+  }else{
+    items.forEach(w=>{
+      const chip=document.createElement('span');
+      chip.className='history-chip';
+      const dt=new Date(w.ts);
+      chip.textContent=`${w.name} · ${dt.toLocaleDateString(undefined,{month:'short',day:'numeric'})}`;
+      recent.appendChild(chip);
+    });
+  }
+
+  $$('.finish-workout').forEach(btn=>{
+    const day=btn.dataset.finish;
+    const completed=!!state.sessionCompleted[day];
+    const dots=$$(`.set-dot[data-key^="${day}-"]`);
+    const allDone=dots.length>0 && dots.every(x=>x.classList.contains('done'));
+    btn.disabled=completed || !allDone;
+    btn.classList.toggle('completed',completed);
+    btn.textContent=completed ? 'Workout Complete ✓ · Level Earned' :
+      (allDone ? 'Finish Workout · +1 Level' : 'Complete all sets to finish');
+  });
+}
+function showLevelToast(level){
+  const toast=$('#level-toast');
+  toast.textContent=`Level ${level} unlocked`;
+  toast.classList.add('show');
+  setTimeout(()=>toast.classList.remove('show'),1800);
+}
+$$('.finish-workout').forEach(btn=>btn.addEventListener('click',()=>{
+  const day=btn.dataset.finish;
+  if(state.sessionCompleted[day]) return;
+  const dots=$$(`.set-dot[data-key^="${day}-"]`);
+  if(!dots.length || !dots.every(x=>x.classList.contains('done'))) return;
+  const title=$(`#day-${day} h2`)?.textContent || day;
+  state.workoutHistory.push({ts:Date.now(),day,name:title});
+  state.sessionCompleted[day]=true;
+  save();
+  renderGamify();
+  showLevelToast(state.workoutHistory.length+1);
+}));
+
+function kgFromDisplay(v){ return state.weightUnit==='kg' ? v : v*0.45359237; }
+function displayFromKg(kg){ return state.weightUnit==='kg' ? kg : kg/0.45359237; }
+function fmt(v){
+  if(!Number.isFinite(v)) return '—';
+  const rounded=Math.round(v*10)/10;
+  return `${Number.isInteger(rounded)?rounded:rounded.toFixed(1)} ${state.weightUnit}`;
+}
+function trackerMode(name){
+  if(name==='Assisted Dips') return {label:'Assistance', bodyweight:false, assistance:true};
+  if(name.includes('Pull-Ups / Assisted')) return {label:'Load / assistance', bodyweight:false, assistance:false};
+  if(/Push-Ups|Russian Twists|Leg Raises|Jackknife|Incline Sit-Ups/.test(name))
+    return {label:'Added load (optional)', bodyweight:true, assistance:false};
+  return {label:'Working weight', bodyweight:false, assistance:false};
+}
+function exerciseKey(card){
+  const day=card.dataset.day||'day';
+  const name=$('.ex-name',card)?.textContent.trim()||'Exercise';
+  return `${day}::${name}`;
+}
+function svgSpark(values){
+  if(values.length<2) return '';
+  const w=160,h=30,p=3;
+  const min=Math.min(...values), max=Math.max(...values);
+  const span=(max-min)||1;
+  const pts=values.map((v,i)=>{
+    const x=p+(w-2*p)*(i/(values.length-1));
+    const y=h-p-(h-2*p)*((v-min)/span);
+    return [x,y];
+  });
+  const poly=pts.map(p=>p.join(',')).join(' ');
+  const last=pts[pts.length-1];
+  return `<svg class="spark" viewBox="0 0 ${w} ${h}" aria-label="Recent load trend"><polyline points="${poly}"></polyline><circle cx="${last[0]}" cy="${last[1]}" r="3"></circle></svg>`;
+}
+function renderTracker(card){
+  const box=$('.load-card',card); if(!box) return;
+  const key=exerciseKey(card);
+  const name=$('.ex-name',card)?.textContent.trim()||'Exercise';
+  const mode=trackerMode(name);
+  const logs=Array.isArray(state.weightLogs[key]) ? state.weightLogs[key] : [];
+  const input=$('.load-input',box);
+  input.placeholder=state.weightUnit;
+  input.step=state.weightUnit==='kg'?'2.5':'5';
+  $('.unit-toggle',box).textContent=state.weightUnit;
+
+  const last=logs.length?displayFromKg(logs.at(-1).kg):NaN;
+  const previous=logs.length>1?displayFromKg(logs.at(-2).kg):NaN;
+  const all=logs.map(x=>displayFromKg(x.kg));
+  const peak=all.length?Math.max(...all):NaN;
+  const low=all.length?Math.min(...all):NaN;
+
+  $('.metric-last strong',box).textContent=fmt(last);
+  const bestLabel=$('.metric-best span',box);
+  const bestValue=$('.metric-best strong',box);
+  if(mode.assistance){
+    bestLabel.textContent='Lowest assist';
+    bestValue.textContent=fmt(low);
+  }else{
+    bestLabel.textContent=mode.bodyweight?'Heaviest added':'Heaviest';
+    bestValue.textContent=fmt(peak);
+  }
+
+  const trend=$('.trend-line',box);
+  if(logs.length<2){
+    trend.textContent=logs.length?'First log saved':'No weight logged yet';
+    trend.className='trend-line trend-flat';
+  }else{
+    const diff=last-previous;
+    if(Math.abs(diff)<0.05){
+      trend.textContent='Same as last time';
+      trend.className='trend-line trend-flat';
+    }else if(mode.assistance){
+      const improvement=diff<0;
+      trend.textContent=`${diff<0?'↓':'↑'} ${fmt(Math.abs(diff))} assist vs last`;
+      trend.className='trend-line '+(improvement?'trend-good':'trend-down');
+    }else{
+      trend.textContent=`${diff>0?'↑ +':'↓ -'}${fmt(Math.abs(diff))} vs last`;
+      trend.className='trend-line '+(diff>0?'trend-good':'trend-down');
+    }
+  }
+
+  $('.spark-wrap',box).innerHTML=svgSpark(all.slice(-8));
+  const hist=$('.load-history-list',box);
+  hist.innerHTML='';
+  logs.slice(-6).reverse().forEach(x=>{
+    const row=document.createElement('div');
+    row.className='load-row';
+    row.innerHTML=`<span>${new Date(x.ts).toLocaleDateString(undefined,{month:'short',day:'numeric'})}</span><strong>${fmt(displayFromKg(x.kg))}</strong>`;
+    hist.appendChild(row);
+  });
+}
+function buildTrackers(){
+  $$('.exercise').forEach(card=>{
+    const right=$('.right-col',card);
+    if(!right || $('.load-card',right)) return;
+    const name=$('.ex-name',card)?.textContent.trim()||'Exercise';
+    const mode=trackerMode(name);
+    const box=document.createElement('div');
+    box.className='load-card';
+    box.innerHTML=`
+      <div class="load-head">
+        <div class="load-title">${mode.label.toUpperCase()}</div>
+        <button type="button" class="unit-toggle" aria-label="Switch between pounds and kilograms">${state.weightUnit}</button>
+      </div>
+      <div class="load-entry">
+        <button type="button" class="load-step load-minus" aria-label="Decrease load">−</button>
+        <input class="load-input" inputmode="decimal" type="number" min="0" aria-label="${mode.label}">
+        <button type="button" class="load-step load-plus" aria-label="Increase load">+</button>
+        <button type="button" class="load-save">Log</button>
+      </div>
+      <div class="load-meta">
+        <div class="metric metric-last"><span>Last</span><strong>—</strong></div>
+        <div class="metric metric-best"><span>Heaviest</span><strong>—</strong></div>
+      </div>
+      <div class="trend-line trend-flat" style="font-size:10px;margin-top:7px">No weight logged yet</div>
+      <div class="spark-wrap"></div>
+      <details class="load-history"><summary>Recent load history</summary><div class="load-history-list"></div></details>
+    `;
+    right.appendChild(box);
+
+    const input=$('.load-input',box);
+    const key=exerciseKey(card);
+    const logs=state.weightLogs[key]||[];
+    if(logs.length) input.value=(Math.round(displayFromKg(logs.at(-1).kg)*10)/10);
+
+    $('.load-minus',box).addEventListener('click',()=>{
+      const step=state.weightUnit==='kg'?2.5:5;
+      input.value=Math.max(0,(parseFloat(input.value)||0)-step);
+    });
+    $('.load-plus',box).addEventListener('click',()=>{
+      const step=state.weightUnit==='kg'?2.5:5;
+      input.value=(parseFloat(input.value)||0)+step;
+    });
+    $('.load-save',box).addEventListener('click',()=>{
+      const val=parseFloat(input.value);
+      if(!Number.isFinite(val) || val<0) return;
+      state.weightLogs[key]=Array.isArray(state.weightLogs[key])?state.weightLogs[key]:[];
+      const before=state.weightLogs[key].map(x=>x.kg);
+      const kg=kgFromDisplay(val);
+      const oldMax=before.length?Math.max(...before):-Infinity;
+      const oldMin=before.length?Math.min(...before):Infinity;
+      state.weightLogs[key].push({ts:Date.now(),kg});
+      save();
+      renderTracker(card);
+
+      const isPR=mode.assistance ? kg<oldMin : kg>oldMax;
+      if(before.length && isPR){
+        box.classList.remove('pr-pop'); void box.offsetWidth; box.classList.add('pr-pop');
+        const t=$('#level-toast');
+        t.textContent=mode.assistance?'New lowest assistance':'New load PR';
+        t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),1400);
+      }
+    });
+    $('.unit-toggle',box).addEventListener('click',()=>{
+      state.weightUnit=state.weightUnit==='lb'?'kg':'lb';
+      save();
+      $$('.load-card').forEach(b=>{
+        const c=b.closest('.exercise');
+        const inp=$('.load-input',b);
+        const k=exerciseKey(c);
+        const ls=state.weightLogs[k]||[];
+        if(ls.length) inp.value=Math.round(displayFromKg(ls.at(-1).kg)*10)/10;
+        else inp.value='';
+        renderTracker(c);
+      });
+    });
+    renderTracker(card);
+  });
+}
+buildTrackers();
+renderGamify();
+
+</script>
+</body>
+</html>
