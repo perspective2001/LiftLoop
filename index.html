@@ -22,7 +22,7 @@ button{font:inherit}
 .brand img{width:48px;height:48px;border-radius:14px}
 .brand h1{margin:0;font-size:24px;letter-spacing:-.025em}
 .brand p{margin:3px 0 0;color:var(--muted);font-size:13px}
-.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;background:#12151c;padding:5px;border:1px solid var(--line);border-radius:15px;position:sticky;top:8px;z-index:10}
+.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;background:#12151c;padding:5px;border:1px solid var(--line);border-radius:15px;position:sticky;top:8px;z-index:10}
 .tab{border:0;border-radius:11px;padding:11px 6px;background:transparent;color:var(--muted);font-weight:800;font-size:12px;min-height:44px}
 .tab.active{background:var(--panel2);color:var(--text)}
 .day{display:none;margin-top:18px}
@@ -131,7 +131,8 @@ button{font:inherit}
 
 /* Real-video preview */
 .art-stage{aspect-ratio:16/9;background:#080a0e;border:1px solid #292f3a}
-.exercise-video{position:absolute;inset:0;width:100%;height:100%;border:0;background:#000}
+.exercise-video{position:absolute;inset:0;width:100%;height:100%;border:0;background:#000;opacity:0;pointer-events:none;transition:opacity .18s ease}
+.exercise-video.video-ready{opacity:1}
 .video-source{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:6px;color:#788291;font-size:9.5px}
 .video-source a{color:#9ba4ff;text-decoration:none;font-weight:750}
 .video-pill{display:inline-flex;align-items:center;gap:5px;border:1px solid #303744;background:#1e232d;border-radius:999px;padding:5px 7px}
@@ -139,6 +140,83 @@ button{font:inherit}
 .exercise-art{display:none!important}
 .art-stage .art-loading{color:#8e98a7}
 .video-note{margin-top:6px;color:#737d8a;font-size:9px;line-height:1.35}
+
+
+/* Full progress dashboard */
+.progress-page{margin-top:18px}
+.progress-page .day-head{margin-bottom:14px}
+.progress-summary-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}
+.progress-stat{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:11px}
+.progress-stat span{display:block;color:var(--muted);font-size:9px;letter-spacing:.08em;text-transform:uppercase}
+.progress-stat strong{display:block;margin-top:5px;font-size:18px}
+.progress-panel{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:13px;margin-top:12px}
+.progress-panel-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px}
+.progress-panel h3{margin:0;font-size:15px}
+.progress-select{width:100%;background:#11151c;color:var(--text);border:1px solid #343b49;border-radius:11px;padding:11px 12px;font:inherit;font-size:12px}
+.progress-chart-wrap{margin-top:12px;background:#10131a;border:1px solid #292f3a;border-radius:14px;padding:9px;min-height:210px}
+.progress-chart{display:block;width:100%;height:auto}
+.progress-chart .grid{stroke:#242a35;stroke-width:1}
+.progress-chart .axis-text{fill:#7f8998;font-size:10px}
+.progress-chart .line{fill:none;stroke:#8790ff;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.progress-chart .dot{fill:#69e7b8;stroke:#0f1218;stroke-width:2}
+.progress-chart .area{fill:#8790ff;opacity:.08}
+.progress-empty{min-height:185px;display:grid;place-items:center;text-align:center;color:var(--muted);font-size:12px;padding:18px}
+.progress-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:10px}
+.progress-metric{background:#20252e;border-radius:11px;padding:9px}
+.progress-metric span{display:block;color:var(--muted);font-size:8px;text-transform:uppercase;letter-spacing:.08em}
+.progress-metric strong{display:block;font-size:12px;margin-top:4px}
+.progress-good{color:#7cf0c1!important}
+.progress-down{color:#f0b67c!important}
+.progress-neutral{color:#d7dce5!important}
+.progress-ranking{display:grid;gap:7px}
+.progress-rank-row{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;background:#1d222c;border-radius:11px;padding:10px}
+.progress-rank-row .name{font-size:11px;font-weight:800}
+.progress-rank-row .sub{font-size:9px;color:var(--muted);margin-top:3px}
+.progress-rank-row .delta{font-size:12px;font-weight:900}
+.progress-history{display:grid;gap:6px}
+.progress-workout-row{display:flex;justify-content:space-between;gap:10px;border-top:1px solid #2a303b;padding:8px 2px 2px;font-size:10px}
+.progress-workout-row:first-child{border-top:0}
+.progress-workout-row span{color:var(--muted)}
+.progress-unit{border:1px solid #343b49;background:#222732;color:#d7dce5;border-radius:9px;padding:6px 9px;font-size:10px;font-weight:850}
+.progress-caption{margin-top:8px;color:var(--muted);font-size:9px;line-height:1.4}
+@media(max-width:520px){
+  .tabs{grid-template-columns:repeat(4,1fr)}
+  .tab{font-size:10px;padding:10px 3px}
+  .progress-summary-grid{grid-template-columns:repeat(2,1fr)}
+  .progress-metrics{grid-template-columns:repeat(2,1fr)}
+}
+
+
+/* Per-set performance logging */
+.sets.set-log-grid{display:grid;gap:8px;margin-top:9px}
+.set-log-row{display:grid;grid-template-columns:42px minmax(0,1fr) 16px 62px auto;gap:6px;align-items:center}
+.set-log-row .set-dot{width:42px;height:42px}
+.set-field{height:40px;min-width:0;border:1px solid #343b49;background:#10131a;color:#fff;border-radius:10px;text-align:center;font-size:13px;font-weight:850;padding:0 5px}
+.set-times{text-align:center;color:#7f8998;font-weight:900}
+.reps-field{width:62px}
+.drop-toggle{height:36px;border:1px solid #343b49;background:#222732;color:#cdd3dc;border-radius:9px;padding:0 8px;font-size:9px;font-weight:850;white-space:nowrap}
+.drop-editor{grid-column:2/-1;display:grid;grid-template-columns:minmax(0,1fr) 16px 62px auto;gap:6px;align-items:center;padding:7px 8px;background:#1a1f28;border-radius:10px;border:1px solid #2d3440}
+.drop-label{grid-column:1/-1;font-size:8px;letter-spacing:.1em;color:#8f99a8;font-weight:850;text-transform:uppercase}
+.drop-remove{height:34px;border:0;background:transparent;color:#ef9b9b;font-size:10px;font-weight:800}
+.set-log-head{display:grid;grid-template-columns:42px 1fr 16px 62px auto;gap:6px;align-items:end;margin-top:9px;color:#737d8a;font-size:8px;text-transform:uppercase;letter-spacing:.08em}
+.set-log-head .weight-h{grid-column:2}
+.set-log-head .reps-h{grid-column:4}
+.usual-weight-note{margin-top:8px;color:#8d97a5;font-size:9px;line-height:1.35}
+.session-summary{margin-top:10px;padding-top:9px;border-top:1px solid #2a303b;display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.session-chip{background:#20252e;border-radius:9px;padding:7px}
+.session-chip span{display:block;color:#8d97a5;font-size:8px;text-transform:uppercase;letter-spacing:.07em}
+.session-chip strong{display:block;margin-top:3px;font-size:10px}
+.load-card{display:none!important}
+.progress-chart-title{font-size:9px;color:#8d97a5;margin:0 0 6px}
+.pr-line{margin-top:7px;font-size:9px;color:#7cf0c1}
+@media(max-width:520px){
+  .set-log-row{grid-template-columns:38px minmax(0,1fr) 12px 56px}
+  .set-log-row .drop-toggle{grid-column:2/-1;width:max-content}
+  .set-log-row .set-dot{width:38px;height:38px}
+  .set-log-head{grid-template-columns:38px 1fr 12px 56px}
+  .set-log-head span:last-child{display:none}
+  .drop-editor{grid-template-columns:minmax(0,1fr) 12px 56px auto;grid-column:2/-1}
+}
 
 </style>
 </head>
@@ -153,6 +231,7 @@ button{font:inherit}
     <button type="button" class="tab active" data-tab="push">Push</button>
     <button type="button" class="tab" data-tab="pull">Pull</button>
     <button type="button" class="tab" data-tab="shoulders">Shoulders + Core</button>
+    <button type="button" class="tab" data-tab="progress">Progress</button>
   </nav>
 
   <section class="gamify-card" aria-label="LiftLoop progress">
@@ -203,7 +282,7 @@ button{font:inherit}
             </svg>
             <div class="art-error" hidden>Video unavailable. Use the form cues on the right.</div>
           </div>
-          <div class="video-source" hidden><span class="video-pill"></span><a target="_blank" rel="noopener">Open video</a></div>
+          <div class="video-source" hidden><span class="video-pill"></span><a target="_blank" rel="noopener">Open on YouTube</a></div>
           <div class="video-note">Exercise demo is streamed from the original source. Open the source video anytime for the full instruction.</div>
           
         </div>
@@ -230,7 +309,7 @@ button{font:inherit}
             </svg>
             <div class="art-error" hidden>Video unavailable. Use the form cues on the right.</div>
           </div>
-          <div class="video-source" hidden><span class="video-pill"></span><a target="_blank" rel="noopener">Open video</a></div>
+          <div class="video-source" hidden><span class="video-pill"></span><a target="_blank" rel="noopener">Open on YouTube</a></div>
           <div class="video-note">Exercise demo is streamed from the original source. Open the source video anytime for the full instruction.</div>
           
         </div>
@@ -257,7 +336,7 @@ button{font:inherit}
             </svg>
             <div class="art-error" hidden>Video unavailable. Use the form cues on the right.</div>
           </div>
-          <div class="video-source" hidden><span class="video-pill"></span><a target="_blank" rel="noopener">Open video</a></div>
+          <div class="video-source" hidden><span class="video-pill"></span><a target="_blank" rel="noopener">Open on YouTube</a></div>
           <div class="video-note">Exercise demo is streamed from the original source. Open the source video anytime for the full instruction.</div>
           
         </div>
@@ -284,7 +363,7 @@ button{font:inherit}
             </svg>
             <div class="art-error" hidden>Video unavailable. Use the form cues on the right.</div>
           </div>
-          <div class="video-source" hidden><span class="video-pill"></span><a target="_blank" rel="noopener">Open video</a></div>
+          <div class="video-source" hidden><span class="video-pill"></span><a target="_blank" rel="noopener">Open on YouTube</a></div>
           <div class="video-note">Exercise demo is streamed from the original source. Open the source video anytime for the full instruction.</div>
           
         </div>
@@ -311,7 +390,7 @@ button{font:inherit}
             </svg>
             <div class="art-error" hidden>Video unavailable. Use the form cues on the right.</div>
           </div>
-          <div class="video-source" hidden><span class="video-pill"></span><a target="_blank" rel="noopener">Open video</a></div>
+          <div class="video-source" hidden><span class="video-pill"></span><a target="_blank" rel="noopener">Open on YouTube</a></div>
           <div class="video-note">Exercise demo is streamed from the original source. Open the source video anytime for the full instruction.</div>
           
         </div>
@@ -338,7 +417,7 @@ button{font:inherit}
             </svg>
             <div class="art-error" hidden>Video unavailable. Use the form cues on the right.</div>
           </div>
-          <div class="video-source" hidden><span class="video-pill"></span><a target="_blank" rel="noopener">Open video</a></div>
+          <div class="video-source" hidden><span class="video-pill"></span><a target="_blank" rel="noopener">Open on YouTube</a></div>
           <div class="video-note">Exercise demo is streamed from the original source. Open the source video anytime for the full instruction.</div>
           
         </div>
@@ -374,7 +453,7 @@ button{font:inherit}
             </svg>
             <div class="art-error" hidden>Video unavailable. Use the form cues on the right.</div>
           </div>
-          <div class="video-source" hidden><span class="video-pill"></span><a target="_blank" rel="noopener">Open video</a></div>
+          <div class="video-source" hidden><span class="video-pill"></span><a target="_blank" rel="noopener">Open on YouTube</a></div>
           <div class="video-note">Exercise demo is streamed from the original source. Open the source video anytime for the full instruction.</div>
           <div class="variant" role="group" aria-label="Exercise variation"><button type="button" class="variant-btn active" data-art="pull-up">Pull-Up</button><button type="button" class="variant-btn" data-art="assisted-pull-up">Assisted</button></div>
         </div>
@@ -401,7 +480,7 @@ button{font:inherit}
             </svg>
             <div class="art-error" hidden>Video unavailable. Use the form cues on the right.</div>
           </div>
-          <div class="video-source" hidden><span class="video-pill"></span><a target="_blank" rel="noopener">Open video</a></div>
+          <div class="video-source" hidden><span class="video-pill"></span><a target="_blank" rel="noopener">Open on YouTube</a></div>
           <div class="video-note">Exercise demo is streamed from the original source. Open the source video anytime for the full instruction.</div>
           
         </div>
@@ -428,7 +507,7 @@ button{font:inherit}
             </svg>
             <div class="art-error" hidden>Video unavailable. Use the form cues on the right.</div>
           </div>
-          <div class="video-source" hidden><span class="video-pill"></span><a target="_blank" rel="noopener">Open video</a></div>
+          <div class="video-source" hidden><span class="video-pill"></span><a target="_blank" rel="noopener">Open on YouTube</a></div>
           <div class="video-note">Exercise demo is streamed from the original source. Open the source video anytime for the full instruction.</div>
           
         </div>
@@ -455,7 +534,7 @@ button{font:inherit}
             </svg>
             <div class="art-error" hidden>Video unavailable. Use the form cues on the right.</div>
           </div>
-          <div class="video-source" hidden><span class="video-pill"></span><a target="_blank" rel="noopener">Open video</a></div>
+          <div class="video-source" hidden><span class="video-pill"></span><a target="_blank" rel="noopener">Open on YouTube</a></div>
           <div class="video-note">Exercise demo is streamed from the original source. Open the source video anytime for the full instruction.</div>
           
         </div>
@@ -482,7 +561,7 @@ button{font:inherit}
             </svg>
             <div class="art-error" hidden>Video unavailable. Use the form cues on the right.</div>
           </div>
-          <div class="video-source" hidden><span class="video-pill"></span><a target="_blank" rel="noopener">Open video</a></div>
+          <div class="video-source" hidden><span class="video-pill"></span><a target="_blank" rel="noopener">Open on YouTube</a></div>
           <div class="video-note">Exercise demo is streamed from the original source. Open the source video anytime for the full instruction.</div>
           
         </div>
@@ -509,7 +588,7 @@ button{font:inherit}
             </svg>
             <div class="art-error" hidden>Video unavailable. Use the form cues on the right.</div>
           </div>
-          <div class="video-source" hidden><span class="video-pill"></span><a target="_blank" rel="noopener">Open video</a></div>
+          <div class="video-source" hidden><span class="video-pill"></span><a target="_blank" rel="noopener">Open on YouTube</a></div>
           <div class="video-note">Exercise demo is streamed from the original source. Open the source video anytime for the full instruction.</div>
           
         </div>
@@ -536,7 +615,7 @@ button{font:inherit}
             </svg>
             <div class="art-error" hidden>Video unavailable. Use the form cues on the right.</div>
           </div>
-          <div class="video-source" hidden><span class="video-pill"></span><a target="_blank" rel="noopener">Open video</a></div>
+          <div class="video-source" hidden><span class="video-pill"></span><a target="_blank" rel="noopener">Open on YouTube</a></div>
           <div class="video-note">Exercise demo is streamed from the original source. Open the source video anytime for the full instruction.</div>
           
         </div>
@@ -572,7 +651,7 @@ button{font:inherit}
             </svg>
             <div class="art-error" hidden>Video unavailable. Use the form cues on the right.</div>
           </div>
-          <div class="video-source" hidden><span class="video-pill"></span><a target="_blank" rel="noopener">Open video</a></div>
+          <div class="video-source" hidden><span class="video-pill"></span><a target="_blank" rel="noopener">Open on YouTube</a></div>
           <div class="video-note">Exercise demo is streamed from the original source. Open the source video anytime for the full instruction.</div>
           
         </div>
@@ -599,7 +678,7 @@ button{font:inherit}
             </svg>
             <div class="art-error" hidden>Video unavailable. Use the form cues on the right.</div>
           </div>
-          <div class="video-source" hidden><span class="video-pill"></span><a target="_blank" rel="noopener">Open video</a></div>
+          <div class="video-source" hidden><span class="video-pill"></span><a target="_blank" rel="noopener">Open on YouTube</a></div>
           <div class="video-note">Exercise demo is streamed from the original source. Open the source video anytime for the full instruction.</div>
           <div class="variant" role="group" aria-label="Exercise variation"><button type="button" class="variant-btn active" data-art="lateral-raise">Dumbbell</button><button type="button" class="variant-btn" data-art="cable-lateral-raise">Cable</button></div>
         </div>
@@ -626,7 +705,7 @@ button{font:inherit}
             </svg>
             <div class="art-error" hidden>Video unavailable. Use the form cues on the right.</div>
           </div>
-          <div class="video-source" hidden><span class="video-pill"></span><a target="_blank" rel="noopener">Open video</a></div>
+          <div class="video-source" hidden><span class="video-pill"></span><a target="_blank" rel="noopener">Open on YouTube</a></div>
           <div class="video-note">Exercise demo is streamed from the original source. Open the source video anytime for the full instruction.</div>
           <div class="variant" role="group" aria-label="Exercise variation"><button type="button" class="variant-btn active" data-art="reverse-pec-deck">Machine</button><button type="button" class="variant-btn" data-art="cable-rear-delt-fly">Cable</button></div>
         </div>
@@ -653,7 +732,7 @@ button{font:inherit}
             </svg>
             <div class="art-error" hidden>Video unavailable. Use the form cues on the right.</div>
           </div>
-          <div class="video-source" hidden><span class="video-pill"></span><a target="_blank" rel="noopener">Open video</a></div>
+          <div class="video-source" hidden><span class="video-pill"></span><a target="_blank" rel="noopener">Open on YouTube</a></div>
           <div class="video-note">Exercise demo is streamed from the original source. Open the source video anytime for the full instruction.</div>
           
         </div>
@@ -680,7 +759,7 @@ button{font:inherit}
             </svg>
             <div class="art-error" hidden>Video unavailable. Use the form cues on the right.</div>
           </div>
-          <div class="video-source" hidden><span class="video-pill"></span><a target="_blank" rel="noopener">Open video</a></div>
+          <div class="video-source" hidden><span class="video-pill"></span><a target="_blank" rel="noopener">Open on YouTube</a></div>
           <div class="video-note">Exercise demo is streamed from the original source. Open the source video anytime for the full instruction.</div>
           
         </div>
@@ -707,7 +786,7 @@ button{font:inherit}
             </svg>
             <div class="art-error" hidden>Video unavailable. Use the form cues on the right.</div>
           </div>
-          <div class="video-source" hidden><span class="video-pill"></span><a target="_blank" rel="noopener">Open video</a></div>
+          <div class="video-source" hidden><span class="video-pill"></span><a target="_blank" rel="noopener">Open on YouTube</a></div>
           <div class="video-note">Exercise demo is streamed from the original source. Open the source video anytime for the full instruction.</div>
           
         </div>
@@ -734,7 +813,7 @@ button{font:inherit}
             </svg>
             <div class="art-error" hidden>Video unavailable. Use the form cues on the right.</div>
           </div>
-          <div class="video-source" hidden><span class="video-pill"></span><a target="_blank" rel="noopener">Open video</a></div>
+          <div class="video-source" hidden><span class="video-pill"></span><a target="_blank" rel="noopener">Open on YouTube</a></div>
           <div class="video-note">Exercise demo is streamed from the original source. Open the source video anytime for the full instruction.</div>
           
         </div>
@@ -761,7 +840,7 @@ button{font:inherit}
             </svg>
             <div class="art-error" hidden>Video unavailable. Use the form cues on the right.</div>
           </div>
-          <div class="video-source" hidden><span class="video-pill"></span><a target="_blank" rel="noopener">Open video</a></div>
+          <div class="video-source" hidden><span class="video-pill"></span><a target="_blank" rel="noopener">Open on YouTube</a></div>
           <div class="video-note">Exercise demo is streamed from the original source. Open the source video anytime for the full instruction.</div>
           
         </div>
@@ -777,6 +856,55 @@ button{font:inherit}
       <button type="button" class="reset-day" data-reset="shoulders">Reset Shoulders + Core</button>
     </section>
 
+
+  <section class="day progress-page" id="day-progress" data-day="progress">
+    <div class="day-head">
+      <div><h2>Progress</h2><p>Your strength and workout history</p></div>
+      <button type="button" class="progress-unit" id="progress-unit-toggle">lb</button>
+    </div>
+
+    <div class="progress-summary-grid">
+      <div class="progress-stat"><span>Level</span><strong id="progress-level">1</strong></div>
+      <div class="progress-stat"><span>Workouts</span><strong id="progress-workouts-count">0</strong></div>
+      <div class="progress-stat"><span>Weight logs</span><strong id="progress-log-count">0</strong></div>
+      <div class="progress-stat"><span>Exercises tracked</span><strong id="progress-exercises-count">0</strong></div>
+    </div>
+
+    <div class="progress-panel">
+      <div class="progress-panel-head">
+        <h3>Exercise progress</h3>
+      </div>
+      <select class="progress-select" id="progress-exercise-select" aria-label="Choose an exercise"></select>
+
+      <div class="progress-chart-wrap" id="progress-chart-wrap">
+        <div class="progress-empty">Log a working weight on an exercise to start its chart.</div>
+      </div>
+
+      <div class="progress-metrics">
+        <div class="progress-metric"><span>Starting target</span><strong id="progress-start">—</strong></div>
+        <div class="progress-metric"><span>Latest target</span><strong id="progress-latest">—</strong></div>
+        <div class="progress-metric"><span>Target PR</span><strong id="progress-best">—</strong></div>
+        <div class="progress-metric"><span>Change</span><strong id="progress-change">—</strong></div>
+      </div>
+      <div class="progress-caption" id="progress-caption">For assisted movements, using less assistance counts as improvement.</div>
+    </div>
+
+    <div class="progress-panel">
+      <div class="progress-panel-head"><h3>Biggest improvements</h3></div>
+      <div class="progress-ranking" id="progress-ranking">
+        <div class="history-empty">Log an exercise more than once and your improvements will appear here.</div>
+      </div>
+    </div>
+
+    <div class="progress-panel">
+      <div class="progress-panel-head"><h3>Workout history</h3></div>
+      <div class="progress-history" id="progress-workout-history">
+        <div class="history-empty">Finished workouts will appear here.</div>
+      </div>
+    </div>
+  </section>
+
+  <p style="text-align:center;color:#697383;font-size:9px;margin:18px 0 6px">Build 2026.10.04.4 · per-set logging</p>
   <p class="credit">
     Video demonstrations are embedded from their original YouTube sources. Previous vector artwork source:
     <a href="https://github.com/InlitX/GymMane" target="_blank" rel="noopener">GymMane</a>,
@@ -792,12 +920,21 @@ const $$=(s,r=document)=>[...r.querySelectorAll(s)];
 
 let state={};
 try{ state=JSON.parse(localStorage.getItem('liftloop-state')||'{}'); }catch(e){ state={}; }
+
+// Initialize every feature before any progress/render function can run.
+state.workoutHistory = Array.isArray(state.workoutHistory) ? state.workoutHistory : [];
+state.weightLogs = state.weightLogs || {}; // legacy single-weight logs kept for backwards compatibility
+state.setHistory = state.setHistory || {};
+state.currentSets = state.currentSets || {};
+state.sessionCompleted = state.sessionCompleted || {};
+state.weightUnit = state.weightUnit || 'lb';
 const save=()=>{try{localStorage.setItem('liftloop-state',JSON.stringify(state));}catch(e){}};
 
 function showDay(id){
   $$('.tab').forEach(b=>b.classList.toggle('active',b.dataset.tab===id));
   $$('.day').forEach(s=>s.classList.toggle('active',s.dataset.day===id));
   state.activeDay=id; save();
+  if(id==='progress' && typeof renderProgress==='function') renderProgress();
 }
 $$('.tab').forEach(b=>b.addEventListener('click',()=>showDay(b.dataset.tab)));
 showDay(state.activeDay||'push');
@@ -816,8 +953,10 @@ function videoUrl(v){
     mute:'1',
     playsinline:'1',
     rel:'0',
-    modestbranding:'1',
-    controls:'1',
+    controls:'0',
+    disablekb:'1',
+    fs:'0',
+    iv_load_policy:'3',
     loop:'1',
     playlist:v.id
   });
@@ -853,7 +992,13 @@ async function loadArt(card,key){
   iframe.allowFullscreen=true;
   iframe.referrerPolicy='strict-origin-when-cross-origin';
   iframe.src=videoUrl(v);
-  iframe.addEventListener('load',()=>{ loading.hidden=true; },{once:true});
+  iframe.addEventListener('load',()=>{
+    // Let autoplay begin and YouTube's transient startup UI disappear before reveal.
+    setTimeout(()=>{
+      loading.hidden=true;
+      iframe.classList.add('video-ready');
+    },1100);
+  },{once:true});
   stage.appendChild(iframe);
 
   if(source){
@@ -902,10 +1047,12 @@ function updateProgress(day){
 $$('.set-dot').forEach(btn=>{
   if(state[btn.dataset.key]) btn.classList.add('done');
   btn.addEventListener('click',()=>{
+    const day=btn.dataset.key.split('-')[0];
+    if(state.sessionCompleted[day]) state.sessionCompleted[day]=false;
     btn.classList.toggle('done');
     state[btn.dataset.key]=btn.classList.contains('done');
     save();
-    updateProgress(btn.dataset.key.split('-')[0]);
+    updateProgress(day);
   });
 });
 ['push','pull','shoulders'].forEach(updateProgress);
@@ -916,15 +1063,16 @@ $$('.reset-day').forEach(btn=>btn.addEventListener('click',()=>{
     dot.classList.remove('done');
     delete state[dot.dataset.key];
   });
-  save(); updateProgress(day);
+  state.sessionCompleted[day]=false;
+  Object.keys(state.currentSets).forEach(k=>{ if(k.startsWith(day+'-')) delete state.currentSets[k]; });
+  save();
+  updateProgress(day);
+  renderGamify();
+  if(typeof refreshDaySetRows==='function') refreshDaySetRows(day);
+  renderProgress();
 }));
 
 // ---------- LiftLoop leveling + load tracking ----------
-state.workoutHistory = Array.isArray(state.workoutHistory) ? state.workoutHistory : [];
-state.weightLogs = state.weightLogs || {};
-state.sessionCompleted = state.sessionCompleted || {};
-state.weightUnit = state.weightUnit || 'lb';
-
 function localDateKey(value){
   const d = value instanceof Date ? value : new Date(value);
   const y=d.getFullYear(), m=String(d.getMonth()+1).padStart(2,'0'), day=String(d.getDate()).padStart(2,'0');
@@ -1012,12 +1160,25 @@ $$('.finish-workout').forEach(btn=>btn.addEventListener('click',()=>{
   const dots=$$(`.set-dot[data-key^="${day}-"]`);
   if(!dots.length || !dots.every(x=>x.classList.contains('done'))) return;
   const title=$(`#day-${day} h2`)?.textContent || day;
-  state.workoutHistory.push({ts:Date.now(),day,name:title});
+  const ts=Date.now();
+  const prCount=commitWorkoutSets(day,ts);
+  state.workoutHistory.push({ts,day,name:title});
   state.sessionCompleted[day]=true;
   save();
   renderGamify();
-  showLevelToast(state.workoutHistory.length+1);
+  renderProgress();
+  const level=state.workoutHistory.length+1;
+  showLevelToast(level);
+  if(prCount>0){
+    setTimeout(()=>{
+      const t=$('#level-toast');
+      t.textContent=`${prCount} new PR${prCount===1?'':'s'} recorded`;
+      t.classList.add('show');
+      setTimeout(()=>t.classList.remove('show'),1600);
+    },1900);
+  }
 }));
+
 
 function kgFromDisplay(v){ return state.weightUnit==='kg' ? v : v*0.45359237; }
 function displayFromKg(kg){ return state.weightUnit==='kg' ? kg : kg/0.45359237; }
@@ -1026,9 +1187,16 @@ function fmt(v){
   const rounded=Math.round(v*10)/10;
   return `${Number.isInteger(rounded)?rounded:rounded.toFixed(1)} ${state.weightUnit}`;
 }
+function fmtNum(v){
+  if(!Number.isFinite(v)) return '';
+  const rounded=Math.round(v*10)/10;
+  return Number.isInteger(rounded)?String(rounded):rounded.toFixed(1);
+}
 function trackerMode(name){
   if(name==='Assisted Dips') return {label:'Assistance', bodyweight:false, assistance:true};
-  if(name.includes('Pull-Ups / Assisted')) return {label:'Load / assistance', bodyweight:false, assistance:false};
+  if(name.includes('Pull-Ups / Assisted')){
+    return {label:'Load / assistance', bodyweight:true, assistance:false};
+  }
   if(/Push-Ups|Russian Twists|Leg Raises|Jackknife|Incline Sit-Ups/.test(name))
     return {label:'Added load (optional)', bodyweight:true, assistance:false};
   return {label:'Working weight', bodyweight:false, assistance:false};
@@ -1038,157 +1206,471 @@ function exerciseKey(card){
   const name=$('.ex-name',card)?.textContent.trim()||'Exercise';
   return `${day}::${name}`;
 }
-function svgSpark(values){
-  if(values.length<2) return '';
-  const w=160,h=30,p=3;
-  const min=Math.min(...values), max=Math.max(...values);
-  const span=(max-min)||1;
-  const pts=values.map((v,i)=>{
-    const x=p+(w-2*p)*(i/(values.length-1));
-    const y=h-p-(h-2*p)*((v-min)/span);
-    return [x,y];
-  });
-  const poly=pts.map(p=>p.join(',')).join(' ');
-  const last=pts[pts.length-1];
-  return `<svg class="spark" viewBox="0 0 ${w} ${h}" aria-label="Recent load trend"><polyline points="${poly}"></polyline><circle cx="${last[0]}" cy="${last[1]}" r="3"></circle></svg>`;
+function targetReps(card){
+  const dose=$('.dose',card)?.textContent||'';
+  const m=dose.match(/[×x]\s*(\d+)/);
+  return m ? Number(m[1]) : null;
 }
-function renderTracker(card){
-  const box=$('.load-card',card); if(!box) return;
+function exerciseCardsForDay(day){
+  return $$('.exercise').filter(c=>c.dataset.day===day);
+}
+function historyFor(card){
   const key=exerciseKey(card);
-  const name=$('.ex-name',card)?.textContent.trim()||'Exercise';
-  const mode=trackerMode(name);
-  const logs=Array.isArray(state.weightLogs[key]) ? state.weightLogs[key] : [];
-  const input=$('.load-input',box);
-  input.placeholder=state.weightUnit;
-  input.step=state.weightUnit==='kg'?'2.5':'5';
-  $('.unit-toggle',box).textContent=state.weightUnit;
-
-  const last=logs.length?displayFromKg(logs.at(-1).kg):NaN;
-  const previous=logs.length>1?displayFromKg(logs.at(-2).kg):NaN;
-  const all=logs.map(x=>displayFromKg(x.kg));
-  const peak=all.length?Math.max(...all):NaN;
-  const low=all.length?Math.min(...all):NaN;
-
-  $('.metric-last strong',box).textContent=fmt(last);
-  const bestLabel=$('.metric-best span',box);
-  const bestValue=$('.metric-best strong',box);
-  if(mode.assistance){
-    bestLabel.textContent='Lowest assist';
-    bestValue.textContent=fmt(low);
-  }else{
-    bestLabel.textContent=mode.bodyweight?'Heaviest added':'Heaviest';
-    bestValue.textContent=fmt(peak);
-  }
-
-  const trend=$('.trend-line',box);
-  if(logs.length<2){
-    trend.textContent=logs.length?'First log saved':'No weight logged yet';
-    trend.className='trend-line trend-flat';
-  }else{
-    const diff=last-previous;
-    if(Math.abs(diff)<0.05){
-      trend.textContent='Same as last time';
-      trend.className='trend-line trend-flat';
-    }else if(mode.assistance){
-      const improvement=diff<0;
-      trend.textContent=`${diff<0?'↓':'↑'} ${fmt(Math.abs(diff))} assist vs last`;
-      trend.className='trend-line '+(improvement?'trend-good':'trend-down');
-    }else{
-      trend.textContent=`${diff>0?'↑ +':'↓ -'}${fmt(Math.abs(diff))} vs last`;
-      trend.className='trend-line '+(diff>0?'trend-good':'trend-down');
+  return Array.isArray(state.setHistory[key]) ? state.setHistory[key] : [];
+}
+function segmentsFromSet(s){
+  const out=[];
+  if(Number.isFinite(s.kg) && Number.isFinite(s.reps) && s.reps>0) out.push({kg:s.kg,reps:s.reps});
+  if(Number.isFinite(s.dropKg) && Number.isFinite(s.dropReps) && s.dropReps>0) out.push({kg:s.dropKg,reps:s.dropReps,drop:true});
+  return out;
+}
+function latestSessionUsualKg(card){
+  const hist=historyFor(card);
+  if(hist.length){
+    const latest=hist.at(-1);
+    const mains=(latest.sets||[]).map(s=>s.kg).filter(Number.isFinite);
+    if(mains.length){
+      const counts=new Map();
+      mains.forEach((kg,i)=>{
+        const k=kg.toFixed(5);
+        const prior=counts.get(k)||{kg,count:0,first:i};
+        prior.count++;
+        counts.set(k,prior);
+      });
+      return [...counts.values()].sort((a,b)=>b.count-a.count || a.first-b.first)[0].kg;
     }
   }
-
-  $('.spark-wrap',box).innerHTML=svgSpark(all.slice(-8));
-  const hist=$('.load-history-list',box);
-  hist.innerHTML='';
-  logs.slice(-6).reverse().forEach(x=>{
-    const row=document.createElement('div');
-    row.className='load-row';
-    row.innerHTML=`<span>${new Date(x.ts).toLocaleDateString(undefined,{month:'short',day:'numeric'})}</span><strong>${fmt(displayFromKg(x.kg))}</strong>`;
-    hist.appendChild(row);
+  // Backwards-compatible fallback for any weights logged in the previous version.
+  const legacy=Array.isArray(state.weightLogs[exerciseKey(card)]) ? state.weightLogs[exerciseKey(card)] : [];
+  return legacy.length ? legacy.at(-1).kg : NaN;
+}
+function ensureCurrentSet(card,dot,index){
+  const id=dot.dataset.key;
+  let s=state.currentSets[id];
+  if(!s){
+    const usual=latestSessionUsualKg(card);
+    const target=targetReps(card);
+    const mode=trackerMode($('.ex-name',card)?.textContent.trim()||'');
+    s={
+      kg:Number.isFinite(usual)?usual:(mode.bodyweight?0:null),
+      reps:Number.isFinite(target)?target:null,
+      dropKg:null,
+      dropReps:null
+    };
+    state.currentSets[id]=s;
+  }
+  return s;
+}
+function persistRow(row){
+  const dot=$('.set-dot',row);
+  if(!dot) return;
+  const s=state.currentSets[dot.dataset.key] || {};
+  const weight=parseFloat($('.set-weight',row)?.value);
+  const reps=parseInt($('.set-reps',row)?.value,10);
+  const dropWeight=parseFloat($('.drop-weight',row)?.value);
+  const dropReps=parseInt($('.drop-reps',row)?.value,10);
+  s.kg=Number.isFinite(weight)?kgFromDisplay(weight):null;
+  s.reps=Number.isFinite(reps)?reps:null;
+  s.dropKg=Number.isFinite(dropWeight)?kgFromDisplay(dropWeight):null;
+  s.dropReps=Number.isFinite(dropReps)?dropReps:null;
+  state.currentSets[dot.dataset.key]=s;
+  save();
+  renderCurrentSessionSummary(row.closest('.exercise'));
+}
+function renderCurrentSessionSummary(card){
+  const box=$('.session-summary',card);
+  if(!box) return;
+  const rows=$$('.set-log-row',card);
+  const all=[];
+  rows.forEach(row=>{
+    const id=$('.set-dot',row)?.dataset.key;
+    const s=state.currentSets[id]||{};
+    all.push(...segmentsFromSet(s));
+  });
+  const mode=trackerMode($('.ex-name',card)?.textContent.trim()||'');
+  const target=targetReps(card);
+  const best=all.length ? (mode.assistance?Math.min(...all.map(x=>x.kg)):Math.max(...all.map(x=>x.kg))) : NaN;
+  const targetVals=target ? all.filter(x=>x.reps>=target).map(x=>x.kg) : all.map(x=>x.kg);
+  const targetBest=targetVals.length ? (mode.assistance?Math.min(...targetVals):Math.max(...targetVals)) : NaN;
+  const volume=all.reduce((n,x)=>n+x.kg*x.reps,0);
+  $('.summary-best strong',box).textContent=fmt(displayFromKg(best));
+  $('.summary-target strong',box).textContent=target ? fmt(displayFromKg(targetBest)) : '—';
+  $('.summary-volume strong',box).textContent=Number.isFinite(volume)&&volume>0
+    ? `${Math.round(displayFromKg(volume)).toLocaleString()}`
+    : '—';
+}
+function addDropEditor(row,prefill){
+  if($('.drop-editor',row)) return;
+  const s=state.currentSets[$('.set-dot',row).dataset.key]||{};
+  const div=document.createElement('div');
+  div.className='drop-editor';
+  div.innerHTML=`
+    <div class="drop-label">Drop within this set</div>
+    <input class="set-field drop-weight" inputmode="decimal" type="number" min="0" placeholder="${state.weightUnit}" value="${Number.isFinite(s.dropKg)?fmtNum(displayFromKg(s.dropKg)):''}">
+    <div class="set-times">×</div>
+    <input class="set-field drop-reps" inputmode="numeric" type="number" min="0" placeholder="reps" value="${Number.isFinite(s.dropReps)?s.dropReps:''}">
+    <button type="button" class="drop-remove">Remove</button>`;
+  row.appendChild(div);
+  $$('.drop-weight,.drop-reps',div).forEach(inp=>inp.addEventListener('input',()=>persistRow(row)));
+  $('.drop-remove',div).addEventListener('click',()=>{
+    const id=$('.set-dot',row).dataset.key;
+    const cur=state.currentSets[id]||{};
+    cur.dropKg=null; cur.dropReps=null;
+    state.currentSets[id]=cur;
+    div.remove();
+    save();
+    renderCurrentSessionSummary(row.closest('.exercise'));
   });
 }
-function buildTrackers(){
-  $$('.exercise').forEach(card=>{
-    const right=$('.right-col',card);
-    if(!right || $('.load-card',right)) return;
-    const name=$('.ex-name',card)?.textContent.trim()||'Exercise';
-    const mode=trackerMode(name);
-    const box=document.createElement('div');
-    box.className='load-card';
-    box.innerHTML=`
-      <div class="load-head">
-        <div class="load-title">${mode.label.toUpperCase()}</div>
-        <button type="button" class="unit-toggle" aria-label="Switch between pounds and kilograms">${state.weightUnit}</button>
-      </div>
-      <div class="load-entry">
-        <button type="button" class="load-step load-minus" aria-label="Decrease load">−</button>
-        <input class="load-input" inputmode="decimal" type="number" min="0" aria-label="${mode.label}">
-        <button type="button" class="load-step load-plus" aria-label="Increase load">+</button>
-        <button type="button" class="load-save">Log</button>
-      </div>
-      <div class="load-meta">
-        <div class="metric metric-last"><span>Last</span><strong>—</strong></div>
-        <div class="metric metric-best"><span>Heaviest</span><strong>—</strong></div>
-      </div>
-      <div class="trend-line trend-flat" style="font-size:10px;margin-top:7px">No weight logged yet</div>
-      <div class="spark-wrap"></div>
-      <details class="load-history"><summary>Recent load history</summary><div class="load-history-list"></div></details>
-    `;
-    right.appendChild(box);
+function renderSetRows(card){
+  const sets=$('.sets',card);
+  if(!sets) return;
 
-    const input=$('.load-input',box);
+  // Build once; moving the original set buttons preserves their existing completion listeners.
+  if(!sets.classList.contains('set-log-grid')){
+    const dots=$$('.set-dot',sets);
+    sets.innerHTML='';
+    sets.classList.add('set-log-grid');
+
+    const head=document.createElement('div');
+    head.className='set-log-head';
+    head.innerHTML='<span></span><span class="weight-h">Weight</span><span></span><span class="reps-h">Reps</span><span></span>';
+    sets.appendChild(head);
+
+    dots.forEach((dot,index)=>{
+      const row=document.createElement('div');
+      row.className='set-log-row';
+      row.appendChild(dot);
+      row.insertAdjacentHTML('beforeend',`
+        <input class="set-field set-weight" inputmode="decimal" type="number" min="0" aria-label="Set ${index+1} weight">
+        <div class="set-times">×</div>
+        <input class="set-field set-reps reps-field" inputmode="numeric" type="number" min="0" aria-label="Set ${index+1} reps">
+        <button type="button" class="drop-toggle">+ Drop</button>`);
+      sets.appendChild(row);
+      $('.drop-toggle',row).addEventListener('click',()=>addDropEditor(row,true));
+      $$('.set-weight,.set-reps',row).forEach(inp=>inp.addEventListener('input',()=>persistRow(row)));
+    });
+
+    const note=document.createElement('div');
+    note.className='usual-weight-note';
+    sets.insertAdjacentElement('afterend',note);
+
+    const summary=document.createElement('div');
+    summary.className='session-summary';
+    summary.innerHTML=`
+      <div class="session-chip summary-best"><span>Best set load</span><strong>—</strong></div>
+      <div class="session-chip summary-target"><span>${targetReps(card)?'Target-rep load':'Target load'}</span><strong>—</strong></div>
+      <div class="session-chip summary-volume"><span>Volume</span><strong>—</strong></div>`;
+    note.insertAdjacentElement('afterend',summary);
+  }
+
+  const usual=latestSessionUsualKg(card);
+  const note=sets.nextElementSibling;
+  if(note?.classList.contains('usual-weight-note')){
+    note.textContent=Number.isFinite(usual)
+      ? `Auto-filled from your most-used weight in the last completed session: ${fmt(displayFromKg(usual))}. Change any set whenever you need to.`
+      : 'No previous working weight yet. Enter it once; future sessions will pre-fill it automatically.';
+  }
+
+  $$('.set-log-row',sets).forEach((row,index)=>{
+    const dot=$('.set-dot',row);
+    const s=ensureCurrentSet(card,dot,index);
+    const weight=$('.set-weight',row);
+    const reps=$('.set-reps',row);
+    weight.placeholder=state.weightUnit;
+    weight.value=Number.isFinite(s.kg)?fmtNum(displayFromKg(s.kg)):'';
+    reps.value=Number.isFinite(s.reps)?s.reps:'';
+    if(Number.isFinite(s.dropKg)||Number.isFinite(s.dropReps)) addDropEditor(row,false);
+    const dw=$('.drop-weight',row), dr=$('.drop-reps',row);
+    if(dw){
+      dw.placeholder=state.weightUnit;
+      dw.value=Number.isFinite(s.dropKg)?fmtNum(displayFromKg(s.dropKg)):'';
+    }
+    if(dr) dr.value=Number.isFinite(s.dropReps)?s.dropReps:'';
+  });
+  renderCurrentSessionSummary(card);
+}
+function refreshDaySetRows(day){
+  exerciseCardsForDay(day).forEach(card=>renderSetRows(card));
+}
+function sessionSummary(session,card){
+  const mode=trackerMode($('.ex-name',card)?.textContent.trim()||'');
+  const target=targetReps(card);
+  const segs=(session.sets||[]).flatMap(segmentsFromSet);
+  const valid=segs.filter(x=>Number.isFinite(x.kg)&&Number.isFinite(x.reps)&&x.reps>0);
+  const loads=valid.map(x=>x.kg);
+  const bestLoad=loads.length ? (mode.assistance?Math.min(...loads):Math.max(...loads)) : NaN;
+  const qualifying=target ? valid.filter(x=>x.reps>=target) : valid;
+  const qloads=qualifying.map(x=>x.kg);
+  const targetLoad=qloads.length ? (mode.assistance?Math.min(...qloads):Math.max(...qloads)) : NaN;
+  const volume=valid.reduce((n,x)=>n+x.kg*x.reps,0);
+  const bestRepSegment=valid.length ? valid.reduce((best,x)=>{
+    if(!best) return x;
+    if(mode.assistance){
+      if(x.kg<best.kg || (Math.abs(x.kg-best.kg)<1e-8 && x.reps>best.reps)) return x;
+    }else if(x.kg>best.kg || (Math.abs(x.kg-best.kg)<1e-8 && x.reps>best.reps)) return x;
+    return best;
+  },null) : null;
+  return {bestLoad,targetLoad,volume,bestRepSegment,target};
+}
+function historicalPRsBefore(card,ts){
+  const prior=historyFor(card).filter(s=>s.ts<ts);
+  const summaries=prior.map(s=>sessionSummary(s,card));
+  const mode=trackerMode($('.ex-name',card)?.textContent.trim()||'');
+  const bestLoads=summaries.map(x=>x.bestLoad).filter(Number.isFinite);
+  const targetLoads=summaries.map(x=>x.targetLoad).filter(Number.isFinite);
+  const vols=summaries.map(x=>x.volume).filter(Number.isFinite);
+  return {
+    bestLoad:bestLoads.length?(mode.assistance?Math.min(...bestLoads):Math.max(...bestLoads)):NaN,
+    targetLoad:targetLoads.length?(mode.assistance?Math.min(...targetLoads):Math.max(...targetLoads)):NaN,
+    volume:vols.length?Math.max(...vols):NaN
+  };
+}
+function commitWorkoutSets(day,ts){
+  let prCount=0;
+  exerciseCardsForDay(day).forEach(card=>{
     const key=exerciseKey(card);
-    const logs=state.weightLogs[key]||[];
-    if(logs.length) input.value=(Math.round(displayFromKg(logs.at(-1).kg)*10)/10);
+    const rows=$$('.set-log-row',card);
+    const sets=rows.map(row=>{
+      persistRow(row);
+      const id=$('.set-dot',row).dataset.key;
+      const s=state.currentSets[id]||{};
+      return {
+        kg:Number.isFinite(s.kg)?s.kg:null,
+        reps:Number.isFinite(s.reps)?s.reps:null,
+        dropKg:Number.isFinite(s.dropKg)?s.dropKg:null,
+        dropReps:Number.isFinite(s.dropReps)?s.dropReps:null
+      };
+    });
+    if(!sets.some(s=>Number.isFinite(s.kg)||Number.isFinite(s.reps))) return;
 
-    $('.load-minus',box).addEventListener('click',()=>{
-      const step=state.weightUnit==='kg'?2.5:5;
-      input.value=Math.max(0,(parseFloat(input.value)||0)-step);
-    });
-    $('.load-plus',box).addEventListener('click',()=>{
-      const step=state.weightUnit==='kg'?2.5:5;
-      input.value=(parseFloat(input.value)||0)+step;
-    });
-    $('.load-save',box).addEventListener('click',()=>{
-      const val=parseFloat(input.value);
-      if(!Number.isFinite(val) || val<0) return;
-      state.weightLogs[key]=Array.isArray(state.weightLogs[key])?state.weightLogs[key]:[];
-      const before=state.weightLogs[key].map(x=>x.kg);
-      const kg=kgFromDisplay(val);
-      const oldMax=before.length?Math.max(...before):-Infinity;
-      const oldMin=before.length?Math.min(...before):Infinity;
-      state.weightLogs[key].push({ts:Date.now(),kg});
-      save();
-      renderTracker(card);
+    state.setHistory[key]=Array.isArray(state.setHistory[key])?state.setHistory[key]:[];
+    const session={ts,sets};
+    const before=historicalPRsBefore(card,ts);
+    const now=sessionSummary(session,card);
+    const mode=trackerMode($('.ex-name',card)?.textContent.trim()||'');
 
-      const isPR=mode.assistance ? kg<oldMin : kg>oldMax;
-      if(before.length && isPR){
-        box.classList.remove('pr-pop'); void box.offsetWidth; box.classList.add('pr-pop');
-        const t=$('#level-toast');
-        t.textContent=mode.assistance?'New lowest assistance':'New load PR';
-        t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),1400);
-      }
-    });
-    $('.unit-toggle',box).addEventListener('click',()=>{
-      state.weightUnit=state.weightUnit==='lb'?'kg':'lb';
-      save();
-      $$('.load-card').forEach(b=>{
-        const c=b.closest('.exercise');
-        const inp=$('.load-input',b);
-        const k=exerciseKey(c);
-        const ls=state.weightLogs[k]||[];
-        if(ls.length) inp.value=Math.round(displayFromKg(ls.at(-1).kg)*10)/10;
-        else inp.value='';
-        renderTracker(c);
-      });
-    });
-    renderTracker(card);
+    const improved=(a,b)=>mode.assistance ? (!Number.isFinite(b)||a<b-1e-8) : (!Number.isFinite(b)||a>b+1e-8);
+    if(Number.isFinite(now.bestLoad) && Number.isFinite(before.bestLoad) && improved(now.bestLoad,before.bestLoad)) prCount++;
+    if(Number.isFinite(now.targetLoad) && Number.isFinite(before.targetLoad) && improved(now.targetLoad,before.targetLoad)) prCount++;
+    if(Number.isFinite(now.volume) && now.volume>0 && Number.isFinite(before.volume) && now.volume>before.volume+1e-8) prCount++;
+
+    state.setHistory[key].push(session);
+  });
+  return prCount;
+}
+function progressExerciseCatalog(){
+  return $$('.exercise').map(card=>{
+    const key=exerciseKey(card);
+    const name=$('.ex-name',card)?.textContent.trim()||'Exercise';
+    const day=card.dataset.day||'';
+    const dayLabel=day==='push'?'Push':day==='pull'?'Pull':'Shoulders';
+    return {key,name,day,dayLabel,mode:trackerMode(name),card};
   });
 }
-buildTrackers();
+function performanceSeries(card){
+  const sessions=historyFor(card);
+  const rows=sessions.map(s=>({ts:s.ts,...sessionSummary(s,card)}));
+  // Main chart = target-rep load. If an exercise has no target rep prescription,
+  // use best load so circuit work can still be visualized.
+  const target=targetReps(card);
+  return rows
+    .filter(x=>Number.isFinite(target?x.targetLoad:x.bestLoad))
+    .map(x=>({ts:x.ts,kg:target?x.targetLoad:x.bestLoad,volume:x.volume,bestLoad:x.bestLoad}));
+}
+function progressChartSvg(series,mode){
+  if(!series.length) return '<div class="progress-empty">Finish a workout with set weights/reps to start this chart.</div>';
+
+  const vals=series.map(x=>displayFromKg(x.kg));
+  const W=360,H=190,L=42,R=12,T=14,B=30;
+  const min0=Math.min(...vals), max0=Math.max(...vals);
+  const pad=Math.max((max0-min0)*0.18, state.weightUnit==='kg'?1:2);
+  const min=Math.max(0,min0-pad), max=max0+pad;
+  const span=(max-min)||1;
+
+  const pts=vals.map((v,i)=>{
+    const x=L+(W-L-R)*(series.length===1?.5:i/(series.length-1));
+    const y=T+(H-T-B)*(1-(v-min)/span);
+    return {x,y,v};
+  });
+
+  const line=pts.map(p=>`${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ');
+  const baseY=H-B;
+  const area=`${pts[0].x.toFixed(1)},${baseY} ${line} ${pts.at(-1).x.toFixed(1)},${baseY}`;
+  let grid='', labels='';
+  for(let i=0;i<4;i++){
+    const y=T+(H-T-B)*(i/3);
+    const v=max-(max-min)*(i/3);
+    grid+=`<line class="grid" x1="${L}" y1="${y}" x2="${W-R}" y2="${y}"></line>`;
+    labels+=`<text class="axis-text" x="${L-6}" y="${y+3}" text-anchor="end">${Math.round(v*10)/10}</text>`;
+  }
+  const firstDate=new Date(series[0].ts).toLocaleDateString(undefined,{month:'short',day:'numeric'});
+  const lastDate=new Date(series.at(-1).ts).toLocaleDateString(undefined,{month:'short',day:'numeric'});
+  const dots=pts.map(p=>`<circle class="dot" cx="${p.x}" cy="${p.y}" r="4"></circle>`).join('');
+
+  return `<div class="progress-chart-title">Target-rep working weight over completed workouts</div>
+  <svg class="progress-chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Target-rep working weight progress over time">
+    ${grid}${labels}
+    <polygon class="area" points="${area}"></polygon>
+    <polyline class="line" points="${line}"></polyline>
+    ${dots}
+    <text class="axis-text" x="${L}" y="${H-8}">${firstDate}</text>
+    <text class="axis-text" x="${W-R}" y="${H-8}" text-anchor="end">${lastDate}</text>
+    <text class="axis-text" x="${W-R}" y="${T+9}" text-anchor="end">${state.weightUnit}</text>
+  </svg>`;
+}
+function renderProgress(){
+  const select=$('#progress-exercise-select');
+  if(!select) return;
+
+  const catalog=progressExerciseCatalog();
+  const prior=select.value || state.progressExerciseKey || '';
+  select.innerHTML='';
+  catalog.forEach(item=>{
+    const o=document.createElement('option');
+    o.value=item.key;
+    o.textContent=`${item.name} · ${item.dayLabel}`;
+    select.appendChild(o);
+  });
+
+  let chosen=catalog.find(x=>x.key===prior);
+  if(!chosen){
+    chosen=catalog.find(x=>historyFor(x.card).length) || catalog[0];
+  }
+  if(chosen){
+    select.value=chosen.key;
+    state.progressExerciseKey=chosen.key;
+  }
+
+  const allSessions=Object.values(state.setHistory).filter(Array.isArray);
+  const totalLogs=allSessions.reduce((n,sessions)=>n+sessions.reduce((m,s)=>m+(s.sets||[]).reduce((z,set)=>z+segmentsFromSet(set).length,0),0),0);
+  const tracked=allSessions.filter(v=>v.length).length;
+  $('#progress-level').textContent=state.workoutHistory.length+1;
+  $('#progress-workouts-count').textContent=state.workoutHistory.length;
+  $('#progress-log-count').textContent=totalLogs;
+  $('#progress-exercises-count').textContent=tracked;
+  $('#progress-unit-toggle').textContent=state.weightUnit;
+
+  if(chosen){
+    const series=performanceSeries(chosen.card);
+    $('#progress-chart-wrap').innerHTML=progressChartSvg(series,chosen.mode);
+
+    const vals=series.map(x=>displayFromKg(x.kg));
+    const first=vals[0], last=vals.at(-1);
+    const best=vals.length ? (chosen.mode.assistance?Math.min(...vals):Math.max(...vals)) : NaN;
+    const pct=Number.isFinite(first)&&Math.abs(first)>1e-8&&Number.isFinite(last)
+      ? (chosen.mode.assistance ? (first-last)/first*100 : (last-first)/first*100)
+      : NaN;
+
+    $('#progress-start').textContent=fmt(first);
+    $('#progress-latest').textContent=fmt(last);
+    $('#progress-best').textContent=fmt(best);
+
+    const ch=$('#progress-change');
+    ch.className='';
+    if(!Number.isFinite(pct) || series.length<2){
+      ch.textContent=series.length?'Need another workout':'—';
+      ch.classList.add('progress-neutral');
+    }else{
+      ch.textContent=`${pct>=0?'+':''}${pct.toFixed(1)}%`;
+      ch.classList.add(pct>0?'progress-good':pct<0?'progress-down':'progress-neutral');
+    }
+
+    const sessions=historyFor(chosen.card);
+    const latestSummary=sessions.length?sessionSummary(sessions.at(-1),chosen.card):null;
+    const latestBest=latestSummary?.bestRepSegment;
+    let detail=chosen.mode.assistance
+      ? 'Less assistance counts as improvement. '
+      : '';
+    if(latestBest && Number.isFinite(latestBest.kg)){
+      detail+=`Latest heaviest set: ${fmt(displayFromKg(latestBest.kg))} × ${latestBest.reps}. `;
+    }
+    if(latestSummary && latestSummary.volume>0){
+      detail+=`Latest volume: ${Math.round(displayFromKg(latestSummary.volume)).toLocaleString()} load-reps.`;
+    }
+    $('#progress-caption').textContent=detail || 'Finish a workout with set details to build your progression history.';
+  }
+
+  const ranking=[];
+  catalog.forEach(item=>{
+    const series=performanceSeries(item.card);
+    if(series.length<2) return;
+    const first=displayFromKg(series[0].kg), last=displayFromKg(series.at(-1).kg);
+    if(!Number.isFinite(first)||Math.abs(first)<1e-8||!Number.isFinite(last)) return;
+    const pct=item.mode.assistance ? (first-last)/first*100 : (last-first)/first*100;
+    ranking.push({item,pct,first,last});
+  });
+  ranking.sort((a,b)=>b.pct-a.pct);
+
+  const rankBox=$('#progress-ranking');
+  rankBox.innerHTML='';
+  if(!ranking.length){
+    rankBox.innerHTML='<div class="history-empty">Complete an exercise across at least two workouts and your improvements will appear here.</div>';
+  }else{
+    ranking.slice(0,8).forEach(r=>{
+      const row=document.createElement('div');
+      row.className='progress-rank-row';
+      const direction=r.pct>0?'progress-good':r.pct<0?'progress-down':'progress-neutral';
+      row.innerHTML=`<div><div class="name">${r.item.name}</div><div class="sub">${fmt(r.first)} → ${fmt(r.last)} · ${r.item.dayLabel}</div></div><div class="delta ${direction}">${r.pct>=0?'+':''}${r.pct.toFixed(1)}%</div>`;
+      rankBox.appendChild(row);
+    });
+  }
+
+  const hist=$('#progress-workout-history');
+  hist.innerHTML='';
+  const workouts=[...state.workoutHistory].reverse();
+  if(!workouts.length){
+    hist.innerHTML='<div class="history-empty">Finished workouts will appear here.</div>';
+  }else{
+    workouts.slice(0,20).forEach(w=>{
+      const row=document.createElement('div');
+      row.className='progress-workout-row';
+      const date=new Date(w.ts);
+      row.innerHTML=`<strong>${w.name}</strong><span>${date.toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'})}</span>`;
+      hist.appendChild(row);
+    });
+  }
+}
+function renderAllSetRows(){
+  $$('.exercise').forEach(renderSetRows);
+}
+renderAllSetRows();
 renderGamify();
+renderProgress();
+
+const progressSelect=$('#progress-exercise-select');
+if(progressSelect){
+  progressSelect.addEventListener('change',()=>{
+    state.progressExerciseKey=progressSelect.value;
+    save();
+    renderProgress();
+  });
+}
+function switchWeightUnit(){
+  state.weightUnit=state.weightUnit==='lb'?'kg':'lb';
+  save();
+  renderAllSetRows();
+  renderProgress();
+}
+const progressUnit=$('#progress-unit-toggle');
+if(progressUnit) progressUnit.addEventListener('click',switchWeightUnit);
+
+// If the older single-weight unit buttons still exist in markup generated by an older build,
+// keep them synchronized. They are visually hidden in this build.
+$$('.unit-toggle').forEach(btn=>btn.addEventListener('click',switchWeightUnit));
+
+
+// Keep the Home Screen app current without deleting/re-adding it after every update.
+if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
+  window.addEventListener('load', async () => {
+    try {
+      const reg = await navigator.serviceWorker.register('./sw.js', { updateViaCache: 'none' });
+      await reg.update();
+    } catch (e) {
+      console.warn('LiftLoop update service unavailable', e);
+    }
+  });
+}
 
 </script>
 </body>
