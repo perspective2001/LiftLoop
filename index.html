@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-build="2026.10.04.6">
+<html lang="en" data-build="2026.10.05.1">
 <head>
 <meta charset="utf-8">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
@@ -233,13 +233,38 @@ button{font:inherit}
 .update-check{border:1px solid #343b49;background:#20252e;color:#cbd2dc;border-radius:10px;padding:8px 11px;font-size:10px;font-weight:800}
 .update-status{margin-top:6px;color:#717c8b;font-size:9px}
 
+
+/* Profile, backup and per-device routine settings */
+.settings-panel{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:13px;margin-top:12px}
+.settings-panel h3{margin:0 0 5px;font-size:15px}
+.settings-copy{color:var(--muted);font-size:10px;line-height:1.45;margin-bottom:10px}
+.settings-row{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center}
+.settings-input{width:100%;height:40px;border:1px solid #343b49;background:#10131a;color:#fff;border-radius:10px;padding:0 10px;font:inherit;font-size:12px}
+.settings-btn{min-height:38px;border:1px solid #3a4251;background:#242a35;color:#eef1f6;border-radius:10px;padding:8px 11px;font-size:10px;font-weight:850}
+.settings-btn.primary{background:#30396f;border-color:#46529a}
+.settings-btn.danger{color:#ffb0b0}
+.backup-actions{display:flex;gap:7px;flex-wrap:wrap}
+.backup-status{color:#8792a1;font-size:9px;margin-top:8px;min-height:13px}
+.routine-settings{display:grid;gap:8px;margin-top:10px}
+.routine-day-label{font-size:9px;color:#8c96a6;letter-spacing:.1em;font-weight:850;text-transform:uppercase;margin-top:7px}
+.routine-row{display:grid;grid-template-columns:minmax(0,1fr) 54px 54px 44px;gap:6px;align-items:center;background:#1d222c;border-radius:11px;padding:8px}
+.routine-row-name{font-size:10px;font-weight:800;line-height:1.2}
+.routine-row small{display:block;color:#808a99;font-size:8px;margin-top:2px}
+.routine-num{width:100%;height:34px;border:1px solid #343b49;background:#10131a;color:#fff;border-radius:8px;text-align:center;font-size:11px;font-weight:800}
+.routine-toggle{appearance:none;width:38px;height:22px;border-radius:999px;background:#3b414d;position:relative;transition:.15s}
+.routine-toggle:after{content:"";position:absolute;width:16px;height:16px;border-radius:50%;background:white;top:3px;left:3px;transition:.15s}
+.routine-toggle:checked{background:#5663c7}
+.routine-toggle:checked:after{left:19px}
+.routine-hidden{display:none!important}
+.profile-greeting{color:#9aa4b3;font-size:10px;margin-top:3px}
+
 </style>
 </head>
 <body>
 <main class="app">
   <header class="brand">
     <img src="icon-180.png" alt="LiftLoop logo">
-    <div><h1>LiftLoop</h1><p>Tap an exercise to watch the movement</p></div>
+    <div><h1>LiftLoop</h1><p>Tap an exercise to watch the movement</p><div class="profile-greeting" id="profile-greeting"></div></div>
   </header>
 
   <nav class="tabs" aria-label="Workout days">
@@ -918,13 +943,42 @@ button{font:inherit}
         <div class="history-empty">Finished workouts will appear here.</div>
       </div>
     </div>
+
+    <div class="settings-panel">
+      <h3>Your LiftLoop</h3>
+      <div class="settings-copy">This profile and all workout data stay on this device. Your friend can use the same LiftLoop URL without seeing or changing your progress.</div>
+      <div class="settings-row">
+        <input id="profile-name" class="settings-input" maxlength="32" placeholder="Profile name (optional)">
+        <button type="button" class="settings-btn primary" id="save-profile">Save</button>
+      </div>
+    </div>
+
+    <div class="settings-panel">
+      <h3>Backup & restore</h3>
+      <div class="settings-copy">Back up your entire local LiftLoop state before changing phones, clearing Safari data, or reinstalling the Home Screen app.</div>
+      <div class="backup-actions">
+        <button type="button" class="settings-btn primary" id="download-backup">Download backup</button>
+        <button type="button" class="settings-btn" id="copy-backup">Copy backup</button>
+        <button type="button" class="settings-btn" id="restore-backup">Restore file</button>
+        <input type="file" id="restore-file" accept=".json,application/json" hidden>
+      </div>
+      <div class="backup-status" id="backup-status"></div>
+    </div>
+
+    <div class="settings-panel">
+      <h3>Routine settings</h3>
+      <div class="settings-copy">These settings are per-device. Turn exercises on/off or change prescribed sets and reps. Exercise videos and form cues stay matched to the correct exercise.</div>
+      <div class="routine-settings" id="routine-settings"></div>
+      <button type="button" class="settings-btn primary" id="save-routine" style="margin-top:10px">Save routine</button>
+      <div class="backup-status" id="routine-status"></div>
+    </div>
   </section>
 
   <div class="update-row">
     <button type="button" class="update-check" id="update-check">Check for update</button>
     <div class="update-status" id="update-status">Automatic update check enabled</div>
   </div>
-  <p style="text-align:center;color:#697383;font-size:9px;margin:18px 0 6px">Build 2026.10.04.6 · self-updating</p>
+  <p style="text-align:center;color:#697383;font-size:9px;margin:18px 0 6px">Build 2026.10.05.1 · shareable + backup</p>
   <p class="credit">
     Video demonstrations are embedded from their original YouTube sources. Previous vector artwork source:
     <a href="https://github.com/InlitX/GymMane" target="_blank" rel="noopener">GymMane</a>,
@@ -947,6 +1001,8 @@ state.weightLogs = state.weightLogs || {}; // legacy single-weight logs kept for
 state.setHistory = state.setHistory || {};
 state.currentSets = state.currentSets || {};
 state.sessionCompleted = state.sessionCompleted || {};
+state.routinePrefs = state.routinePrefs || {};
+state.profileName = typeof state.profileName === 'string' ? state.profileName : '';
 state.weightUnit = state.weightUnit || 'lb';
 const save=()=>{try{localStorage.setItem('liftloop-state',JSON.stringify(state));}catch(e){}};
 
@@ -1090,8 +1146,58 @@ $$('.variant-btn').forEach(btn=>btn.addEventListener('click',async()=>{
   await loadArt(card,btn.dataset.art);
 }));
 
+
+function routinePrefKey(card){
+  return `${card.dataset.day||'day'}::${card.dataset.art||$('.ex-name',card)?.textContent.trim()||'exercise'}`;
+}
+function defaultPrescription(card){
+  const dose=$('.dose',card)?.textContent||'';
+  const m=dose.match(/(\d+)\s*[×x]\s*(\d+)/);
+  return {sets:m?Number(m[1]):3,reps:m?Number(m[2]):10};
+}
+function exerciseIndexInDay(card){
+  return $$('.exercise').filter(c=>c.dataset.day===card.dataset.day).indexOf(card);
+}
+function setKeyFor(card,setIndex){
+  return `${card.dataset.day}-${exerciseIndexInDay(card)}-${setIndex}`;
+}
+function applyRoutinePreferences(){
+  $$('.exercise').forEach(card=>{
+    const key=routinePrefKey(card);
+    const def=defaultPrescription(card);
+    const pref=state.routinePrefs[key]||{};
+    const enabled=pref.enabled!==false;
+    const sets=Math.max(1,Math.min(10,Number(pref.sets)||def.sets));
+    const reps=Math.max(1,Math.min(100,Number(pref.reps)||def.reps));
+    card.classList.toggle('routine-hidden',!enabled);
+    const dose=$('.dose',card);
+    if(dose) dose.textContent=`${sets} × ${reps}`;
+
+    const setsBox=$('.sets',card);
+    if(setsBox && !setsBox.classList.contains('set-log-grid')){
+      setsBox.innerHTML='';
+      for(let i=0;i<sets;i++){
+        const b=document.createElement('button');
+        b.type='button';
+        b.className='set-dot';
+        b.dataset.key=setKeyFor(card,i);
+        b.setAttribute('aria-label',`Mark set or round ${i+1} complete`);
+        b.textContent=String(i+1);
+        setsBox.appendChild(b);
+      }
+    }
+  });
+}
+applyRoutinePreferences();
+
+function visibleSetDots(day){
+  const section=$(`#day-${day}`);
+  if(!section) return [];
+  return $$('.exercise:not(.routine-hidden) .set-dot',section);
+}
+
 function updateProgress(day){
-  const dots=$$(`.set-dot[data-key^="${day}-"]`);
+  const dots=visibleSetDots(day);
   const done=dots.filter(b=>b.classList.contains('done')).length;
   const pct=dots.length?Math.round(done/dots.length*100):0;
   const el=$(`#day-${day} .progress-count`);
@@ -1099,7 +1205,9 @@ function updateProgress(day){
   if(typeof renderGamify==='function') renderGamify();
 }
 
-$$('.set-dot').forEach(btn=>{
+function bindSetDot(btn){
+  if(btn.dataset.liftloopBound==='1') return;
+  btn.dataset.liftloopBound='1';
   if(state[btn.dataset.key]) btn.classList.add('done');
   btn.addEventListener('click',()=>{
     const day=btn.dataset.key.split('-')[0];
@@ -1109,12 +1217,13 @@ $$('.set-dot').forEach(btn=>{
     save();
     updateProgress(day);
   });
-});
+}
+$$('.set-dot').forEach(bindSetDot);
 ['push','pull','shoulders'].forEach(updateProgress);
 
 $$('.reset-day').forEach(btn=>btn.addEventListener('click',()=>{
   const day=btn.dataset.reset;
-  $$(`.set-dot[data-key^="${day}-"]`).forEach(dot=>{
+  visibleSetDots(day).forEach(dot=>{
     dot.classList.remove('done');
     delete state[dot.dataset.key];
   });
@@ -1226,7 +1335,7 @@ function renderGamify(){
   $$('.finish-workout').forEach(btn=>{
     const day=btn.dataset.finish;
     const completed=!!state.sessionCompleted[day];
-    const dots=$$(`.set-dot[data-key^="${day}-"]`);
+    const dots=visibleSetDots(day);
     const allDone=dots.length>0 && dots.every(x=>x.classList.contains('done'));
     btn.disabled=completed || !allDone;
     btn.classList.toggle('completed',completed);
@@ -1243,7 +1352,7 @@ function showLevelToast(level){
 $$('.finish-workout').forEach(btn=>btn.addEventListener('click',()=>{
   const day=btn.dataset.finish;
   if(state.sessionCompleted[day]) return;
-  const dots=$$(`.set-dot[data-key^="${day}-"]`);
+  const dots=visibleSetDots(day);
   if(!dots.length || !dots.every(x=>x.classList.contains('done'))) return;
   const title=$(`#day-${day} h2`)?.textContent || day;
   const ts=Date.now();
@@ -1299,7 +1408,7 @@ function targetReps(card){
   return m ? Number(m[1]) : null;
 }
 function exerciseCardsForDay(day){
-  return $$('.exercise').filter(c=>c.dataset.day===day);
+  return $$('.exercise').filter(c=>c.dataset.day===day && !c.classList.contains('routine-hidden'));
 }
 function historyFor(card){
   const key=exerciseKey(card);
@@ -1719,7 +1828,7 @@ function renderProgress(){
   }
 }
 function renderAllSetRows(){
-  $$('.exercise').forEach(renderSetRows);
+  $$('.exercise:not(.routine-hidden)').forEach(renderSetRows);
 }
 renderAllSetRows();
 renderGamify();
@@ -1746,6 +1855,127 @@ if(progressUnit) progressUnit.addEventListener('click',switchWeightUnit);
 // keep them synchronized. They are visually hidden in this build.
 $$('.unit-toggle').forEach(btn=>btn.addEventListener('click',switchWeightUnit));
 
+
+
+
+function renderProfile(){
+  const input=$('#profile-name');
+  if(input) input.value=state.profileName||'';
+  const greeting=$('#profile-greeting');
+  if(greeting) greeting.textContent=state.profileName ? `${state.profileName}'s training` : '';
+}
+function renderRoutineSettings(){
+  const box=$('#routine-settings');
+  if(!box) return;
+  box.innerHTML='';
+  const dayNames={push:'Push',pull:'Pull',shoulders:'Shoulders + Core'};
+  ['push','pull','shoulders'].forEach(day=>{
+    const label=document.createElement('div');
+    label.className='routine-day-label';
+    label.textContent=dayNames[day];
+    box.appendChild(label);
+    $$('.exercise').filter(c=>c.dataset.day===day).forEach(card=>{
+      const key=routinePrefKey(card);
+      const def=defaultPrescription(card);
+      const pref=state.routinePrefs[key]||{};
+      const row=document.createElement('div');
+      row.className='routine-row';
+      row.dataset.prefKey=key;
+      row.innerHTML=`
+        <div class="routine-row-name">${$('.ex-name',card)?.textContent.trim()||'Exercise'}<small>sets · reps · on/off</small></div>
+        <input class="routine-num pref-sets" type="number" min="1" max="10" value="${Number(pref.sets)||def.sets}" aria-label="Sets">
+        <input class="routine-num pref-reps" type="number" min="1" max="100" value="${Number(pref.reps)||def.reps}" aria-label="Reps">
+        <input class="routine-toggle pref-enabled" type="checkbox" ${pref.enabled===false?'':'checked'} aria-label="Enable exercise">`;
+      box.appendChild(row);
+    });
+  });
+}
+function backupPayload(){
+  return {
+    app:'LiftLoop',
+    formatVersion:1,
+    build:LIFTLOOP_BUILD,
+    exportedAt:new Date().toISOString(),
+    state
+  };
+}
+function backupText(){
+  return JSON.stringify(backupPayload(),null,2);
+}
+function setBackupStatus(msg){
+  const el=$('#backup-status');
+  if(el) el.textContent=msg;
+}
+renderProfile();
+renderRoutineSettings();
+
+$('#save-profile')?.addEventListener('click',()=>{
+  state.profileName=$('#profile-name')?.value.trim()||'';
+  save();
+  renderProfile();
+  setBackupStatus('Profile saved on this device.');
+});
+
+$('#download-backup')?.addEventListener('click',()=>{
+  try{
+    const blob=new Blob([backupText()],{type:'application/json'});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');
+    const day=new Date().toISOString().slice(0,10);
+    a.href=url;
+    a.download=`LiftLoop-backup-${day}.json`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),2000);
+    setBackupStatus('Backup created. Save it somewhere you can find later.');
+  }catch(e){
+    setBackupStatus('Could not create the file. Use Copy backup instead.');
+  }
+});
+
+$('#copy-backup')?.addEventListener('click',async()=>{
+  try{
+    await navigator.clipboard.writeText(backupText());
+    setBackupStatus('Backup JSON copied to your clipboard.');
+  }catch(e){
+    setBackupStatus('Clipboard access was blocked. Try Download backup.');
+  }
+});
+
+$('#restore-backup')?.addEventListener('click',()=>$('#restore-file')?.click());
+$('#restore-file')?.addEventListener('change',async e=>{
+  const file=e.target.files?.[0];
+  if(!file) return;
+  try{
+    const parsed=JSON.parse(await file.text());
+    if(parsed?.app!=='LiftLoop' || !parsed?.state || typeof parsed.state!=='object'){
+      throw new Error('Not a LiftLoop backup');
+    }
+    localStorage.setItem('liftloop-state',JSON.stringify(parsed.state));
+    setBackupStatus('Backup restored. Reloading LiftLoop…');
+    setTimeout(()=>location.reload(),350);
+  }catch(err){
+    setBackupStatus('That file is not a valid LiftLoop backup.');
+  }finally{
+    e.target.value='';
+  }
+});
+
+$('#save-routine')?.addEventListener('click',()=>{
+  $$('.routine-row').forEach(row=>{
+    const key=row.dataset.prefKey;
+    state.routinePrefs[key]={
+      sets:Math.max(1,Math.min(10,Number($('.pref-sets',row)?.value)||1)),
+      reps:Math.max(1,Math.min(100,Number($('.pref-reps',row)?.value)||1)),
+      enabled:!!$('.pref-enabled',row)?.checked
+    };
+  });
+  save();
+  const status=$('#routine-status');
+  if(status) status.textContent='Routine saved. Reloading with your settings…';
+  setTimeout(()=>location.reload(),350);
+});
 
 
 // Independent self-updater: does not depend on a service worker.
