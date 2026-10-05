@@ -1,0 +1,2040 @@
+<!doctype html>
+<html lang="en" data-build="2026.10.05.1-beta.1">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0e1015">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="LiftLoop Beta">
+<link rel="apple-touch-icon" href="beta-icon-180.png">
+<link rel="icon" href="beta-icon-180.png">
+<title>LiftLoop Beta</title>
+<style>
+:root{--bg:#0e1015;--panel:#171a22;--panel2:#1d212b;--line:#2a2f3b;--text:#f4f6fa;--muted:#9aa3b2;--accent:#7884ff;--accent2:#69e7b8}
+*{box-sizing:border-box}
+html{scroll-padding-top:0}
+html{background:var(--bg)}
+body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif;-webkit-tap-highlight-color:transparent;overflow-x:hidden;overflow-y:auto;-webkit-overflow-scrolling:touch}
+button{font:inherit}
+.app{max-width:780px;margin:0 auto;padding:20px 12px 64px}
+.brand{display:flex;align-items:center;gap:12px;margin:2px 2px 17px}
+.brand img{width:48px;height:48px;border-radius:14px}
+.brand h1{margin:0;font-size:24px;letter-spacing:-.025em}
+.brand p{margin:3px 0 0;color:var(--muted);font-size:13px}
+.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;background:#12151c;padding:5px;border:1px solid var(--line);border-radius:15px;position:sticky;top:8px;z-index:10}
+.tab{border:0;border-radius:11px;padding:11px 6px;background:transparent;color:var(--muted);font-weight:800;font-size:12px;min-height:44px}
+.tab.active{background:var(--panel2);color:var(--text)}
+.day{display:none;margin-top:18px}
+.day.active{display:block}
+.day-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:5px 3px 12px}
+.day-head h2{font-size:21px;margin:0 0 3px;letter-spacing:-.02em}
+.day-head p{margin:0;color:var(--muted);font-size:13px}
+.progress-pill{min-width:50px;text-align:center;border:1px solid var(--line);background:var(--panel);padding:7px 9px;border-radius:999px;color:var(--accent2);font-weight:850;font-size:12px}
+.exercise-list{border:1px solid var(--line);border-radius:18px;overflow:hidden;background:var(--panel)}
+.exercise+.exercise{border-top:1px solid var(--line)}
+.exercise-head{width:100%;border:0;background:transparent;color:var(--text);display:grid;grid-template-columns:30px 1fr 28px;align-items:center;text-align:left;padding:14px 12px;min-height:66px}
+.ex-num{width:27px;height:27px;border-radius:9px;display:grid;place-items:center;background:#232837;color:var(--muted);font-size:12px;font-weight:850}
+.ex-main{min-width:0;padding:0 8px}
+.ex-name{display:block;font-size:15px;font-weight:780;line-height:1.25}
+.dose{display:block;color:var(--muted);font-size:12px;margin-top:4px}
+.chev{font-size:20px;color:var(--muted);transition:transform .2s}
+.exercise-head[aria-expanded="true"] .chev{transform:rotate(180deg)}
+.exercise-body{padding:0 13px 15px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px}
+.exercise-body[hidden]{display:none}
+.demo-wrap{align-self:start}
+.art-stage{position:relative;background:#f3f3f0;border-radius:15px;overflow:hidden;aspect-ratio:1/1;display:grid;place-items:center}
+.exercise-art{width:100%;height:100%;display:block;padding:5px}
+.exercise-art path{fill:#20242d}
+.art-loading,.art-error{position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:20px;color:#656d78;font-size:12px}
+.art-loading[hidden],.art-error[hidden]{display:none}
+.variant{display:flex;gap:5px;margin-top:7px;background:#222630;padding:4px;border-radius:11px}
+.variant-btn{flex:1;border:0;border-radius:8px;padding:8px 5px;background:transparent;color:#9ea7b5;font-weight:800;font-size:11px;min-height:38px}
+.variant-btn.active{background:#343a48;color:#fff}
+.right-col{padding:5px 2px 0}
+.tiny-label{font-size:10px;letter-spacing:.12em;font-weight:850;color:var(--muted)}
+.cues{margin:7px 0 12px;padding-left:18px;color:#d6dae3;font-size:13px;line-height:1.45}
+.cues li+li{margin-top:6px}
+.set-label{margin-top:8px}
+.sets{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+.set-dot{width:42px;height:42px;border-radius:12px;border:1px solid #343a48;background:#222630;color:#aeb6c5;font-weight:850}
+.set-dot.done{background:var(--accent2);color:#101510;border-color:var(--accent2)}
+.reset-day{display:block;margin:14px auto 0;border:0;background:transparent;color:var(--muted);font-size:12px;padding:10px}
+.credit{margin:20px auto 0;max-width:620px;text-align:center;color:#737d8c;font-size:10.5px;line-height:1.45}
+.credit a{color:#9ea7b5}
+@media(max-width:520px){
+  .exercise-body{grid-template-columns:1fr}
+  .right-col{padding:0 3px}
+}
+@media(prefers-reduced-motion:reduce){.chev{transition:none}}
+
+/* Progress / leveling */
+.gamify-card{margin-top:12px;border:1px solid var(--line);background:linear-gradient(180deg,#171b25,#14171e);border-radius:18px;padding:14px}
+.gamify-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.level-badge{display:flex;align-items:center;gap:10px;min-width:0}
+.level-orb{width:54px;height:54px;border-radius:17px;display:grid;place-items:center;background:#232a3a;border:1px solid #343c52;font-weight:900;font-size:19px}
+.level-copy{min-width:0}
+.level-copy .eyebrow{font-size:10px;letter-spacing:.12em;color:var(--muted);font-weight:850}
+.level-copy .level-title{font-size:17px;font-weight:900;margin-top:2px}
+.level-copy .rank{font-size:11px;color:var(--muted);margin-top:2px}
+.stats-mini{display:flex;gap:12px;text-align:right}
+.stats-mini strong{display:block;font-size:16px}
+.stats-mini span{display:block;color:var(--muted);font-size:10px;margin-top:2px}
+.milestone{margin-top:12px}
+.milestone-row{display:flex;justify-content:space-between;color:var(--muted);font-size:10px;margin-bottom:6px}
+.milestone-track{height:7px;background:#242a36;border-radius:99px;overflow:hidden}
+.milestone-fill{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:99px;transition:width .25s}
+.recent-workouts{margin-top:11px;padding-top:10px;border-top:1px solid var(--line)}
+.recent-title{font-size:10px;letter-spacing:.12em;color:var(--muted);font-weight:850;margin-bottom:7px}
+.recent-list{display:flex;gap:6px;overflow:auto;padding-bottom:2px}
+.history-chip{white-space:nowrap;border:1px solid #303746;background:#202530;border-radius:999px;padding:7px 9px;font-size:10px;color:#cfd5df}
+.history-empty{font-size:11px;color:var(--muted)}
+.finish-workout{width:100%;margin-top:14px;border:0;border-radius:14px;padding:14px 12px;background:linear-gradient(135deg,var(--accent),#6772e8);color:white;font-weight:900;min-height:49px;box-shadow:0 8px 24px rgba(70,80,180,.18)}
+.finish-workout:disabled{background:#252a35;color:#707988;box-shadow:none}
+.finish-workout.completed{background:#19362e;color:#7cf0c1;border:1px solid #2c5a4c}
+.level-toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom));transform:translate(-50%,30px);opacity:0;pointer-events:none;z-index:99;background:#f6f7fb;color:#10131a;border-radius:16px;padding:13px 18px;font-weight:900;box-shadow:0 14px 45px rgba(0,0,0,.35);transition:.25s}
+.level-toast.show{opacity:1;transform:translate(-50%,0)}
+.load-card{margin-top:11px;border:1px solid #303746;background:#141820;border-radius:13px;padding:10px}
+.load-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.load-title{font-size:10px;letter-spacing:.11em;font-weight:850;color:var(--muted)}
+.unit-toggle{border:1px solid #343b49;background:#222732;color:#d7dce5;border-radius:8px;padding:5px 8px;font-size:10px;font-weight:850}
+.load-entry{display:grid;grid-template-columns:34px 1fr 34px 52px;gap:6px;margin-top:8px;align-items:center}
+.load-step,.load-save{height:38px;border-radius:10px;border:1px solid #343b49;background:#242a35;color:#eef1f6;font-weight:900}
+.load-save{background:#30396f;border-color:#3d4888;font-size:11px}
+.load-input{width:100%;height:38px;border-radius:10px;border:1px solid #343b49;background:#0f1218;color:#fff;text-align:center;font-size:15px;font-weight:850;outline:none}
+.load-input:focus{border-color:#6570d5}
+.load-meta{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px}
+.metric{background:#20252e;border-radius:9px;padding:7px 8px}
+.metric span{display:block;font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.metric strong{display:block;font-size:12px;margin-top:2px}
+.trend-good{color:#7cf0c1}
+.trend-flat{color:#cbd1da}
+.trend-down{color:#f0b67c}
+.spark-wrap{margin-top:8px;height:34px}
+.spark{width:100%;height:34px;overflow:visible}
+.spark polyline{fill:none;stroke:#8790ff;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.spark circle{fill:#69e7b8}
+.load-history{margin-top:7px}
+.load-history summary{cursor:pointer;color:#aab2bf;font-size:10px;list-style:none}
+.load-history summary::-webkit-details-marker{display:none}
+.load-history-list{display:grid;gap:4px;margin-top:6px}
+.load-row{display:flex;justify-content:space-between;color:#adb5c1;font-size:10px;border-top:1px solid #282e38;padding-top:5px}
+.pr-pop{animation:prpulse .65s ease}
+@keyframes prpulse{0%{transform:scale(.96)}45%{transform:scale(1.04)}100%{transform:scale(1)}}
+@media(max-width:520px){
+  .gamify-top{align-items:flex-start}
+  .stats-mini{gap:8px}
+  .level-orb{width:49px;height:49px}
+  .load-entry{grid-template-columns:32px 1fr 32px 50px}
+}
+
+
+/* Real-video preview */
+.art-stage{aspect-ratio:16/9;background:#080a0e;border:1px solid #292f3a}
+.exercise-video{position:absolute;inset:0;width:100%;height:100%;border:0;background:#000;opacity:0;pointer-events:none;transition:opacity .18s ease}
+.exercise-video.video-ready{opacity:1}
+.video-source{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:6px;color:#788291;font-size:9.5px}
+.video-source a{color:#9ba4ff;text-decoration:none;font-weight:750}
+.video-pill{display:inline-flex;align-items:center;gap:5px;border:1px solid #303744;background:#1e232d;border-radius:999px;padding:5px 7px}
+.video-pill:before{content:"▶";font-size:8px}
+.exercise-art{display:none!important}
+.art-stage .art-loading{color:#8e98a7}
+.video-note{margin-top:6px;color:#737d8a;font-size:9px;line-height:1.35}
+
+
+/* Full progress dashboard */
+.progress-page{margin-top:18px}
+.progress-page .day-head{margin-bottom:14px}
+.progress-summary-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}
+.progress-stat{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:11px}
+.progress-stat span{display:block;color:var(--muted);font-size:9px;letter-spacing:.08em;text-transform:uppercase}
+.progress-stat strong{display:block;margin-top:5px;font-size:18px}
+.progress-panel{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:13px;margin-top:12px}
+.progress-panel-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px}
+.progress-panel h3{margin:0;font-size:15px}
+.progress-select{width:100%;background:#11151c;color:var(--text);border:1px solid #343b49;border-radius:11px;padding:11px 12px;font:inherit;font-size:12px}
+.progress-chart-wrap{margin-top:12px;background:#10131a;border:1px solid #292f3a;border-radius:14px;padding:9px;min-height:210px}
+.progress-chart{display:block;width:100%;height:auto}
+.progress-chart .grid{stroke:#242a35;stroke-width:1}
+.progress-chart .axis-text{fill:#7f8998;font-size:10px}
+.progress-chart .line{fill:none;stroke:#8790ff;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.progress-chart .dot{fill:#69e7b8;stroke:#0f1218;stroke-width:2}
+.progress-chart .area{fill:#8790ff;opacity:.08}
+.progress-empty{min-height:185px;display:grid;place-items:center;text-align:center;color:var(--muted);font-size:12px;padding:18px}
+.progress-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:10px}
+.progress-metric{background:#20252e;border-radius:11px;padding:9px}
+.progress-metric span{display:block;color:var(--muted);font-size:8px;text-transform:uppercase;letter-spacing:.08em}
+.progress-metric strong{display:block;font-size:12px;margin-top:4px}
+.progress-good{color:#7cf0c1!important}
+.progress-down{color:#f0b67c!important}
+.progress-neutral{color:#d7dce5!important}
+.progress-ranking{display:grid;gap:7px}
+.progress-rank-row{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;background:#1d222c;border-radius:11px;padding:10px}
+.progress-rank-row .name{font-size:11px;font-weight:800}
+.progress-rank-row .sub{font-size:9px;color:var(--muted);margin-top:3px}
+.progress-rank-row .delta{font-size:12px;font-weight:900}
+.progress-history{display:grid;gap:6px}
+.progress-workout-row{display:flex;justify-content:space-between;gap:10px;border-top:1px solid #2a303b;padding:8px 2px 2px;font-size:10px}
+.progress-workout-row:first-child{border-top:0}
+.progress-workout-row span{color:var(--muted)}
+.progress-unit{border:1px solid #343b49;background:#222732;color:#d7dce5;border-radius:9px;padding:6px 9px;font-size:10px;font-weight:850}
+.progress-caption{margin-top:8px;color:var(--muted);font-size:9px;line-height:1.4}
+@media(max-width:520px){
+  .tabs{grid-template-columns:repeat(4,1fr)}
+  .tab{font-size:10px;padding:10px 3px}
+  .progress-summary-grid{grid-template-columns:repeat(2,1fr)}
+  .progress-metrics{grid-template-columns:repeat(2,1fr)}
+}
+
+
+/* Per-set performance logging */
+.sets.set-log-grid{display:grid;gap:8px;margin-top:9px}
+.set-log-row{display:grid;grid-template-columns:42px minmax(0,1fr) 16px 62px auto;gap:6px;align-items:center}
+.set-log-row .set-dot{width:42px;height:42px}
+.set-field{height:40px;min-width:0;border:1px solid #343b49;background:#10131a;color:#fff;border-radius:10px;text-align:center;font-size:13px;font-weight:850;padding:0 5px}
+.set-times{text-align:center;color:#7f8998;font-weight:900}
+.reps-field{width:62px}
+.drop-toggle{height:36px;border:1px solid #343b49;background:#222732;color:#cdd3dc;border-radius:9px;padding:0 8px;font-size:9px;font-weight:850;white-space:nowrap}
+.drop-editor{grid-column:2/-1;display:grid;grid-template-columns:minmax(0,1fr) 16px 62px auto;gap:6px;align-items:center;padding:7px 8px;background:#1a1f28;border-radius:10px;border:1px solid #2d3440}
+.drop-label{grid-column:1/-1;font-size:8px;letter-spacing:.1em;color:#8f99a8;font-weight:850;text-transform:uppercase}
+.drop-remove{height:34px;border:0;background:transparent;color:#ef9b9b;font-size:10px;font-weight:800}
+.set-log-head{display:grid;grid-template-columns:42px 1fr 16px 62px auto;gap:6px;align-items:end;margin-top:9px;color:#737d8a;font-size:8px;text-transform:uppercase;letter-spacing:.08em}
+.set-log-head .weight-h{grid-column:2}
+.set-log-head .reps-h{grid-column:4}
+.usual-weight-note{margin-top:8px;color:#8d97a5;font-size:9px;line-height:1.35}
+.session-summary{margin-top:10px;padding-top:9px;border-top:1px solid #2a303b;display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.session-chip{background:#20252e;border-radius:9px;padding:7px}
+.session-chip span{display:block;color:#8d97a5;font-size:8px;text-transform:uppercase;letter-spacing:.07em}
+.session-chip strong{display:block;margin-top:3px;font-size:10px}
+.load-card{display:none!important}
+.progress-chart-title{font-size:9px;color:#8d97a5;margin:0 0 6px}
+.pr-line{margin-top:7px;font-size:9px;color:#7cf0c1}
+@media(max-width:520px){
+  .set-log-row{grid-template-columns:38px minmax(0,1fr) 12px 56px}
+  .set-log-row .drop-toggle{grid-column:2/-1;width:max-content}
+  .set-log-row .set-dot{width:38px;height:38px}
+  .set-log-head{grid-template-columns:38px 1fr 12px 56px}
+  .set-log-head span:last-child{display:none}
+  .drop-editor{grid-template-columns:minmax(0,1fr) 12px 56px auto;grid-column:2/-1}
+}
+
+
+/* Rolling 7-day consistency + suggested workout */
+.consistency-status{margin-top:10px;padding:8px 10px;border:1px solid #2e3542;background:#191e27;border-radius:11px;color:#9da7b5;font-size:10px;line-height:1.35}
+.consistency-status.met{border-color:#285045;background:#162720;color:#86e9c3}
+.tab.recommended{position:relative}
+.tab.recommended:after{content:"";position:absolute;top:6px;right:7px;width:6px;height:6px;border-radius:50%;background:var(--accent2)}
+
+
+.update-row{margin:12px auto 0;text-align:center}
+.update-check{border:1px solid #343b49;background:#20252e;color:#cbd2dc;border-radius:10px;padding:8px 11px;font-size:10px;font-weight:800}
+.update-status{margin-top:6px;color:#717c8b;font-size:9px}
+
+
+/* Profile, backup and per-device routine settings */
+.settings-panel{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:13px;margin-top:12px}
+.settings-panel h3{margin:0 0 5px;font-size:15px}
+.settings-copy{color:var(--muted);font-size:10px;line-height:1.45;margin-bottom:10px}
+.settings-row{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center}
+.settings-input{width:100%;height:40px;border:1px solid #343b49;background:#10131a;color:#fff;border-radius:10px;padding:0 10px;font:inherit;font-size:12px}
+.settings-btn{min-height:38px;border:1px solid #3a4251;background:#242a35;color:#eef1f6;border-radius:10px;padding:8px 11px;font-size:10px;font-weight:850}
+.settings-btn.primary{background:#30396f;border-color:#46529a}
+.settings-btn.danger{color:#ffb0b0}
+.backup-actions{display:flex;gap:7px;flex-wrap:wrap}
+.backup-status{color:#8792a1;font-size:9px;margin-top:8px;min-height:13px}
+.routine-settings{display:grid;gap:8px;margin-top:10px}
+.routine-day-label{font-size:9px;color:#8c96a6;letter-spacing:.1em;font-weight:850;text-transform:uppercase;margin-top:7px}
+.routine-row{display:grid;grid-template-columns:minmax(0,1fr) 54px 54px 44px;gap:6px;align-items:center;background:#1d222c;border-radius:11px;padding:8px}
+.routine-row-name{font-size:10px;font-weight:800;line-height:1.2}
+.routine-row small{display:block;color:#808a99;font-size:8px;margin-top:2px}
+.routine-num{width:100%;height:34px;border:1px solid #343b49;background:#10131a;color:#fff;border-radius:8px;text-align:center;font-size:11px;font-weight:800}
+.routine-toggle{appearance:none;width:38px;height:22px;border-radius:999px;background:#3b414d;position:relative;transition:.15s}
+.routine-toggle:after{content:"";position:absolute;width:16px;height:16px;border-radius:50%;background:white;top:3px;left:3px;transition:.15s}
+.routine-toggle:checked{background:#5663c7}
+.routine-toggle:checked:after{left:19px}
+.routine-hidden{display:none!important}
+.profile-greeting{color:#9aa4b3;font-size:10px;margin-top:3px}
+
+
+.beta-banner{
+  display:flex;align-items:center;justify-content:center;gap:7px;
+  margin:0 0 12px;padding:8px 10px;border-radius:12px;
+  background:#2b2440;border:1px solid #51447a;color:#d8cfff;
+  font-size:10px;font-weight:900;letter-spacing:.08em;text-transform:uppercase
+}
+.beta-dot{width:7px;height:7px;border-radius:50%;background:#b29cff}
+
+</style>
+</head>
+<body>
+<main class="app">
+  <div class="beta-banner"><span class="beta-dot"></span>LiftLoop Beta · Test changes here first</div>
+  <header class="brand">
+    <img src="icon-180.png" alt="LiftLoop logo">
+    <div><h1>LiftLoop</h1><p>Tap an exercise to watch the movement</p><div class="profile-greeting" id="profile-greeting"></div></div>
+  </header>
+
+  <nav class="tabs" aria-label="Workout days">
+    <button type="button" class="tab active" data-tab="push">Push</button>
+    <button type="button" class="tab" data-tab="pull">Pull</button>
+    <button type="button" class="tab" data-tab="shoulders">Shoulders + Core</button>
+    <button type="button" class="tab" data-tab="progress">Progress</button>
+  </nav>
+
+  <section class="gamify-card" aria-label="LiftLoop progress">
+    <div class="gamify-top">
+      <div class="level-badge">
+        <div class="level-orb"><span id="level-number">1</span></div>
+        <div class="level-copy">
+          <div class="eyebrow">LIFTLOOP LEVEL</div>
+          <div class="level-title">Level <span id="level-label">1</span></div>
+          <div class="rank" id="rank-label">Starting Line</div>
+        </div>
+      </div>
+      <div class="stats-mini">
+        <div><strong id="workout-count">0</strong><span>WORKOUTS</span></div>
+        <div><strong id="streak-count">0/3</strong><span id="streak-label">LAST 7 DAYS</span></div>
+      </div>
+    </div>
+    <div class="milestone">
+      <div class="milestone-row"><span id="milestone-copy">0 / 5 to next milestone</span><span id="milestone-level">Level 5</span></div>
+      <div class="milestone-track"><div class="milestone-fill" id="milestone-fill"></div></div>
+    </div>
+    <div class="consistency-status" id="consistency-status">3 workouts in any rolling 7 days keeps your consistency goal alive.</div>
+    <div class="recent-workouts">
+      <div class="recent-title">RECENT WORKOUTS</div>
+      <div class="recent-list" id="recent-workouts"><span class="history-empty">Complete a workout and it’ll show up here.</span></div>
+    </div>
+  </section>
+
+
+  
+    <section class="day" id="day-push" data-day="push">
+      <div class="day-head">
+        <div><h2>Push Day</h2><p>Chest + Triceps + Core</p></div>
+        <div class="progress-pill"><span class="progress-count">0</span>%</div>
+      </div>
+      <div class="exercise-list">
+    <article class="exercise" data-day="push" data-art="incline-dumbbell-press">
+      <button type="button" class="exercise-head" aria-expanded="false">
+        <span class="ex-num">1</span>
+        <span class="ex-main"><span class="ex-name">Incline Dumbbell Bench Press</span><span class="dose">3 × 10</span></span>
+        <span class="chev">⌄</span>
+      </button>
+      <div class="exercise-body" hidden>
+        <div class="demo-wrap">
+          <div class="art-stage">
+            <div class="art-loading">Loading animation…</div>
+            <svg class="exercise-art" viewBox="0 0 512 512" role="img" aria-label="Exercise demonstration" hidden>
+              <path></path>
+            </svg>
+            <div class="art-error" hidden>Video unavailable. Use the form cues on the right.</div>
+          </div>
+          <div class="video-source" hidden><span class="video-pill"></span><a target="_blank" rel="noopener">Open on YouTube</a></div>
+          <div class="video-note">Exercise demo is streamed from the original source. Open the source video anytime for the full instruction.</div>
+          
+        </div>
+        <div class="right-col">
+          <div class="tiny-label">FORM KEYS</div>
+          <ul class="cues"><li>Set the bench to a moderate incline and keep your shoulder blades back.</li><li>Lower under control, then press the dumbbells up without bouncing.</li></ul>
+          <div class="tiny-label set-label">SETS / ROUNDS</div>
+          <div class="sets"><button type="button" class="set-dot" data-key="push-0-0" aria-label="Mark set or round 1 complete">1</button><button type="button" class="set-dot" data-key="push-0-1" aria-label="Mark set or round 2 complete">2</button><button type="button" class="set-dot" data-key="push-0-2" aria-label="Mark set or round 3 complete">3</button></div>
+        </div>
+      </div>
+    </article>
+    <article class="exercise" data-day="push" data-art="assisted-dip">
+      <button type="button" class="exercise-head" aria-expanded="false">
+        <span class="ex-num">2</span>
+        <span class="ex-main"><span class="ex-name">Assisted Dips</span><span class="dose">3 × 10</span></span>
+        <span class="chev">⌄</span>
+      </button>
+      <div class="exercise-body" hidden>
+        <div class="demo-wrap">
+          <div class="art-stage">
+            <div class="art-loading">Loading animation…</div>
+            <svg class="exercise-art" viewBox="0 0 512 512" role="img" aria-label="Exercise demonstration" hidden>
+              <path></path>
+            </svg>
+            <div class="art-error" hidden>Video unavailable. Use the form cues on the right.</div>
+          </div>
+          <div class="video-source" hidden><span class="video-pill"></span><a target="_blank" rel="noopener">Open on YouTube</a></div>
+          <div class="video-note">Exercise demo is streamed from the original source. Open the source video anytime for the full instruction.</div>
+          
+        </div>
+        <div class="right-col">
+          <div class="tiny-label">FORM KEYS</div>
+          <ul class="cues"><li>Use enough assistance to keep the movement smooth and controlled.</li><li>Lower under control, then press back to the top without shrugging.</li></ul>
+          <div class="tiny-label set-label">SETS / ROUNDS</div>
+          <div class="sets"><button type="button" class="set-dot" data-key="push-1-0" aria-label="Mark set or round 1 complete">1</button><button type="button" class="set-dot" data-key="push-1-1" aria-label="Mark set or round 2 complete">2</button><button type="button" class="set-dot" data-key="push-1-2" aria-label="Mark set or round 3 complete">3</button></div>
+        </div>
+      </div>
+    </article>
+    <article class="exercise" data-day="push" data-art="pec-deck">
+      <button type="button" class="exercise-head" aria-expanded="false">
+        <span class="ex-num">3</span>
+        <span class="ex-main"><span class="ex-name">Pec Fly</span><span class="dose">3 × 10</span></span>
+        <span class="chev">⌄</span>
+      </button>
+      <div class="exercise-body" hidden>
+        <div class="demo-wrap">
+          <div class="art-stage">
+            <div class="art-loading">Loading animation…</div>
+            <svg class="exercise-art" viewBox="0 0 512 512" role="img" aria-label="Exercise demonstration" hidden>
+              <path></path>
+            </svg>
+            <div class="art-error" hidden>Video unavailable. Use the form cues on the right.</div>
+          </div>
+          <div class="video-source" hidden><span class="video-pill"></span><a target="_blank" rel="noopener">Open on YouTube</a></div>
+          <div class="video-note">Exercise demo is streamed from the original source. Open the source video anytime for the full instruction.</div>
+          
+        </div>
+        <div class="right-col">
+          <div class="tiny-label">FORM KEYS</div>
+          <ul class="cues"><li>Keep your back against the pad and a soft bend in your elbows.</li><li>Bring the arms together smoothly, then control the stretch on the way back.</li></ul>
+          <div class="tiny-label set-label">SETS / ROUNDS</div>
+          <div class="sets"><button type="button" class="set-dot" data-key="push-2-0" aria-label="Mark set or round 1 complete">1</button><button type="button" class="set-dot" data-key="push-2-1" aria-label="Mark set or round 2 complete">2</button><button type="button" class="set-dot" data-key="push-2-2" aria-label="Mark set or round 3 complete">3</button></div>
+        </div>
+      </div>
+    </article>
+    <article class="exercise" data-day="push" data-art="rope-tricep-pushdown">
+      <button type="button" class="exercise-head" aria-expanded="false">
+        <span class="ex-num">4</span>
+        <span class="ex-main"><span class="ex-name">Tricep Pushdown</span><span class="dose">3 × 10</span></span>
+        <span class="chev">⌄</span>
+      </button>
+      <div class="exercise-body" hidden>
+        <div class="demo-wrap">
+          <div class="art-stage">
+            <div class="art-loading">Loading animation…</div>
+            <svg class="exercise-art" viewBox="0 0 512 512" role="img" aria-label="Exercise demonstration" hidden>
+              <path></path>
+            </svg>
+            <div class="art-error" hidden>Video unavailable. Use the form cues on the right.</div>
+          </div>
+          <div class="video-source" hidden><span class="video-pill"></span><a target="_blank" rel="noopener">Open on YouTube</a></div>
+          <div class="video-note">Exercise demo is streamed from the original source. Open the source video anytime for the full instruction.</div>
+          
+        </div>
+        <div class="right-col">
+          <div class="tiny-label">FORM KEYS</div>
+          <ul class="cues"><li>Keep your elbows pinned near your sides.</li><li>Move mainly at the elbow and finish with controlled extension.</li></ul>
+          <div class="tiny-label set-label">SETS / ROUNDS</div>
+          <div class="sets"><button type="button" class="set-dot" data-key="push-3-0" aria-label="Mark set or round 1 complete">1</button><button type="button" class="set-dot" data-key="push-3-1" aria-label="Mark set or round 2 complete">2</button><button type="button" class="set-dot" data-key="push-3-2" aria-label="Mark set or round 3 complete">3</button></div>
+        </div>
+      </div>
+    </article>
+    <article class="exercise" data-day="push" data-art="bench-press">
+      <button type="button" class="exercise-head" aria-expanded="false">
+        <span class="ex-num">5</span>
+        <span class="ex-main"><span class="ex-name">Flat Bench Press</span><span class="dose">3 × 10</span></span>
+        <span class="chev">⌄</span>
+      </button>
+      <div class="exercise-body" hidden>
+        <div class="demo-wrap">
+          <div class="art-stage">
+            <div class="art-loading">Loading animation…</div>
+            <svg class="exercise-art" viewBox="0 0 512 512" role="img" aria-label="Exercise demonstration" hidden>
+              <path></path>
+            </svg>
+            <div class="art-error" hidden>Video unavailable. Use the form cues on the right.</div>
+          </div>
+          <div class="video-source" hidden><span class="video-pill"></span><a target="_blank" rel="noopener">Open on YouTube</a></div>
+          <div class="video-note">Exercise demo is streamed from the original source. Open the source video anytime for the full instruction.</div>
+          
+        </div>
+        <div class="right-col">
+          <div class="tiny-label">FORM KEYS</div>
+          <ul class="cues"><li>Plant your feet and keep your shoulder blades set against the bench.</li><li>Lower the bar under control to your chest, then press back up.</li></ul>
+          <div class="tiny-label set-label">SETS / ROUNDS</div>
+          <div class="sets"><button type="button" class="set-dot" data-key="push-4-0" aria-label="Mark set or round 1 complete">1</button><button type="button" class="set-dot" data-key="push-4-1" aria-label="Mark set or round 2 complete">2</button><button type="button" class="set-dot" data-key="push-4-2" aria-label="Mark set or round 3 complete">3</button></div>
+        </div>
+      </div>
+    </article>
+    <article class="exercise" data-day="push" data-art="decline-sit-up">
+      <button type="button" class="exercise-head" aria-expanded="false">
+        <span class="ex-num">6</span>
+        <span class="ex-main"><span class="ex-name">Incline Sit-Ups</span><span class="dose">2 × 10</span></span>
+        <span class="chev">⌄</span>
+      </button>
+      <div class="exercise-body" hidden>
+        <div class="demo-wrap">
+          <div class="art-stage">
+            <div class="art-loading">Loading animation…</div>
+            <svg class="exercise-art" viewBox="0 0 512 512" role="img" aria-label="Exercise demonstration" hidden>
+              <path></path>
+            </svg>
+            <div class="art-error" hidden>Video unavailable. Use the form cues on the right.</div>
+          </div>
+          <div class="video-source" hidden><span class="video-pill"></span><a target="_blank" rel="noopener">Open on YouTube</a></div>
+          <div class="video-note">Exercise demo is streamed from the original source. Open the source video anytime for the full instruction.</div>
+          
+        </div>
+        <div class="right-col">
+          <div class="tiny-label">FORM KEYS</div>
+          <ul class="cues"><li>Brace your abs before each rep and avoid throwing yourself upward.</li><li>Lower back down slowly rather than dropping onto the bench.</li></ul>
+          <div class="tiny-label set-label">SETS / ROUNDS</div>
+          <div class="sets"><button type="button" class="set-dot" data-key="push-5-0" aria-label="Mark set or round 1 complete">1</button><button type="button" class="set-dot" data-key="push-5-1" aria-label="Mark set or round 2 complete">2</button></div>
+        </div>
+      </div>
+    </article></div>
+      <button type="button" class="finish-workout" data-finish="push">Finish Workout · +1 Level</button>
+      <button type="button" class="reset-day" data-reset="push">Reset Push Day</button>
+    </section>
+    <section class="day" id="day-pull" data-day="pull">
+      <div class="day-head">
+        <div><h2>Pull Day</h2><p>Back + Biceps + Core</p></div>
+        <div class="progress-pill"><span class="progress-count">0</span>%</div>
+      </div>
+      <div class="exercise-list">
+    <article class="exercise" data-day="pull" data-art="pull-up">
+      <button type="button" class="exercise-head" aria-expanded="false">
+        <span class="ex-num">1</span>
+        <span class="ex-main"><span class="ex-name">Pull-Ups / Assisted Pull-Ups</span><span class="dose">3 × 10</span></span>
+        <span class="chev">⌄</span>
+      </button>
+      <div class="exercise-body" hidden>
+        <div class="demo-wrap">
+          <div class="art-stage">
+            <div class="art-loading">Loading animation…</div>
+            <svg class="exercise-art" viewBox="0 0 512 512" role="img" aria-label="Exercise demonstration" hidden>
+              <path></path>
+            </svg>
+            <div class="art-error" hidden>Video unavailable. Use the form cues on the right.</div>
+          </div>
+          <div class="video-source" hidden><span class="video-pill"></span><a target="_blank" rel="noopener">Open on YouTube</a></div>
+          <div class="video-note">Exercise demo is streamed from the original source. Open the source video anytime for the full instruction.</div>
+          <div class="variant" role="group" aria-label="Exercise variation"><button type="button" class="variant-btn active" data-art="pull-up">Pull-Up</button><button type="button" class="variant-btn" data-art="assisted-pull-up">Assisted</button></div>
+        </div>
+        <div class="right-col">
+          <div class="tiny-label">FORM KEYS</div>
+          <ul class="cues"><li>Start by pulling your shoulders down away from your ears.</li><li>Drive your elbows down and avoid swinging to create momentum.</li></ul>
+          <div class="tiny-label set-label">SETS / ROUNDS</div>
+          <div class="sets"><button type="button" class="set-dot" data-key="pull-0-0" aria-label="Mark set or round 1 complete">1</button><button type="button" class="set-dot" data-key="pull-0-1" aria-label="Mark set or round 2 complete">2</button><button type="button" class="set-dot" data-key="pull-0-2" aria-label="Mark set or round 3 complete">3</button></div>
+        </div>
+      </div>
+    </article>
+    <article class="exercise" data-day="pull" data-art="ez-bar-curl">
+      <button type="button" class="exercise-head" aria-expanded="false">
+        <span class="ex-num">2</span>
+        <span class="ex-main"><span class="ex-name">Barbell Bicep Curl</span><span class="dose">3 × 10</span></span>
+        <span class="chev">⌄</span>
+      </button>
+      <div class="exercise-body" hidden>
+        <div class="demo-wrap">
+          <div class="art-stage">
+            <div class="art-loading">Loading animation…</div>
+            <svg class="exercise-art" viewBox="0 0 512 512" role="img" aria-label="Exercise demonstration" hidden>
+              <path></path>
+            </svg>
+            <div class="art-error" hidden>Video unavailable. Use the form cues on the right.</div>
+          </div>
+          <div class="video-source" hidden><span class="video-pill"></span><a target="_blank" rel="noopener">Open on YouTube</a></div>
+          <div class="video-note">Exercise demo is streamed from the original source. Open the source video anytime for the full instruction.</div>
+          
+        </div>
+        <div class="right-col">
+          <div class="tiny-label">FORM KEYS</div>
+          <ul class="cues"><li>Keep your upper arms mostly still beside your torso.</li><li>Curl without swinging your hips, then lower the bar under control.</li></ul>
+          <div class="tiny-label set-label">SETS / ROUNDS</div>
+          <div class="sets"><button type="button" class="set-dot" data-key="pull-1-0" aria-label="Mark set or round 1 complete">1</button><button type="button" class="set-dot" data-key="pull-1-1" aria-label="Mark set or round 2 complete">2</button><button type="button" class="set-dot" data-key="pull-1-2" aria-label="Mark set or round 3 complete">3</button></div>
+        </div>
+      </div>
+    </article>
+    <article class="exercise" data-day="pull" data-art="seated-row">
+      <button type="button" class="exercise-head" aria-expanded="false">
+        <span class="ex-num">3</span>
+        <span class="ex-main"><span class="ex-name">Seated Cable Row</span><span class="dose">3 × 10</span></span>
+        <span class="chev">⌄</span>
+      </button>
+      <div class="exercise-body" hidden>
+        <div class="demo-wrap">
+          <div class="art-stage">
+            <div class="art-loading">Loading animation…</div>
+            <svg class="exercise-art" viewBox="0 0 512 512" role="img" aria-label="Exercise demonstration" hidden>
+              <path></path>
+            </svg>
+            <div class="art-error" hidden>Video unavailable. Use the form cues on the right.</div>
+          </div>
+          <div class="video-source" hidden><span class="video-pill"></span><a target="_blank" rel="noopener">Open on YouTube</a></div>
+          <div class="video-note">Exercise demo is streamed from the original source. Open the source video anytime for the full instruction.</div>
+          
+        </div>
+        <div class="right-col">
+          <div class="tiny-label">FORM KEYS</div>
+          <ul class="cues"><li>Keep your chest tall and spine neutral.</li><li>Pull toward your torso, then extend without rounding hard forward.</li></ul>
+          <div class="tiny-label set-label">SETS / ROUNDS</div>
+          <div class="sets"><button type="button" class="set-dot" data-key="pull-2-0" aria-label="Mark set or round 1 complete">1</button><button type="button" class="set-dot" data-key="pull-2-1" aria-label="Mark set or round 2 complete">2</button><button type="button" class="set-dot" data-key="pull-2-2" aria-label="Mark set or round 3 complete">3</button></div>
+        </div>
+      </div>
+    </article>
+    <article class="exercise" data-day="pull" data-art="bicep-curl">
+      <button type="button" class="exercise-head" aria-expanded="false">
+        <span class="ex-num">4</span>
+        <span class="ex-main"><span class="ex-name">Alternating Bicep Curls</span><span class="dose">3 × 10</span></span>
+        <span class="chev">⌄</span>
+      </button>
+      <div class="exercise-body" hidden>
+        <div class="demo-wrap">
+          <div class="art-stage">
+            <div class="art-loading">Loading animation…</div>
+            <svg class="exercise-art" viewBox="0 0 512 512" role="img" aria-label="Exercise demonstration" hidden>
+              <path></path>
+            </svg>
+            <div class="art-error" hidden>Video unavailable. Use the form cues on the right.</div>
+          </div>
+          <div class="video-source" hidden><span class="video-pill"></span><a target="_blank" rel="noopener">Open on YouTube</a></div>
+          <div class="video-note">Exercise demo is streamed from the original source. Open the source video anytime for the full instruction.</div>
+          
+        </div>
+        <div class="right-col">
+          <div class="tiny-label">FORM KEYS</div>
+          <ul class="cues"><li>Alternate sides without leaning or twisting to help the weight up.</li><li>Keep each elbow close to your side and control the lowering phase.</li></ul>
+          <div class="tiny-label set-label">SETS / ROUNDS</div>
+          <div class="sets"><button type="button" class="set-dot" data-key="pull-3-0" aria-label="Mark set or round 1 complete">1</button><button type="button" class="set-dot" data-key="pull-3-1" aria-label="Mark set or round 2 complete">2</button><button type="button" class="set-dot" data-key="pull-3-2" aria-label="Mark set or round 3 complete">3</button></div>
+        </div>
+      </div>
+    </article>
+    <article class="exercise" data-day="pull" data-art="lat-pulldown">
+      <button type="button" class="exercise-head" aria-expanded="false">
+        <span class="ex-num">5</span>
+        <span class="ex-main"><span class="ex-name">Cable Lat Pulldown</span><span class="dose">3 × 10</span></span>
+        <span class="chev">⌄</span>
+      </button>
+      <div class="exercise-body" hidden>
+        <div class="demo-wrap">
+          <div class="art-stage">
+            <div class="art-loading">Loading animation…</div>
+            <svg class="exercise-art" viewBox="0 0 512 512" role="img" aria-label="Exercise demonstration" hidden>
+              <path></path>
+            </svg>
+            <div class="art-error" hidden>Video unavailable. Use the form cues on the right.</div>
+          </div>
+          <div class="video-source" hidden><span class="video-pill"></span><a target="_blank" rel="noopener">Open on YouTube</a></div>
+          <div class="video-note">Exercise demo is streamed from the original source. Open the source video anytime for the full instruction.</div>
+          
+        </div>
+        <div class="right-col">
+          <div class="tiny-label">FORM KEYS</div>
+          <ul class="cues"><li>Keep your chest up with only a slight lean back.</li><li>Drive your elbows down and pull the bar toward your upper chest.</li></ul>
+          <div class="tiny-label set-label">SETS / ROUNDS</div>
+          <div class="sets"><button type="button" class="set-dot" data-key="pull-4-0" aria-label="Mark set or round 1 complete">1</button><button type="button" class="set-dot" data-key="pull-4-1" aria-label="Mark set or round 2 complete">2</button><button type="button" class="set-dot" data-key="pull-4-2" aria-label="Mark set or round 3 complete">3</button></div>
+        </div>
+      </div>
+    </article>
+    <article class="exercise" data-day="pull" data-art="cross-body-hammer-curl">
+      <button type="button" class="exercise-head" aria-expanded="false">
+        <span class="ex-num">6</span>
+        <span class="ex-main"><span class="ex-name">Cross-Body Dumbbell Curl</span><span class="dose">3 × 10</span></span>
+        <span class="chev">⌄</span>
+      </button>
+      <div class="exercise-body" hidden>
+        <div class="demo-wrap">
+          <div class="art-stage">
+            <div class="art-loading">Loading animation…</div>
+            <svg class="exercise-art" viewBox="0 0 512 512" role="img" aria-label="Exercise demonstration" hidden>
+              <path></path>
+            </svg>
+            <div class="art-error" hidden>Video unavailable. Use the form cues on the right.</div>
+          </div>
+          <div class="video-source" hidden><span class="video-pill"></span><a target="_blank" rel="noopener">Open on YouTube</a></div>
+          <div class="video-note">Exercise demo is streamed from the original source. Open the source video anytime for the full instruction.</div>
+          
+        </div>
+        <div class="right-col">
+          <div class="tiny-label">FORM KEYS</div>
+          <ul class="cues"><li>Keep a neutral hammer grip and curl toward the opposite shoulder.</li><li>Avoid rotating your torso to move the weight.</li></ul>
+          <div class="tiny-label set-label">SETS / ROUNDS</div>
+          <div class="sets"><button type="button" class="set-dot" data-key="pull-5-0" aria-label="Mark set or round 1 complete">1</button><button type="button" class="set-dot" data-key="pull-5-1" aria-label="Mark set or round 2 complete">2</button><button type="button" class="set-dot" data-key="pull-5-2" aria-label="Mark set or round 3 complete">3</button></div>
+        </div>
+      </div>
+    </article>
+    <article class="exercise" data-day="pull" data-art="decline-sit-up">
+      <button type="button" class="exercise-head" aria-expanded="false">
+        <span class="ex-num">7</span>
+        <span class="ex-main"><span class="ex-name">Incline Sit-Ups</span><span class="dose">2–3 × 10</span></span>
+        <span class="chev">⌄</span>
+      </button>
+      <div class="exercise-body" hidden>
+        <div class="demo-wrap">
+          <div class="art-stage">
+            <div class="art-loading">Loading animation…</div>
+            <svg class="exercise-art" viewBox="0 0 512 512" role="img" aria-label="Exercise demonstration" hidden>
+              <path></path>
+            </svg>
+            <div class="art-error" hidden>Video unavailable. Use the form cues on the right.</div>
+          </div>
+          <div class="video-source" hidden><span class="video-pill"></span><a target="_blank" rel="noopener">Open on YouTube</a></div>
+          <div class="video-note">Exercise demo is streamed from the original source. Open the source video anytime for the full instruction.</div>
+          
+        </div>
+        <div class="right-col">
+          <div class="tiny-label">FORM KEYS</div>
+          <ul class="cues"><li>Brace before each rep and move through a comfortable range.</li><li>Lower slowly so gravity does not do the whole eccentric.</li></ul>
+          <div class="tiny-label set-label">SETS / ROUNDS</div>
+          <div class="sets"><button type="button" class="set-dot" data-key="pull-6-0" aria-label="Mark set or round 1 complete">1</button><button type="button" class="set-dot" data-key="pull-6-1" aria-label="Mark set or round 2 complete">2</button><button type="button" class="set-dot" data-key="pull-6-2" aria-label="Mark set or round 3 complete">3</button></div>
+        </div>
+      </div>
+    </article></div>
+      <button type="button" class="finish-workout" data-finish="pull">Finish Workout · +1 Level</button>
+      <button type="button" class="reset-day" data-reset="pull">Reset Pull Day</button>
+    </section>
+    <section class="day" id="day-shoulders" data-day="shoulders">
+      <div class="day-head">
+        <div><h2>Shoulders + Core</h2><p>Delts + Abs + Push-Up Circuit</p></div>
+        <div class="progress-pill"><span class="progress-count">0</span>%</div>
+      </div>
+      <div class="exercise-list">
+    <article class="exercise" data-day="shoulders" data-art="standing-dumbbell-press">
+      <button type="button" class="exercise-head" aria-expanded="false">
+        <span class="ex-num">1</span>
+        <span class="ex-main"><span class="ex-name">Dumbbell Shoulder Press</span><span class="dose">3 × 10</span></span>
+        <span class="chev">⌄</span>
+      </button>
+      <div class="exercise-body" hidden>
+        <div class="demo-wrap">
+          <div class="art-stage">
+            <div class="art-loading">Loading animation…</div>
+            <svg class="exercise-art" viewBox="0 0 512 512" role="img" aria-label="Exercise demonstration" hidden>
+              <path></path>
+            </svg>
+            <div class="art-error" hidden>Video unavailable. Use the form cues on the right.</div>
+          </div>
+          <div class="video-source" hidden><span class="video-pill"></span><a target="_blank" rel="noopener">Open on YouTube</a></div>
+          <div class="video-note">Exercise demo is streamed from the original source. Open the source video anytime for the full instruction.</div>
+          
+        </div>
+        <div class="right-col">
+          <div class="tiny-label">FORM KEYS</div>
+          <ul class="cues"><li>Keep your ribs controlled rather than arching hard through the lower back.</li><li>Press overhead smoothly and lower the dumbbells back to shoulder level.</li></ul>
+          <div class="tiny-label set-label">SETS / ROUNDS</div>
+          <div class="sets"><button type="button" class="set-dot" data-key="shoulders-0-0" aria-label="Mark set or round 1 complete">1</button><button type="button" class="set-dot" data-key="shoulders-0-1" aria-label="Mark set or round 2 complete">2</button><button type="button" class="set-dot" data-key="shoulders-0-2" aria-label="Mark set or round 3 complete">3</button></div>
+        </div>
+      </div>
+    </article>
+    <article class="exercise" data-day="shoulders" data-art="lateral-raise">
+      <button type="button" class="exercise-head" aria-expanded="false">
+        <span class="ex-num">2</span>
+        <span class="ex-main"><span class="ex-name">Lateral Raise</span><span class="dose">3 × 10</span></span>
+        <span class="chev">⌄</span>
+      </button>
+      <div class="exercise-body" hidden>
+        <div class="demo-wrap">
+          <div class="art-stage">
+            <div class="art-loading">Loading animation…</div>
+            <svg class="exercise-art" viewBox="0 0 512 512" role="img" aria-label="Exercise demonstration" hidden>
+              <path></path>
+            </svg>
+            <div class="art-error" hidden>Video unavailable. Use the form cues on the right.</div>
+          </div>
+          <div class="video-source" hidden><span class="video-pill"></span><a target="_blank" rel="noopener">Open on YouTube</a></div>
+          <div class="video-note">Exercise demo is streamed from the original source. Open the source video anytime for the full instruction.</div>
+          <div class="variant" role="group" aria-label="Exercise variation"><button type="button" class="variant-btn active" data-art="lateral-raise">Dumbbell</button><button type="button" class="variant-btn" data-art="cable-lateral-raise">Cable</button></div>
+        </div>
+        <div class="right-col">
+          <div class="tiny-label">FORM KEYS</div>
+          <ul class="cues"><li>Raise the arms out to the sides without shrugging your shoulders.</li><li>Use a weight you can control instead of swinging it up.</li></ul>
+          <div class="tiny-label set-label">SETS / ROUNDS</div>
+          <div class="sets"><button type="button" class="set-dot" data-key="shoulders-1-0" aria-label="Mark set or round 1 complete">1</button><button type="button" class="set-dot" data-key="shoulders-1-1" aria-label="Mark set or round 2 complete">2</button><button type="button" class="set-dot" data-key="shoulders-1-2" aria-label="Mark set or round 3 complete">3</button></div>
+        </div>
+      </div>
+    </article>
+    <article class="exercise" data-day="shoulders" data-art="reverse-pec-deck">
+      <button type="button" class="exercise-head" aria-expanded="false">
+        <span class="ex-num">3</span>
+        <span class="ex-main"><span class="ex-name">Rear Delt Fly</span><span class="dose">3 × 10</span></span>
+        <span class="chev">⌄</span>
+      </button>
+      <div class="exercise-body" hidden>
+        <div class="demo-wrap">
+          <div class="art-stage">
+            <div class="art-loading">Loading animation…</div>
+            <svg class="exercise-art" viewBox="0 0 512 512" role="img" aria-label="Exercise demonstration" hidden>
+              <path></path>
+            </svg>
+            <div class="art-error" hidden>Video unavailable. Use the form cues on the right.</div>
+          </div>
+          <div class="video-source" hidden><span class="video-pill"></span><a target="_blank" rel="noopener">Open on YouTube</a></div>
+          <div class="video-note">Exercise demo is streamed from the original source. Open the source video anytime for the full instruction.</div>
+          <div class="variant" role="group" aria-label="Exercise variation"><button type="button" class="variant-btn active" data-art="reverse-pec-deck">Machine</button><button type="button" class="variant-btn" data-art="cable-rear-delt-fly">Cable</button></div>
+        </div>
+        <div class="right-col">
+          <div class="tiny-label">FORM KEYS</div>
+          <ul class="cues"><li>Keep a soft elbow bend and lead the movement from the rear shoulders.</li><li>Open the arms under control without turning it into a row.</li></ul>
+          <div class="tiny-label set-label">SETS / ROUNDS</div>
+          <div class="sets"><button type="button" class="set-dot" data-key="shoulders-2-0" aria-label="Mark set or round 1 complete">1</button><button type="button" class="set-dot" data-key="shoulders-2-1" aria-label="Mark set or round 2 complete">2</button><button type="button" class="set-dot" data-key="shoulders-2-2" aria-label="Mark set or round 3 complete">3</button></div>
+        </div>
+      </div>
+    </article>
+    <article class="exercise" data-day="shoulders" data-art="decline-sit-up">
+      <button type="button" class="exercise-head" aria-expanded="false">
+        <span class="ex-num">4</span>
+        <span class="ex-main"><span class="ex-name">Incline Sit-Ups</span><span class="dose">2 × 10</span></span>
+        <span class="chev">⌄</span>
+      </button>
+      <div class="exercise-body" hidden>
+        <div class="demo-wrap">
+          <div class="art-stage">
+            <div class="art-loading">Loading animation…</div>
+            <svg class="exercise-art" viewBox="0 0 512 512" role="img" aria-label="Exercise demonstration" hidden>
+              <path></path>
+            </svg>
+            <div class="art-error" hidden>Video unavailable. Use the form cues on the right.</div>
+          </div>
+          <div class="video-source" hidden><span class="video-pill"></span><a target="_blank" rel="noopener">Open on YouTube</a></div>
+          <div class="video-note">Exercise demo is streamed from the original source. Open the source video anytime for the full instruction.</div>
+          
+        </div>
+        <div class="right-col">
+          <div class="tiny-label">FORM KEYS</div>
+          <ul class="cues"><li>Keep the reps controlled and brace before lifting your torso.</li><li>Lower slowly instead of dropping back onto the bench.</li></ul>
+          <div class="tiny-label set-label">SETS / ROUNDS</div>
+          <div class="sets"><button type="button" class="set-dot" data-key="shoulders-3-0" aria-label="Mark set or round 1 complete">1</button><button type="button" class="set-dot" data-key="shoulders-3-1" aria-label="Mark set or round 2 complete">2</button></div>
+        </div>
+      </div>
+    </article>
+    <article class="exercise" data-day="shoulders" data-art="russian-twist">
+      <button type="button" class="exercise-head" aria-expanded="false">
+        <span class="ex-num">5</span>
+        <span class="ex-main"><span class="ex-name">Russian Twists</span><span class="dose">Circuit · 2 rounds</span></span>
+        <span class="chev">⌄</span>
+      </button>
+      <div class="exercise-body" hidden>
+        <div class="demo-wrap">
+          <div class="art-stage">
+            <div class="art-loading">Loading animation…</div>
+            <svg class="exercise-art" viewBox="0 0 512 512" role="img" aria-label="Exercise demonstration" hidden>
+              <path></path>
+            </svg>
+            <div class="art-error" hidden>Video unavailable. Use the form cues on the right.</div>
+          </div>
+          <div class="video-source" hidden><span class="video-pill"></span><a target="_blank" rel="noopener">Open on YouTube</a></div>
+          <div class="video-note">Exercise demo is streamed from the original source. Open the source video anytime for the full instruction.</div>
+          
+        </div>
+        <div class="right-col">
+          <div class="tiny-label">FORM KEYS</div>
+          <ul class="cues"><li>Rotate through your torso rather than only moving your hands.</li><li>Stay tall through the chest and keep the movement controlled.</li></ul>
+          <div class="tiny-label set-label">SETS / ROUNDS</div>
+          <div class="sets"><button type="button" class="set-dot" data-key="shoulders-4-0" aria-label="Mark set or round 1 complete">1</button><button type="button" class="set-dot" data-key="shoulders-4-1" aria-label="Mark set or round 2 complete">2</button></div>
+        </div>
+      </div>
+    </article>
+    <article class="exercise" data-day="shoulders" data-art="lying-leg-raise">
+      <button type="button" class="exercise-head" aria-expanded="false">
+        <span class="ex-num">6</span>
+        <span class="ex-main"><span class="ex-name">Leg Raises</span><span class="dose">Circuit · 2 rounds</span></span>
+        <span class="chev">⌄</span>
+      </button>
+      <div class="exercise-body" hidden>
+        <div class="demo-wrap">
+          <div class="art-stage">
+            <div class="art-loading">Loading animation…</div>
+            <svg class="exercise-art" viewBox="0 0 512 512" role="img" aria-label="Exercise demonstration" hidden>
+              <path></path>
+            </svg>
+            <div class="art-error" hidden>Video unavailable. Use the form cues on the right.</div>
+          </div>
+          <div class="video-source" hidden><span class="video-pill"></span><a target="_blank" rel="noopener">Open on YouTube</a></div>
+          <div class="video-note">Exercise demo is streamed from the original source. Open the source video anytime for the full instruction.</div>
+          
+        </div>
+        <div class="right-col">
+          <div class="tiny-label">FORM KEYS</div>
+          <ul class="cues"><li>Keep your lower back controlled against the floor or bench.</li><li>Lower your legs only as far as you can without losing abdominal tension.</li></ul>
+          <div class="tiny-label set-label">SETS / ROUNDS</div>
+          <div class="sets"><button type="button" class="set-dot" data-key="shoulders-5-0" aria-label="Mark set or round 1 complete">1</button><button type="button" class="set-dot" data-key="shoulders-5-1" aria-label="Mark set or round 2 complete">2</button></div>
+        </div>
+      </div>
+    </article>
+    <article class="exercise" data-day="shoulders" data-art="v-up">
+      <button type="button" class="exercise-head" aria-expanded="false">
+        <span class="ex-num">7</span>
+        <span class="ex-main"><span class="ex-name">Jackknife Sit-Ups</span><span class="dose">Circuit · 2 rounds</span></span>
+        <span class="chev">⌄</span>
+      </button>
+      <div class="exercise-body" hidden>
+        <div class="demo-wrap">
+          <div class="art-stage">
+            <div class="art-loading">Loading animation…</div>
+            <svg class="exercise-art" viewBox="0 0 512 512" role="img" aria-label="Exercise demonstration" hidden>
+              <path></path>
+            </svg>
+            <div class="art-error" hidden>Video unavailable. Use the form cues on the right.</div>
+          </div>
+          <div class="video-source" hidden><span class="video-pill"></span><a target="_blank" rel="noopener">Open on YouTube</a></div>
+          <div class="video-note">Exercise demo is streamed from the original source. Open the source video anytime for the full instruction.</div>
+          
+        </div>
+        <div class="right-col">
+          <div class="tiny-label">FORM KEYS</div>
+          <ul class="cues"><li>Lift the upper body and legs together into a V position.</li><li>Control the return instead of dropping to the floor.</li></ul>
+          <div class="tiny-label set-label">SETS / ROUNDS</div>
+          <div class="sets"><button type="button" class="set-dot" data-key="shoulders-6-0" aria-label="Mark set or round 1 complete">1</button><button type="button" class="set-dot" data-key="shoulders-6-1" aria-label="Mark set or round 2 complete">2</button></div>
+        </div>
+      </div>
+    </article>
+    <article class="exercise" data-day="shoulders" data-art="push-up">
+      <button type="button" class="exercise-head" aria-expanded="false">
+        <span class="ex-num">8</span>
+        <span class="ex-main"><span class="ex-name">Push-Ups</span><span class="dose">Circuit · 2 rounds</span></span>
+        <span class="chev">⌄</span>
+      </button>
+      <div class="exercise-body" hidden>
+        <div class="demo-wrap">
+          <div class="art-stage">
+            <div class="art-loading">Loading animation…</div>
+            <svg class="exercise-art" viewBox="0 0 512 512" role="img" aria-label="Exercise demonstration" hidden>
+              <path></path>
+            </svg>
+            <div class="art-error" hidden>Video unavailable. Use the form cues on the right.</div>
+          </div>
+          <div class="video-source" hidden><span class="video-pill"></span><a target="_blank" rel="noopener">Open on YouTube</a></div>
+          <div class="video-note">Exercise demo is streamed from the original source. Open the source video anytime for the full instruction.</div>
+          
+        </div>
+        <div class="right-col">
+          <div class="tiny-label">FORM KEYS</div>
+          <ul class="cues"><li>Keep a straight line from your shoulders through your hips.</li><li>Lower with control and keep your elbows at a comfortable angle from your torso.</li></ul>
+          <div class="tiny-label set-label">SETS / ROUNDS</div>
+          <div class="sets"><button type="button" class="set-dot" data-key="shoulders-7-0" aria-label="Mark set or round 1 complete">1</button><button type="button" class="set-dot" data-key="shoulders-7-1" aria-label="Mark set or round 2 complete">2</button></div>
+        </div>
+      </div>
+    </article></div>
+      <button type="button" class="finish-workout" data-finish="shoulders">Finish Workout · +1 Level</button>
+      <button type="button" class="reset-day" data-reset="shoulders">Reset Shoulders + Core</button>
+    </section>
+
+
+  <section class="day progress-page" id="day-progress" data-day="progress">
+    <div class="day-head">
+      <div><h2>Progress</h2><p>Your strength and workout history</p></div>
+      <button type="button" class="progress-unit" id="progress-unit-toggle">lb</button>
+    </div>
+
+    <div class="progress-summary-grid">
+      <div class="progress-stat"><span>Level</span><strong id="progress-level">1</strong></div>
+      <div class="progress-stat"><span>Workouts</span><strong id="progress-workouts-count">0</strong></div>
+      <div class="progress-stat"><span>Weight logs</span><strong id="progress-log-count">0</strong></div>
+      <div class="progress-stat"><span>Exercises tracked</span><strong id="progress-exercises-count">0</strong></div>
+    </div>
+
+    <div class="progress-panel">
+      <div class="progress-panel-head">
+        <h3>Exercise progress</h3>
+      </div>
+      <select class="progress-select" id="progress-exercise-select" aria-label="Choose an exercise"></select>
+
+      <div class="progress-chart-wrap" id="progress-chart-wrap">
+        <div class="progress-empty">Log a working weight on an exercise to start its chart.</div>
+      </div>
+
+      <div class="progress-metrics">
+        <div class="progress-metric"><span>Starting target</span><strong id="progress-start">—</strong></div>
+        <div class="progress-metric"><span>Latest target</span><strong id="progress-latest">—</strong></div>
+        <div class="progress-metric"><span>Target PR</span><strong id="progress-best">—</strong></div>
+        <div class="progress-metric"><span>Change</span><strong id="progress-change">—</strong></div>
+      </div>
+      <div class="progress-caption" id="progress-caption">For assisted movements, using less assistance counts as improvement.</div>
+    </div>
+
+    <div class="progress-panel">
+      <div class="progress-panel-head"><h3>Biggest improvements</h3></div>
+      <div class="progress-ranking" id="progress-ranking">
+        <div class="history-empty">Log an exercise more than once and your improvements will appear here.</div>
+      </div>
+    </div>
+
+    <div class="progress-panel">
+      <div class="progress-panel-head"><h3>Workout history</h3></div>
+      <div class="progress-history" id="progress-workout-history">
+        <div class="history-empty">Finished workouts will appear here.</div>
+      </div>
+    </div>
+
+    <div class="settings-panel">
+      <h3>Your LiftLoop</h3>
+      <div class="settings-copy">This profile and all workout data stay on this device. Your friend can use the same LiftLoop URL without seeing or changing your progress.</div>
+      <div class="settings-row">
+        <input id="profile-name" class="settings-input" maxlength="32" placeholder="Profile name (optional)">
+        <button type="button" class="settings-btn primary" id="save-profile">Save</button>
+      </div>
+    </div>
+
+    <div class="settings-panel">
+      <h3>Backup & restore</h3>
+      <div class="settings-copy">Back up your entire local LiftLoop state before changing phones, clearing Safari data, or reinstalling the Home Screen app.</div>
+      <div class="backup-actions">
+        <button type="button" class="settings-btn primary" id="download-backup">Download backup</button>
+        <button type="button" class="settings-btn" id="copy-backup">Copy backup</button>
+        <button type="button" class="settings-btn" id="restore-backup">Restore file</button>
+        <input type="file" id="restore-file" accept=".json,application/json" hidden>
+      </div>
+      <div class="backup-status" id="backup-status"></div>
+    </div>
+
+    <div class="settings-panel">
+      <h3>Routine settings</h3>
+      <div class="settings-copy">These settings are per-device. Turn exercises on/off or change prescribed sets and reps. Exercise videos and form cues stay matched to the correct exercise.</div>
+      <div class="routine-settings" id="routine-settings"></div>
+      <button type="button" class="settings-btn primary" id="save-routine" style="margin-top:10px">Save routine</button>
+      <div class="backup-status" id="routine-status"></div>
+    </div>
+  </section>
+
+  <div class="update-row">
+    <button type="button" class="update-check" id="update-check">Check for update</button>
+    <div class="update-status" id="update-status">Automatic update check enabled</div>
+  </div>
+  <p style="text-align:center;color:#697383;font-size:9px;margin:18px 0 6px">Build 2026.10.05.1-beta.1 · isolated test channel</p>
+  <p class="credit">
+    Video demonstrations are embedded from their original YouTube sources. Previous vector artwork source:
+    <a href="https://github.com/InlitX/GymMane" target="_blank" rel="noopener">GymMane</a>,
+    licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a>.
+    Use the form cues alongside the demonstration and a comfortable, controlled range of motion.
+  </p>
+</main>
+<div class="level-toast" id="level-toast">Level up!</div>
+
+<script>
+const $=(s,r=document)=>r.querySelector(s);
+const $$=(s,r=document)=>[...r.querySelectorAll(s)];
+
+let state={};
+try{ state=JSON.parse(localStorage.getItem('liftloop-beta-state')||'{}'); }catch(e){ state={}; }
+
+// Initialize every feature before any progress/render function can run.
+state.workoutHistory = Array.isArray(state.workoutHistory) ? state.workoutHistory : [];
+state.weightLogs = state.weightLogs || {}; // legacy single-weight logs kept for backwards compatibility
+state.setHistory = state.setHistory || {};
+state.currentSets = state.currentSets || {};
+state.sessionCompleted = state.sessionCompleted || {};
+state.routinePrefs = state.routinePrefs || {};
+state.profileName = typeof state.profileName === 'string' ? state.profileName : '';
+state.weightUnit = state.weightUnit || 'lb';
+const save=()=>{try{localStorage.setItem('liftloop-beta-state',JSON.stringify(state));}catch(e){}};
+
+function showDay(id){
+  $$('.tab').forEach(b=>b.classList.toggle('active',b.dataset.tab===id));
+  $$('.day').forEach(s=>s.classList.toggle('active',s.dataset.day===id));
+  state.activeDay=id; save();
+  if(id==='progress' && typeof renderProgress==='function') renderProgress();
+}
+$$('.tab').forEach(b=>b.addEventListener('click',()=>showDay(b.dataset.tab)));
+
+function workoutLastCompleted(day){
+  const rows=state.workoutHistory.filter(w=>w.day===day);
+  return rows.length ? Math.max(...rows.map(w=>Number(w.ts)||0)) : -Infinity;
+}
+function recommendedWorkoutDay(){
+  const baseOrder={push:0,pull:1,shoulders:2};
+  return ['push','pull','shoulders'].sort((a,b)=>{
+    const ta=workoutLastCompleted(a), tb=workoutLastCompleted(b);
+    if(ta!==tb) return ta-tb; // never-done / oldest first
+    return baseOrder[a]-baseOrder[b];
+  })[0];
+}
+function applyWorkoutPriority(openRecommended=false){
+  const nav=$('.tabs');
+  if(!nav) return 'push';
+  const progressBtn=$('.tab[data-tab="progress"]');
+  const ordered=['push','pull','shoulders'].sort((a,b)=>{
+    const ta=workoutLastCompleted(a), tb=workoutLastCompleted(b);
+    const base={push:0,pull:1,shoulders:2};
+    if(ta!==tb) return ta-tb;
+    return base[a]-base[b];
+  });
+  $$('.tab').forEach(b=>b.classList.remove('recommended'));
+  ordered.forEach(day=>{
+    const btn=$(`.tab[data-tab="${day}"]`);
+    if(btn) nav.appendChild(btn);
+  });
+  if(progressBtn) nav.appendChild(progressBtn);
+  const recommended=ordered[0]||'push';
+  const recBtn=$(`.tab[data-tab="${recommended}"]`);
+  if(recBtn) recBtn.classList.add('recommended');
+  if(openRecommended) showDay(recommended);
+  return recommended;
+}
+applyWorkoutPriority(true);
+
+
+const VIDEO_MAP={"incline-dumbbell-press":{"id":"oZVCBM9f8Eo","source":"PureGym"},"assisted-dip":{"id":"-p-vg_V7U_0","source":"Michael James Fitness"},"pec-deck":{"id":"eGjt4lk6g34","source":"PureGym"},"rope-tricep-pushdown":{"id":"LXkCrxn3caQ","source":"PureGym"},"bench-press":{"id":"lhMHmxKF_7s","source":"Future Health Club"},"decline-sit-up":{"id":"N7hf1_vcX5w","source":"PureGym"},"pull-up":{"id":"PHdHnZcbsB8","source":"PureGym"},"assisted-pull-up":{"id":"wFj808u2HWU","source":"PureGym"},"ez-bar-curl":{"id":"WXSNXrN2vcY","source":"Future Health Club"},"seated-row":{"id":"lJoozxC0Rns","source":"PureGym"},"bicep-curl":{"id":"kt2iGeJxElE","source":"Future Health Club"},"lat-pulldown":{"id":"JGeRYIZdojU","source":"PureGym"},"cross-body-hammer-curl":{"id":"buP9fSqWcw4","source":"OriGym"},"standing-dumbbell-press":{"id":"aI2hGzsAMXs","source":"PureGym"},"lateral-raise":{"id":"z-kOn7flIZg","source":"PureGym"},"cable-lateral-raise":{"id":"Z5FA9aq3L6A","source":"PureGym"},"reverse-pec-deck":{"id":"dT53N5ES4_U","source":"Arend Gelders"},"cable-rear-delt-fly":{"id":"ATSjVXoOgVg","source":"OriGym"},"russian-twist":{"id":"99T1EfpMwPA","source":"PureGym"},"lying-leg-raise":{"id":"l4kQd9eWclE","source":"Howcast"},"v-up":{"id":"YQVrOI0aT8w","source":"Future Health Club"},"push-up":{"id":"H594sWUfsn8","source":"Future Health Club"}};
+
+function stopAnimation(card){
+  const frame=$('.exercise-video',card);
+  if(frame) frame.remove();
+}
+
+function videoUrl(v){
+  const p=new URLSearchParams({
+    autoplay:'1',
+    mute:'1',
+    playsinline:'1',
+    rel:'0',
+    controls:'0',
+    disablekb:'1',
+    fs:'0',
+    iv_load_policy:'3',
+    loop:'1',
+    playlist:v.id
+  });
+  return `https://www.youtube-nocookie.com/embed/${v.id}?${p.toString()}`;
+}
+
+async function loadArt(card,key){
+  stopAnimation(card);
+  card.dataset.art=key;
+  const stage=$('.art-stage',card);
+  const loading=$('.art-loading',card);
+  const error=$('.art-error',card);
+  const svg=$('.exercise-art',card);
+  const source=$('.video-source',card);
+  if(svg) svg.hidden=true;
+  if(source) source.hidden=true;
+  error.hidden=true;
+  loading.hidden=false;
+  loading.textContent='Loading real exercise video…';
+
+  const v=VIDEO_MAP[key];
+  if(!v){
+    loading.hidden=true;
+    error.hidden=false;
+    error.textContent='No exact video match yet for this variation.';
+    return;
+  }
+
+  const iframe=document.createElement('iframe');
+  iframe.className='exercise-video';
+  iframe.title='Exercise demonstration video';
+  iframe.allow='autoplay; encrypted-media; picture-in-picture';
+  iframe.allowFullscreen=true;
+  iframe.referrerPolicy='strict-origin-when-cross-origin';
+  iframe.src=videoUrl(v);
+  iframe.addEventListener('load',()=>{
+    // Let autoplay begin and YouTube's transient startup UI disappear before reveal.
+    setTimeout(()=>{
+      loading.hidden=true;
+      iframe.classList.add('video-ready');
+    },1100);
+  },{once:true});
+  stage.appendChild(iframe);
+
+  if(source){
+    source.hidden=false;
+    $('.video-pill',source).textContent=v.source;
+    const link=$('a',source);
+    link.href=`https://www.youtube.com/watch?v=${v.id}`;
+  }
+}
+
+$$('.exercise-head').forEach(btn=>btn.addEventListener('click',async()=>{
+  const card=btn.closest('.exercise');
+  const body=btn.nextElementSibling;
+  const open=btn.getAttribute('aria-expanded')==='true';
+
+  $$('.exercise-head[aria-expanded="true"]').forEach(other=>{
+    if(other!==btn){
+      other.setAttribute('aria-expanded','false');
+      other.nextElementSibling.hidden=true;
+      stopAnimation(other.closest('.exercise'));
+    }
+  });
+
+  btn.setAttribute('aria-expanded',String(!open));
+  body.hidden=open;
+  if(open){stopAnimation(card);return;}
+  await loadArt(card,card.dataset.art);
+}));
+
+$$('.variant-btn').forEach(btn=>btn.addEventListener('click',async()=>{
+  const card=btn.closest('.exercise');
+  const group=btn.closest('.variant');
+  $$('.variant-btn',group).forEach(x=>x.classList.toggle('active',x===btn));
+  await loadArt(card,btn.dataset.art);
+}));
+
+
+function routinePrefKey(card){
+  return `${card.dataset.day||'day'}::${card.dataset.art||$('.ex-name',card)?.textContent.trim()||'exercise'}`;
+}
+function defaultPrescription(card){
+  const dose=$('.dose',card)?.textContent||'';
+  const m=dose.match(/(\d+)\s*[×x]\s*(\d+)/);
+  return {sets:m?Number(m[1]):3,reps:m?Number(m[2]):10};
+}
+function exerciseIndexInDay(card){
+  return $$('.exercise').filter(c=>c.dataset.day===card.dataset.day).indexOf(card);
+}
+function setKeyFor(card,setIndex){
+  return `${card.dataset.day}-${exerciseIndexInDay(card)}-${setIndex}`;
+}
+function applyRoutinePreferences(){
+  $$('.exercise').forEach(card=>{
+    const key=routinePrefKey(card);
+    const def=defaultPrescription(card);
+    const pref=state.routinePrefs[key]||{};
+    const enabled=pref.enabled!==false;
+    const sets=Math.max(1,Math.min(10,Number(pref.sets)||def.sets));
+    const reps=Math.max(1,Math.min(100,Number(pref.reps)||def.reps));
+    card.classList.toggle('routine-hidden',!enabled);
+    const dose=$('.dose',card);
+    if(dose) dose.textContent=`${sets} × ${reps}`;
+
+    const setsBox=$('.sets',card);
+    if(setsBox && !setsBox.classList.contains('set-log-grid')){
+      setsBox.innerHTML='';
+      for(let i=0;i<sets;i++){
+        const b=document.createElement('button');
+        b.type='button';
+        b.className='set-dot';
+        b.dataset.key=setKeyFor(card,i);
+        b.setAttribute('aria-label',`Mark set or round ${i+1} complete`);
+        b.textContent=String(i+1);
+        setsBox.appendChild(b);
+      }
+    }
+  });
+}
+applyRoutinePreferences();
+
+function visibleSetDots(day){
+  const section=$(`#day-${day}`);
+  if(!section) return [];
+  return $$('.exercise:not(.routine-hidden) .set-dot',section);
+}
+
+function updateProgress(day){
+  const dots=visibleSetDots(day);
+  const done=dots.filter(b=>b.classList.contains('done')).length;
+  const pct=dots.length?Math.round(done/dots.length*100):0;
+  const el=$(`#day-${day} .progress-count`);
+  if(el) el.textContent=pct;
+  if(typeof renderGamify==='function') renderGamify();
+}
+
+function bindSetDot(btn){
+  if(btn.dataset.liftloopBound==='1') return;
+  btn.dataset.liftloopBound='1';
+  if(state[btn.dataset.key]) btn.classList.add('done');
+  btn.addEventListener('click',()=>{
+    const day=btn.dataset.key.split('-')[0];
+    if(state.sessionCompleted[day]) state.sessionCompleted[day]=false;
+    btn.classList.toggle('done');
+    state[btn.dataset.key]=btn.classList.contains('done');
+    save();
+    updateProgress(day);
+  });
+}
+$$('.set-dot').forEach(bindSetDot);
+['push','pull','shoulders'].forEach(updateProgress);
+
+$$('.reset-day').forEach(btn=>btn.addEventListener('click',()=>{
+  const day=btn.dataset.reset;
+  visibleSetDots(day).forEach(dot=>{
+    dot.classList.remove('done');
+    delete state[dot.dataset.key];
+  });
+  state.sessionCompleted[day]=false;
+  Object.keys(state.currentSets).forEach(k=>{ if(k.startsWith(day+'-')) delete state.currentSets[k]; });
+  save();
+  updateProgress(day);
+  renderGamify();
+  if(typeof refreshDaySetRows==='function') refreshDaySetRows(day);
+  renderProgress();
+}));
+
+// ---------- LiftLoop leveling + load tracking ----------
+function localDateKey(value){
+  const d = value instanceof Date ? value : new Date(value);
+  const y=d.getFullYear(), m=String(d.getMonth()+1).padStart(2,'0'), day=String(d.getDate()).padStart(2,'0');
+  return `${y}-${m}-${day}`;
+}
+function dayBefore(key){
+  const [y,m,d]=key.split('-').map(Number);
+  const x=new Date(y,m-1,d); x.setDate(x.getDate()-1);
+  return localDateKey(x);
+}
+function workoutsInRollingDays(days=7, endTs=Date.now()){
+  const windowMs=days*24*60*60*1000;
+  const start=endTs-windowMs;
+  return state.workoutHistory.filter(w=>{
+    const ts=Number(w.ts)||0;
+    return ts>start && ts<=endTs;
+  });
+}
+function rollingGoalCount(endTs=Date.now()){
+  return workoutsInRollingDays(7,endTs).length;
+}
+function rollingGoalMet(endTs=Date.now()){
+  return rollingGoalCount(endTs)>=3;
+}
+function rollingGoalMaintainedDays(){
+  if(!rollingGoalMet()) return 0;
+  const now=new Date();
+  // Count consecutive calendar days ending today where the trailing 7-day window
+  // still contained at least 3 completed workouts. Rest days do not break this.
+  let days=0;
+  for(let i=0;i<3650;i++){
+    const end=new Date(now);
+    end.setHours(23,59,59,999);
+    end.setDate(end.getDate()-i);
+    if(!rollingGoalMet(end.getTime())) break;
+    days++;
+  }
+  return days;
+}
+function rankFor(level){
+  if(level>=100) return 'Legend';
+  if(level>=50) return 'Elite';
+  if(level>=30) return 'Iron';
+  if(level>=20) return 'Veteran';
+  if(level>=10) return 'Grinder';
+  if(level>=5) return 'Builder';
+  return 'Starting Line';
+}
+function renderGamify(){
+  const workouts=state.workoutHistory.length;
+  const level=workouts+1;
+  $('#level-number').textContent=level;
+  $('#level-label').textContent=level;
+  $('#rank-label').textContent=rankFor(level);
+  $('#workout-count').textContent=workouts;
+  const rollingCount=rollingGoalCount();
+  $('#streak-count').textContent=`${Math.min(rollingCount,3)}/3`;
+  $('#streak-label').textContent=rollingCount>=3?'7-DAY GOAL ✓':'LAST 7 DAYS';
+  const consistency=$('#consistency-status');
+  if(consistency){
+    const maintained=rollingGoalMaintainedDays();
+    consistency.classList.toggle('met',rollingCount>=3);
+    if(rollingCount>=3){
+      consistency.textContent=maintained>1
+        ? `Goal met · ${rollingCount} workouts in the last 7 days · maintained for ${maintained} days`
+        : `Goal met · ${rollingCount} workouts in the last 7 days`;
+    }else{
+      const remaining=Math.max(0,3-rollingCount);
+      consistency.textContent=`${rollingCount} of 3 workouts in the last 7 days · ${remaining} more to hit your rolling goal`;
+    }
+  }
+  applyWorkoutPriority(false);
+
+  const milestone=Math.ceil(level/5)*5 || 5;
+  const base=milestone-5;
+  const within=level-base;
+  $('#milestone-copy').textContent=`${within} / 5 to next milestone`;
+  $('#milestone-level').textContent=`Level ${milestone}`;
+  $('#milestone-fill').style.width=`${Math.min(100,Math.max(0,within/5*100))}%`;
+
+  const recent=$('#recent-workouts');
+  recent.innerHTML='';
+  const items=[...state.workoutHistory].slice(-5).reverse();
+  if(!items.length){
+    recent.innerHTML='<span class="history-empty">Complete a workout and it’ll show up here.</span>';
+  }else{
+    items.forEach(w=>{
+      const chip=document.createElement('span');
+      chip.className='history-chip';
+      const dt=new Date(w.ts);
+      chip.textContent=`${w.name} · ${dt.toLocaleDateString(undefined,{month:'short',day:'numeric'})}`;
+      recent.appendChild(chip);
+    });
+  }
+
+  $$('.finish-workout').forEach(btn=>{
+    const day=btn.dataset.finish;
+    const completed=!!state.sessionCompleted[day];
+    const dots=visibleSetDots(day);
+    const allDone=dots.length>0 && dots.every(x=>x.classList.contains('done'));
+    btn.disabled=completed || !allDone;
+    btn.classList.toggle('completed',completed);
+    btn.textContent=completed ? 'Workout Complete ✓ · Level Earned' :
+      (allDone ? 'Finish Workout · +1 Level' : 'Complete all sets to finish');
+  });
+}
+function showLevelToast(level){
+  const toast=$('#level-toast');
+  toast.textContent=`Level ${level} unlocked`;
+  toast.classList.add('show');
+  setTimeout(()=>toast.classList.remove('show'),1800);
+}
+$$('.finish-workout').forEach(btn=>btn.addEventListener('click',()=>{
+  const day=btn.dataset.finish;
+  if(state.sessionCompleted[day]) return;
+  const dots=visibleSetDots(day);
+  if(!dots.length || !dots.every(x=>x.classList.contains('done'))) return;
+  const title=$(`#day-${day} h2`)?.textContent || day;
+  const ts=Date.now();
+  const prCount=commitWorkoutSets(day,ts);
+  state.workoutHistory.push({ts,day,name:title});
+  state.sessionCompleted[day]=true;
+  save();
+  renderGamify();
+  applyWorkoutPriority(false);
+  renderProgress();
+  const level=state.workoutHistory.length+1;
+  showLevelToast(level);
+  if(prCount>0){
+    setTimeout(()=>{
+      const t=$('#level-toast');
+      t.textContent=`${prCount} new PR${prCount===1?'':'s'} recorded`;
+      t.classList.add('show');
+      setTimeout(()=>t.classList.remove('show'),1600);
+    },1900);
+  }
+}));
+
+
+function kgFromDisplay(v){ return state.weightUnit==='kg' ? v : v*0.45359237; }
+function displayFromKg(kg){ return state.weightUnit==='kg' ? kg : kg/0.45359237; }
+function fmt(v){
+  if(!Number.isFinite(v)) return '—';
+  const rounded=Math.round(v*10)/10;
+  return `${Number.isInteger(rounded)?rounded:rounded.toFixed(1)} ${state.weightUnit}`;
+}
+function fmtNum(v){
+  if(!Number.isFinite(v)) return '';
+  const rounded=Math.round(v*10)/10;
+  return Number.isInteger(rounded)?String(rounded):rounded.toFixed(1);
+}
+function trackerMode(name){
+  if(name==='Assisted Dips') return {label:'Assistance', bodyweight:false, assistance:true};
+  if(name.includes('Pull-Ups / Assisted')){
+    return {label:'Load / assistance', bodyweight:true, assistance:false};
+  }
+  if(/Push-Ups|Russian Twists|Leg Raises|Jackknife|Incline Sit-Ups/.test(name))
+    return {label:'Added load (optional)', bodyweight:true, assistance:false};
+  return {label:'Working weight', bodyweight:false, assistance:false};
+}
+function exerciseKey(card){
+  const day=card.dataset.day||'day';
+  const name=$('.ex-name',card)?.textContent.trim()||'Exercise';
+  return `${day}::${name}`;
+}
+function targetReps(card){
+  const dose=$('.dose',card)?.textContent||'';
+  const m=dose.match(/[×x]\s*(\d+)/);
+  return m ? Number(m[1]) : null;
+}
+function exerciseCardsForDay(day){
+  return $$('.exercise').filter(c=>c.dataset.day===day && !c.classList.contains('routine-hidden'));
+}
+function historyFor(card){
+  const key=exerciseKey(card);
+  return Array.isArray(state.setHistory[key]) ? state.setHistory[key] : [];
+}
+function segmentsFromSet(s){
+  const out=[];
+  if(Number.isFinite(s.kg) && Number.isFinite(s.reps) && s.reps>0) out.push({kg:s.kg,reps:s.reps});
+  if(Number.isFinite(s.dropKg) && Number.isFinite(s.dropReps) && s.dropReps>0) out.push({kg:s.dropKg,reps:s.dropReps,drop:true});
+  return out;
+}
+function latestSessionUsualKg(card){
+  const hist=historyFor(card);
+  if(hist.length){
+    const latest=hist.at(-1);
+    const mains=(latest.sets||[]).map(s=>s.kg).filter(Number.isFinite);
+    if(mains.length){
+      const counts=new Map();
+      mains.forEach((kg,i)=>{
+        const k=kg.toFixed(5);
+        const prior=counts.get(k)||{kg,count:0,first:i};
+        prior.count++;
+        counts.set(k,prior);
+      });
+      return [...counts.values()].sort((a,b)=>b.count-a.count || a.first-b.first)[0].kg;
+    }
+  }
+  // Backwards-compatible fallback for any weights logged in the previous version.
+  const legacy=Array.isArray(state.weightLogs[exerciseKey(card)]) ? state.weightLogs[exerciseKey(card)] : [];
+  return legacy.length ? legacy.at(-1).kg : NaN;
+}
+function ensureCurrentSet(card,dot,index){
+  const id=dot.dataset.key;
+  let s=state.currentSets[id];
+  if(!s){
+    const usual=latestSessionUsualKg(card);
+    const target=targetReps(card);
+    const mode=trackerMode($('.ex-name',card)?.textContent.trim()||'');
+    s={
+      kg:Number.isFinite(usual)?usual:(mode.bodyweight?0:null),
+      reps:Number.isFinite(target)?target:null,
+      dropKg:null,
+      dropReps:null
+    };
+    state.currentSets[id]=s;
+  }
+  return s;
+}
+function persistRow(row){
+  const dot=$('.set-dot',row);
+  if(!dot) return;
+  const s=state.currentSets[dot.dataset.key] || {};
+  const weight=parseFloat($('.set-weight',row)?.value);
+  const reps=parseInt($('.set-reps',row)?.value,10);
+  const dropWeight=parseFloat($('.drop-weight',row)?.value);
+  const dropReps=parseInt($('.drop-reps',row)?.value,10);
+  s.kg=Number.isFinite(weight)?kgFromDisplay(weight):null;
+  s.reps=Number.isFinite(reps)?reps:null;
+  s.dropKg=Number.isFinite(dropWeight)?kgFromDisplay(dropWeight):null;
+  s.dropReps=Number.isFinite(dropReps)?dropReps:null;
+  state.currentSets[dot.dataset.key]=s;
+  save();
+  renderCurrentSessionSummary(row.closest('.exercise'));
+}
+function renderCurrentSessionSummary(card){
+  const box=$('.session-summary',card);
+  if(!box) return;
+  const rows=$$('.set-log-row',card);
+  const all=[];
+  rows.forEach(row=>{
+    const id=$('.set-dot',row)?.dataset.key;
+    const s=state.currentSets[id]||{};
+    all.push(...segmentsFromSet(s));
+  });
+  const mode=trackerMode($('.ex-name',card)?.textContent.trim()||'');
+  const target=targetReps(card);
+  const best=all.length ? (mode.assistance?Math.min(...all.map(x=>x.kg)):Math.max(...all.map(x=>x.kg))) : NaN;
+  const targetVals=target ? all.filter(x=>x.reps>=target).map(x=>x.kg) : all.map(x=>x.kg);
+  const targetBest=targetVals.length ? (mode.assistance?Math.min(...targetVals):Math.max(...targetVals)) : NaN;
+  const volume=all.reduce((n,x)=>n+x.kg*x.reps,0);
+  $('.summary-best strong',box).textContent=fmt(displayFromKg(best));
+  $('.summary-target strong',box).textContent=target ? fmt(displayFromKg(targetBest)) : '—';
+  $('.summary-volume strong',box).textContent=Number.isFinite(volume)&&volume>0
+    ? `${Math.round(displayFromKg(volume)).toLocaleString()}`
+    : '—';
+}
+function addDropEditor(row,prefill){
+  if($('.drop-editor',row)) return;
+  const s=state.currentSets[$('.set-dot',row).dataset.key]||{};
+  const div=document.createElement('div');
+  div.className='drop-editor';
+  div.innerHTML=`
+    <div class="drop-label">Drop within this set</div>
+    <input class="set-field drop-weight" inputmode="decimal" type="number" min="0" placeholder="${state.weightUnit}" value="${Number.isFinite(s.dropKg)?fmtNum(displayFromKg(s.dropKg)):''}">
+    <div class="set-times">×</div>
+    <input class="set-field drop-reps" inputmode="numeric" type="number" min="0" placeholder="reps" value="${Number.isFinite(s.dropReps)?s.dropReps:''}">
+    <button type="button" class="drop-remove">Remove</button>`;
+  row.appendChild(div);
+  $$('.drop-weight,.drop-reps',div).forEach(inp=>inp.addEventListener('input',()=>persistRow(row)));
+  $('.drop-remove',div).addEventListener('click',()=>{
+    const id=$('.set-dot',row).dataset.key;
+    const cur=state.currentSets[id]||{};
+    cur.dropKg=null; cur.dropReps=null;
+    state.currentSets[id]=cur;
+    div.remove();
+    save();
+    renderCurrentSessionSummary(row.closest('.exercise'));
+  });
+}
+function renderSetRows(card){
+  const sets=$('.sets',card);
+  if(!sets) return;
+
+  // Build once; moving the original set buttons preserves their existing completion listeners.
+  if(!sets.classList.contains('set-log-grid')){
+    const dots=$$('.set-dot',sets);
+    sets.innerHTML='';
+    sets.classList.add('set-log-grid');
+
+    const head=document.createElement('div');
+    head.className='set-log-head';
+    head.innerHTML='<span></span><span class="weight-h">Weight</span><span></span><span class="reps-h">Reps</span><span></span>';
+    sets.appendChild(head);
+
+    dots.forEach((dot,index)=>{
+      const row=document.createElement('div');
+      row.className='set-log-row';
+      row.appendChild(dot);
+      row.insertAdjacentHTML('beforeend',`
+        <input class="set-field set-weight" inputmode="decimal" type="number" min="0" aria-label="Set ${index+1} weight">
+        <div class="set-times">×</div>
+        <input class="set-field set-reps reps-field" inputmode="numeric" type="number" min="0" aria-label="Set ${index+1} reps">
+        <button type="button" class="drop-toggle">+ Drop</button>`);
+      sets.appendChild(row);
+      $('.drop-toggle',row).addEventListener('click',()=>addDropEditor(row,true));
+      $$('.set-weight,.set-reps',row).forEach(inp=>inp.addEventListener('input',()=>persistRow(row)));
+    });
+
+    const note=document.createElement('div');
+    note.className='usual-weight-note';
+    sets.insertAdjacentElement('afterend',note);
+
+    const summary=document.createElement('div');
+    summary.className='session-summary';
+    summary.innerHTML=`
+      <div class="session-chip summary-best"><span>Best set load</span><strong>—</strong></div>
+      <div class="session-chip summary-target"><span>${targetReps(card)?'Target-rep load':'Target load'}</span><strong>—</strong></div>
+      <div class="session-chip summary-volume"><span>Volume</span><strong>—</strong></div>`;
+    note.insertAdjacentElement('afterend',summary);
+  }
+
+  const usual=latestSessionUsualKg(card);
+  const note=sets.nextElementSibling;
+  if(note?.classList.contains('usual-weight-note')){
+    note.textContent=Number.isFinite(usual)
+      ? `Auto-filled from your most-used weight in the last completed session: ${fmt(displayFromKg(usual))}. Change any set whenever you need to.`
+      : 'No previous working weight yet. Enter it once; future sessions will pre-fill it automatically.';
+  }
+
+  $$('.set-log-row',sets).forEach((row,index)=>{
+    const dot=$('.set-dot',row);
+    const s=ensureCurrentSet(card,dot,index);
+    const weight=$('.set-weight',row);
+    const reps=$('.set-reps',row);
+    weight.placeholder=state.weightUnit;
+    weight.value=Number.isFinite(s.kg)?fmtNum(displayFromKg(s.kg)):'';
+    reps.value=Number.isFinite(s.reps)?s.reps:'';
+    if(Number.isFinite(s.dropKg)||Number.isFinite(s.dropReps)) addDropEditor(row,false);
+    const dw=$('.drop-weight',row), dr=$('.drop-reps',row);
+    if(dw){
+      dw.placeholder=state.weightUnit;
+      dw.value=Number.isFinite(s.dropKg)?fmtNum(displayFromKg(s.dropKg)):'';
+    }
+    if(dr) dr.value=Number.isFinite(s.dropReps)?s.dropReps:'';
+  });
+  renderCurrentSessionSummary(card);
+}
+function refreshDaySetRows(day){
+  exerciseCardsForDay(day).forEach(card=>renderSetRows(card));
+}
+function sessionSummary(session,card){
+  const mode=trackerMode($('.ex-name',card)?.textContent.trim()||'');
+  const target=targetReps(card);
+  const segs=(session.sets||[]).flatMap(segmentsFromSet);
+  const valid=segs.filter(x=>Number.isFinite(x.kg)&&Number.isFinite(x.reps)&&x.reps>0);
+  const loads=valid.map(x=>x.kg);
+  const bestLoad=loads.length ? (mode.assistance?Math.min(...loads):Math.max(...loads)) : NaN;
+  const qualifying=target ? valid.filter(x=>x.reps>=target) : valid;
+  const qloads=qualifying.map(x=>x.kg);
+  const targetLoad=qloads.length ? (mode.assistance?Math.min(...qloads):Math.max(...qloads)) : NaN;
+  const volume=valid.reduce((n,x)=>n+x.kg*x.reps,0);
+  const bestRepSegment=valid.length ? valid.reduce((best,x)=>{
+    if(!best) return x;
+    if(mode.assistance){
+      if(x.kg<best.kg || (Math.abs(x.kg-best.kg)<1e-8 && x.reps>best.reps)) return x;
+    }else if(x.kg>best.kg || (Math.abs(x.kg-best.kg)<1e-8 && x.reps>best.reps)) return x;
+    return best;
+  },null) : null;
+  return {bestLoad,targetLoad,volume,bestRepSegment,target};
+}
+function historicalPRsBefore(card,ts){
+  const prior=historyFor(card).filter(s=>s.ts<ts);
+  const summaries=prior.map(s=>sessionSummary(s,card));
+  const mode=trackerMode($('.ex-name',card)?.textContent.trim()||'');
+  const bestLoads=summaries.map(x=>x.bestLoad).filter(Number.isFinite);
+  const targetLoads=summaries.map(x=>x.targetLoad).filter(Number.isFinite);
+  const vols=summaries.map(x=>x.volume).filter(Number.isFinite);
+  return {
+    bestLoad:bestLoads.length?(mode.assistance?Math.min(...bestLoads):Math.max(...bestLoads)):NaN,
+    targetLoad:targetLoads.length?(mode.assistance?Math.min(...targetLoads):Math.max(...targetLoads)):NaN,
+    volume:vols.length?Math.max(...vols):NaN
+  };
+}
+function commitWorkoutSets(day,ts){
+  let prCount=0;
+  exerciseCardsForDay(day).forEach(card=>{
+    const key=exerciseKey(card);
+    const rows=$$('.set-log-row',card);
+    const sets=rows.map(row=>{
+      persistRow(row);
+      const id=$('.set-dot',row).dataset.key;
+      const s=state.currentSets[id]||{};
+      return {
+        kg:Number.isFinite(s.kg)?s.kg:null,
+        reps:Number.isFinite(s.reps)?s.reps:null,
+        dropKg:Number.isFinite(s.dropKg)?s.dropKg:null,
+        dropReps:Number.isFinite(s.dropReps)?s.dropReps:null
+      };
+    });
+    if(!sets.some(s=>Number.isFinite(s.kg)||Number.isFinite(s.reps))) return;
+
+    state.setHistory[key]=Array.isArray(state.setHistory[key])?state.setHistory[key]:[];
+    const session={ts,sets};
+    const before=historicalPRsBefore(card,ts);
+    const now=sessionSummary(session,card);
+    const mode=trackerMode($('.ex-name',card)?.textContent.trim()||'');
+
+    const improved=(a,b)=>mode.assistance ? (!Number.isFinite(b)||a<b-1e-8) : (!Number.isFinite(b)||a>b+1e-8);
+    if(Number.isFinite(now.bestLoad) && Number.isFinite(before.bestLoad) && improved(now.bestLoad,before.bestLoad)) prCount++;
+    if(Number.isFinite(now.targetLoad) && Number.isFinite(before.targetLoad) && improved(now.targetLoad,before.targetLoad)) prCount++;
+    if(Number.isFinite(now.volume) && now.volume>0 && Number.isFinite(before.volume) && now.volume>before.volume+1e-8) prCount++;
+
+    state.setHistory[key].push(session);
+  });
+  return prCount;
+}
+function progressExerciseCatalog(){
+  return $$('.exercise').map(card=>{
+    const key=exerciseKey(card);
+    const name=$('.ex-name',card)?.textContent.trim()||'Exercise';
+    const day=card.dataset.day||'';
+    const dayLabel=day==='push'?'Push':day==='pull'?'Pull':'Shoulders';
+    return {key,name,day,dayLabel,mode:trackerMode(name),card};
+  });
+}
+function performanceSeries(card){
+  const sessions=historyFor(card);
+  const rows=sessions.map(s=>({ts:s.ts,...sessionSummary(s,card)}));
+  // Main chart = target-rep load. If an exercise has no target rep prescription,
+  // use best load so circuit work can still be visualized.
+  const target=targetReps(card);
+  return rows
+    .filter(x=>Number.isFinite(target?x.targetLoad:x.bestLoad))
+    .map(x=>({ts:x.ts,kg:target?x.targetLoad:x.bestLoad,volume:x.volume,bestLoad:x.bestLoad}));
+}
+function progressChartSvg(series,mode){
+  if(!series.length) return '<div class="progress-empty">Finish a workout with set weights/reps to start this chart.</div>';
+
+  const vals=series.map(x=>displayFromKg(x.kg));
+  const W=360,H=190,L=42,R=12,T=14,B=30;
+  const min0=Math.min(...vals), max0=Math.max(...vals);
+  const pad=Math.max((max0-min0)*0.18, state.weightUnit==='kg'?1:2);
+  const min=Math.max(0,min0-pad), max=max0+pad;
+  const span=(max-min)||1;
+
+  const pts=vals.map((v,i)=>{
+    const x=L+(W-L-R)*(series.length===1?.5:i/(series.length-1));
+    const y=T+(H-T-B)*(1-(v-min)/span);
+    return {x,y,v};
+  });
+
+  const line=pts.map(p=>`${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ');
+  const baseY=H-B;
+  const area=`${pts[0].x.toFixed(1)},${baseY} ${line} ${pts.at(-1).x.toFixed(1)},${baseY}`;
+  let grid='', labels='';
+  for(let i=0;i<4;i++){
+    const y=T+(H-T-B)*(i/3);
+    const v=max-(max-min)*(i/3);
+    grid+=`<line class="grid" x1="${L}" y1="${y}" x2="${W-R}" y2="${y}"></line>`;
+    labels+=`<text class="axis-text" x="${L-6}" y="${y+3}" text-anchor="end">${Math.round(v*10)/10}</text>`;
+  }
+  const firstDate=new Date(series[0].ts).toLocaleDateString(undefined,{month:'short',day:'numeric'});
+  const lastDate=new Date(series.at(-1).ts).toLocaleDateString(undefined,{month:'short',day:'numeric'});
+  const dots=pts.map(p=>`<circle class="dot" cx="${p.x}" cy="${p.y}" r="4"></circle>`).join('');
+
+  return `<div class="progress-chart-title">Target-rep working weight over completed workouts</div>
+  <svg class="progress-chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Target-rep working weight progress over time">
+    ${grid}${labels}
+    <polygon class="area" points="${area}"></polygon>
+    <polyline class="line" points="${line}"></polyline>
+    ${dots}
+    <text class="axis-text" x="${L}" y="${H-8}">${firstDate}</text>
+    <text class="axis-text" x="${W-R}" y="${H-8}" text-anchor="end">${lastDate}</text>
+    <text class="axis-text" x="${W-R}" y="${T+9}" text-anchor="end">${state.weightUnit}</text>
+  </svg>`;
+}
+function renderProgress(){
+  const select=$('#progress-exercise-select');
+  if(!select) return;
+
+  const catalog=progressExerciseCatalog();
+  const prior=select.value || state.progressExerciseKey || '';
+  select.innerHTML='';
+  catalog.forEach(item=>{
+    const o=document.createElement('option');
+    o.value=item.key;
+    o.textContent=`${item.name} · ${item.dayLabel}`;
+    select.appendChild(o);
+  });
+
+  let chosen=catalog.find(x=>x.key===prior);
+  if(!chosen){
+    chosen=catalog.find(x=>historyFor(x.card).length) || catalog[0];
+  }
+  if(chosen){
+    select.value=chosen.key;
+    state.progressExerciseKey=chosen.key;
+  }
+
+  const allSessions=Object.values(state.setHistory).filter(Array.isArray);
+  const totalLogs=allSessions.reduce((n,sessions)=>n+sessions.reduce((m,s)=>m+(s.sets||[]).reduce((z,set)=>z+segmentsFromSet(set).length,0),0),0);
+  const tracked=allSessions.filter(v=>v.length).length;
+  $('#progress-level').textContent=state.workoutHistory.length+1;
+  $('#progress-workouts-count').textContent=state.workoutHistory.length;
+  $('#progress-log-count').textContent=totalLogs;
+  $('#progress-exercises-count').textContent=tracked;
+  $('#progress-unit-toggle').textContent=state.weightUnit;
+
+  if(chosen){
+    const series=performanceSeries(chosen.card);
+    $('#progress-chart-wrap').innerHTML=progressChartSvg(series,chosen.mode);
+
+    const vals=series.map(x=>displayFromKg(x.kg));
+    const first=vals[0], last=vals.at(-1);
+    const best=vals.length ? (chosen.mode.assistance?Math.min(...vals):Math.max(...vals)) : NaN;
+    const pct=Number.isFinite(first)&&Math.abs(first)>1e-8&&Number.isFinite(last)
+      ? (chosen.mode.assistance ? (first-last)/first*100 : (last-first)/first*100)
+      : NaN;
+
+    $('#progress-start').textContent=fmt(first);
+    $('#progress-latest').textContent=fmt(last);
+    $('#progress-best').textContent=fmt(best);
+
+    const ch=$('#progress-change');
+    ch.className='';
+    if(!Number.isFinite(pct) || series.length<2){
+      ch.textContent=series.length?'Need another workout':'—';
+      ch.classList.add('progress-neutral');
+    }else{
+      ch.textContent=`${pct>=0?'+':''}${pct.toFixed(1)}%`;
+      ch.classList.add(pct>0?'progress-good':pct<0?'progress-down':'progress-neutral');
+    }
+
+    const sessions=historyFor(chosen.card);
+    const latestSummary=sessions.length?sessionSummary(sessions.at(-1),chosen.card):null;
+    const latestBest=latestSummary?.bestRepSegment;
+    let detail=chosen.mode.assistance
+      ? 'Less assistance counts as improvement. '
+      : '';
+    if(latestBest && Number.isFinite(latestBest.kg)){
+      detail+=`Latest heaviest set: ${fmt(displayFromKg(latestBest.kg))} × ${latestBest.reps}. `;
+    }
+    if(latestSummary && latestSummary.volume>0){
+      detail+=`Latest volume: ${Math.round(displayFromKg(latestSummary.volume)).toLocaleString()} load-reps.`;
+    }
+    $('#progress-caption').textContent=detail || 'Finish a workout with set details to build your progression history.';
+  }
+
+  const ranking=[];
+  catalog.forEach(item=>{
+    const series=performanceSeries(item.card);
+    if(series.length<2) return;
+    const first=displayFromKg(series[0].kg), last=displayFromKg(series.at(-1).kg);
+    if(!Number.isFinite(first)||Math.abs(first)<1e-8||!Number.isFinite(last)) return;
+    const pct=item.mode.assistance ? (first-last)/first*100 : (last-first)/first*100;
+    ranking.push({item,pct,first,last});
+  });
+  ranking.sort((a,b)=>b.pct-a.pct);
+
+  const rankBox=$('#progress-ranking');
+  rankBox.innerHTML='';
+  if(!ranking.length){
+    rankBox.innerHTML='<div class="history-empty">Complete an exercise across at least two workouts and your improvements will appear here.</div>';
+  }else{
+    ranking.slice(0,8).forEach(r=>{
+      const row=document.createElement('div');
+      row.className='progress-rank-row';
+      const direction=r.pct>0?'progress-good':r.pct<0?'progress-down':'progress-neutral';
+      row.innerHTML=`<div><div class="name">${r.item.name}</div><div class="sub">${fmt(r.first)} → ${fmt(r.last)} · ${r.item.dayLabel}</div></div><div class="delta ${direction}">${r.pct>=0?'+':''}${r.pct.toFixed(1)}%</div>`;
+      rankBox.appendChild(row);
+    });
+  }
+
+  const hist=$('#progress-workout-history');
+  hist.innerHTML='';
+  const workouts=[...state.workoutHistory].reverse();
+  if(!workouts.length){
+    hist.innerHTML='<div class="history-empty">Finished workouts will appear here.</div>';
+  }else{
+    workouts.slice(0,20).forEach(w=>{
+      const row=document.createElement('div');
+      row.className='progress-workout-row';
+      const date=new Date(w.ts);
+      row.innerHTML=`<strong>${w.name}</strong><span>${date.toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'})}</span>`;
+      hist.appendChild(row);
+    });
+  }
+}
+function renderAllSetRows(){
+  $$('.exercise:not(.routine-hidden)').forEach(renderSetRows);
+}
+renderAllSetRows();
+renderGamify();
+renderProgress();
+
+const progressSelect=$('#progress-exercise-select');
+if(progressSelect){
+  progressSelect.addEventListener('change',()=>{
+    state.progressExerciseKey=progressSelect.value;
+    save();
+    renderProgress();
+  });
+}
+function switchWeightUnit(){
+  state.weightUnit=state.weightUnit==='lb'?'kg':'lb';
+  save();
+  renderAllSetRows();
+  renderProgress();
+}
+const progressUnit=$('#progress-unit-toggle');
+if(progressUnit) progressUnit.addEventListener('click',switchWeightUnit);
+
+// If the older single-weight unit buttons still exist in markup generated by an older build,
+// keep them synchronized. They are visually hidden in this build.
+$$('.unit-toggle').forEach(btn=>btn.addEventListener('click',switchWeightUnit));
+
+
+
+
+function renderProfile(){
+  const input=$('#profile-name');
+  if(input) input.value=state.profileName||'';
+  const greeting=$('#profile-greeting');
+  if(greeting) greeting.textContent=state.profileName ? `${state.profileName}'s training` : '';
+}
+function renderRoutineSettings(){
+  const box=$('#routine-settings');
+  if(!box) return;
+  box.innerHTML='';
+  const dayNames={push:'Push',pull:'Pull',shoulders:'Shoulders + Core'};
+  ['push','pull','shoulders'].forEach(day=>{
+    const label=document.createElement('div');
+    label.className='routine-day-label';
+    label.textContent=dayNames[day];
+    box.appendChild(label);
+    $$('.exercise').filter(c=>c.dataset.day===day).forEach(card=>{
+      const key=routinePrefKey(card);
+      const def=defaultPrescription(card);
+      const pref=state.routinePrefs[key]||{};
+      const row=document.createElement('div');
+      row.className='routine-row';
+      row.dataset.prefKey=key;
+      row.innerHTML=`
+        <div class="routine-row-name">${$('.ex-name',card)?.textContent.trim()||'Exercise'}<small>sets · reps · on/off</small></div>
+        <input class="routine-num pref-sets" type="number" min="1" max="10" value="${Number(pref.sets)||def.sets}" aria-label="Sets">
+        <input class="routine-num pref-reps" type="number" min="1" max="100" value="${Number(pref.reps)||def.reps}" aria-label="Reps">
+        <input class="routine-toggle pref-enabled" type="checkbox" ${pref.enabled===false?'':'checked'} aria-label="Enable exercise">`;
+      box.appendChild(row);
+    });
+  });
+}
+function backupPayload(){
+  return {
+    app:'LiftLoop Beta',
+    formatVersion:1,
+    build:LIFTLOOP_BUILD,
+    exportedAt:new Date().toISOString(),
+    state
+  };
+}
+function backupText(){
+  return JSON.stringify(backupPayload(),null,2);
+}
+function setBackupStatus(msg){
+  const el=$('#backup-status');
+  if(el) el.textContent=msg;
+}
+renderProfile();
+renderRoutineSettings();
+
+$('#save-profile')?.addEventListener('click',()=>{
+  state.profileName=$('#profile-name')?.value.trim()||'';
+  save();
+  renderProfile();
+  setBackupStatus('Profile saved on this device.');
+});
+
+$('#download-backup')?.addEventListener('click',()=>{
+  try{
+    const blob=new Blob([backupText()],{type:'application/json'});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');
+    const day=new Date().toISOString().slice(0,10);
+    a.href=url;
+    a.download=`LiftLoop-Beta-backup-${day}.json`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),2000);
+    setBackupStatus('Backup created. Save it somewhere you can find later.');
+  }catch(e){
+    setBackupStatus('Could not create the file. Use Copy backup instead.');
+  }
+});
+
+$('#copy-backup')?.addEventListener('click',async()=>{
+  try{
+    await navigator.clipboard.writeText(backupText());
+    setBackupStatus('Backup JSON copied to your clipboard.');
+  }catch(e){
+    setBackupStatus('Clipboard access was blocked. Try Download backup.');
+  }
+});
+
+$('#restore-backup')?.addEventListener('click',()=>$('#restore-file')?.click());
+$('#restore-file')?.addEventListener('change',async e=>{
+  const file=e.target.files?.[0];
+  if(!file) return;
+  try{
+    const parsed=JSON.parse(await file.text());
+    if(parsed?.app!=='LiftLoop Beta' || !parsed?.state || typeof parsed.state!=='object'){
+      throw new Error('Not a LiftLoop backup');
+    }
+    localStorage.setItem('liftloop-beta-state',JSON.stringify(parsed.state));
+    setBackupStatus('Backup restored. Reloading LiftLoop…');
+    setTimeout(()=>location.reload(),350);
+  }catch(err){
+    setBackupStatus('That file is not a valid LiftLoop backup.');
+  }finally{
+    e.target.value='';
+  }
+});
+
+$('#save-routine')?.addEventListener('click',()=>{
+  $$('.routine-row').forEach(row=>{
+    const key=row.dataset.prefKey;
+    state.routinePrefs[key]={
+      sets:Math.max(1,Math.min(10,Number($('.pref-sets',row)?.value)||1)),
+      reps:Math.max(1,Math.min(100,Number($('.pref-reps',row)?.value)||1)),
+      enabled:!!$('.pref-enabled',row)?.checked
+    };
+  });
+  save();
+  const status=$('#routine-status');
+  if(status) status.textContent='Routine saved. Reloading with your settings…';
+  setTimeout(()=>location.reload(),350);
+});
+
+
+// Independent self-updater: does not depend on a service worker.
+const LIFTLOOP_BUILD=document.documentElement.dataset.build||'unknown';
+async function checkForLiftLoopUpdate(manual=false){
+  const status=document.getElementById('update-status');
+  try{
+    if(manual && status) status.textContent='Checking…';
+    const url=`./beta.html?__liftloop_update=${Date.now()}`;
+    const res=await fetch(url,{cache:'no-store',headers:{'Cache-Control':'no-cache'}});
+    if(!res.ok) throw new Error(`HTTP ${res.status}`);
+    const text=await res.text();
+    const match=text.match(/<html[^>]*data-build=["']([^"']+)["']/i);
+    const latest=match?.[1];
+    if(latest && latest!==LIFTLOOP_BUILD){
+      if(status) status.textContent=`Updating ${LIFTLOOP_BUILD} → ${latest}…`;
+      const target=`./beta.html?v=${encodeURIComponent(latest)}&refresh=${Date.now()}`;
+      location.replace(target);
+      return true;
+    }
+    if(status) status.textContent=manual ? `You're on the latest build (${LIFTLOOP_BUILD})` : 'Automatic update check enabled';
+  }catch(err){
+    if(manual && status) status.textContent='Could not check right now — try again when online';
+  }
+  return false;
+}
+const updateButton=document.getElementById('update-check');
+if(updateButton) updateButton.addEventListener('click',()=>checkForLiftLoopUpdate(true));
+
+// Check immediately on launch and whenever the standalone app becomes active again.
+window.addEventListener('load',()=>checkForLiftLoopUpdate(false));
+document.addEventListener('visibilitychange',()=>{
+  if(document.visibilityState==='visible') checkForLiftLoopUpdate(false);
+});
+window.addEventListener('pageshow',()=>checkForLiftLoopUpdate(false));
+
+
+// Keep the Home Screen app current without deleting/re-adding it after every update.
+if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
+  window.addEventListener('load', async () => {
+    try {
+      const reg = await navigator.serviceWorker.register('./sw.js', { updateViaCache: 'none' });
+      await reg.update();
+    } catch (e) {
+      console.warn('LiftLoop update service unavailable', e);
+    }
+  });
+}
+
+</script>
+</body>
+</html>
