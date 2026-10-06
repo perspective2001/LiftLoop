@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-build="2026.10.06-beta.5">
+<html lang="en" data-build="2026.10.06-beta.6">
 <head>
 <meta charset="utf-8">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
@@ -1064,7 +1064,7 @@ button{font:inherit}
     <button type="button" class="update-check" id="open-whats-new" style="margin-left:6px">What’s New</button>
     <div class="update-status" id="update-status">Automatic update check enabled</div>
   </div>
-  <p style="text-align:center;color:#697383;font-size:9px;margin:18px 0 6px">Build 2026.10.06-beta.5 · What’s New fix</p>
+  <p style="text-align:center;color:#697383;font-size:9px;margin:18px 0 6px">Build 2026.10.06-beta.6 · usual-weight fix</p>
   <p class="credit">
     Video demonstrations are embedded from their original YouTube sources. Previous vector artwork source:
     <a href="https://github.com/InlitX/GymMane" target="_blank" rel="noopener">GymMane</a>,
@@ -1539,9 +1539,56 @@ function mostCommonRecent(values){
   const ranked=[...counts.values()].sort((a,b)=>b.count-a.count||b.last-a.last); return ranked.length?ranked[0].value:NaN;
 }
 function latestSessionUsualKg(card){
-  const hist=historyFor(card).slice(-5), mains=[]; hist.forEach(session=>(session.sets||[]).forEach(s=>{if(Number.isFinite(s.kg))mains.push(s.kg);}));
-  if(mains.length)return mostCommonRecent(mains);
-  const legacy=Array.isArray(state.weightLogs[exerciseKey(card)])?state.weightLogs[exerciseKey(card)]:[]; return legacy.length?legacy.at(-1).kg:NaN;
+  const positive=[];
+
+  // Primary source: completed set history for this exact exercise.
+  historyFor(card).forEach(session=>{
+    (session.sets||[]).forEach(s=>{
+      if(Number.isFinite(s.kg) && s.kg>0) positive.push(s.kg);
+    });
+  });
+  if(positive.length) return mostCommonRecent(positive);
+
+  // Backwards compatibility with older LiftLoop weight-log formats/keys.
+  const name=$('.ex-name',card)?.textContent.trim()||'';
+  const keys=[exerciseKey(card),routinePrefKey(card),card.dataset.art,name].filter(Boolean);
+  const legacyValues=[];
+
+  keys.forEach(key=>{
+    const logs=state.weightLogs?.[key];
+    if(!Array.isArray(logs)) return;
+    logs.forEach(entry=>{
+      let kg=NaN;
+      if(typeof entry==='number'){
+        // Older numeric entries were stored in the app's display unit.
+        kg=kgFromDisplay(entry);
+      }else if(entry && typeof entry==='object'){
+        if(Number.isFinite(entry.kg)) kg=entry.kg;
+        else if(Number.isFinite(entry.weightKg)) kg=entry.weightKg;
+        else if(Number.isFinite(entry.weight)){
+          kg=entry.unit==='kg' ? entry.weight : entry.weight*0.45359237;
+        }else if(Number.isFinite(entry.value)){
+          kg=entry.unit==='kg' ? entry.value : entry.value*0.45359237;
+        }
+      }
+      if(Number.isFinite(kg) && kg>0) legacyValues.push(kg);
+    });
+  });
+  if(legacyValues.length) return mostCommonRecent(legacyValues);
+
+  // Useful fallback: if the user has already entered a non-zero weight
+  // for this exercise in the current session, propagate that value.
+  const currentValues=[];
+  $$('.set-log-row',card).forEach(row=>{
+    const id=$('.set-dot',row)?.dataset.key;
+    const s=id ? state.currentSets[id] : null;
+    if(s && Number.isFinite(s.kg) && s.kg>0) currentValues.push(s.kg);
+    const typed=parseFloat($('.set-weight',row)?.value);
+    if(Number.isFinite(typed) && typed>0) currentValues.push(kgFromDisplay(typed));
+  });
+  if(currentValues.length) return mostCommonRecent(currentValues);
+
+  return NaN;
 }
 function latestSessionUsualSeconds(card){ const hist=historyFor(card).slice(-5), times=[]; hist.forEach(session=>(session.sets||[]).forEach(s=>{if(Number.isFinite(s.seconds)&&s.seconds>0)times.push(s.seconds);})); return mostCommonRecent(times); }
 function ensureCurrentSet(card,dot,index){
@@ -1570,7 +1617,9 @@ function addDropEditor(row,prefill){
 }
 function completeAllExercise(card){
   const usual=latestSessionUsualKg(card), usualSeconds=latestSessionUsualSeconds(card), timed=isTimedExercise(card), repTarget=targetReps(card), timeTarget=targetSeconds(card), mode=trackerMode($('.ex-name',card)?.textContent.trim()||'');
-  $$('.set-log-row',card).forEach((row,index)=>{ const dot=$('.set-dot',row), s=ensureCurrentSet(card,dot,index); if(Number.isFinite(usual))s.kg=usual; else if(mode.bodyweight&&!Number.isFinite(s.kg))s.kg=0; if(timed){if(Number.isFinite(usualSeconds))s.seconds=usualSeconds; else if(Number.isFinite(timeTarget))s.seconds=timeTarget; s.reps=null;} else {if(Number.isFinite(repTarget))s.reps=repTarget; s.seconds=null; s.dropKg=null; s.dropReps=null; $('.drop-editor',row)?.remove();} state.currentSets[dot.dataset.key]=s; dot.classList.add('done'); state[dot.dataset.key]=true; });
+  $$('.set-log-row',card).forEach((row,index)=>{ const dot=$('.set-dot',row), s=ensureCurrentSet(card,dot,index);
+    if(Number.isFinite(usual) && usual>0) s.kg=usual;
+    else if(mode.bodyweight && !Number.isFinite(s.kg)) s.kg=0; if(timed){if(Number.isFinite(usualSeconds))s.seconds=usualSeconds; else if(Number.isFinite(timeTarget))s.seconds=timeTarget; s.reps=null;} else {if(Number.isFinite(repTarget))s.reps=repTarget; s.seconds=null; s.dropKg=null; s.dropReps=null; $('.drop-editor',row)?.remove();} state.currentSets[dot.dataset.key]=s; dot.classList.add('done'); state[dot.dataset.key]=true; });
   state.sessionCompleted[card.dataset.day]=false; save(); renderSetRows(card); updateProgress(card.dataset.day); renderGamify();
 }
 function ensureMetricModeControl(card){
@@ -1629,7 +1678,7 @@ function renderSetRows(card){
     const note=document.createElement('div'); note.className='usual-weight-note'; complete.insertAdjacentElement('afterend',note); let anchor=note; if(timed){const hint=document.createElement('div'); hint.className='timed-hint'; hint.textContent='Timed exercise: log seconds instead of reps. Weight is optional.'; note.insertAdjacentElement('afterend',hint); anchor=hint;}
     const summary=document.createElement('div'); summary.className='session-summary'; summary.innerHTML=`<div class="session-chip summary-best"><span>Best set load</span><strong>—</strong></div><div class="session-chip summary-target"><span>${timed?'Best time':(targetReps(card)?'Target-rep load':'Best load')}</span><strong>—</strong></div><div class="session-chip summary-volume"><span>${timed?'Total time':'Volume'}</span><strong>—</strong></div>`; anchor.insertAdjacentElement('afterend',summary);
   }
-  const usual=latestSessionUsualKg(card), complete=sets.nextElementSibling, note=complete?.nextElementSibling, usualTime=latestSessionUsualSeconds(card); if(note?.classList.contains('usual-weight-note')){let msg=Number.isFinite(usual)?`Usual recent weight: ${fmt(displayFromKg(usual))}.`:'No previous working weight yet.'; if(timed&&Number.isFinite(usualTime))msg+=` Usual time: ${usualTime} sec.`; msg+=' Change any set whenever you need to.'; note.textContent=msg;}
+  const usual=latestSessionUsualKg(card), complete=sets.nextElementSibling, note=complete?.nextElementSibling, usualTime=latestSessionUsualSeconds(card); if(note?.classList.contains('usual-weight-note')){let msg=Number.isFinite(usual)?`Most-used working weight: ${fmt(displayFromKg(usual))}.`:'No previous working weight yet.'; if(timed&&Number.isFinite(usualTime))msg+=` Usual time: ${usualTime} sec.`; msg+=' Change any set whenever you need to.'; note.textContent=msg;}
   $$('.set-log-row',sets).forEach((row,index)=>{ const dot=$('.set-dot',row), s=ensureCurrentSet(card,dot,index), weight=$('.set-weight',row); weight.placeholder=state.weightUnit; weight.value=Number.isFinite(s.kg)?fmtNum(displayFromKg(s.kg)):''; if(timed){const seconds=$('.set-seconds',row); seconds.value=Number.isFinite(s.seconds)?s.seconds:'';} else {const reps=$('.set-reps',row); reps.value=Number.isFinite(s.reps)?s.reps:''; if(Number.isFinite(s.dropKg)||Number.isFinite(s.dropReps))addDropEditor(row,false); const dw=$('.drop-weight',row), dr=$('.drop-reps',row); if(dw){dw.placeholder=state.weightUnit; dw.value=Number.isFinite(s.dropKg)?fmtNum(displayFromKg(s.dropKg)):'';} if(dr)dr.value=Number.isFinite(s.dropReps)?s.dropReps:'';} });
   const allDone=$$('.set-dot',card).length>0&&$$('.set-dot',card).every(d=>d.classList.contains('done')); if(complete?.classList.contains('exercise-complete-all')){complete.classList.toggle('done',allDone); complete.textContent=allDone?'All sets marked complete ✓':'✓ Complete all sets with usual weight';} renderCurrentSessionSummary(card);
 }
@@ -2042,7 +2091,7 @@ $('#prepare-stable')?.addEventListener('click',async()=>{
 
 
 const LIFTLOOP_CHANGELOG = {
-  '2026.10.06-beta.5': {
+  '2026.10.06-beta.6': {
     title: 'A lot changed in LiftLoop',
     changes: [
       {icon:'⏱️',title:'Reps or time',text:'Russian twists and plank-style exercises can now be tracked by reps or by time, with optional weight.'},
@@ -2052,7 +2101,8 @@ const LIFTLOOP_CHANGELOG = {
       {icon:'📈',title:'Better progress tracking',text:'Timed movements track time progress while rep-based movements continue tracking working weight and volume.'},
       {icon:'🚀',title:'Prepare Stable Release',text:'After testing Beta, generate a stable-ready index.html from the tested build without exposing GitHub credentials.'},
       {icon:'✨',title:'What’s New',text:'After future updates, LiftLoop will show this screen once so you can see exactly what changed.'},
-      {icon:'🛠️',title:'Update sheet fixed',text:'Got it, X, backdrop tap and swipe-down dismissal now work properly, and the change list scrolls independently.'}
+      {icon:'🛠️',title:'Update sheet fixed',text:'Got it, X, backdrop tap and swipe-down dismissal now work properly, and the change list scrolls independently.'},
+      {icon:'🏋️',title:'Quick-complete weight fixed',text:'Complete all sets now uses the most frequently used non-zero working weight from your completed history instead of incorrectly filling 0.'}
     ]
   }
 };
