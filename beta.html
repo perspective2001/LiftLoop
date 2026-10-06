@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-build="2026.10.06-beta.4">
+<html lang="en" data-build="2026.10.06-beta.5">
 <head>
 <meta charset="utf-8">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
@@ -281,20 +281,43 @@ button{font:inherit}
 
 
 .whats-new-overlay{
-  position:fixed;inset:0;z-index:9999;background:rgba(7,9,13,.78);
-  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
-  display:grid;place-items:end center;padding:18px
+  position:fixed;inset:0;z-index:9999;background:rgba(7,9,13,.76);
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  display:flex;align-items:flex-end;justify-content:center;
+  padding:0;overscroll-behavior:contain;touch-action:none
 }
-.whats-new-overlay[hidden]{display:none}
+.whats-new-overlay[hidden]{display:none!important}
 .whats-new-card{
-  width:min(520px,100%);max-height:min(78vh,680px);overflow:auto;
-  background:#171b24;border:1px solid #333a49;border-radius:22px;
-  padding:18px;box-shadow:0 24px 70px rgba(0,0,0,.5)
+  width:100%;max-width:560px;max-height:min(82dvh,720px);
+  background:#171b24;border:1px solid #333a49;border-bottom:0;
+  border-radius:22px 22px 0 0;box-shadow:0 -18px 60px rgba(0,0,0,.46);
+  display:flex;flex-direction:column;overflow:hidden;
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  transform:translateY(0);transition:transform .18s ease
+}
+.whats-new-drag{
+  flex:0 0 auto;padding:9px 0 5px;display:grid;place-items:center;
+  touch-action:none;cursor:grab
+}
+.whats-new-drag::before{
+  content:"";width:42px;height:5px;border-radius:999px;background:#4a5362
+}
+.whats-new-head{
+  flex:0 0 auto;display:flex;align-items:flex-start;justify-content:space-between;
+  gap:12px;padding:5px 18px 12px
 }
 .whats-new-kicker{font-size:9px;letter-spacing:.14em;color:#8f99a8;font-weight:900;text-transform:uppercase}
 .whats-new-title{font-size:24px;font-weight:950;margin:5px 0 2px;letter-spacing:-.03em}
-.whats-new-version{font-size:10px;color:#8d97a5;margin-bottom:15px}
-.whats-new-list{display:grid;gap:9px;margin:0 0 16px;padding:0;list-style:none}
+.whats-new-version{font-size:10px;color:#8d97a5}
+.whats-new-x{
+  width:34px;height:34px;flex:0 0 34px;border:1px solid #353e4d;border-radius:50%;
+  background:#252c37;color:#d9dee7;font-size:17px;font-weight:800
+}
+.whats-new-scroll{
+  min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;
+  overscroll-behavior:contain;padding:0 18px 12px;touch-action:pan-y
+}
+.whats-new-list{display:grid;gap:9px;margin:0;padding:0;list-style:none}
 .whats-new-item{
   display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:start;
   background:#202631;border:1px solid #2c3441;border-radius:13px;padding:11px
@@ -305,10 +328,14 @@ button{font:inherit}
 }
 .whats-new-item strong{display:block;font-size:11px;margin-bottom:3px}
 .whats-new-item span{display:block;color:#9aa4b2;font-size:10px;line-height:1.4}
+.whats-new-footer{
+  flex:0 0 auto;padding:10px 18px 14px;background:#171b24;
+  border-top:1px solid #2d3440
+}
 .whats-new-close{
-  width:100%;min-height:46px;border:0;border-radius:13px;
+  width:100%;min-height:48px;border:0;border-radius:13px;
   background:linear-gradient(135deg,var(--accent),#6772e8);color:white;
-  font-weight:900;font-size:12px
+  font-weight:900;font-size:12px;touch-action:manipulation
 }
 
 </style>
@@ -1037,7 +1064,7 @@ button{font:inherit}
     <button type="button" class="update-check" id="open-whats-new" style="margin-left:6px">What’s New</button>
     <div class="update-status" id="update-status">Automatic update check enabled</div>
   </div>
-  <p style="text-align:center;color:#697383;font-size:9px;margin:18px 0 6px">Build 2026.10.06-beta.4 · unified beta</p>
+  <p style="text-align:center;color:#697383;font-size:9px;margin:18px 0 6px">Build 2026.10.06-beta.5 · What’s New fix</p>
   <p class="credit">
     Video demonstrations are embedded from their original YouTube sources. Previous vector artwork source:
     <a href="https://github.com/InlitX/GymMane" target="_blank" rel="noopener">GymMane</a>,
@@ -2015,7 +2042,7 @@ $('#prepare-stable')?.addEventListener('click',async()=>{
 
 
 const LIFTLOOP_CHANGELOG = {
-  '2026.10.06-beta.4': {
+  '2026.10.06-beta.5': {
     title: 'A lot changed in LiftLoop',
     changes: [
       {icon:'⏱️',title:'Reps or time',text:'Russian twists and plank-style exercises can now be tracked by reps or by time, with optional weight.'},
@@ -2024,7 +2051,8 @@ const LIFTLOOP_CHANGELOG = {
       {icon:'↘️',title:'Smarter drop sets',text:'Entering drop-set reps automatically adjusts the first part of the set so the total matches the prescribed reps.'},
       {icon:'📈',title:'Better progress tracking',text:'Timed movements track time progress while rep-based movements continue tracking working weight and volume.'},
       {icon:'🚀',title:'Prepare Stable Release',text:'After testing Beta, generate a stable-ready index.html from the tested build without exposing GitHub credentials.'},
-      {icon:'✨',title:'What’s New',text:'After future updates, LiftLoop will show this screen once so you can see exactly what changed.'}
+      {icon:'✨',title:'What’s New',text:'After future updates, LiftLoop will show this screen once so you can see exactly what changed.'},
+      {icon:'🛠️',title:'Update sheet fixed',text:'Got it, X, backdrop tap and swipe-down dismissal now work properly, and the change list scrolls independently.'}
     ]
   }
 };
@@ -2064,12 +2092,66 @@ function maybeShowWhatsNew(){
   try{ seen=localStorage.getItem(whatsNewStorageKey())||''; }catch(e){}
   if(seen!==LIFTLOOP_BUILD) renderWhatsNew();
 }
-document.getElementById('whats-new-close')?.addEventListener('click',dismissWhatsNew);
-document.getElementById('whats-new-overlay')?.addEventListener('click',e=>{
-  if(e.target.id==='whats-new-overlay') dismissWhatsNew();
-});
-document.getElementById('open-whats-new')?.addEventListener('click',()=>renderWhatsNew());
-window.addEventListener('load',()=>setTimeout(maybeShowWhatsNew,350));
+function bindWhatsNewUI(){
+  const overlay=document.getElementById('whats-new-overlay');
+  const card=document.getElementById('whats-new-card');
+  const drag=document.getElementById('whats-new-drag');
+  const close=document.getElementById('whats-new-close');
+  const x=document.getElementById('whats-new-x');
+  const open=document.getElementById('open-whats-new');
+
+  close?.addEventListener('click',dismissWhatsNew);
+  x?.addEventListener('click',dismissWhatsNew);
+  open?.addEventListener('click',()=>renderWhatsNew());
+
+  overlay?.addEventListener('click',e=>{
+    if(e.target===overlay) dismissWhatsNew();
+  });
+
+  let startY=null;
+  let currentY=0;
+  const begin=e=>{
+    const p=e.touches?.[0]||e;
+    startY=p.clientY;
+    currentY=0;
+    if(card) card.style.transition='none';
+  };
+  const move=e=>{
+    if(startY===null) return;
+    const p=e.touches?.[0]||e;
+    currentY=Math.max(0,p.clientY-startY);
+    if(card) card.style.transform=`translateY(${currentY}px)`;
+  };
+  const end=()=>{
+    if(startY===null) return;
+    if(card) card.style.transition='transform .18s ease';
+    if(currentY>85){
+      if(card) card.style.transform='translateY(110%)';
+      setTimeout(()=>{
+        if(card) card.style.transform='translateY(0)';
+        dismissWhatsNew();
+      },170);
+    }else if(card){
+      card.style.transform='translateY(0)';
+    }
+    startY=null;
+    currentY=0;
+  };
+
+  drag?.addEventListener('touchstart',begin,{passive:true});
+  drag?.addEventListener('touchmove',move,{passive:true});
+  drag?.addEventListener('touchend',end,{passive:true});
+}
+
+if(document.readyState==='loading'){
+  document.addEventListener('DOMContentLoaded',()=>{
+    bindWhatsNewUI();
+    setTimeout(maybeShowWhatsNew,350);
+  },{once:true});
+}else{
+  bindWhatsNewUI();
+  setTimeout(maybeShowWhatsNew,350);
+}
 
 
 // Independent self-updater: does not depend on a service worker.
@@ -2122,12 +2204,22 @@ if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
 </script>
 
 <div class="whats-new-overlay" id="whats-new-overlay" hidden>
-  <section class="whats-new-card" role="dialog" aria-modal="true" aria-labelledby="whats-new-title">
-    <div class="whats-new-kicker">LiftLoop update</div>
-    <div class="whats-new-title" id="whats-new-title">What’s New</div>
-    <div class="whats-new-version" id="whats-new-version"></div>
-    <ul class="whats-new-list" id="whats-new-list"></ul>
-    <button type="button" class="whats-new-close" id="whats-new-close">Got it</button>
+  <section class="whats-new-card" id="whats-new-card" role="dialog" aria-modal="true" aria-labelledby="whats-new-title">
+    <div class="whats-new-drag" id="whats-new-drag" aria-hidden="true"></div>
+    <div class="whats-new-head">
+      <div>
+        <div class="whats-new-kicker">LiftLoop update</div>
+        <div class="whats-new-title" id="whats-new-title">What’s New</div>
+        <div class="whats-new-version" id="whats-new-version"></div>
+      </div>
+      <button type="button" class="whats-new-x" id="whats-new-x" aria-label="Close What’s New">×</button>
+    </div>
+    <div class="whats-new-scroll" id="whats-new-scroll">
+      <ul class="whats-new-list" id="whats-new-list"></ul>
+    </div>
+    <div class="whats-new-footer">
+      <button type="button" class="whats-new-close" id="whats-new-close">Got it</button>
+    </div>
   </section>
 </div>
 
