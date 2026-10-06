@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-build="2026.10.05.1-beta.1">
+<html lang="en" data-build="2026.10.06-beta.4">
 <head>
 <meta charset="utf-8">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
@@ -266,6 +266,50 @@ button{font:inherit}
   font-size:10px;font-weight:900;letter-spacing:.08em;text-transform:uppercase
 }
 .beta-dot{width:7px;height:7px;border-radius:50%;background:#b29cff}
+
+
+.exercise-complete-all{width:100%;margin-top:9px;min-height:38px;border:1px solid #3a4454;background:#222936;color:#e9edf4;border-radius:10px;font-size:10px;font-weight:900}
+.exercise-complete-all.done{background:#18342c;border-color:#2d5a4c;color:#82ecc5}
+.timed-hint{color:#8d97a5;font-size:9px;margin-top:5px}
+
+
+.metric-mode{display:flex;gap:4px;background:#171c24;border:1px solid #303744;border-radius:10px;padding:4px;margin:8px 0 4px}
+.metric-mode-btn{flex:1;border:0;border-radius:7px;padding:7px 8px;background:transparent;color:#8f99a8;font-size:9px;font-weight:900}
+.metric-mode-btn.active{background:#30396f;color:#fff}
+.release-box{margin-top:12px;padding-top:11px;border-top:1px solid #2d3440}
+.release-warning{font-size:9px;color:#8f99a8;line-height:1.4;margin:7px 0}
+
+
+.whats-new-overlay{
+  position:fixed;inset:0;z-index:9999;background:rgba(7,9,13,.78);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  display:grid;place-items:end center;padding:18px
+}
+.whats-new-overlay[hidden]{display:none}
+.whats-new-card{
+  width:min(520px,100%);max-height:min(78vh,680px);overflow:auto;
+  background:#171b24;border:1px solid #333a49;border-radius:22px;
+  padding:18px;box-shadow:0 24px 70px rgba(0,0,0,.5)
+}
+.whats-new-kicker{font-size:9px;letter-spacing:.14em;color:#8f99a8;font-weight:900;text-transform:uppercase}
+.whats-new-title{font-size:24px;font-weight:950;margin:5px 0 2px;letter-spacing:-.03em}
+.whats-new-version{font-size:10px;color:#8d97a5;margin-bottom:15px}
+.whats-new-list{display:grid;gap:9px;margin:0 0 16px;padding:0;list-style:none}
+.whats-new-item{
+  display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:start;
+  background:#202631;border:1px solid #2c3441;border-radius:13px;padding:11px
+}
+.whats-new-icon{
+  width:28px;height:28px;border-radius:9px;background:#30396f;
+  display:grid;place-items:center;font-size:13px
+}
+.whats-new-item strong{display:block;font-size:11px;margin-bottom:3px}
+.whats-new-item span{display:block;color:#9aa4b2;font-size:10px;line-height:1.4}
+.whats-new-close{
+  width:100%;min-height:46px;border:0;border-radius:13px;
+  background:linear-gradient(135deg,var(--accent),#6772e8);color:white;
+  font-weight:900;font-size:12px
+}
 
 </style>
 </head>
@@ -932,9 +976,9 @@ button{font:inherit}
       </div>
 
       <div class="progress-metrics">
-        <div class="progress-metric"><span>Starting target</span><strong id="progress-start">—</strong></div>
-        <div class="progress-metric"><span>Latest target</span><strong id="progress-latest">—</strong></div>
-        <div class="progress-metric"><span>Target PR</span><strong id="progress-best">—</strong></div>
+        <div class="progress-metric"><span id="progress-start-label">Starting target</span><strong id="progress-start">—</strong></div>
+        <div class="progress-metric"><span id="progress-latest-label">Latest target</span><strong id="progress-latest">—</strong></div>
+        <div class="progress-metric"><span id="progress-best-label">Target PR</span><strong id="progress-best">—</strong></div>
         <div class="progress-metric"><span>Change</span><strong id="progress-change">—</strong></div>
       </div>
       <div class="progress-caption" id="progress-caption">For assisted movements, using less assistance counts as improvement.</div>
@@ -972,12 +1016,16 @@ button{font:inherit}
         <button type="button" class="settings-btn" id="restore-backup">Restore file</button>
         <input type="file" id="restore-file" accept=".json,application/json" hidden>
       </div>
+      <div class="release-box">
+        <button type="button" class="settings-btn primary" id="prepare-stable">Prepare Stable Release</button>
+        <div class="release-warning">Creates a stable-ready <strong>index.html</strong> from this tested beta. It does not write to GitHub or expose any GitHub credentials.</div>
+      </div>
       <div class="backup-status" id="backup-status"></div>
     </div>
 
     <div class="settings-panel">
       <h3>Routine settings</h3>
-      <div class="settings-copy">These settings are per-device. Turn exercises on/off or change prescribed sets and reps. Exercise videos and form cues stay matched to the correct exercise.</div>
+      <div class="settings-copy">These settings are per-device. Turn exercises on/off or change prescribed sets and reps/time. Exercise videos and form cues stay matched to the correct exercise.</div>
       <div class="routine-settings" id="routine-settings"></div>
       <button type="button" class="settings-btn primary" id="save-routine" style="margin-top:10px">Save routine</button>
       <div class="backup-status" id="routine-status"></div>
@@ -986,9 +1034,10 @@ button{font:inherit}
 
   <div class="update-row">
     <button type="button" class="update-check" id="update-check">Check for update</button>
+    <button type="button" class="update-check" id="open-whats-new" style="margin-left:6px">What’s New</button>
     <div class="update-status" id="update-status">Automatic update check enabled</div>
   </div>
-  <p style="text-align:center;color:#697383;font-size:9px;margin:18px 0 6px">Build 2026.10.05.1-beta.1 · isolated test channel</p>
+  <p style="text-align:center;color:#697383;font-size:9px;margin:18px 0 6px">Build 2026.10.06-beta.4 · unified beta</p>
   <p class="credit">
     Video demonstrations are embedded from their original YouTube sources. Previous vector artwork source:
     <a href="https://github.com/InlitX/GymMane" target="_blank" rel="noopener">GymMane</a>,
@@ -1160,10 +1209,32 @@ $$('.variant-btn').forEach(btn=>btn.addEventListener('click',async()=>{
 function routinePrefKey(card){
   return `${card.dataset.day||'day'}::${card.dataset.art||$('.ex-name',card)?.textContent.trim()||'exercise'}`;
 }
+function isTimeCapableExerciseName(name){
+  return /Russian Twists|Plank/i.test(name||'');
+}
+function isTimeCapableExercise(card){
+  return isTimeCapableExerciseName($('.ex-name',card)?.textContent.trim()||'');
+}
+function exerciseMetricMode(card){
+  if(!isTimeCapableExercise(card)) return 'reps';
+  const pref=state.routinePrefs[routinePrefKey(card)]||{};
+  return pref.metricMode==='reps' ? 'reps' : 'time';
+}
+function isTimedExercise(card){
+  return exerciseMetricMode(card)==='time';
+}
 function defaultPrescription(card){
   const dose=$('.dose',card)?.textContent||'';
-  const m=dose.match(/(\d+)\s*[×x]\s*(\d+)/);
-  return {sets:m?Number(m[1]):3,reps:m?Number(m[2]):10};
+  const repsMatch=dose.match(/(\d+)\s*[×x]\s*(\d+)/);
+  const roundsMatch=dose.match(/(\d+)\s*round/i);
+  const secondsMatch=dose.match(/(\d+)\s*(?:sec|secs|seconds|s)\b/i);
+  const existingDots=$$('.set-dot',card).length;
+  const sets=repsMatch?Number(repsMatch[1]):(roundsMatch?Number(roundsMatch[1]):(existingDots||3));
+  return {
+    sets,
+    reps:repsMatch?Number(repsMatch[2]):null,
+    seconds:secondsMatch?Number(secondsMatch[1]):null
+  };
 }
 function exerciseIndexInDay(card){
   return $$('.exercise').filter(c=>c.dataset.day===card.dataset.day).indexOf(card);
@@ -1177,22 +1248,24 @@ function applyRoutinePreferences(){
     const def=defaultPrescription(card);
     const pref=state.routinePrefs[key]||{};
     const enabled=pref.enabled!==false;
+    const timed=isTimedExercise(card);
     const sets=Math.max(1,Math.min(10,Number(pref.sets)||def.sets));
-    const reps=Math.max(1,Math.min(100,Number(pref.reps)||def.reps));
+    const reps=Number(pref.reps)>0?Number(pref.reps):def.reps;
+    const seconds=Number(pref.seconds)>0?Number(pref.seconds):def.seconds;
     card.classList.toggle('routine-hidden',!enabled);
     const dose=$('.dose',card);
-    if(dose) dose.textContent=`${sets} × ${reps}`;
-
+    if(dose){
+      if(timed) dose.textContent=seconds ? `${sets} rounds · ${seconds} sec` : `${sets} rounds · timed`;
+      else if(reps) dose.textContent=`${sets} × ${reps}`;
+      else dose.textContent=`${sets} sets · reps as performed`;
+    }
     const setsBox=$('.sets',card);
     if(setsBox && !setsBox.classList.contains('set-log-grid')){
       setsBox.innerHTML='';
       for(let i=0;i<sets;i++){
         const b=document.createElement('button');
-        b.type='button';
-        b.className='set-dot';
-        b.dataset.key=setKeyFor(card,i);
-        b.setAttribute('aria-label',`Mark set or round ${i+1} complete`);
-        b.textContent=String(i+1);
+        b.type='button'; b.className='set-dot'; b.dataset.key=setKeyFor(card,i);
+        b.setAttribute('aria-label',`Mark set or round ${i+1} complete`); b.textContent=String(i+1);
         setsBox.appendChild(b);
       }
     }
@@ -1346,11 +1419,16 @@ function renderGamify(){
     const day=btn.dataset.finish;
     const completed=!!state.sessionCompleted[day];
     const dots=visibleSetDots(day);
-    const allDone=dots.length>0 && dots.every(x=>x.classList.contains('done'));
-    btn.disabled=completed || !allDone;
+    const done=dots.filter(x=>x.classList.contains('done')).length;
+    const allDone=dots.length>0 && done===dots.length;
+    btn.disabled=completed || done===0;
     btn.classList.toggle('completed',completed);
     btn.textContent=completed ? 'Workout Complete ✓ · Level Earned' :
-      (allDone ? 'Finish Workout · +1 Level' : 'Complete all sets to finish');
+      (allDone
+        ? 'Finish Workout · +1 Level'
+        : done>0
+          ? `Finish Workout · ${done}/${dots.length} sets · +1 Level`
+          : 'Complete at least one set to finish');
   });
 }
 function showLevelToast(level){
@@ -1363,11 +1441,18 @@ $$('.finish-workout').forEach(btn=>btn.addEventListener('click',()=>{
   const day=btn.dataset.finish;
   if(state.sessionCompleted[day]) return;
   const dots=visibleSetDots(day);
-  if(!dots.length || !dots.every(x=>x.classList.contains('done'))) return;
+  const done=dots.filter(x=>x.classList.contains('done')).length;
+  if(!dots.length || done===0) return;
+
+  if(done<dots.length){
+    const ok=confirm(`Finish this workout with ${done} of ${dots.length} sets completed?\n\nUnchecked sets/exercises will be recorded as skipped, not completed.`);
+    if(!ok) return;
+  }
+
   const title=$(`#day-${day} h2`)?.textContent || day;
   const ts=Date.now();
   const prCount=commitWorkoutSets(day,ts);
-  state.workoutHistory.push({ts,day,name:title});
+  state.workoutHistory.push({ts,day,name:title,completedSets:done,totalSets:dots.length,partial:done<dots.length});
   state.sessionCompleted[day]=true;
   save();
   renderGamify();
@@ -1400,267 +1485,173 @@ function fmtNum(v){
 }
 function trackerMode(name){
   if(name==='Assisted Dips') return {label:'Assistance', bodyweight:false, assistance:true};
-  if(name.includes('Pull-Ups / Assisted')){
-    return {label:'Load / assistance', bodyweight:true, assistance:false};
-  }
-  if(/Push-Ups|Russian Twists|Leg Raises|Jackknife|Incline Sit-Ups/.test(name))
-    return {label:'Added load (optional)', bodyweight:true, assistance:false};
+  if(name.includes('Pull-Ups / Assisted')) return {label:'Load / assistance', bodyweight:true, assistance:false};
+  if(/Push-Ups|Russian Twists|Leg Raises|Jackknife|Incline Sit-Ups|Plank/i.test(name)) return {label:'Added load (optional)', bodyweight:true, assistance:false};
   return {label:'Working weight', bodyweight:false, assistance:false};
 }
-function exerciseKey(card){
-  const day=card.dataset.day||'day';
-  const name=$('.ex-name',card)?.textContent.trim()||'Exercise';
-  return `${day}::${name}`;
-}
+function exerciseKey(card){ const day=card.dataset.day||'day'; const name=$('.ex-name',card)?.textContent.trim()||'Exercise'; return `${day}::${name}`; }
 function targetReps(card){
-  const dose=$('.dose',card)?.textContent||'';
-  const m=dose.match(/[×x]\s*(\d+)/);
-  return m ? Number(m[1]) : null;
+  if(isTimedExercise(card)) return null;
+  const pref=state.routinePrefs[routinePrefKey(card)]||{};
+  if(Number(pref.reps)>0) return Number(pref.reps);
+  const m=($('.dose',card)?.textContent||'').match(/[×x]\s*(\d+)/); return m?Number(m[1]):null;
 }
-function exerciseCardsForDay(day){
-  return $$('.exercise').filter(c=>c.dataset.day===day && !c.classList.contains('routine-hidden'));
+function targetSeconds(card){
+  if(!isTimedExercise(card)) return null;
+  const pref=state.routinePrefs[routinePrefKey(card)]||{};
+  if(Number(pref.seconds)>0) return Number(pref.seconds);
+  const m=($('.dose',card)?.textContent||'').match(/(\d+)\s*(?:sec|secs|seconds|s)\b/i); return m?Number(m[1]):null;
 }
-function historyFor(card){
-  const key=exerciseKey(card);
-  return Array.isArray(state.setHistory[key]) ? state.setHistory[key] : [];
-}
-function segmentsFromSet(s){
-  const out=[];
-  if(Number.isFinite(s.kg) && Number.isFinite(s.reps) && s.reps>0) out.push({kg:s.kg,reps:s.reps});
-  if(Number.isFinite(s.dropKg) && Number.isFinite(s.dropReps) && s.dropReps>0) out.push({kg:s.dropKg,reps:s.dropReps,drop:true});
-  return out;
+function exerciseCardsForDay(day){ return $$('.exercise').filter(c=>c.dataset.day===day && !c.classList.contains('routine-hidden')); }
+function historyFor(card){ const key=exerciseKey(card); return Array.isArray(state.setHistory[key]) ? state.setHistory[key] : []; }
+function segmentsFromSet(s){ const out=[]; if(Number.isFinite(s.kg)&&Number.isFinite(s.reps)&&s.reps>0) out.push({kg:s.kg,reps:s.reps}); if(Number.isFinite(s.dropKg)&&Number.isFinite(s.dropReps)&&s.dropReps>0) out.push({kg:s.dropKg,reps:s.dropReps,drop:true}); return out; }
+function loggedSegmentCount(s){ let n=0; if(Number.isFinite(s.seconds)&&s.seconds>0)n++; else if(Number.isFinite(s.reps)&&s.reps>0)n++; if(Number.isFinite(s.dropReps)&&s.dropReps>0)n++; return n; }
+function mostCommonRecent(values){
+  if(!values.length) return NaN; const counts=new Map();
+  values.forEach((value,i)=>{ if(!Number.isFinite(value))return; const k=value.toFixed(5); const old=counts.get(k)||{value,count:0,last:i}; old.count++; old.last=i; counts.set(k,old); });
+  const ranked=[...counts.values()].sort((a,b)=>b.count-a.count||b.last-a.last); return ranked.length?ranked[0].value:NaN;
 }
 function latestSessionUsualKg(card){
-  const hist=historyFor(card);
-  if(hist.length){
-    const latest=hist.at(-1);
-    const mains=(latest.sets||[]).map(s=>s.kg).filter(Number.isFinite);
-    if(mains.length){
-      const counts=new Map();
-      mains.forEach((kg,i)=>{
-        const k=kg.toFixed(5);
-        const prior=counts.get(k)||{kg,count:0,first:i};
-        prior.count++;
-        counts.set(k,prior);
-      });
-      return [...counts.values()].sort((a,b)=>b.count-a.count || a.first-b.first)[0].kg;
-    }
-  }
-  // Backwards-compatible fallback for any weights logged in the previous version.
-  const legacy=Array.isArray(state.weightLogs[exerciseKey(card)]) ? state.weightLogs[exerciseKey(card)] : [];
-  return legacy.length ? legacy.at(-1).kg : NaN;
+  const hist=historyFor(card).slice(-5), mains=[]; hist.forEach(session=>(session.sets||[]).forEach(s=>{if(Number.isFinite(s.kg))mains.push(s.kg);}));
+  if(mains.length)return mostCommonRecent(mains);
+  const legacy=Array.isArray(state.weightLogs[exerciseKey(card)])?state.weightLogs[exerciseKey(card)]:[]; return legacy.length?legacy.at(-1).kg:NaN;
 }
+function latestSessionUsualSeconds(card){ const hist=historyFor(card).slice(-5), times=[]; hist.forEach(session=>(session.sets||[]).forEach(s=>{if(Number.isFinite(s.seconds)&&s.seconds>0)times.push(s.seconds);})); return mostCommonRecent(times); }
 function ensureCurrentSet(card,dot,index){
-  const id=dot.dataset.key;
-  let s=state.currentSets[id];
-  if(!s){
-    const usual=latestSessionUsualKg(card);
-    const target=targetReps(card);
-    const mode=trackerMode($('.ex-name',card)?.textContent.trim()||'');
-    s={
-      kg:Number.isFinite(usual)?usual:(mode.bodyweight?0:null),
-      reps:Number.isFinite(target)?target:null,
-      dropKg:null,
-      dropReps:null
-    };
-    state.currentSets[id]=s;
-  }
+  const id=dot.dataset.key; let s=state.currentSets[id];
+  if(!s){ const usual=latestSessionUsualKg(card), timed=isTimedExercise(card), target=targetReps(card), usualSeconds=latestSessionUsualSeconds(card), targetTime=targetSeconds(card), mode=trackerMode($('.ex-name',card)?.textContent.trim()||'');
+    s={kg:Number.isFinite(usual)?usual:(mode.bodyweight?0:null),reps:timed?null:(Number.isFinite(target)?target:null),seconds:timed?(Number.isFinite(usualSeconds)?usualSeconds:(Number.isFinite(targetTime)?targetTime:null)):null,dropKg:null,dropReps:null}; state.currentSets[id]=s; }
   return s;
 }
 function persistRow(row){
-  const dot=$('.set-dot',row);
-  if(!dot) return;
-  const s=state.currentSets[dot.dataset.key] || {};
-  const weight=parseFloat($('.set-weight',row)?.value);
-  const reps=parseInt($('.set-reps',row)?.value,10);
-  const dropWeight=parseFloat($('.drop-weight',row)?.value);
-  const dropReps=parseInt($('.drop-reps',row)?.value,10);
-  s.kg=Number.isFinite(weight)?kgFromDisplay(weight):null;
-  s.reps=Number.isFinite(reps)?reps:null;
-  s.dropKg=Number.isFinite(dropWeight)?kgFromDisplay(dropWeight):null;
-  s.dropReps=Number.isFinite(dropReps)?dropReps:null;
-  state.currentSets[dot.dataset.key]=s;
-  save();
-  renderCurrentSessionSummary(row.closest('.exercise'));
+  const dot=$('.set-dot',row); if(!dot)return; const card=row.closest('.exercise'), timed=isTimedExercise(card), s=state.currentSets[dot.dataset.key]||{};
+  const weight=parseFloat($('.set-weight',row)?.value), reps=parseInt($('.set-reps',row)?.value,10), seconds=parseInt($('.set-seconds',row)?.value,10), dropWeight=parseFloat($('.drop-weight',row)?.value), dropReps=parseInt($('.drop-reps',row)?.value,10);
+  s.kg=Number.isFinite(weight)?kgFromDisplay(weight):null; s.reps=!timed&&Number.isFinite(reps)?reps:null; s.seconds=timed&&Number.isFinite(seconds)?seconds:null; s.dropKg=!timed&&Number.isFinite(dropWeight)?kgFromDisplay(dropWeight):null; s.dropReps=!timed&&Number.isFinite(dropReps)?dropReps:null;
+  state.currentSets[dot.dataset.key]=s; save(); renderCurrentSessionSummary(card);
 }
 function renderCurrentSessionSummary(card){
-  const box=$('.session-summary',card);
-  if(!box) return;
-  const rows=$$('.set-log-row',card);
-  const all=[];
-  rows.forEach(row=>{
-    const id=$('.set-dot',row)?.dataset.key;
-    const s=state.currentSets[id]||{};
-    all.push(...segmentsFromSet(s));
-  });
-  const mode=trackerMode($('.ex-name',card)?.textContent.trim()||'');
-  const target=targetReps(card);
-  const best=all.length ? (mode.assistance?Math.min(...all.map(x=>x.kg)):Math.max(...all.map(x=>x.kg))) : NaN;
-  const targetVals=target ? all.filter(x=>x.reps>=target).map(x=>x.kg) : all.map(x=>x.kg);
-  const targetBest=targetVals.length ? (mode.assistance?Math.min(...targetVals):Math.max(...targetVals)) : NaN;
-  const volume=all.reduce((n,x)=>n+x.kg*x.reps,0);
-  $('.summary-best strong',box).textContent=fmt(displayFromKg(best));
-  $('.summary-target strong',box).textContent=target ? fmt(displayFromKg(targetBest)) : '—';
-  $('.summary-volume strong',box).textContent=Number.isFinite(volume)&&volume>0
-    ? `${Math.round(displayFromKg(volume)).toLocaleString()}`
-    : '—';
+  const box=$('.session-summary',card); if(!box)return; const timed=isTimedExercise(card), rows=$$('.set-log-row',card), mode=trackerMode($('.ex-name',card)?.textContent.trim()||'');
+  if(timed){ const sets=rows.map(row=>state.currentSets[$('.set-dot',row)?.dataset.key]||{}), durations=sets.map(s=>s.seconds).filter(v=>Number.isFinite(v)&&v>0), loads=sets.map(s=>s.kg).filter(Number.isFinite); const bestLoad=loads.length?(mode.assistance?Math.min(...loads):Math.max(...loads)):NaN, bestTime=durations.length?Math.max(...durations):NaN, totalTime=durations.reduce((a,b)=>a+b,0); $('.summary-best span',box).textContent='Best set load'; $('.summary-target span',box).textContent='Best time'; $('.summary-volume span',box).textContent='Total time'; $('.summary-best strong',box).textContent=fmt(displayFromKg(bestLoad)); $('.summary-target strong',box).textContent=Number.isFinite(bestTime)?`${bestTime} sec`:'—'; $('.summary-volume strong',box).textContent=totalTime>0?`${totalTime} sec`:'—'; return; }
+  const all=[]; rows.forEach(row=>{const s=state.currentSets[$('.set-dot',row)?.dataset.key]||{}; all.push(...segmentsFromSet(s));}); const target=targetReps(card), best=all.length?(mode.assistance?Math.min(...all.map(x=>x.kg)):Math.max(...all.map(x=>x.kg))):NaN, targetVals=target?all.filter(x=>x.reps>=target).map(x=>x.kg):all.map(x=>x.kg), targetBest=targetVals.length?(mode.assistance?Math.min(...targetVals):Math.max(...targetVals)):NaN, volume=all.reduce((n,x)=>n+x.kg*x.reps,0); $('.summary-best span',box).textContent='Best set load'; $('.summary-target span',box).textContent=target?'Target-rep load':'Best load'; $('.summary-volume span',box).textContent='Volume'; $('.summary-best strong',box).textContent=fmt(displayFromKg(best)); $('.summary-target strong',box).textContent=fmt(displayFromKg(targetBest)); $('.summary-volume strong',box).textContent=Number.isFinite(volume)&&volume>0?`${Math.round(displayFromKg(volume)).toLocaleString()}`:'—';
 }
 function addDropEditor(row,prefill){
-  if($('.drop-editor',row)) return;
-  const s=state.currentSets[$('.set-dot',row).dataset.key]||{};
-  const div=document.createElement('div');
-  div.className='drop-editor';
-  div.innerHTML=`
-    <div class="drop-label">Drop within this set</div>
-    <input class="set-field drop-weight" inputmode="decimal" type="number" min="0" placeholder="${state.weightUnit}" value="${Number.isFinite(s.dropKg)?fmtNum(displayFromKg(s.dropKg)):''}">
-    <div class="set-times">×</div>
-    <input class="set-field drop-reps" inputmode="numeric" type="number" min="0" placeholder="reps" value="${Number.isFinite(s.dropReps)?s.dropReps:''}">
-    <button type="button" class="drop-remove">Remove</button>`;
-  row.appendChild(div);
-  $$('.drop-weight,.drop-reps',div).forEach(inp=>inp.addEventListener('input',()=>persistRow(row)));
-  $('.drop-remove',div).addEventListener('click',()=>{
-    const id=$('.set-dot',row).dataset.key;
-    const cur=state.currentSets[id]||{};
-    cur.dropKg=null; cur.dropReps=null;
-    state.currentSets[id]=cur;
-    div.remove();
-    save();
-    renderCurrentSessionSummary(row.closest('.exercise'));
-  });
+  if($('.drop-editor',row))return; const card=row.closest('.exercise'); if(isTimedExercise(card))return; const s=state.currentSets[$('.set-dot',row).dataset.key]||{}; const div=document.createElement('div'); div.className='drop-editor';
+  div.innerHTML=`<div class="drop-label">Drop within this set</div><input class="set-field drop-weight" inputmode="decimal" type="number" min="0" placeholder="${state.weightUnit}" value="${Number.isFinite(s.dropKg)?fmtNum(displayFromKg(s.dropKg)):''}"><div class="set-times">×</div><input class="set-field drop-reps" inputmode="numeric" type="number" min="0" placeholder="reps" value="${Number.isFinite(s.dropReps)?s.dropReps:''}"><button type="button" class="drop-remove">Remove</button>`; row.appendChild(div);
+  $('.drop-weight',div).addEventListener('input',()=>persistRow(row));
+  $('.drop-reps',div).addEventListener('input',()=>{ const dropReps=parseInt($('.drop-reps',div).value,10), target=targetReps(card), mainReps=$('.set-reps',row); if(Number.isFinite(dropReps)&&Number.isFinite(target)&&mainReps)mainReps.value=Math.max(0,target-dropReps); persistRow(row); });
+  $('.drop-remove',div).addEventListener('click',()=>{ const id=$('.set-dot',row).dataset.key, cur=state.currentSets[id]||{}, target=targetReps(card); cur.dropKg=null; cur.dropReps=null; if(Number.isFinite(target)){cur.reps=target; const main=$('.set-reps',row); if(main)main.value=target;} state.currentSets[id]=cur; div.remove(); save(); renderCurrentSessionSummary(card); });
 }
-function renderSetRows(card){
+function completeAllExercise(card){
+  const usual=latestSessionUsualKg(card), usualSeconds=latestSessionUsualSeconds(card), timed=isTimedExercise(card), repTarget=targetReps(card), timeTarget=targetSeconds(card), mode=trackerMode($('.ex-name',card)?.textContent.trim()||'');
+  $$('.set-log-row',card).forEach((row,index)=>{ const dot=$('.set-dot',row), s=ensureCurrentSet(card,dot,index); if(Number.isFinite(usual))s.kg=usual; else if(mode.bodyweight&&!Number.isFinite(s.kg))s.kg=0; if(timed){if(Number.isFinite(usualSeconds))s.seconds=usualSeconds; else if(Number.isFinite(timeTarget))s.seconds=timeTarget; s.reps=null;} else {if(Number.isFinite(repTarget))s.reps=repTarget; s.seconds=null; s.dropKg=null; s.dropReps=null; $('.drop-editor',row)?.remove();} state.currentSets[dot.dataset.key]=s; dot.classList.add('done'); state[dot.dataset.key]=true; });
+  state.sessionCompleted[card.dataset.day]=false; save(); renderSetRows(card); updateProgress(card.dataset.day); renderGamify();
+}
+function ensureMetricModeControl(card){
+  if(!isTimeCapableExercise(card)) return;
   const sets=$('.sets',card);
   if(!sets) return;
+  let control=$('.metric-mode',card);
+  if(!control){
+    control=document.createElement('div');
+    control.className='metric-mode';
+    control.innerHTML='<button type="button" class="metric-mode-btn" data-mode="reps">Reps</button><button type="button" class="metric-mode-btn" data-mode="time">Time</button>';
+    sets.parentElement.insertBefore(control,sets);
+    $$('.metric-mode-btn',control).forEach(btn=>btn.addEventListener('click',()=>{
+      const key=routinePrefKey(card);
+      state.routinePrefs[key]=state.routinePrefs[key]||{};
+      state.routinePrefs[key].metricMode=btn.dataset.mode;
+      state.sessionCompleted[card.dataset.day]=false;
 
-  // Build once; moving the original set buttons preserves their existing completion listeners.
-  if(!sets.classList.contains('set-log-grid')){
-    const dots=$$('.set-dot',sets);
-    sets.innerHTML='';
-    sets.classList.add('set-log-grid');
-
-    const head=document.createElement('div');
-    head.className='set-log-head';
-    head.innerHTML='<span></span><span class="weight-h">Weight</span><span></span><span class="reps-h">Reps</span><span></span>';
-    sets.appendChild(head);
-
-    dots.forEach((dot,index)=>{
-      const row=document.createElement('div');
-      row.className='set-log-row';
-      row.appendChild(dot);
-      row.insertAdjacentHTML('beforeend',`
-        <input class="set-field set-weight" inputmode="decimal" type="number" min="0" aria-label="Set ${index+1} weight">
-        <div class="set-times">×</div>
-        <input class="set-field set-reps reps-field" inputmode="numeric" type="number" min="0" aria-label="Set ${index+1} reps">
-        <button type="button" class="drop-toggle">+ Drop</button>`);
-      sets.appendChild(row);
-      $('.drop-toggle',row).addEventListener('click',()=>addDropEditor(row,true));
-      $$('.set-weight,.set-reps',row).forEach(inp=>inp.addEventListener('input',()=>persistRow(row)));
-    });
-
-    const note=document.createElement('div');
-    note.className='usual-weight-note';
-    sets.insertAdjacentElement('afterend',note);
-
-    const summary=document.createElement('div');
-    summary.className='session-summary';
-    summary.innerHTML=`
-      <div class="session-chip summary-best"><span>Best set load</span><strong>—</strong></div>
-      <div class="session-chip summary-target"><span>${targetReps(card)?'Target-rep load':'Target load'}</span><strong>—</strong></div>
-      <div class="session-chip summary-volume"><span>Volume</span><strong>—</strong></div>`;
-    note.insertAdjacentElement('afterend',summary);
+      const doneIndices=$$('.set-dot',card).map((d,i)=>d.classList.contains('done')?i:null).filter(i=>i!==null);
+      const oldSets=$('.sets',card);
+      const fresh=document.createElement('div');
+      fresh.className='sets';
+      const count=Math.max(1,$$('.set-dot',card).length || defaultPrescription(card).sets);
+      for(let i=0;i<count;i++){
+        const b=document.createElement('button');
+        b.type='button';
+        b.className='set-dot';
+        b.dataset.key=setKeyFor(card,i);
+        b.textContent=String(i+1);
+        b.setAttribute('aria-label',`Mark set or round ${i+1} complete`);
+        if(doneIndices.includes(i)) b.classList.add('done');
+        fresh.appendChild(b);
+      }
+      oldSets.replaceWith(fresh);
+      $('.exercise-complete-all',card)?.remove();
+      $('.usual-weight-note',card)?.remove();
+      $('.timed-hint',card)?.remove();
+      $('.session-summary',card)?.remove();
+      $$('.set-dot',fresh).forEach(bindSetDot);
+      save();
+      renderSetRows(card);
+      updateProgress(card.dataset.day);
+      renderProgress();
+    }));
   }
+  const mode=exerciseMetricMode(card);
+  $$('.metric-mode-btn',control).forEach(btn=>btn.classList.toggle('active',btn.dataset.mode===mode));
+}
 
-  const usual=latestSessionUsualKg(card);
-  const note=sets.nextElementSibling;
-  if(note?.classList.contains('usual-weight-note')){
-    note.textContent=Number.isFinite(usual)
-      ? `Auto-filled from your most-used weight in the last completed session: ${fmt(displayFromKg(usual))}. Change any set whenever you need to.`
-      : 'No previous working weight yet. Enter it once; future sessions will pre-fill it automatically.';
+function renderSetRows(card){
+  ensureMetricModeControl(card);
+  const sets=$('.sets',card); if(!sets)return; const timed=isTimedExercise(card);
+  if(!sets.classList.contains('set-log-grid')){ const dots=$$('.set-dot',sets); sets.innerHTML=''; sets.classList.add('set-log-grid'); const head=document.createElement('div'); head.className='set-log-head'; head.innerHTML=`<span></span><span class="weight-h">Weight</span><span></span><span class="reps-h">${timed?'Seconds':'Reps'}</span><span></span>`; sets.appendChild(head);
+    dots.forEach((dot,index)=>{ const row=document.createElement('div'); row.className='set-log-row'; row.appendChild(dot); row.insertAdjacentHTML('beforeend',`<input class="set-field set-weight" inputmode="decimal" type="number" min="0" aria-label="Set ${index+1} weight"><div class="set-times">×</div>${timed?`<input class="set-field set-seconds reps-field" inputmode="numeric" type="number" min="0" aria-label="Set ${index+1} seconds" placeholder="sec"><span></span>`:`<input class="set-field set-reps reps-field" inputmode="numeric" type="number" min="0" aria-label="Set ${index+1} reps"><button type="button" class="drop-toggle">+ Drop</button>`}`); sets.appendChild(row); if(!timed)$('.drop-toggle',row).addEventListener('click',()=>addDropEditor(row,true)); $$('.set-weight,.set-reps,.set-seconds',row).forEach(inp=>inp.addEventListener('input',()=>persistRow(row))); });
+    const complete=document.createElement('button'); complete.type='button'; complete.className='exercise-complete-all'; complete.textContent='✓ Complete all sets with usual weight'; complete.addEventListener('click',()=>completeAllExercise(card)); sets.insertAdjacentElement('afterend',complete);
+    const note=document.createElement('div'); note.className='usual-weight-note'; complete.insertAdjacentElement('afterend',note); let anchor=note; if(timed){const hint=document.createElement('div'); hint.className='timed-hint'; hint.textContent='Timed exercise: log seconds instead of reps. Weight is optional.'; note.insertAdjacentElement('afterend',hint); anchor=hint;}
+    const summary=document.createElement('div'); summary.className='session-summary'; summary.innerHTML=`<div class="session-chip summary-best"><span>Best set load</span><strong>—</strong></div><div class="session-chip summary-target"><span>${timed?'Best time':(targetReps(card)?'Target-rep load':'Best load')}</span><strong>—</strong></div><div class="session-chip summary-volume"><span>${timed?'Total time':'Volume'}</span><strong>—</strong></div>`; anchor.insertAdjacentElement('afterend',summary);
   }
-
-  $$('.set-log-row',sets).forEach((row,index)=>{
-    const dot=$('.set-dot',row);
-    const s=ensureCurrentSet(card,dot,index);
-    const weight=$('.set-weight',row);
-    const reps=$('.set-reps',row);
-    weight.placeholder=state.weightUnit;
-    weight.value=Number.isFinite(s.kg)?fmtNum(displayFromKg(s.kg)):'';
-    reps.value=Number.isFinite(s.reps)?s.reps:'';
-    if(Number.isFinite(s.dropKg)||Number.isFinite(s.dropReps)) addDropEditor(row,false);
-    const dw=$('.drop-weight',row), dr=$('.drop-reps',row);
-    if(dw){
-      dw.placeholder=state.weightUnit;
-      dw.value=Number.isFinite(s.dropKg)?fmtNum(displayFromKg(s.dropKg)):'';
-    }
-    if(dr) dr.value=Number.isFinite(s.dropReps)?s.dropReps:'';
-  });
-  renderCurrentSessionSummary(card);
+  const usual=latestSessionUsualKg(card), complete=sets.nextElementSibling, note=complete?.nextElementSibling, usualTime=latestSessionUsualSeconds(card); if(note?.classList.contains('usual-weight-note')){let msg=Number.isFinite(usual)?`Usual recent weight: ${fmt(displayFromKg(usual))}.`:'No previous working weight yet.'; if(timed&&Number.isFinite(usualTime))msg+=` Usual time: ${usualTime} sec.`; msg+=' Change any set whenever you need to.'; note.textContent=msg;}
+  $$('.set-log-row',sets).forEach((row,index)=>{ const dot=$('.set-dot',row), s=ensureCurrentSet(card,dot,index), weight=$('.set-weight',row); weight.placeholder=state.weightUnit; weight.value=Number.isFinite(s.kg)?fmtNum(displayFromKg(s.kg)):''; if(timed){const seconds=$('.set-seconds',row); seconds.value=Number.isFinite(s.seconds)?s.seconds:'';} else {const reps=$('.set-reps',row); reps.value=Number.isFinite(s.reps)?s.reps:''; if(Number.isFinite(s.dropKg)||Number.isFinite(s.dropReps))addDropEditor(row,false); const dw=$('.drop-weight',row), dr=$('.drop-reps',row); if(dw){dw.placeholder=state.weightUnit; dw.value=Number.isFinite(s.dropKg)?fmtNum(displayFromKg(s.dropKg)):'';} if(dr)dr.value=Number.isFinite(s.dropReps)?s.dropReps:'';} });
+  const allDone=$$('.set-dot',card).length>0&&$$('.set-dot',card).every(d=>d.classList.contains('done')); if(complete?.classList.contains('exercise-complete-all')){complete.classList.toggle('done',allDone); complete.textContent=allDone?'All sets marked complete ✓':'✓ Complete all sets with usual weight';} renderCurrentSessionSummary(card);
 }
-function refreshDaySetRows(day){
-  exerciseCardsForDay(day).forEach(card=>renderSetRows(card));
-}
+function refreshDaySetRows(day){ exerciseCardsForDay(day).forEach(card=>renderSetRows(card)); }
 function sessionSummary(session,card){
-  const mode=trackerMode($('.ex-name',card)?.textContent.trim()||'');
-  const target=targetReps(card);
-  const segs=(session.sets||[]).flatMap(segmentsFromSet);
-  const valid=segs.filter(x=>Number.isFinite(x.kg)&&Number.isFinite(x.reps)&&x.reps>0);
-  const loads=valid.map(x=>x.kg);
-  const bestLoad=loads.length ? (mode.assistance?Math.min(...loads):Math.max(...loads)) : NaN;
-  const qualifying=target ? valid.filter(x=>x.reps>=target) : valid;
-  const qloads=qualifying.map(x=>x.kg);
-  const targetLoad=qloads.length ? (mode.assistance?Math.min(...qloads):Math.max(...qloads)) : NaN;
-  const volume=valid.reduce((n,x)=>n+x.kg*x.reps,0);
-  const bestRepSegment=valid.length ? valid.reduce((best,x)=>{
-    if(!best) return x;
-    if(mode.assistance){
-      if(x.kg<best.kg || (Math.abs(x.kg-best.kg)<1e-8 && x.reps>best.reps)) return x;
-    }else if(x.kg>best.kg || (Math.abs(x.kg-best.kg)<1e-8 && x.reps>best.reps)) return x;
-    return best;
-  },null) : null;
-  return {bestLoad,targetLoad,volume,bestRepSegment,target};
+  const mode=trackerMode($('.ex-name',card)?.textContent.trim()||''), timed=isTimedExercise(card);
+  if(timed){const sets=(session.sets||[]).filter(s=>Number.isFinite(s.seconds)&&s.seconds>0), loads=sets.map(s=>s.kg).filter(Number.isFinite), bestLoad=loads.length?(mode.assistance?Math.min(...loads):Math.max(...loads)):NaN, bestDuration=sets.length?Math.max(...sets.map(s=>s.seconds)):NaN, totalSeconds=sets.reduce((n,s)=>n+s.seconds,0); return {timed:true,bestLoad,bestDuration,totalSeconds,target:null,volume:0,bestRepSegment:null};}
+  const target=targetReps(card), segs=(session.sets||[]).flatMap(segmentsFromSet), valid=segs.filter(x=>Number.isFinite(x.kg)&&Number.isFinite(x.reps)&&x.reps>0), loads=valid.map(x=>x.kg), bestLoad=loads.length?(mode.assistance?Math.min(...loads):Math.max(...loads)):NaN, qualifying=target?valid.filter(x=>x.reps>=target):valid, qloads=qualifying.map(x=>x.kg), targetLoad=qloads.length?(mode.assistance?Math.min(...qloads):Math.max(...qloads)):NaN, volume=valid.reduce((n,x)=>n+x.kg*x.reps,0), bestRepSegment=valid.length?valid.reduce((best,x)=>{if(!best)return x;if(mode.assistance){if(x.kg<best.kg||(Math.abs(x.kg-best.kg)<1e-8&&x.reps>best.reps))return x;}else if(x.kg>best.kg||(Math.abs(x.kg-best.kg)<1e-8&&x.reps>best.reps))return x;return best;},null):null; return {timed:false,bestLoad,targetLoad,volume,bestRepSegment,target};
 }
 function historicalPRsBefore(card,ts){
-  const prior=historyFor(card).filter(s=>s.ts<ts);
-  const summaries=prior.map(s=>sessionSummary(s,card));
-  const mode=trackerMode($('.ex-name',card)?.textContent.trim()||'');
-  const bestLoads=summaries.map(x=>x.bestLoad).filter(Number.isFinite);
-  const targetLoads=summaries.map(x=>x.targetLoad).filter(Number.isFinite);
-  const vols=summaries.map(x=>x.volume).filter(Number.isFinite);
-  return {
-    bestLoad:bestLoads.length?(mode.assistance?Math.min(...bestLoads):Math.max(...bestLoads)):NaN,
-    targetLoad:targetLoads.length?(mode.assistance?Math.min(...targetLoads):Math.max(...targetLoads)):NaN,
-    volume:vols.length?Math.max(...vols):NaN
-  };
+  const prior=historyFor(card).filter(s=>s.ts<ts), summaries=prior.map(s=>sessionSummary(s,card)), mode=trackerMode($('.ex-name',card)?.textContent.trim()||'');
+  const bestLoads=summaries.map(x=>x.bestLoad).filter(Number.isFinite), targetLoads=summaries.map(x=>x.targetLoad).filter(Number.isFinite), vols=summaries.map(x=>x.volume).filter(Number.isFinite), durations=summaries.map(x=>x.bestDuration).filter(Number.isFinite);
+  return {bestLoad:bestLoads.length?(mode.assistance?Math.min(...bestLoads):Math.max(...bestLoads)):NaN,targetLoad:targetLoads.length?(mode.assistance?Math.min(...targetLoads):Math.max(...targetLoads)):NaN,volume:vols.length?Math.max(...vols):NaN,bestDuration:durations.length?Math.max(...durations):NaN};
 }
 function commitWorkoutSets(day,ts){
   let prCount=0;
   exerciseCardsForDay(day).forEach(card=>{
     const key=exerciseKey(card);
-    const rows=$$('.set-log-row',card);
+    const timed=isTimedExercise(card);
+    const rows=$$('.set-log-row',card).filter(row=>$('.set-dot',row)?.classList.contains('done'));
+    if(!rows.length) return;
+
     const sets=rows.map(row=>{
       persistRow(row);
-      const id=$('.set-dot',row).dataset.key;
-      const s=state.currentSets[id]||{};
+      const s=state.currentSets[$('.set-dot',row).dataset.key]||{};
       return {
         kg:Number.isFinite(s.kg)?s.kg:null,
         reps:Number.isFinite(s.reps)?s.reps:null,
+        seconds:Number.isFinite(s.seconds)?s.seconds:null,
         dropKg:Number.isFinite(s.dropKg)?s.dropKg:null,
         dropReps:Number.isFinite(s.dropReps)?s.dropReps:null
       };
     });
-    if(!sets.some(s=>Number.isFinite(s.kg)||Number.isFinite(s.reps))) return;
+    if(!sets.some(s=>Number.isFinite(s.kg)||Number.isFinite(s.reps)||Number.isFinite(s.seconds))) return;
 
     state.setHistory[key]=Array.isArray(state.setHistory[key])?state.setHistory[key]:[];
     const session={ts,sets};
     const before=historicalPRsBefore(card,ts);
     const now=sessionSummary(session,card);
     const mode=trackerMode($('.ex-name',card)?.textContent.trim()||'');
+    const improved=(a,b)=>mode.assistance?(!Number.isFinite(b)||a<b-1e-8):(!Number.isFinite(b)||a>b+1e-8);
 
-    const improved=(a,b)=>mode.assistance ? (!Number.isFinite(b)||a<b-1e-8) : (!Number.isFinite(b)||a>b+1e-8);
-    if(Number.isFinite(now.bestLoad) && Number.isFinite(before.bestLoad) && improved(now.bestLoad,before.bestLoad)) prCount++;
-    if(Number.isFinite(now.targetLoad) && Number.isFinite(before.targetLoad) && improved(now.targetLoad,before.targetLoad)) prCount++;
-    if(Number.isFinite(now.volume) && now.volume>0 && Number.isFinite(before.volume) && now.volume>before.volume+1e-8) prCount++;
-
+    if(Number.isFinite(now.bestLoad)&&Number.isFinite(before.bestLoad)&&improved(now.bestLoad,before.bestLoad)) prCount++;
+    if(timed){
+      if(Number.isFinite(now.bestDuration)&&Number.isFinite(before.bestDuration)&&now.bestDuration>before.bestDuration) prCount++;
+    }else{
+      if(Number.isFinite(now.targetLoad)&&Number.isFinite(before.targetLoad)&&improved(now.targetLoad,before.targetLoad)) prCount++;
+      if(Number.isFinite(now.volume)&&now.volume>0&&Number.isFinite(before.volume)&&now.volume>before.volume+1e-8) prCount++;
+    }
     state.setHistory[key].push(session);
   });
   return prCount;
@@ -1675,55 +1666,10 @@ function progressExerciseCatalog(){
   });
 }
 function performanceSeries(card){
-  const sessions=historyFor(card);
-  const rows=sessions.map(s=>({ts:s.ts,...sessionSummary(s,card)}));
-  // Main chart = target-rep load. If an exercise has no target rep prescription,
-  // use best load so circuit work can still be visualized.
-  const target=targetReps(card);
-  return rows
-    .filter(x=>Number.isFinite(target?x.targetLoad:x.bestLoad))
-    .map(x=>({ts:x.ts,kg:target?x.targetLoad:x.bestLoad,volume:x.volume,bestLoad:x.bestLoad}));
+  const rows=historyFor(card).map(s=>({ts:s.ts,...sessionSummary(s,card)})); if(isTimedExercise(card))return rows.filter(x=>Number.isFinite(x.bestDuration)).map(x=>({ts:x.ts,value:x.bestDuration,kind:'seconds',bestLoad:x.bestLoad})); const target=targetReps(card); return rows.filter(x=>Number.isFinite(target?x.targetLoad:x.bestLoad)).map(x=>({ts:x.ts,value:target?x.targetLoad:x.bestLoad,kind:'weight',volume:x.volume,bestLoad:x.bestLoad}));
 }
 function progressChartSvg(series,mode){
-  if(!series.length) return '<div class="progress-empty">Finish a workout with set weights/reps to start this chart.</div>';
-
-  const vals=series.map(x=>displayFromKg(x.kg));
-  const W=360,H=190,L=42,R=12,T=14,B=30;
-  const min0=Math.min(...vals), max0=Math.max(...vals);
-  const pad=Math.max((max0-min0)*0.18, state.weightUnit==='kg'?1:2);
-  const min=Math.max(0,min0-pad), max=max0+pad;
-  const span=(max-min)||1;
-
-  const pts=vals.map((v,i)=>{
-    const x=L+(W-L-R)*(series.length===1?.5:i/(series.length-1));
-    const y=T+(H-T-B)*(1-(v-min)/span);
-    return {x,y,v};
-  });
-
-  const line=pts.map(p=>`${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ');
-  const baseY=H-B;
-  const area=`${pts[0].x.toFixed(1)},${baseY} ${line} ${pts.at(-1).x.toFixed(1)},${baseY}`;
-  let grid='', labels='';
-  for(let i=0;i<4;i++){
-    const y=T+(H-T-B)*(i/3);
-    const v=max-(max-min)*(i/3);
-    grid+=`<line class="grid" x1="${L}" y1="${y}" x2="${W-R}" y2="${y}"></line>`;
-    labels+=`<text class="axis-text" x="${L-6}" y="${y+3}" text-anchor="end">${Math.round(v*10)/10}</text>`;
-  }
-  const firstDate=new Date(series[0].ts).toLocaleDateString(undefined,{month:'short',day:'numeric'});
-  const lastDate=new Date(series.at(-1).ts).toLocaleDateString(undefined,{month:'short',day:'numeric'});
-  const dots=pts.map(p=>`<circle class="dot" cx="${p.x}" cy="${p.y}" r="4"></circle>`).join('');
-
-  return `<div class="progress-chart-title">Target-rep working weight over completed workouts</div>
-  <svg class="progress-chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Target-rep working weight progress over time">
-    ${grid}${labels}
-    <polygon class="area" points="${area}"></polygon>
-    <polyline class="line" points="${line}"></polyline>
-    ${dots}
-    <text class="axis-text" x="${L}" y="${H-8}">${firstDate}</text>
-    <text class="axis-text" x="${W-R}" y="${H-8}" text-anchor="end">${lastDate}</text>
-    <text class="axis-text" x="${W-R}" y="${T+9}" text-anchor="end">${state.weightUnit}</text>
-  </svg>`;
+  if(!series.length)return '<div class="progress-empty">Finish a workout with set details to start this chart.</div>'; const kind=series[0].kind||'weight', vals=series.map(x=>kind==='seconds'?x.value:displayFromKg(x.value)), W=360,H=190,L=42,R=12,T=14,B=30, min0=Math.min(...vals), max0=Math.max(...vals), pad=Math.max((max0-min0)*0.18,kind==='seconds'?2:(state.weightUnit==='kg'?1:2)), min=Math.max(0,min0-pad), max=max0+pad, span=(max-min)||1, pts=vals.map((v,i)=>({x:L+(W-L-R)*(series.length===1?.5:i/(series.length-1)),y:T+(H-T-B)*(1-(v-min)/span),v})), line=pts.map(p=>`${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' '), baseY=H-B, area=`${pts[0].x.toFixed(1)},${baseY} ${line} ${pts.at(-1).x.toFixed(1)},${baseY}`; let grid='',labels=''; for(let i=0;i<4;i++){const y=T+(H-T-B)*(i/3),v=max-(max-min)*(i/3);grid+=`<line class="grid" x1="${L}" y1="${y}" x2="${W-R}" y2="${y}"></line>`;labels+=`<text class="axis-text" x="${L-6}" y="${y+3}" text-anchor="end">${Math.round(v*10)/10}</text>`;} const firstDate=new Date(series[0].ts).toLocaleDateString(undefined,{month:'short',day:'numeric'}), lastDate=new Date(series.at(-1).ts).toLocaleDateString(undefined,{month:'short',day:'numeric'}), dots=pts.map(p=>`<circle class="dot" cx="${p.x}" cy="${p.y}" r="4"></circle>`).join(''), title=kind==='seconds'?'Longest timed set over completed workouts':'Target-rep working weight over completed workouts', unit=kind==='seconds'?'sec':state.weightUnit; return `<div class="progress-chart-title">${title}</div><svg class="progress-chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="${title}">${grid}${labels}<polygon class="area" points="${area}"></polygon><polyline class="line" points="${line}"></polyline>${dots}<text class="axis-text" x="${L}" y="${H-8}">${firstDate}</text><text class="axis-text" x="${W-R}" y="${H-8}" text-anchor="end">${lastDate}</text><text class="axis-text" x="${W-R}" y="${T+9}" text-anchor="end">${unit}</text></svg>`;
 }
 function renderProgress(){
   const select=$('#progress-exercise-select');
@@ -1749,7 +1695,7 @@ function renderProgress(){
   }
 
   const allSessions=Object.values(state.setHistory).filter(Array.isArray);
-  const totalLogs=allSessions.reduce((n,sessions)=>n+sessions.reduce((m,s)=>m+(s.sets||[]).reduce((z,set)=>z+segmentsFromSet(set).length,0),0),0);
+  const totalLogs=allSessions.reduce((n,sessions)=>n+sessions.reduce((m,s)=>m+(s.sets||[]).reduce((z,set)=>z+loggedSegmentCount(set),0),0),0);
   const tracked=allSessions.filter(v=>v.length).length;
   $('#progress-level').textContent=state.workoutHistory.length+1;
   $('#progress-workouts-count').textContent=state.workoutHistory.length;
@@ -1761,16 +1707,19 @@ function renderProgress(){
     const series=performanceSeries(chosen.card);
     $('#progress-chart-wrap').innerHTML=progressChartSvg(series,chosen.mode);
 
-    const vals=series.map(x=>displayFromKg(x.kg));
+    const timed=isTimedExercise(chosen.card);
+    const vals=series.map(x=>timed?x.value:displayFromKg(x.value));
     const first=vals[0], last=vals.at(-1);
-    const best=vals.length ? (chosen.mode.assistance?Math.min(...vals):Math.max(...vals)) : NaN;
+    const best=vals.length ? (timed?Math.max(...vals):(chosen.mode.assistance?Math.min(...vals):Math.max(...vals))) : NaN;
     const pct=Number.isFinite(first)&&Math.abs(first)>1e-8&&Number.isFinite(last)
-      ? (chosen.mode.assistance ? (first-last)/first*100 : (last-first)/first*100)
+      ? (timed ? (last-first)/first*100 : (chosen.mode.assistance ? (first-last)/first*100 : (last-first)/first*100))
       : NaN;
-
-    $('#progress-start').textContent=fmt(first);
-    $('#progress-latest').textContent=fmt(last);
-    $('#progress-best').textContent=fmt(best);
+    $('#progress-start-label').textContent=timed?'Starting time':'Starting target';
+    $('#progress-latest-label').textContent=timed?'Latest time':'Latest target';
+    $('#progress-best-label').textContent=timed?'Time PR':'Target PR';
+    $('#progress-start').textContent=timed?(Number.isFinite(first)?`${first} sec`:'—'):fmt(first);
+    $('#progress-latest').textContent=timed?(Number.isFinite(last)?`${last} sec`:'—'):fmt(last);
+    $('#progress-best').textContent=timed?(Number.isFinite(best)?`${best} sec`:'—'):fmt(best);
 
     const ch=$('#progress-change');
     ch.className='';
@@ -1785,14 +1734,13 @@ function renderProgress(){
     const sessions=historyFor(chosen.card);
     const latestSummary=sessions.length?sessionSummary(sessions.at(-1),chosen.card):null;
     const latestBest=latestSummary?.bestRepSegment;
-    let detail=chosen.mode.assistance
-      ? 'Less assistance counts as improvement. '
-      : '';
-    if(latestBest && Number.isFinite(latestBest.kg)){
-      detail+=`Latest heaviest set: ${fmt(displayFromKg(latestBest.kg))} × ${latestBest.reps}. `;
-    }
-    if(latestSummary && latestSummary.volume>0){
-      detail+=`Latest volume: ${Math.round(displayFromKg(latestSummary.volume)).toLocaleString()} load-reps.`;
+    let detail=chosen.mode.assistance ? 'Less assistance counts as improvement. ' : '';
+    if(timed){
+      if(latestSummary && Number.isFinite(latestSummary.bestDuration)) detail+=`Latest best time: ${latestSummary.bestDuration} sec. `;
+      if(latestSummary && Number.isFinite(latestSummary.bestLoad)) detail+=`Heaviest load used: ${fmt(displayFromKg(latestSummary.bestLoad))}.`;
+    }else{
+      if(latestBest && Number.isFinite(latestBest.kg)) detail+=`Latest heaviest set: ${fmt(displayFromKg(latestBest.kg))} × ${latestBest.reps}. `;
+      if(latestSummary && latestSummary.volume>0) detail+=`Latest volume: ${Math.round(displayFromKg(latestSummary.volume)).toLocaleString()} load-reps.`;
     }
     $('#progress-caption').textContent=detail || 'Finish a workout with set details to build your progression history.';
   }
@@ -1801,10 +1749,11 @@ function renderProgress(){
   catalog.forEach(item=>{
     const series=performanceSeries(item.card);
     if(series.length<2) return;
-    const first=displayFromKg(series[0].kg), last=displayFromKg(series.at(-1).kg);
+    const timed=isTimedExercise(item.card);
+    const first=timed?series[0].value:displayFromKg(series[0].value), last=timed?series.at(-1).value:displayFromKg(series.at(-1).value);
     if(!Number.isFinite(first)||Math.abs(first)<1e-8||!Number.isFinite(last)) return;
-    const pct=item.mode.assistance ? (first-last)/first*100 : (last-first)/first*100;
-    ranking.push({item,pct,first,last});
+    const pct=timed ? (last-first)/first*100 : (item.mode.assistance ? (first-last)/first*100 : (last-first)/first*100);
+    ranking.push({item,pct,first,last,timed});
   });
   ranking.sort((a,b)=>b.pct-a.pct);
 
@@ -1817,7 +1766,8 @@ function renderProgress(){
       const row=document.createElement('div');
       row.className='progress-rank-row';
       const direction=r.pct>0?'progress-good':r.pct<0?'progress-down':'progress-neutral';
-      row.innerHTML=`<div><div class="name">${r.item.name}</div><div class="sub">${fmt(r.first)} → ${fmt(r.last)} · ${r.item.dayLabel}</div></div><div class="delta ${direction}">${r.pct>=0?'+':''}${r.pct.toFixed(1)}%</div>`;
+      const from=r.timed?`${r.first} sec`:fmt(r.first), to=r.timed?`${r.last} sec`:fmt(r.last);
+      row.innerHTML=`<div><div class="name">${r.item.name}</div><div class="sub">${from} → ${to} · ${r.item.dayLabel}</div></div><div class="delta ${direction}">${r.pct>=0?'+':''}${r.pct.toFixed(1)}%</div>`;
       rankBox.appendChild(row);
     });
   }
@@ -1832,7 +1782,10 @@ function renderProgress(){
       const row=document.createElement('div');
       row.className='progress-workout-row';
       const date=new Date(w.ts);
-      row.innerHTML=`<strong>${w.name}</strong><span>${date.toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'})}</span>`;
+      const setInfo=Number.isFinite(w.completedSets)&&Number.isFinite(w.totalSets)
+        ? ` · ${w.completedSets}/${w.totalSets} sets${w.partial?' (partial)':''}`
+        : '';
+      row.innerHTML=`<strong>${w.name}${setInfo}</strong><span>${date.toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'})}</span>`;
       hist.appendChild(row);
     });
   }
@@ -1879,23 +1832,53 @@ function renderRoutineSettings(){
   if(!box) return;
   box.innerHTML='';
   const dayNames={push:'Push',pull:'Pull',shoulders:'Shoulders + Core'};
+
   ['push','pull','shoulders'].forEach(day=>{
     const label=document.createElement('div');
     label.className='routine-day-label';
     label.textContent=dayNames[day];
     box.appendChild(label);
+
     $$('.exercise').filter(c=>c.dataset.day===day).forEach(card=>{
       const key=routinePrefKey(card);
       const def=defaultPrescription(card);
       const pref=state.routinePrefs[key]||{};
+      const capable=isTimeCapableExercise(card);
+      const mode=capable?exerciseMetricMode(card):'reps';
+      const metricValue=mode==='time'
+        ? (Number(pref.seconds)>0?Number(pref.seconds):(Number(def.seconds)>0?Number(def.seconds):''))
+        : (Number(pref.reps)>0?Number(pref.reps):(Number(def.reps)>0?Number(def.reps):''));
+
       const row=document.createElement('div');
       row.className='routine-row';
       row.dataset.prefKey=key;
+      row.dataset.metricKind=mode==='time'?'seconds':'reps';
       row.innerHTML=`
-        <div class="routine-row-name">${$('.ex-name',card)?.textContent.trim()||'Exercise'}<small>sets · reps · on/off</small></div>
+        <div class="routine-row-name">${$('.ex-name',card)?.textContent.trim()||'Exercise'}
+          <small>sets · ${mode==='time'?'seconds':'reps'} · on/off</small>
+          ${capable?`<select class="routine-num pref-mode" aria-label="Tracking mode">
+            <option value="reps" ${mode==='reps'?'selected':''}>Reps</option>
+            <option value="time" ${mode==='time'?'selected':''}>Time</option>
+          </select>`:''}
+        </div>
         <input class="routine-num pref-sets" type="number" min="1" max="10" value="${Number(pref.sets)||def.sets}" aria-label="Sets">
-        <input class="routine-num pref-reps" type="number" min="1" max="100" value="${Number(pref.reps)||def.reps}" aria-label="Reps">
+        <input class="routine-num pref-metric" type="number" min="1" max="${mode==='time'?1800:100}" value="${metricValue}" placeholder="${mode==='time'?'sec':'reps'}" aria-label="${mode==='time'?'Seconds':'Reps'}">
         <input class="routine-toggle pref-enabled" type="checkbox" ${pref.enabled===false?'':'checked'} aria-label="Enable exercise">`;
+
+      const select=$('.pref-mode',row);
+      if(select){
+        select.addEventListener('change',()=>{
+          const isTime=select.value==='time';
+          row.dataset.metricKind=isTime?'seconds':'reps';
+          const small=$('small',row);
+          if(small) small.textContent=`sets · ${isTime?'seconds':'reps'} · on/off`;
+          const metric=$('.pref-metric',row);
+          if(metric){
+            metric.placeholder=isTime?'sec':'reps';
+            metric.max=isTime?'1800':'100';
+          }
+        });
+      }
       box.appendChild(row);
     });
   });
@@ -1974,18 +1957,119 @@ $('#restore-file')?.addEventListener('change',async e=>{
 
 $('#save-routine')?.addEventListener('click',()=>{
   $$('.routine-row').forEach(row=>{
-    const key=row.dataset.prefKey;
-    state.routinePrefs[key]={
-      sets:Math.max(1,Math.min(10,Number($('.pref-sets',row)?.value)||1)),
-      reps:Math.max(1,Math.min(100,Number($('.pref-reps',row)?.value)||1)),
-      enabled:!!$('.pref-enabled',row)?.checked
-    };
+    const key=row.dataset.prefKey, kind=row.dataset.metricKind, metric=Number($('.pref-metric',row)?.value);
+    const pref={...(state.routinePrefs[key]||{}),sets:Math.max(1,Math.min(10,Number($('.pref-sets',row)?.value)||1)),enabled:!!$('.pref-enabled',row)?.checked};
+    const modeSelect=$('.pref-mode',row);
+    if(modeSelect) pref.metricMode=modeSelect.value;
+    if(kind==='seconds') pref.seconds=Number.isFinite(metric)&&metric>0?Math.min(1800,metric):null;
+    else pref.reps=Number.isFinite(metric)&&metric>0?Math.min(100,metric):null;
+    state.routinePrefs[key]=pref;
   });
-  save();
-  const status=$('#routine-status');
-  if(status) status.textContent='Routine saved. Reloading with your settings…';
-  setTimeout(()=>location.reload(),350);
+  save(); const status=$('#routine-status'); if(status)status.textContent='Routine saved. Reloading with your settings…'; setTimeout(()=>location.reload(),350);
 });
+
+
+
+function makeStableFromBetaSource(source){
+  const stableBuild=LIFTLOOP_BUILD.replace('-beta.','.');
+  let s=source;
+  s=s.replace(/data-build=["'][^"']+["']/,`data-build="${stableBuild}"`);
+  s=s.replace(/<title>LiftLoop Beta<\/title>/,'<title>LiftLoop</title>');
+  s=s.replace(/content="LiftLoop Beta"/g,'content="LiftLoop"');
+  s=s.replace(/beta-icon-180\.png/g,'icon-180.png');
+  s=s.replace(/liftloop-beta-state/g,'liftloop-state');
+  s=s.replace(/LiftLoop-Beta-backup-/g,'LiftLoop-backup-');
+  s=s.replace(/app:'LiftLoop Beta'/g,"app:'LiftLoop'");
+  s=s.replace(/parsed\?\.app!=='LiftLoop Beta'/g,"parsed?.app!=='LiftLoop'");
+  s=s.replace(/\.\/beta\.html\?__liftloop_update=/g,'./index.html?__liftloop_update=');
+  s=s.replace(/`\.\/beta\.html\?v=\$\{encodeURIComponent\(latest\)\}&refresh=\$\{Date\.now\(\)\}`/g,
+              '`./?v=${encodeURIComponent(latest)}&refresh=${Date.now()}`');
+  s=s.replace(/\s*<div class="beta-banner">[\s\S]*?<\/div>\s*/,'\n  ');
+  s=s.replace(/Build [^<]*beta[^<]*/i,`Build ${stableBuild} · stable release`);
+  // Carry the exact tested changelog into stable and switch its seen-version storage key.
+  s=s.split(LIFTLOOP_BUILD).join(stableBuild);
+  s=s.replace(/liftloop-beta-last-seen-build/g,'liftloop-last-seen-build');
+  return s;
+}
+$('#prepare-stable')?.addEventListener('click',async()=>{
+  setBackupStatus('Preparing stable index.html…');
+  try{
+    const res=await fetch(`./beta.html?__release=${Date.now()}`,{cache:'no-store'});
+    if(!res.ok) throw new Error(`HTTP ${res.status}`);
+    const source=await res.text();
+    const stable=makeStableFromBetaSource(source);
+    const blob=new Blob([stable],{type:'text/html'});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');
+    a.href=url;
+    a.download='index.html';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),2000);
+    setBackupStatus('Stable index.html created. Upload it to GitHub to publish this beta.');
+  }catch(e){
+    setBackupStatus('Could not prepare the stable file. Make sure Beta is online and try again.');
+  }
+});
+
+
+const LIFTLOOP_CHANGELOG = {
+  '2026.10.06-beta.4': {
+    title: 'A lot changed in LiftLoop',
+    changes: [
+      {icon:'⏱️',title:'Reps or time',text:'Russian twists and plank-style exercises can now be tracked by reps or by time, with optional weight.'},
+      {icon:'✓',title:'Partial workouts',text:'You can finish a workout without completing every set. Unchecked sets are recorded as skipped instead of completed.'},
+      {icon:'⚡',title:'Complete all sets',text:'Each exercise can mark all sets complete using your usual recent working weight.'},
+      {icon:'↘️',title:'Smarter drop sets',text:'Entering drop-set reps automatically adjusts the first part of the set so the total matches the prescribed reps.'},
+      {icon:'📈',title:'Better progress tracking',text:'Timed movements track time progress while rep-based movements continue tracking working weight and volume.'},
+      {icon:'🚀',title:'Prepare Stable Release',text:'After testing Beta, generate a stable-ready index.html from the tested build without exposing GitHub credentials.'},
+      {icon:'✨',title:'What’s New',text:'After future updates, LiftLoop will show this screen once so you can see exactly what changed.'}
+    ]
+  }
+};
+
+function whatsNewStorageKey(){
+  return 'liftloop-beta-last-seen-build';
+}
+function renderWhatsNew(build=LIFTLOOP_BUILD){
+  const entry=LIFTLOOP_CHANGELOG[build];
+  if(!entry) return false;
+  const overlay=document.getElementById('whats-new-overlay');
+  const list=document.getElementById('whats-new-list');
+  const version=document.getElementById('whats-new-version');
+  const title=document.getElementById('whats-new-title');
+  if(!overlay||!list||!version||!title) return false;
+  title.textContent=entry.title||'What’s New';
+  version.textContent=`Version ${build}`;
+  list.innerHTML='';
+  entry.changes.forEach(change=>{
+    const li=document.createElement('li');
+    li.className='whats-new-item';
+    li.innerHTML=`<div class="whats-new-icon">${change.icon||'•'}</div>
+      <div><strong>${change.title}</strong><span>${change.text}</span></div>`;
+    list.appendChild(li);
+  });
+  overlay.hidden=false;
+  return true;
+}
+function dismissWhatsNew(){
+  const overlay=document.getElementById('whats-new-overlay');
+  if(overlay) overlay.hidden=true;
+  try{ localStorage.setItem(whatsNewStorageKey(),LIFTLOOP_BUILD); }catch(e){}
+}
+function maybeShowWhatsNew(){
+  if(!LIFTLOOP_CHANGELOG[LIFTLOOP_BUILD]) return;
+  let seen='';
+  try{ seen=localStorage.getItem(whatsNewStorageKey())||''; }catch(e){}
+  if(seen!==LIFTLOOP_BUILD) renderWhatsNew();
+}
+document.getElementById('whats-new-close')?.addEventListener('click',dismissWhatsNew);
+document.getElementById('whats-new-overlay')?.addEventListener('click',e=>{
+  if(e.target.id==='whats-new-overlay') dismissWhatsNew();
+});
+document.getElementById('open-whats-new')?.addEventListener('click',()=>renderWhatsNew());
+window.addEventListener('load',()=>setTimeout(maybeShowWhatsNew,350));
 
 
 // Independent self-updater: does not depend on a service worker.
@@ -2036,5 +2120,16 @@ if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
 }
 
 </script>
+
+<div class="whats-new-overlay" id="whats-new-overlay" hidden>
+  <section class="whats-new-card" role="dialog" aria-modal="true" aria-labelledby="whats-new-title">
+    <div class="whats-new-kicker">LiftLoop update</div>
+    <div class="whats-new-title" id="whats-new-title">What’s New</div>
+    <div class="whats-new-version" id="whats-new-version"></div>
+    <ul class="whats-new-list" id="whats-new-list"></ul>
+    <button type="button" class="whats-new-close" id="whats-new-close">Got it</button>
+  </section>
+</div>
+
 </body>
 </html>
