@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-build="2026.10.06-beta.7">
+<html lang="en" data-build="2026.10.06-beta.8">
 <head>
 <meta charset="utf-8">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
@@ -1064,7 +1064,7 @@ button{font:inherit}
     <button type="button" class="update-check" id="open-whats-new" style="margin-left:6px">What’s New</button>
     <div class="update-status" id="update-status">Automatic update check enabled</div>
   </div>
-  <p style="text-align:center;color:#697383;font-size:9px;margin:18px 0 6px">Build 2026.10.06-beta.7 · per-update changelog</p>
+  <p style="text-align:center;color:#697383;font-size:9px;margin:18px 0 6px">Build 2026.10.06-beta.8 · release-note rollup</p>
   <p class="credit">
     Video demonstrations are embedded from their original YouTube sources. Previous vector artwork source:
     <a href="https://github.com/InlitX/GymMane" target="_blank" rel="noopener">GymMane</a>,
@@ -2062,9 +2062,23 @@ function makeStableFromBetaSource(source){
               '`./?v=${encodeURIComponent(latest)}&refresh=${Date.now()}`');
   s=s.replace(/\s*<div class="beta-banner">[\s\S]*?<\/div>\s*/,'\n  ');
   s=s.replace(/Build [^<]*beta[^<]*/i,`Build ${stableBuild} · stable release`);
-  // Carry the exact tested changelog into stable and switch its seen-version storage key.
+  // Convert build identifiers first.
   s=s.split(LIFTLOOP_BUILD).join(stableBuild);
   s=s.replace(/liftloop-beta-last-seen-build/g,'liftloop-last-seen-build');
+
+  // Public users should see the NET changes since the previous stable release,
+  // not every internal Beta iteration.
+  const stableChangelog=`const LIFTLOOP_CHANGELOG = ${JSON.stringify({
+    [stableBuild]:{
+      title:LIFTLOOP_STABLE_RELEASE_NOTES.title,
+      changes:LIFTLOOP_STABLE_RELEASE_NOTES.changes
+    }
+  },null,2)};`;
+  s=s.replace(/const LIFTLOOP_CHANGELOG = \{[\s\S]*?\n\};/,stableChangelog);
+
+  // The promotion tool is Beta-only; remove it from the generated stable app.
+  s=s.replace(/<div class="release-box">[\s\S]*?<\/div>/,'');
+  s=s.replace(/function makeStableFromBetaSource\(source\)\{[\s\S]*?document\.getElementById\('prepare-stable'\)\?\.addEventListener\('click',[\s\S]*?\n\}\);\s*/,'');
   return s;
 }
 $('#prepare-stable')?.addEventListener('click',async()=>{
@@ -2090,18 +2104,57 @@ $('#prepare-stable')?.addEventListener('click',async()=>{
 });
 
 
-// Each build entry must list ONLY changes introduced in that build.
+// Beta popup: list ONLY changes introduced in this beta build.
 const LIFTLOOP_CHANGELOG = {
-  '2026.10.06-beta.7': {
-    title: 'What changed in this update',
+  '2026.10.06-beta.8': {
+    title: 'What changed in this Beta update',
     changes: [
       {
-        icon:'✨',
-        title:'Update notes are now per-version',
-        text:'The automatic What’s New popup now shows only the changes introduced in the current update instead of repeating older update notes.'
+        icon:'📦',
+        title:'Stable release notes now roll up Beta work',
+        text:'When Beta is promoted, the public What’s New screen will summarize all net changes since the last stable release without listing internal Beta iterations.'
       }
     ]
   }
+};
+
+// Public release notes: cumulative NET changes since the last stable build.
+// Update this list while Beta evolves; Beta users do not see it until promotion.
+const LIFTLOOP_STABLE_RELEASE_NOTES = {
+  fromBuild:'2026.10.05.1',
+  title:'What’s new in LiftLoop',
+  changes:[
+    {
+      icon:'⏱️',
+      title:'Reps or time for timed movements',
+      text:'Russian twists and plank-style exercises can be tracked by reps or by time, with optional weight.'
+    },
+    {
+      icon:'✓',
+      title:'Partial workouts',
+      text:'You can finish a workout without completing every planned set. Unchecked sets and skipped exercises are saved as skipped, not completed.'
+    },
+    {
+      icon:'⚡',
+      title:'Faster set completion',
+      text:'Complete all sets can fill your most frequently used previous working weight instead of making you re-enter the same load.'
+    },
+    {
+      icon:'↘️',
+      title:'Smarter drop sets',
+      text:'Entering drop-set reps automatically adjusts the first portion of the set so the total matches the prescribed reps.'
+    },
+    {
+      icon:'📈',
+      title:'Timed progress tracking',
+      text:'Timed exercises now track duration progress while rep-based exercises continue tracking working weight and volume.'
+    },
+    {
+      icon:'✨',
+      title:'What’s New after updates',
+      text:'After a public update, LiftLoop shows the changes once on first launch, with the list limited to that public release.'
+    }
+  ]
 };
 
 function whatsNewStorageKey(){
