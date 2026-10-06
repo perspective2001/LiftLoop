@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-build="2026.10.06-beta.6">
+<html lang="en" data-build="2026.10.06-beta.7">
 <head>
 <meta charset="utf-8">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
@@ -1064,7 +1064,7 @@ button{font:inherit}
     <button type="button" class="update-check" id="open-whats-new" style="margin-left:6px">What’s New</button>
     <div class="update-status" id="update-status">Automatic update check enabled</div>
   </div>
-  <p style="text-align:center;color:#697383;font-size:9px;margin:18px 0 6px">Build 2026.10.06-beta.6 · usual-weight fix</p>
+  <p style="text-align:center;color:#697383;font-size:9px;margin:18px 0 6px">Build 2026.10.06-beta.7 · per-update changelog</p>
   <p class="credit">
     Video demonstrations are embedded from their original YouTube sources. Previous vector artwork source:
     <a href="https://github.com/InlitX/GymMane" target="_blank" rel="noopener">GymMane</a>,
@@ -2090,19 +2090,16 @@ $('#prepare-stable')?.addEventListener('click',async()=>{
 });
 
 
+// Each build entry must list ONLY changes introduced in that build.
 const LIFTLOOP_CHANGELOG = {
-  '2026.10.06-beta.6': {
-    title: 'A lot changed in LiftLoop',
+  '2026.10.06-beta.7': {
+    title: 'What changed in this update',
     changes: [
-      {icon:'⏱️',title:'Reps or time',text:'Russian twists and plank-style exercises can now be tracked by reps or by time, with optional weight.'},
-      {icon:'✓',title:'Partial workouts',text:'You can finish a workout without completing every set. Unchecked sets are recorded as skipped instead of completed.'},
-      {icon:'⚡',title:'Complete all sets',text:'Each exercise can mark all sets complete using your usual recent working weight.'},
-      {icon:'↘️',title:'Smarter drop sets',text:'Entering drop-set reps automatically adjusts the first part of the set so the total matches the prescribed reps.'},
-      {icon:'📈',title:'Better progress tracking',text:'Timed movements track time progress while rep-based movements continue tracking working weight and volume.'},
-      {icon:'🚀',title:'Prepare Stable Release',text:'After testing Beta, generate a stable-ready index.html from the tested build without exposing GitHub credentials.'},
-      {icon:'✨',title:'What’s New',text:'After future updates, LiftLoop will show this screen once so you can see exactly what changed.'},
-      {icon:'🛠️',title:'Update sheet fixed',text:'Got it, X, backdrop tap and swipe-down dismissal now work properly, and the change list scrolls independently.'},
-      {icon:'🏋️',title:'Quick-complete weight fixed',text:'Complete all sets now uses the most frequently used non-zero working weight from your completed history instead of incorrectly filling 0.'}
+      {
+        icon:'✨',
+        title:'Update notes are now per-version',
+        text:'The automatic What’s New popup now shows only the changes introduced in the current update instead of repeating older update notes.'
+      }
     ]
   }
 };
