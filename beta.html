@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-build="2026.10.06-beta.8">
+<html lang="en" data-build="2026.10.06-beta.9">
 <head>
 <meta charset="utf-8">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
@@ -1027,7 +1027,7 @@ button{font:inherit}
 
     <div class="settings-panel">
       <h3>Your LiftLoop</h3>
-      <div class="settings-copy">This profile and all workout data stay on this device. Your friend can use the same LiftLoop URL without seeing or changing your progress.</div>
+      <div class="settings-copy">Your profile and workout data are stored only on this device.</div>
       <div class="settings-row">
         <input id="profile-name" class="settings-input" maxlength="32" placeholder="Profile name (optional)">
         <button type="button" class="settings-btn primary" id="save-profile">Save</button>
@@ -1064,7 +1064,7 @@ button{font:inherit}
     <button type="button" class="update-check" id="open-whats-new" style="margin-left:6px">What’s New</button>
     <div class="update-status" id="update-status">Automatic update check enabled</div>
   </div>
-  <p style="text-align:center;color:#697383;font-size:9px;margin:18px 0 6px">Build 2026.10.06-beta.8 · release-note rollup</p>
+  <p style="text-align:center;color:#697383;font-size:9px;margin:18px 0 6px">Build 2026.10.06-beta.9 · profile copy cleanup</p>
   <p class="credit">
     Video demonstrations are embedded from their original YouTube sources. Previous vector artwork source:
     <a href="https://github.com/InlitX/GymMane" target="_blank" rel="noopener">GymMane</a>,
@@ -2106,13 +2106,13 @@ $('#prepare-stable')?.addEventListener('click',async()=>{
 
 // Beta popup: list ONLY changes introduced in this beta build.
 const LIFTLOOP_CHANGELOG = {
-  '2026.10.06-beta.8': {
+  '2026.10.06-beta.9': {
     title: 'What changed in this Beta update',
     changes: [
       {
-        icon:'📦',
-        title:'Stable release notes now roll up Beta work',
-        text:'When Beta is promoted, the public What’s New screen will summarize all net changes since the last stable release without listing internal Beta iterations.'
+        icon:'👤',
+        title:'Cleaner profile wording',
+        text:'The profile section now uses neutral wording and no longer refers to sharing LiftLoop with a friend.'
       }
     ]
   }

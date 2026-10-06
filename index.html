@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-build="2026.10.06.1">
+<html lang="en" data-build="2026.10.06.2">
 <head>
 <meta charset="utf-8">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
@@ -1022,7 +1022,7 @@ button{font:inherit}
 
     <div class="settings-panel">
       <h3>Your LiftLoop</h3>
-      <div class="settings-copy">This profile and all workout data stay on this device. Your friend can use the same LiftLoop URL without seeing or changing your progress.</div>
+      <div class="settings-copy">Your profile and workout data are stored only on this device.</div>
       <div class="settings-row">
         <input id="profile-name" class="settings-input" maxlength="32" placeholder="Profile name (optional)">
         <button type="button" class="settings-btn primary" id="save-profile">Save</button>
@@ -1056,7 +1056,7 @@ button{font:inherit}
     <button type="button" class="update-check" id="open-whats-new" style="margin-left:6px">What’s New</button>
     <div class="update-status" id="update-status">Automatic update check enabled</div>
   </div>
-  <p style="text-align:center;color:#697383;font-size:9px;margin:18px 0 6px">Build 2026.10.06.1 · stable release</p>
+  <p style="text-align:center;color:#697383;font-size:9px;margin:18px 0 6px">Build 2026.10.06.2 · profile copy cleanup</p>
   <p class="credit">
     Video demonstrations are embedded from their original YouTube sources. Previous vector artwork source:
     <a href="https://github.com/InlitX/GymMane" target="_blank" rel="noopener">GymMane</a>,
@@ -2041,40 +2041,15 @@ $('#save-routine')?.addEventListener('click',()=>{
 
 
 const LIFTLOOP_CHANGELOG = {
-  '2026.10.06.1': {
-    title: 'What’s new in LiftLoop',
+  '2026.10.06.2': {
+    title: 'Small cleanup',
     changes: [
       {
-            "icon": "⏱️",
-            "title": "Reps or time for timed movements",
-            "text": "Russian twists and plank-style exercises can be tracked by reps or by time, with optional weight."
-      },
-      {
-            "icon": "✓",
-            "title": "Partial workouts",
-            "text": "You can finish a workout without completing every planned set. Unchecked sets and skipped exercises are saved as skipped, not completed."
-      },
-      {
-            "icon": "⚡",
-            "title": "Faster set completion",
-            "text": "Complete all sets can fill your most frequently used previous working weight instead of making you re-enter the same load."
-      },
-      {
-            "icon": "↘️",
-            "title": "Smarter drop sets",
-            "text": "Entering drop-set reps automatically adjusts the first portion of the set so the total matches the prescribed reps."
-      },
-      {
-            "icon": "📈",
-            "title": "Timed progress tracking",
-            "text": "Timed exercises now track duration progress while rep-based exercises continue tracking working weight and volume."
-      },
-      {
-            "icon": "✨",
-            "title": "What’s New after updates",
-            "text": "After a public update, LiftLoop shows the changes once on first launch, limited to that public release."
+        icon:'👤',
+        title:'Cleaner profile wording',
+        text:'The profile section now uses neutral app wording and no longer refers to sharing LiftLoop with a friend.'
       }
-]
+    ]
   }
 };
 
