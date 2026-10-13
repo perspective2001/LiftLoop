@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-build="2026.10.13-beta.18">
+<html lang="en" data-build="2026.10.13-beta.19">
 <head>
 <meta charset="utf-8">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
@@ -389,44 +389,86 @@ button{font:inherit}
   background:linear-gradient(180deg,#181421,#15171e);overflow:hidden
 }
 .dev-lab summary{
-  list-style:none;cursor:pointer;padding:13px 14px;display:flex;align-items:center;
-  justify-content:space-between;gap:10px;font-size:12px;font-weight:950
+  list-style:none;cursor:pointer;padding:14px;display:flex;align-items:center;
+  justify-content:space-between;gap:10px;font-size:13px;font-weight:950
 }
 .dev-lab summary::-webkit-details-marker{display:none}
 .dev-lab summary:after{content:"⌄";color:#aa95d0;font-size:17px}
 .dev-lab[open] summary:after{transform:rotate(180deg)}
-.dev-lab-body{padding:0 13px 14px;border-top:1px solid #372c48}
-.dev-lab-copy{color:#9c93aa;font-size:9px;line-height:1.5;margin:10px 0}
+.dev-lab-body{padding:12px;border-top:1px solid #372c48}
+.dev-lab-intro{padding:2px 2px 10px}
+.dev-lab-intro strong{display:block;font-size:12px}
+.dev-lab-intro span{display:block;color:#9c93aa;font-size:9px;line-height:1.45;margin-top:3px}
 .dev-mode-pill{
   display:inline-flex;align-items:center;gap:5px;border:1px solid #4a4159;
   background:#211c29;border-radius:999px;padding:5px 8px;color:#ada5b8;
   font-size:8px;font-weight:900;white-space:nowrap
 }
 .dev-mode-pill.active{border-color:#7b5fab;background:#302342;color:#eadcff}
-.dev-section{border-top:1px solid #30283b;padding-top:11px;margin-top:11px}
-.dev-section:first-of-type{border-top:0;padding-top:0}
-.dev-section h4{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#aa95d0;margin:0 0 8px}
+.dev-lab-card{
+  border:1px solid #342b40;background:#18151d;border-radius:15px;padding:11px;margin-top:9px
+}
+.dev-lab-card.preview-card{border-color:#4b3f60;background:linear-gradient(180deg,#1c1725,#17161d)}
+.dev-lab-card.sandbox-card{border-color:#34464a;background:linear-gradient(180deg,#151d1f,#16181d)}
+.dev-card-head{display:grid;grid-template-columns:30px 1fr;gap:9px;align-items:center;margin-bottom:10px}
+.dev-card-head h4{margin:0;font-size:11px}
+.dev-card-head p{margin:2px 0 0;color:#91899c;font-size:8.5px;line-height:1.35}
+.dev-step-icon{
+  width:30px;height:30px;border-radius:10px;background:#332644;border:1px solid #604b7d;
+  display:grid;place-items:center;font-size:11px;font-weight:950;color:#eadcff
+}
+.sandbox-card .dev-step-icon{background:#1d3230;border-color:#315c55;color:#a3ebd6}
+.compact-card .dev-step-icon{background:#242a35;border-color:#3e4756;color:#d7dde8}
+.dev-field-label{display:block;color:#9f96ab;font-size:8px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;margin:10px 0 5px}
+.dev-select{
+  width:100%;height:42px;border:1px solid #58466e;background:#100e15;color:#fff;
+  border-radius:11px;padding:0 10px;font-size:11px;font-weight:850;margin-bottom:8px
+}
 .dev-actions{display:flex;flex-wrap:wrap;gap:7px}
 .dev-btn{
-  min-height:36px;border:1px solid #453956;background:#211c2a;color:#e9e2f2;
-  border-radius:10px;padding:7px 9px;font-size:9px;font-weight:850
+  min-height:38px;border:1px solid #453956;background:#211c2a;color:#e9e2f2;
+  border-radius:10px;padding:8px 10px;font-size:9px;font-weight:850;touch-action:manipulation
 }
 .dev-btn.primary{background:#433062;border-color:#694c93;color:#fff}
 .dev-btn.safe{background:#1b2927;border-color:#31564e;color:#9ce9d2}
 .dev-btn.danger{background:#2a1b20;border-color:#5b313b;color:#f1a6b5}
-.dev-btn:disabled{opacity:.42}
-.dev-select{
-  width:100%;height:40px;border:1px solid #453956;background:#100e15;color:#fff;
-  border-radius:10px;padding:0 10px;font-size:11px;font-weight:800;margin-bottom:8px
+.dev-btn:disabled{opacity:.38}
+.dev-primary-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.dev-btn.hero{
+  min-height:70px;text-align:left;display:grid;grid-template-columns:26px 1fr;grid-template-rows:auto auto;
+  column-gap:8px;align-items:center;background:linear-gradient(135deg,#493268,#34244e);border-color:#76569d;padding:10px
 }
+.dev-btn.hero.secondary{background:#242633;border-color:#42485d}
+.dev-btn.hero>span{grid-row:1/3;font-size:19px;text-align:center}
+.dev-btn.hero b{font-size:10px}
+.dev-btn.hero small{font-size:8px;color:#c5b8d3;font-weight:650;line-height:1.25}
+.dev-btn.hero.secondary small{color:#9aa3b2}
+.dev-secondary-actions{margin-top:7px}
+.dev-preview-note{margin-top:8px;color:#a69daf;font-size:8.5px;line-height:1.4}
+.dev-tier-gallery{
+  display:grid;grid-template-columns:repeat(5,1fr);gap:6px;padding:8px;border:1px solid #32283d;
+  border-radius:12px;background:#111015;margin-bottom:10px
+}
+.dev-tier-sample{text-align:center;color:#948b9f;font-size:7.5px;font-weight:850}
+.dev-tier-sample .badge-medallion{width:38px;height:38px;border-radius:13px;font-size:14px;margin:0 auto 5px}
+.dev-tier-sample .badge-medallion:after{inset:4px;border-radius:10px}
+.dev-tier-sample .special-marker{width:15px;height:15px;border-radius:6px;font-size:7px}
+.dev-mode-switcher{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.dev-test-active{
+  display:flex;justify-content:space-between;gap:8px;align-items:center;
+  padding:8px 9px;margin-bottom:8px;border-radius:10px;background:#173027;border:1px solid #2f5c4d
+}
+.dev-test-active strong{font-size:9px;color:#86e9c3;letter-spacing:.08em}
+.dev-test-active span{font-size:8px;color:#9ac5b8;text-align:right}
+.dev-subsection{margin-top:11px;padding-top:10px;border-top:1px solid #2f3837}
+.dev-subsection h5{margin:0 0 7px;color:#94aaa4;font-size:8px;letter-spacing:.1em;text-transform:uppercase}
 .dev-scenario-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
-.dev-status{min-height:15px;margin-top:8px;color:#9b92a8;font-size:9px;line-height:1.4}
-.dev-warning{
-  margin-top:9px;padding:8px 9px;border-radius:10px;background:#201925;
-  border:1px solid #44354f;color:#bfb1ca;font-size:8.5px;line-height:1.45
-}
+.dev-status{min-height:15px;margin:10px 2px 0;color:#9b92a8;font-size:9px;line-height:1.4}
 @media(max-width:520px){
+  .dev-primary-grid,.dev-mode-switcher{grid-template-columns:1fr}
   .dev-scenario-grid{grid-template-columns:repeat(2,1fr)}
+  .dev-tier-gallery{grid-template-columns:repeat(5,1fr);gap:3px;padding:6px 3px}
+  .dev-tier-sample .badge-medallion{width:33px;height:33px;border-radius:11px;font-size:12px}
 }
 /* BETA_DEV_LAB_CSS_END */
 
@@ -483,33 +525,174 @@ button{font:inherit}
 .moment-card time{font-size:8px;color:#707b89;white-space:nowrap}
 @keyframes mythic-breathe{0%,100%{filter:saturate(1);transform:translateZ(0) scale(1)}50%{filter:saturate(1.25);transform:translateZ(0) scale(1.025)}}
 
-.achievement-overlay{position:fixed;inset:0;z-index:10050;background:rgba(5,7,11,.84);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);display:grid;place-items:center;padding:18px}
+.achievement-overlay{
+  position:fixed;inset:0;z-index:10050;display:grid;place-items:center;padding:18px;
+  background:rgba(5,7,11,.12);backdrop-filter:none;-webkit-backdrop-filter:none;overflow:hidden
+}
 .achievement-overlay[hidden]{display:none!important;pointer-events:none!important}
 .achievement-overlay:not([hidden]){pointer-events:auto}
-.achievement-reveal{width:min(440px,100%);max-height:88dvh;overflow:auto;border:1px solid #3c4350;border-radius:24px;background:linear-gradient(180deg,#1b202a,#11141a);padding:22px;text-align:center;position:relative;box-shadow:0 26px 90px rgba(0,0,0,.58)}
-.achievement-reveal.tier-mythic{background:radial-gradient(circle at 50% 5%,rgba(123,55,213,.34),transparent 39%),linear-gradient(180deg,#1b1727,#101218)}
-.achievement-reveal.special-reveal{border-color:#625571;background:radial-gradient(circle at 50% 0,rgba(109,60,146,.25),transparent 42%),linear-gradient(180deg,#191922,#0f1116)}
-.unlock-kicker{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:#929dab;font-weight:950}
-.unlock-medal{width:108px;height:108px;margin:19px auto 14px;border-radius:32px;font-size:42px}
-.unlock-title{font-size:26px;line-height:1.05;font-weight:950;letter-spacing:-.035em}
-.unlock-tier{margin-top:7px;font-size:9px;font-weight:950;letter-spacing:.13em;text-transform:uppercase;color:#a7b0bd}
-.unlock-copy{max-width:330px;margin:12px auto 0;color:#b0b9c5;font-size:11px;line-height:1.55}
-.unlock-count{margin-top:10px;color:#e4d6ff;font-size:10px;font-weight:850}
+#achievement-overlay .achievement-reveal{
+  width:min(540px,100%);max-height:92dvh;overflow:visible;border:0;border-radius:0;
+  background:transparent;padding:24px 16px;text-align:center;position:relative;box-shadow:none;isolation:isolate
+}
+#achievement-detail-overlay{background:rgba(5,7,11,.78);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+#achievement-detail-overlay .achievement-reveal{
+  width:min(440px,100%);max-height:88dvh;overflow:auto;border:1px solid #3c4350;
+  border-radius:24px;background:linear-gradient(180deg,#1b202a,#11141a);padding:22px;
+  text-align:center;position:relative;box-shadow:0 26px 90px rgba(0,0,0,.58)
+}
+#achievement-detail-overlay .achievement-reveal.tier-mythic{
+  background:radial-gradient(circle at 50% 5%,rgba(123,55,213,.34),transparent 39%),linear-gradient(180deg,#1b1727,#101218)
+}
+#achievement-detail-overlay .achievement-reveal.special-reveal{
+  border-color:#625571;background:radial-gradient(circle at 50% 0,rgba(109,60,146,.25),transparent 42%),linear-gradient(180deg,#191922,#0f1116)
+}
+.unlock-kicker{
+  font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:#c3cad4;font-weight:950;
+  text-shadow:0 2px 12px rgba(0,0,0,.9)
+}
+#achievement-overlay .unlock-kicker{opacity:0;animation:unlock-text-in .38s .22s ease-out forwards}
+.unlock-medal{width:112px;height:112px;margin:18px auto 14px;border-radius:34px;font-size:43px}
+.unlock-title{
+  font-size:29px;line-height:1.02;font-weight:950;letter-spacing:-.04em;
+  text-shadow:0 3px 18px rgba(0,0,0,.92),0 1px 2px rgba(0,0,0,.9)
+}
+#achievement-overlay .unlock-title{opacity:0;animation:unlock-title-in .48s .28s cubic-bezier(.16,1,.3,1) forwards}
+.unlock-tier{
+  margin:9px auto 0;font-size:10px;font-weight:950;letter-spacing:.16em;text-transform:uppercase;
+  color:#d6dce5;display:flex;align-items:center;justify-content:center;gap:10px;
+  text-shadow:0 2px 12px rgba(0,0,0,.9)
+}
+.unlock-tier:before,.unlock-tier:after{
+  content:"";width:42px;height:1px;background:linear-gradient(90deg,transparent,currentColor);opacity:.55
+}
+.unlock-tier:after{transform:scaleX(-1)}
+#achievement-overlay .unlock-tier{opacity:0;animation:unlock-banner-in .46s .36s cubic-bezier(.16,1,.3,1) forwards}
+.unlock-copy{
+  max-width:350px;margin:13px auto 0;color:#eef1f6;font-size:11px;line-height:1.55;
+  text-shadow:0 2px 12px rgba(0,0,0,.95)
+}
+#achievement-overlay .unlock-copy{opacity:0;animation:unlock-text-in .4s .42s ease-out forwards}
+.unlock-count{margin-top:10px;color:#efe5ff;font-size:10px;font-weight:850;text-shadow:0 2px 12px rgba(0,0,0,.92)}
+#achievement-overlay .unlock-count{opacity:0;animation:unlock-text-in .4s .47s ease-out forwards}
 .unlock-actions{display:flex;gap:8px;justify-content:center;margin-top:18px}
-.unlock-btn{border:1px solid #3b4352;background:#252c38;color:#edf1f7;border-radius:12px;padding:10px 14px;font-size:10px;font-weight:900;min-height:40px}
-.unlock-btn.primary{background:#4653ad;border-color:#5968cd}
+#achievement-overlay .unlock-actions{opacity:0;animation:unlock-text-in .35s .55s ease-out forwards}
+.unlock-btn{
+  border:1px solid rgba(255,255,255,.24);background:rgba(22,26,34,.88);color:#edf1f7;
+  border-radius:12px;padding:10px 14px;font-size:10px;font-weight:900;min-height:40px;
+  box-shadow:0 8px 24px rgba(0,0,0,.3);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)
+}
+.unlock-btn.primary{background:rgba(70,83,173,.93);border-color:#7885e7}
 .retro-badges{display:flex;justify-content:center;flex-wrap:wrap;gap:8px;margin:17px auto 5px;max-width:330px}
 .retro-badges .badge-medallion{width:52px;height:52px;border-radius:17px;font-size:20px}
 .detail-progress{margin:14px 0 0;text-align:left;background:#161b23;border:1px solid #2d3440;border-radius:13px;padding:11px}
 .detail-progress .row{display:flex;justify-content:space-between;gap:10px;font-size:9px;color:#aab3bf}
 .detail-progress .achievement-progress-track{height:6px;margin-top:8px}
+.achievement-fx{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:-1}
+.achievement-fx .fx-ring{
+  position:absolute;left:50%;top:46%;width:180px;height:180px;border-radius:50%;
+  border:2px solid currentColor;transform:translate(-50%,-50%) scale(.2);opacity:0
+}
+.achievement-fx .fx-particle{
+  position:absolute;left:50%;top:46%;width:6px;height:6px;border-radius:50%;
+  background:currentColor;box-shadow:0 0 12px currentColor;opacity:0;transform:translate(-50%,-50%)
+}
+.achievement-fx .fx-ray{
+  position:absolute;left:50%;top:46%;width:3px;height:155px;border-radius:99px;
+  transform-origin:50% 100%;background:linear-gradient(to top,currentColor,transparent);opacity:0
+}
+#achievement-overlay .unlock-medal{position:relative;z-index:2;opacity:0;transform:scale(.72)}
+#achievement-overlay.reveal-bronze .unlock-medal{animation:bronze-pop .58s cubic-bezier(.2,1.35,.35,1) forwards}
+#achievement-overlay.reveal-silver .unlock-medal{animation:silver-land .68s cubic-bezier(.16,1,.3,1) forwards}
+#achievement-overlay.reveal-silver .unlock-medal:after{animation:silver-sheen .7s .18s ease-out}
+#achievement-overlay.reveal-gold .unlock-medal{animation:gold-impact .78s cubic-bezier(.15,1.25,.25,1) forwards}
+#achievement-overlay.reveal-gold .fx-ring{color:#ffd76a;animation:fx-ring-out .85s .08s ease-out forwards}
+#achievement-overlay.reveal-gold .fx-particle{color:#ffd76a;animation:fx-particle-out .78s .12s cubic-bezier(.2,.7,.2,1) forwards}
+#achievement-overlay.reveal-mythic{
+  background:radial-gradient(circle at 50% 45%,rgba(73,31,122,.16),rgba(5,7,11,.05) 48%,transparent 72%)
+}
+#achievement-overlay.reveal-mythic .achievement-reveal:before{
+  content:"";position:absolute;left:50%;top:44%;width:250px;height:250px;border-radius:50%;
+  transform:translate(-50%,-50%) scale(.45) rotate(-20deg);opacity:0;z-index:-1;
+  background:conic-gradient(from 0deg,transparent,#8a4dff,#ef5ed8,#6fdcff,transparent,#8a4dff);
+  filter:blur(20px);animation:mythic-aura 1.35s cubic-bezier(.16,1,.3,1) forwards
+}
+#achievement-overlay.reveal-mythic .unlock-medal{animation:mythic-arrive 1.05s cubic-bezier(.12,1.25,.25,1) forwards}
+#achievement-overlay.reveal-mythic .unlock-tier{
+  color:#e3c7ff;font-size:11px;letter-spacing:.22em;
+  animation:mythic-banner .7s .38s cubic-bezier(.16,1,.3,1) forwards
+}
+#achievement-overlay.reveal-mythic .fx-ring{color:#a761ff;animation:fx-ring-out 1.15s .16s ease-out forwards}
+#achievement-overlay.reveal-mythic .fx-particle{color:#c47cff;animation:fx-particle-out 1.05s .24s cubic-bezier(.16,.75,.25,1) forwards}
+#achievement-overlay.reveal-mythic .fx-ray{color:#985cff;animation:fx-ray-flash .9s .08s ease-out forwards}
+#achievement-overlay.reveal-special .unlock-kicker{color:#f0e0ff}
+#achievement-overlay.reveal-special .unlock-tier{color:#e8d6ff}
+#achievement-overlay.reveal-special .achievement-reveal:after{
+  content:"";position:absolute;left:50%;top:44%;width:220px;height:220px;border-radius:50%;
+  transform:translate(-50%,-50%) rotate(0deg);opacity:0;z-index:-1;border:1px solid rgba(255,255,255,.18);
+  box-shadow:0 0 35px rgba(167,97,255,.24),inset 0 0 35px rgba(96,225,221,.08);
+  animation:special-prism 1.4s .05s cubic-bezier(.16,1,.3,1) forwards
+}
+#achievement-overlay.reveal-special .fx-particle:nth-child(3n){color:#64e3dc}
+#achievement-overlay.reveal-special .fx-particle:nth-child(3n+1){color:#d66cff}
+#achievement-overlay.reveal-special .fx-particle:nth-child(3n+2){color:#ffd36a}
+@keyframes unlock-text-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes unlock-title-in{from{opacity:0;transform:translateY(12px) scale(.97)}to{opacity:1;transform:none}}
+@keyframes unlock-banner-in{from{opacity:0;transform:scaleX(.65)}to{opacity:1;transform:scaleX(1)}}
+@keyframes bronze-pop{0%{opacity:0;transform:scale(.55) translateY(12px)}68%{opacity:1;transform:scale(1.08) translateY(-2px)}100%{opacity:1;transform:scale(1)}}
+@keyframes silver-land{0%{opacity:0;transform:scale(.62) rotate(-7deg)}65%{opacity:1;transform:scale(1.04) rotate(1deg)}100%{opacity:1;transform:scale(1) rotate(0)}}
+@keyframes silver-sheen{0%{filter:brightness(1)}45%{filter:brightness(1.65)}100%{filter:brightness(1)}}
+@keyframes gold-impact{0%{opacity:0;transform:scale(.45) rotate(-5deg)}58%{opacity:1;transform:scale(1.13) rotate(1deg)}75%{transform:scale(.97)}100%{opacity:1;transform:scale(1)}}
+@keyframes mythic-arrive{
+  0%{opacity:0;transform:scale(.28) rotate(-13deg);filter:blur(8px) saturate(.6)}
+  48%{opacity:1;transform:scale(1.18) rotate(2deg);filter:blur(0) saturate(1.45)}
+  68%{transform:scale(.96) rotate(-1deg)}
+  82%{transform:scale(1.045)}
+  100%{opacity:1;transform:scale(1);filter:saturate(1.15)}
+}
+@keyframes mythic-aura{
+  0%{opacity:0;transform:translate(-50%,-50%) scale(.35) rotate(-35deg)}
+  45%{opacity:.82}
+  100%{opacity:.32;transform:translate(-50%,-50%) scale(1.18) rotate(115deg)}
+}
+@keyframes mythic-banner{
+  0%{opacity:0;letter-spacing:.45em;transform:scaleX(.45)}
+  100%{opacity:1;letter-spacing:.22em;transform:scaleX(1)}
+}
+@keyframes special-prism{
+  0%{opacity:0;transform:translate(-50%,-50%) scale(.55) rotate(-90deg)}
+  45%{opacity:.85}
+  100%{opacity:.25;transform:translate(-50%,-50%) scale(1.12) rotate(90deg)}
+}
+@keyframes fx-ring-out{
+  0%{opacity:.8;transform:translate(-50%,-50%) scale(.2)}
+  100%{opacity:0;transform:translate(-50%,-50%) scale(1.8)}
+}
+@keyframes fx-particle-out{
+  0%{opacity:0;transform:translate(-50%,-50%) scale(.4)}
+  20%{opacity:1}
+  100%{opacity:0;transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy))) scale(.1)}
+}
+@keyframes fx-ray-flash{
+  0%{opacity:0;transform:translate(-50%,-100%) rotate(var(--r)) scaleY(.35)}
+  25%{opacity:.45}
+  100%{opacity:0;transform:translate(-50%,-100%) rotate(var(--r)) scaleY(1.25)}
+}
 @media(max-width:520px){
   .achievement-grid{grid-template-columns:1fr}
   .featured-badge{grid-template-columns:64px 1fr}
   .featured-tier{display:none}
+  #achievement-overlay .achievement-reveal{padding:20px 8px}
+  .unlock-title{font-size:27px}
 }
 @media(prefers-reduced-motion:reduce){
-  .tier-mythic .badge-medallion,.badge-medallion.tier-mythic,.badge-medallion.evolved-2{animation:none}
+  .tier-mythic .badge-medallion,.badge-medallion.tier-mythic,.badge-medallion.evolved-2,
+  #achievement-overlay .unlock-medal,#achievement-overlay .unlock-kicker,#achievement-overlay .unlock-title,
+  #achievement-overlay .unlock-tier,#achievement-overlay .unlock-copy,#achievement-overlay .unlock-count,
+  #achievement-overlay .unlock-actions,#achievement-overlay .achievement-reveal:before,
+  #achievement-overlay .achievement-reveal:after,.achievement-fx *{
+    animation:none!important;transition:none!important;opacity:1!important;transform:none!important
+  }
 }
 
 </style>
@@ -1208,83 +1391,128 @@ button{font:inherit}
     </div>
 
     <!-- BETA_DEV_LAB_START -->
-    <details class="dev-lab" id="beta-dev-lab">
+    <details class="dev-lab" id="beta-dev-lab" open>
       <summary>
-        <span>🧪 Developer Lab · Beta only</span>
-        <span class="dev-mode-pill" id="dev-mode-pill">Live Beta data</span>
+        <span>🧪 Developer Lab</span>
+        <span class="dev-mode-pill" id="dev-mode-pill">Preview mode · safe</span>
       </summary>
       <div class="dev-lab-body">
-        <div class="dev-lab-copy">
-          Preview UI states instantly, or enter isolated Test Mode to create fake progress without changing your real Beta history.
+        <div class="dev-lab-intro">
+          <strong>Test Beta without grinding workouts.</strong>
+          <span>Visual previews never change progress. Fake progress changes only work inside isolated Test Mode.</span>
         </div>
 
-        <div class="dev-section">
-          <h4>Sandbox</h4>
-          <div class="dev-actions" id="dev-live-actions">
-            <button type="button" class="dev-btn primary" id="dev-enter-copy">Enter Test Mode · copy current data</button>
-            <button type="button" class="dev-btn" id="dev-enter-fresh">Enter fresh Test Mode</button>
+        <section class="dev-lab-card preview-card">
+          <div class="dev-card-head">
+            <div class="dev-step-icon">1</div>
+            <div>
+              <h4>Preview appearance</h4>
+              <p>Safe · does not unlock or change anything</p>
+            </div>
           </div>
-          <div class="dev-actions" id="dev-test-actions" hidden>
-            <button type="button" class="dev-btn safe" id="dev-exit">Exit Test Mode</button>
-            <button type="button" class="dev-btn" id="dev-reset-copy">Reset to real Beta copy</button>
-            <button type="button" class="dev-btn danger" id="dev-reset-fresh">Reset Test Mode empty</button>
-          </div>
-          <div class="dev-warning">
-            Test Mode stores everything under a separate local key. Exiting Test Mode returns to your untouched Beta data.
-          </div>
-        </div>
 
-        <div class="dev-section">
-          <h4>Achievement preview</h4>
+          <div class="dev-tier-gallery" aria-label="Achievement tier preview">
+            <div class="dev-tier-sample"><div class="badge-medallion tier-bronze"><span>◆</span></div><span>Bronze</span></div>
+            <div class="dev-tier-sample"><div class="badge-medallion tier-silver"><span>◆</span></div><span>Silver</span></div>
+            <div class="dev-tier-sample"><div class="badge-medallion tier-gold"><span>◆</span></div><span>Gold</span></div>
+            <div class="dev-tier-sample"><div class="badge-medallion tier-mythic"><span>✦</span></div><span>Mythic</span></div>
+            <div class="dev-tier-sample"><div class="badge-medallion tier-gold special"><span>✦</span><span class="special-marker">✦</span></div><span>Special</span></div>
+          </div>
+
+          <label class="dev-field-label" for="dev-achievement-select">Achievement to preview</label>
           <select class="dev-select" id="dev-achievement-select" aria-label="Choose achievement to test"></select>
+
+          <div class="dev-primary-grid">
+            <button type="button" class="dev-btn hero" id="dev-preview-unlock"><span>▶</span><b>Preview unlock</b><small>See its real reveal animation</small></button>
+            <button type="button" class="dev-btn hero secondary" id="dev-preview-detail"><span>◫</span><b>View badge</b><small>See its Trophy Case detail</small></button>
+          </div>
+
+          <div class="dev-actions dev-secondary-actions">
+            <button type="button" class="dev-btn" id="dev-preview-moment">✦ Preview Special Moment</button>
+            <button type="button" class="dev-btn" id="dev-preview-tiers">◈ Preview tier sequence</button>
+            <button type="button" class="dev-btn" id="dev-preview-retro">↶ Retroactive unlock screen</button>
+          </div>
+          <div class="dev-preview-note" id="dev-preview-note">Select any badge above, then tap <strong>Preview unlock</strong>.</div>
+        </section>
+
+        <section class="dev-lab-card sandbox-card">
+          <div class="dev-card-head">
+            <div class="dev-step-icon">2</div>
+            <div>
+              <h4>Simulate progress</h4>
+              <p>Uses a separate sandbox — your real Beta/live data stays untouched</p>
+            </div>
+          </div>
+
+          <div class="dev-mode-switcher" id="dev-live-actions">
+            <button type="button" class="dev-btn primary" id="dev-enter-copy">🧪 Start Test Mode with my current data</button>
+            <button type="button" class="dev-btn" id="dev-enter-fresh">＋ Start empty Test Mode</button>
+          </div>
+
+          <div id="dev-test-actions" hidden>
+            <div class="dev-test-active">
+              <strong>TEST MODE ACTIVE</strong>
+              <span>Everything below changes only isolated test data.</span>
+            </div>
+            <div class="dev-actions">
+              <button type="button" class="dev-btn safe" id="dev-exit">✓ Exit Test Mode</button>
+              <button type="button" class="dev-btn" id="dev-reset-copy">↻ Recopy my real Beta data</button>
+              <button type="button" class="dev-btn danger" id="dev-reset-fresh">⌫ Empty test data</button>
+            </div>
+
+            <div class="dev-subsection">
+              <h5>Selected badge</h5>
+              <div class="dev-actions">
+                <button type="button" class="dev-btn primary dev-mutating" id="dev-unlock-selected">🏆 Unlock selected</button>
+                <button type="button" class="dev-btn dev-mutating" id="dev-lock-selected">🔒 Lock selected</button>
+                <button type="button" class="dev-btn dev-mutating" id="dev-add-moment">✦ Add Special Moment</button>
+                <button type="button" class="dev-btn dev-mutating" id="dev-gild-special">✨ Make Gilded</button>
+                <button type="button" class="dev-btn dev-mutating" id="dev-ascend-special">◈ Make Ascended</button>
+              </div>
+            </div>
+
+            <div class="dev-subsection">
+              <h5>Fake workout milestones</h5>
+              <div class="dev-scenario-grid">
+                <button type="button" class="dev-btn dev-mutating" data-dev-workouts="1">1 workout</button>
+                <button type="button" class="dev-btn dev-mutating" data-dev-workouts="5">5 workouts</button>
+                <button type="button" class="dev-btn dev-mutating" data-dev-workouts="10">10 workouts</button>
+                <button type="button" class="dev-btn dev-mutating" data-dev-workouts="25">25 workouts</button>
+                <button type="button" class="dev-btn dev-mutating" data-dev-workouts="50">50 workouts</button>
+                <button type="button" class="dev-btn dev-mutating" data-dev-workouts="100">100 workouts</button>
+                <button type="button" class="dev-btn dev-mutating" id="dev-seed-rolling">3 workouts / 7 days</button>
+                <button type="button" class="dev-btn dev-mutating" id="dev-seed-rotation">Push + Pull + Shoulders</button>
+              </div>
+            </div>
+
+            <div class="dev-subsection">
+              <h5>Trophy Case states</h5>
+              <div class="dev-actions">
+                <button type="button" class="dev-btn dev-mutating" id="dev-unlock-normal">Unlock all normal</button>
+                <button type="button" class="dev-btn dev-mutating" id="dev-unlock-special">Unlock all Special</button>
+                <button type="button" class="dev-btn dev-mutating" id="dev-unlock-everything">🏆 Full Trophy Case</button>
+                <button type="button" class="dev-btn danger dev-mutating" id="dev-reset-achievements">Reset achievements</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="dev-lab-card compact-card">
+          <div class="dev-card-head">
+            <div class="dev-step-icon">3</div>
+            <div>
+              <h4>Other UI</h4>
+              <p>Quickly preview non-achievement feedback</p>
+            </div>
+          </div>
           <div class="dev-actions">
-            <button type="button" class="dev-btn primary" id="dev-preview-unlock">Preview unlock</button>
-            <button type="button" class="dev-btn" id="dev-preview-detail">Open current detail</button>
-            <button type="button" class="dev-btn" id="dev-preview-moment">Preview Special Moment</button>
-            <button type="button" class="dev-btn" id="dev-preview-tiers">Preview all tiers</button>
-            <button type="button" class="dev-btn" id="dev-preview-retro">Preview retroactive batch</button>
+            <button type="button" class="dev-btn" id="dev-preview-whats-new">📣 What’s New</button>
+            <button type="button" class="dev-btn" id="dev-preview-level">⬆ Level-up toast</button>
+            <button type="button" class="dev-btn" id="dev-preview-pr">↗ PR toast</button>
           </div>
-        </div>
+        </section>
 
-        <div class="dev-section">
-          <h4>Sandbox achievement state</h4>
-          <div class="dev-actions">
-            <button type="button" class="dev-btn primary dev-mutating" id="dev-unlock-selected">Unlock selected</button>
-            <button type="button" class="dev-btn dev-mutating" id="dev-lock-selected">Lock selected</button>
-            <button type="button" class="dev-btn dev-mutating" id="dev-add-moment">Add Special Moment</button>
-            <button type="button" class="dev-btn dev-mutating" id="dev-gild-special">Make Special Gilded</button>
-            <button type="button" class="dev-btn dev-mutating" id="dev-ascend-special">Make Special Ascended</button>
-          </div>
-        </div>
-
-        <div class="dev-section">
-          <h4>Preset profiles</h4>
-          <div class="dev-scenario-grid">
-            <button type="button" class="dev-btn dev-mutating" data-dev-workouts="1">1 workout</button>
-            <button type="button" class="dev-btn dev-mutating" data-dev-workouts="5">5 workouts</button>
-            <button type="button" class="dev-btn dev-mutating" data-dev-workouts="10">10 workouts</button>
-            <button type="button" class="dev-btn dev-mutating" data-dev-workouts="25">25 workouts</button>
-            <button type="button" class="dev-btn dev-mutating" data-dev-workouts="50">50 workouts</button>
-            <button type="button" class="dev-btn dev-mutating" data-dev-workouts="100">100 workouts</button>
-            <button type="button" class="dev-btn dev-mutating" id="dev-seed-rolling">3-in-7 goal</button>
-            <button type="button" class="dev-btn dev-mutating" id="dev-seed-rotation">Full Rotation</button>
-            <button type="button" class="dev-btn dev-mutating" id="dev-unlock-normal">Unlock all normal</button>
-            <button type="button" class="dev-btn dev-mutating" id="dev-unlock-special">Unlock all Special</button>
-            <button type="button" class="dev-btn dev-mutating" id="dev-unlock-everything">Full Trophy Case</button>
-            <button type="button" class="dev-btn danger dev-mutating" id="dev-reset-achievements">Reset achievements</button>
-          </div>
-        </div>
-
-        <div class="dev-section">
-          <h4>Other UI previews</h4>
-          <div class="dev-actions">
-            <button type="button" class="dev-btn" id="dev-preview-whats-new">What’s New</button>
-            <button type="button" class="dev-btn" id="dev-preview-level">Level-up toast</button>
-            <button type="button" class="dev-btn" id="dev-preview-pr">PR toast</button>
-          </div>
-        </div>
-
-        <div class="dev-status" id="dev-status">Developer previews are safe. State-changing controls require Test Mode.</div>
+        <div class="dev-status" id="dev-status">Preview controls are safe. Test Mode is required only for fake progress/state changes.</div>
       </div>
     </details>
     <!-- BETA_DEV_LAB_END -->
@@ -1361,7 +1589,7 @@ button{font:inherit}
     <button type="button" class="update-check" id="open-whats-new" style="margin-left:6px">What’s New</button>
     <div class="update-status" id="update-status">Automatic update check enabled</div>
   </div>
-  <p style="text-align:center;color:#697383;font-size:9px;margin:18px 0 6px">Build 2026.10.13-beta.18 · modal interaction fix</p>
+  <p style="text-align:center;color:#697383;font-size:9px;margin:18px 0 6px">Build 2026.10.13-beta.19 · reward animations + clearer lab</p>
   <p class="credit">
     Video demonstrations are embedded from their original YouTube sources. Previous vector artwork source:
     <a href="https://github.com/InlitX/GymMane" target="_blank" rel="noopener">GymMane</a>,
@@ -2661,13 +2889,18 @@ $('#prepare-stable')?.addEventListener('click',async()=>{
 
 // Beta popup: list ONLY changes introduced since the currently published Beta build.
 const LIFTLOOP_CHANGELOG = {
-  '2026.10.13-beta.18': {
+  '2026.10.13-beta.19': {
     title: 'What changed in this Beta update',
     changes: [
       {
-        icon:'🛠️',
-        title:'What’s New is tappable again',
-        text:'Removed the pointer-events bug that made the visible update sheet ignore every tap, and added independent emergency close handlers for Got it, X, and backdrop dismissal.'
+        icon:'✨',
+        title:'Rarity-scaled achievement reveals',
+        text:'Unlocks now float directly over the app with no gray card. Bronze stays quick, Silver adds a metallic reveal, Gold gets an impact burst, and Mythic gets a staged ultraviolet aura, rarity banner, rays, and particles.'
+      },
+      {
+        icon:'🧪',
+        title:'Developer Lab is clearer',
+        text:'The Lab now separates safe visual previews from isolated Test Mode, includes a tier gallery, clearer controls, and fixes duplicate preview events.'
       }
     ]
   }
@@ -2728,6 +2961,11 @@ const LIFTLOOP_STABLE_RELEASE_NOTES = {
       icon:'☁️',
       title:'Clear update status',
       text:'LiftLoop now shows when a new commit is still publishing and confirms when the updated app is actually ready.'
+    },
+    {
+      icon:'✨',
+      title:'Achievement reveals feel earned',
+      text:'Achievement unlocks now use rarity-scaled motion and presentation, from quick Bronze feedback to a more dramatic Mythic and Special reveal.'
     }
   ]
 };
@@ -3164,9 +3402,58 @@ function pumpAchievementPresentation(){
 }
 function closeAchievementPresentation(){
   const overlay=$('#achievement-overlay');
-  if(overlay) overlay.hidden=true;
+  if(overlay){
+    overlay.hidden=true;
+    overlay.className='achievement-overlay';
+  }
+  const fx=$('#achievement-fx'); if(fx) fx.innerHTML='';
   achievementPresentationActive=false;
   setTimeout(pumpAchievementPresentation,180);
+}
+function achievementFxLevel(def){
+  if(def.special && def.tier==='mythic') return {particles:24,rays:10};
+  if(def.tier==='mythic') return {particles:20,rays:8};
+  if(def.special) return {particles:15,rays:4};
+  if(def.tier==='gold') return {particles:12,rays:0};
+  return {particles:0,rays:0};
+}
+function buildAchievementFx(def){
+  const fx=$('#achievement-fx');
+  if(!fx) return;
+  fx.innerHTML='';
+  const level=achievementFxLevel(def);
+  if(def.tier==='gold'||def.tier==='mythic'||def.special){
+    const ring=document.createElement('span');
+    ring.className='fx-ring';
+    fx.appendChild(ring);
+  }
+  for(let i=0;i<level.particles;i++){
+    const angle=(Math.PI*2*i/Math.max(1,level.particles))+((i%3)*0.13);
+    const distance=(def.tier==='mythic'?105:82)+(i%4)*13;
+    const p=document.createElement('span');
+    p.className='fx-particle';
+    p.style.setProperty('--dx',`${Math.cos(angle)*distance}px`);
+    p.style.setProperty('--dy',`${Math.sin(angle)*distance}px`);
+    p.style.animationDelay=`${0.1+(i%6)*0.035}s`;
+    const size=3+(i%3)*1.5;
+    p.style.width=`${size}px`;
+    p.style.height=`${size}px`;
+    fx.appendChild(p);
+  }
+  for(let i=0;i<level.rays;i++){
+    const r=document.createElement('span');
+    r.className='fx-ray';
+    r.style.setProperty('--r',`${(360/level.rays)*i}deg`);
+    r.style.animationDelay=`${0.04+(i%4)*0.025}s`;
+    fx.appendChild(r);
+  }
+}
+function applyAchievementRevealClasses(overlay,def){
+  if(!overlay) return;
+  overlay.className='achievement-overlay';
+  void overlay.offsetWidth;
+  overlay.classList.add(`reveal-${def.tier}`);
+  if(def.special) overlay.classList.add('reveal-special');
 }
 function showAchievementPresentation(item){
   const overlay=$('#achievement-overlay'),card=$('#achievement-reveal');
@@ -3175,6 +3462,8 @@ function showAchievementPresentation(item){
   if(!def){achievementPresentationActive=false;return;}
   const count=state.achievementMoments.filter(m=>m.achievementId===def.id).length;
   const stage=specialEvolutionStage(def,count);
+  applyAchievementRevealClasses(overlay,def);
+  buildAchievementFx(def);
   card.className=`achievement-reveal tier-${def.tier}${def.special?' special-reveal':''}`;
   $('#achievement-reveal-medal').className=`${badgeMedalClasses(def,count)} unlock-medal`;
   $('#achievement-reveal-icon').textContent=def.icon;
@@ -3195,7 +3484,10 @@ function showRetroactiveAchievementSummary(ids){
   if(!overlay||!card) return;
   if($('#whats-new-overlay') && !$('#whats-new-overlay').hidden){ setTimeout(()=>showRetroactiveAchievementSummary(ids),800); return; }
   achievementPresentationActive=true;
-  card.className='achievement-reveal';
+  const retroDef={tier:'gold',special:false};
+  applyAchievementRevealClasses(overlay,retroDef);
+  buildAchievementFx(retroDef);
+  card.className='achievement-reveal tier-gold';
   $('#achievement-reveal-kicker').textContent='History recognized';
   $('#achievement-reveal-medal').className='badge-medallion unlock-medal tier-gold';
   $('#achievement-reveal-icon').textContent='✦';
@@ -3545,8 +3837,27 @@ function previewAchievementTierSequence(){
   picks.forEach((def,i)=>setTimeout(()=>queueAchievementPresentation({kind:'unlock',achievementId:def.id}),i*500));
 }
 function bindDeveloperLab(){
+  const lab=$('#beta-dev-lab');
+  if(!lab || lab.dataset.bound==='1') return;
+  lab.dataset.bound='1';
+
   devPopulateAchievementSelect();
   devSetMutatingEnabled();
+
+  const updatePreviewControls=()=>{
+    const def=achievementDef(devAchievementId());
+    const moment=$('#dev-preview-moment');
+    if(moment){
+      moment.disabled=!def?.special;
+      moment.textContent=def?.special?'✦ Preview Special Moment':'✦ Special Moment · choose a Special badge';
+    }
+    const note=$('#dev-preview-note');
+    if(note && def){
+      note.innerHTML=`Selected: <strong>${def.name}</strong> · ${tierLabel(def)}${def.special?' · Special':''}. Previewing never changes progress.`;
+    }
+  };
+  $('#dev-achievement-select')?.addEventListener('change',updatePreviewControls);
+  updatePreviewControls();
 
   $('#dev-enter-copy')?.addEventListener('click',()=>enterDeveloperTestMode(false));
   $('#dev-enter-fresh')?.addEventListener('click',()=>enterDeveloperTestMode(true));
@@ -3623,8 +3934,7 @@ function bindDeveloperLab(){
   });
 
   if(LIFTLOOP_DEV_MODE){
-    const lab=$('#beta-dev-lab');
-    if(lab) lab.open=true;
+    lab.open=true;
     devStatus('Test Mode active. All state changes are isolated from your real Beta profile.');
   }
 }
@@ -3787,6 +4097,7 @@ if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
 
 
 <div class="achievement-overlay" id="achievement-overlay" hidden>
+  <div class="achievement-fx" id="achievement-fx" aria-hidden="true"></div>
   <section class="achievement-reveal" id="achievement-reveal" role="dialog" aria-modal="true" aria-labelledby="achievement-reveal-title">
     <div class="unlock-kicker" id="achievement-reveal-kicker">Achievement unlocked</div>
     <div class="badge-medallion unlock-medal" id="achievement-reveal-medal"><span id="achievement-reveal-icon">★</span></div>
