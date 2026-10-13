@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-build="2026.10.13-beta.24">
+<html lang="en" data-build="2026.10.13-beta.25">
 <head>
 <meta charset="utf-8">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
@@ -1232,6 +1232,97 @@ button{font:inherit}
   background-size:280% 280%!important;animation:mythicSpecialCore 4.2s linear infinite
 }
 
+
+/* ---------- Beta 25: workout hierarchy + achievement simplification ---------- */
+.gamify-top{align-items:flex-start!important}
+.level-zone{min-width:0;flex:1}
+.level-identity{display:grid;grid-template-columns:66px minmax(0,1fr);align-items:center;gap:11px;min-width:0}
+.level-badge{display:contents!important}
+.level-orb{
+  width:66px!important;height:66px!important;min-width:66px!important;border-radius:20px!important;
+  font-size:22px!important;line-height:1!important
+}
+.level-orb.digits-4{font-size:18px!important}
+.level-orb.digits-5{font-size:15px!important}
+.level-orb.digits-6{font-size:13px!important}
+.level-copy{min-width:0!important;padding:0!important}
+.level-copy .eyebrow{font-size:8px!important;letter-spacing:.14em!important}
+.level-copy .rank{
+  margin-top:3px!important;font-size:17px!important;line-height:1.05!important;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis
+}
+.level-milestone{
+  display:grid!important;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:8px;
+  margin:7px 0 0!important;padding-left:77px
+}
+.level-milestone .milestone-track{height:6px!important;margin:0!important}
+.milestone-count{min-width:25px;text-align:right;color:#798493;font-size:8px;font-weight:850;font-variant-numeric:tabular-nums}
+.stats-mini{padding-top:3px;flex:0 0 auto!important}
+
+.main-featured-achievement{
+  width:100%!important;max-width:none!important;display:grid!important;
+  grid-template-columns:66px minmax(0,1fr) 20px!important;align-items:center!important;
+  gap:11px!important;margin-top:13px!important;padding:9px 11px 9px 9px!important;
+  min-height:84px!important;border-radius:18px!important;overflow:visible!important;text-align:left!important
+}
+.main-featured-achievement[hidden]{display:none!important}
+.main-featured-icon-wrap,.main-featured-icon{width:66px!important;height:66px!important}
+.main-featured-icon{border-radius:20px!important}
+.main-featured-icon:after{font-size:21px!important}
+.main-featured-name{
+  font-size:14px!important;line-height:1.08!important;white-space:normal!important;
+  overflow:visible!important;text-overflow:clip!important
+}
+.main-featured-tier{font-size:8.5px!important;margin-top:5px!important}
+.main-featured-arrow{color:#657181;font-size:24px;font-weight:400;align-self:center;justify-self:end}
+.main-featured-special{width:21px!important;height:21px!important;right:-5px!important;bottom:-5px!important}
+.main-featured-evolution{font-size:8px!important;top:-8px!important}
+.recent-workouts{margin-top:10px!important}
+
+.featured-badge{
+  grid-template-columns:104px minmax(0,1fr)!important;gap:17px!important;
+  min-height:134px!important;padding:15px 17px!important;overflow:visible!important
+}
+.featured-badge .badge-medallion{width:104px!important;height:104px!important;border-radius:32px!important}
+.featured-copy{min-width:0!important;overflow:visible!important;padding:2px 2px 2px 0}
+.featured-copy strong{
+  margin:0!important;padding:0 1px!important;font-size:22px!important;line-height:1.04!important;
+  white-space:normal!important;overflow:visible!important;word-break:normal!important
+}
+.featured-copy .featured-subline{
+  display:block;margin-top:8px!important;color:#929cab;font-size:9px!important;
+  font-weight:850;letter-spacing:.04em;text-transform:uppercase
+}
+.featured-tier{display:none!important}
+
+.achievement-group-heading{display:none!important}
+.achievement-filters{gap:7px!important}
+.achievement-filter{min-width:76px}
+.achievement-card .meta{font-size:7.5px!important}
+.achievement-focus-pulse{animation:achievementFocusPulse 1.4s ease-out!important}
+@keyframes achievementFocusPulse{
+  0%{box-shadow:0 0 0 0 rgba(128,143,255,.55)}
+  40%{box-shadow:0 0 0 5px rgba(128,143,255,.22),0 0 26px rgba(128,114,239,.22)}
+  100%{box-shadow:0 0 0 0 rgba(128,143,255,0)}
+}
+.feature-toggle{min-width:88px!important;background:#15191f!important;border-color:#3a424e!important;color:#aeb7c3!important}
+.feature-toggle.is-featured{background:#26325d!important;border-color:#6475ce!important;color:#fff!important}
+
+@media(max-width:520px){
+  .gamify-top{display:grid!important;grid-template-columns:minmax(0,1fr) auto!important}
+  .level-identity{grid-template-columns:60px minmax(0,1fr)!important}
+  .level-orb{width:60px!important;height:60px!important;min-width:60px!important}
+  .level-milestone{padding-left:71px!important}
+  .level-copy .rank{font-size:15px!important;max-width:125px}
+  .stats-mini{gap:8px!important}
+  .main-featured-achievement{grid-template-columns:60px minmax(0,1fr) 18px!important;min-height:78px!important}
+  .main-featured-icon-wrap,.main-featured-icon{width:60px!important;height:60px!important}
+  .main-featured-name{font-size:13px!important}
+  .featured-badge{grid-template-columns:88px minmax(0,1fr)!important;gap:13px!important}
+  .featured-badge .badge-medallion{width:88px!important;height:88px!important}
+  .featured-copy strong{font-size:19px!important}
+}
+
 </style>
 </head>
 <body>
@@ -1262,36 +1353,42 @@ button{font:inherit}
 
   <section class="gamify-card" aria-label="LiftLoop progress">
     <div class="gamify-top">
-      <div class="level-badge">
-        <div class="level-orb frame-0" id="level-orb">
-          <span id="level-number">1</span>
-          <span class="level-prestige" id="level-prestige" hidden></span>
+      <div class="level-zone">
+        <div class="level-identity">
+          <div class="level-orb frame-0" id="level-orb">
+            <span id="level-number">1</span>
+            <span class="level-prestige" id="level-prestige" hidden></span>
+          </div>
+          <div class="level-copy">
+            <div class="eyebrow">LEVEL</div>
+            <div class="rank" id="rank-label">Starting Line</div>
+          </div>
         </div>
-        <div class="level-copy">
-          <div class="eyebrow">LIFTLOOP LEVEL</div>
-          <div class="rank" id="rank-label">Starting Line</div>
+        <div class="milestone level-milestone">
+          <div class="milestone-track"><div class="milestone-fill" id="milestone-fill"></div></div>
+          <span class="milestone-count" id="milestone-copy">0 / 5</span>
         </div>
-        <button type="button" class="main-featured-achievement" id="main-featured-achievement" hidden aria-label="Open featured achievement">
-          <span class="main-featured-icon-wrap">
-            <span class="main-featured-icon" id="main-featured-icon">★</span>
-            <span class="main-featured-special" id="main-featured-special" hidden>✦</span>
-            <span class="main-featured-evolution" id="main-featured-evolution" hidden></span>
-          </span>
-          <span class="main-featured-copy">
-            <span class="main-featured-name" id="main-featured-name">Featured achievement</span>
-            <span class="main-featured-tier" id="main-featured-tier"></span>
-          </span>
-        </button>
       </div>
+
       <div class="stats-mini">
         <div><strong id="workout-count">0</strong><span>WORKOUTS</span></div>
         <div><strong id="streak-count">0/3</strong><span id="streak-label">STREAK</span></div>
       </div>
     </div>
-    <div class="milestone">
-      <div class="milestone-row"><span id="milestone-copy">0 / 5</span></div>
-      <div class="milestone-track"><div class="milestone-fill" id="milestone-fill"></div></div>
-    </div>
+
+    <button type="button" class="main-featured-achievement" id="main-featured-achievement" hidden aria-label="View featured achievement in Progress">
+      <span class="main-featured-icon-wrap">
+        <span class="main-featured-icon" id="main-featured-icon">★</span>
+        <span class="main-featured-special" id="main-featured-special" hidden>✦</span>
+        <span class="main-featured-evolution" id="main-featured-evolution" hidden></span>
+      </span>
+      <span class="main-featured-copy">
+        <span class="main-featured-name" id="main-featured-name">Featured achievement</span>
+        <span class="main-featured-tier" id="main-featured-tier"></span>
+      </span>
+      <span class="main-featured-arrow" aria-hidden="true">›</span>
+    </button>
+
     <div class="consistency-status" id="consistency-status" hidden></div>
     <details class="recent-workouts">
       <summary>Recent workouts</summary>
@@ -1963,14 +2060,13 @@ button{font:inherit}
           <div class="achievement-summary" id="achievement-summary" hidden></div>
           <div class="achievement-filters" id="achievement-filters">
             <button type="button" class="achievement-filter active" data-ach-filter="earned">Earned</button>
-            <button type="button" class="achievement-filter" data-ach-filter="core">Core</button>
             <button type="button" class="achievement-filter" data-ach-filter="special">Special</button>
           </div>
           <div class="achievement-grid" id="achievement-grid"></div>
           <details class="achievement-guide" id="achievement-guide">
             <summary>?</summary>
             <div class="achievement-guide-grid compact">
-              <div><strong>Core</strong><span>Visible goals.</span></div>
+              <div><strong>Earned</strong><span>Your unlocked achievements.</span></div>
               <div><strong>Special</strong><span>Hidden discoveries.</span></div>
               <div><strong>Gilded</strong><span>3 natural Moments.</span></div>
               <div><strong>Ascended</strong><span>7 natural Moments.</span></div>
@@ -2046,6 +2142,22 @@ button{font:inherit}
             <button type="button" class="dev-btn" id="dev-preview-ascended">★★★ Preview Ascended</button>
           </div>
           <div class="dev-preview-note" id="dev-preview-note">Select any badge above, then tap <strong>Preview unlock</strong>.</div>
+        </section>
+
+        <section class="dev-lab-card compact-card">
+          <div class="dev-card-head">
+            <div class="dev-step-icon">H</div>
+            <div>
+              <h4>Workout header preview</h4>
+              <p>Safe · test spacing and badge navigation</p>
+            </div>
+          </div>
+          <div class="dev-actions">
+            <button type="button" class="dev-btn" data-dev-header-preview="7">Level 7 · no badge</button>
+            <button type="button" class="dev-btn" data-dev-header-preview="1000" data-preview-achievement="triple_crown">1K · Triple Crown</button>
+            <button type="button" class="dev-btn" data-dev-header-preview="10000" data-preview-achievement="three_peaks">10K · Mythic Special</button>
+            <button type="button" class="dev-btn safe" id="dev-header-preview-reset">Actual header</button>
+          </div>
         </section>
 
         <section class="dev-lab-card compact-card">
@@ -2210,7 +2322,7 @@ button{font:inherit}
     <button type="button" class="update-check" id="open-whats-new" style="margin-left:6px">What’s New</button>
     <div class="update-status" id="update-status">Automatic update check enabled</div>
   </div>
-  <p style="text-align:center;color:#697383;font-size:9px;margin:18px 0 6px">Build 2026.10.13-beta.24 · prestige materials + lifetime ladder</p>
+  <p style="text-align:center;color:#697383;font-size:9px;margin:18px 0 6px">Build 2026.10.13-beta.25 · cleaner header + achievement navigation</p>
   <p class="credit">
     Video demonstrations are embedded from their original YouTube sources. Previous vector artwork source:
     <a href="https://github.com/InlitX/GymMane" target="_blank" rel="noopener">GymMane</a>,
@@ -2296,7 +2408,7 @@ state.weightUnit = state.weightUnit || 'lb';
 state.achievements = state.achievements && typeof state.achievements==='object' ? state.achievements : {};
 state.achievementMoments = Array.isArray(state.achievementMoments) ? state.achievementMoments : [];
 state.featuredAchievement = typeof state.featuredAchievement==='string' ? state.featuredAchievement : '';
-state.achievementFilter = ['earned','core','special'].includes(state.achievementFilter) ? state.achievementFilter : 'earned';
+state.achievementFilter = ['earned','special'].includes(state.achievementFilter) ? state.achievementFilter : 'earned';
 state.achievementSystemVersion = Number(state.achievementSystemVersion)||0;
 const save=()=>{try{localStorage.setItem(LIFTLOOP_STORAGE_KEY,JSON.stringify(state));}catch(e){}};
 
@@ -2709,10 +2821,14 @@ function levelPrestigeCount(level){
 }
 function applyLevelVisual(level){
   const safeLevel=Math.max(1,Math.floor(Number(level)||1));
-  $('#level-number').textContent=safeLevel.toLocaleString();
+  const formattedLevel=safeLevel.toLocaleString();
+  $('#level-number').textContent=formattedLevel;
   $('#rank-label').textContent=rankFor(safeLevel);
   const orb=$('#level-orb');
-  if(orb) orb.className=`level-orb frame-${levelFrameFor(safeLevel)}`;
+  if(orb){
+    const digits=String(safeLevel).length;
+    orb.className=`level-orb frame-${levelFrameFor(safeLevel)} digits-${Math.min(6,digits)}`;
+  }
   const prestige=$('#level-prestige');
   const prestigeCount=levelPrestigeCount(safeLevel);
   if(prestige){
@@ -3523,28 +3639,28 @@ $('#prepare-stable')?.addEventListener('click',async()=>{
 
 // Beta popup: list ONLY changes introduced since the currently published Beta build.
 const LIFTLOOP_CHANGELOG = {
-  '2026.10.13-beta.24': {
+  '2026.10.13-beta.25': {
     title: 'What changed in this Beta update',
     changes: [
       {
-        icon:'◈',
-        title:'Mythic has a new material',
-        text:'Mythic is now obsidian and platinum/opal with cyan-violet iridescence instead of a mostly purple badge. Special changes the inner diamond itself, not only the border.'
+        icon:'▰',
+        title:'Level and progress are one clear block',
+        text:'The Level number, rank, and 5-step progress bar now stay together, with responsive number sizing so large levels do not cover the rank.'
       },
       {
         icon:'★',
-        title:'Gilded and Ascended are visible',
-        text:'Repeatable Specials gain a gold star when Gilded and a three-star iridescent mark when Ascended. Developer Lab now has safe Preview Gilded and Preview Ascended controls.'
+        title:'Featured achievement is larger and navigates',
+        text:'The workout-screen Featured badge is now a full-width identity row with a larger badge. Tap it to jump directly to that achievement in Progress.'
       },
       {
-        icon:'∞',
-        title:'Lifetime milestones have their own names',
-        text:'Century Club remains the 100-workout milestone. 200, 300, 500, 1K, 2.5K, 5K, and 10K now have distinct Mythic identities and direct Developer Lab previews.'
+        icon:'✓',
+        title:'Featured can be turned off',
+        text:'The Feature control in achievement details is now a true toggle: Feature → ✓ Featured → Feature, and turning it off hides the workout-screen badge.'
       },
       {
-        icon:'◫',
-        title:'Bigger, simpler achievement presentation',
-        text:'Unlock badges and rarity labels are larger, reveal copy is shorter, Details opens the full breakdown, and Feature is handled from the detail screen instead of the initial reveal.'
+        icon:'⌄',
+        title:'Achievements are simpler',
+        text:'Journey, Consistency, Training, Completion, Logging, and Core labels are removed from the Trophy Case. It is now just Earned or Special.'
       }
     ]
   }
@@ -3650,6 +3766,16 @@ const LIFTLOOP_STABLE_RELEASE_NOTES = {
       icon:'∞',
       title:'Long-term lifetime milestones',
       text:'Major workout-count milestones beyond 100 receive their own Mythic identities instead of repeating Century Club indefinitely.'
+    },
+    {
+      icon:'▰',
+      title:'Clearer workout status',
+      text:'Level, rank, and milestone progress are grouped together, while Featured achievement identity is separated into a larger navigable row.'
+    },
+    {
+      icon:'⌄',
+      title:'Simpler Trophy Case',
+      text:'Achievement browsing focuses on earned badges and Special discoveries instead of category labels and locked clutter.'
     },
     {
       icon:'100',
@@ -4480,6 +4606,35 @@ function setFeaturedAchievement(id){
   renderAchievements();
   return true;
 }
+function clearFeaturedAchievement(){
+  state.featuredAchievement='';
+  save();
+  renderAchievements();
+  return true;
+}
+function goToAchievementInProgress(id){
+  const def=achievementDef(id);
+  if(!def) return;
+  state.achievementFilter=def.special?'special':'earned';
+  showDay('progress');
+  renderAchievements();
+
+  const trophy=$('#trophy-case-details');
+  if(trophy) trophy.open=true;
+
+  requestAnimationFrame(()=>{
+    const panel=$('#achievement-panel');
+    if(panel) panel.scrollIntoView({behavior:'smooth',block:'start'});
+    setTimeout(()=>{
+      const card=$(`.achievement-card[data-achievement-id="${id}"]`);
+      if(card){
+        card.scrollIntoView({behavior:'smooth',block:'center'});
+        card.classList.add('achievement-focus-pulse');
+        setTimeout(()=>card.classList.remove('achievement-focus-pulse'),1500);
+      }
+    },300);
+  });
+}
 function renderMainFeaturedAchievement(){
   const button=$('#main-featured-achievement');
   if(!button) return;
@@ -4503,7 +4658,7 @@ function renderMainFeaturedAchievement(){
     evolution.textContent=evolutionStarsText(stage);
   }
   $('#main-featured-tier').textContent=`${tierLabel(def)}${stage?` · ${specialEvolutionLabel(stage)}`:''}`;
-  button.onclick=()=>openAchievementDetail(def.id);
+  button.onclick=()=>goToAchievementInProgress(def.id);
 }
 
 function renderFeaturedAchievement(){
@@ -4518,7 +4673,7 @@ function renderFeaturedAchievement(){
   const stage=specialEvolutionStage(def,count);
   box.className=`featured-badge tier-${def.tier}${def.special?' special-card':''}${stage?` evolved-${stage}`:''}`;
   const momentText=def.special&&count>1?`${count} ${def.momentNoun||'moments'}`:'';
-  box.innerHTML=`<div class="${badgeMedalClasses(def,count)}"><span>${def.icon}</span>${badgeDecorationsHtml(def,count)}</div><div class="featured-copy"><div class="eyebrow">Featured</div><strong>${achievementDisplayName(def)}</strong>${momentText?`<span>${momentText}</span>`:''}</div><div class="featured-tier">${tierLabel(def)}${stage?` · ${specialEvolutionLabel(stage)}`:''}</div>`;
+  box.innerHTML=`<div class="${badgeMedalClasses(def,count)}"><span>${def.icon}</span>${badgeDecorationsHtml(def,count)}</div><div class="featured-copy"><strong>${achievementDisplayName(def)}</strong><span class="featured-subline">${tierLabel(def)}${stage?` · ${specialEvolutionLabel(stage)}`:''}${momentText?` · ${momentText}`:''}</span></div>`;
   box.onclick=()=>openAchievementDetail(def.id);
 }
 function developerPreviewMoments(def,count=3){
@@ -4654,7 +4809,11 @@ function openAchievementDetail(id,opts={}){
   feature.textContent=isFeatured?'✓ Featured':'Feature';
   feature.className=`unlock-btn feature-toggle${isFeatured?' is-featured':''}`;
   feature.onclick=()=>{
-    if(setFeaturedAchievement(id)){
+    if(state.featuredAchievement===id){
+      clearFeaturedAchievement();
+      feature.textContent='Feature';
+      feature.className='unlock-btn feature-toggle';
+    }else if(setFeaturedAchievement(id)){
       feature.textContent='✓ Featured';
       feature.className='unlock-btn feature-toggle is-featured';
     }
@@ -4672,42 +4831,31 @@ function renderAchievements(){
   renderFeaturedAchievement();
   renderMainFeaturedAchievement();
 
-  const filter=['earned','core','special'].includes(state.achievementFilter)?state.achievementFilter:'earned';
+  const filter=['earned','special'].includes(state.achievementFilter)?state.achievementFilter:'earned';
   $$('.achievement-filter').forEach(b=>b.classList.toggle('active',b.dataset.achFilter===filter));
 
-  let visible=defs.filter(d=>state.achievements[d.id]);
-  if(filter==='core') visible=normal.filter(d=>state.achievements[d.id]);
-  else if(filter==='special') visible=special.filter(d=>state.achievements[d.id]);
+  let visible=filter==='special'
+    ? special.filter(d=>state.achievements[d.id])
+    : normal.filter(d=>state.achievements[d.id]);
 
-  const groupOrder=['Journey','Consistency','Progress','Training','Completion','Logging','Special'];
   visible=[...visible].sort((a,b)=>{
-    const ag=groupOrder.indexOf(a.group),bg=groupOrder.indexOf(b.group);
-    if(ag!==bg) return ag-bg;
-    if(TIER_ORDER[a.tier]!==TIER_ORDER[b.tier]) return TIER_ORDER[a.tier]-TIER_ORDER[b.tier];
+    if(TIER_ORDER[a.tier]!==TIER_ORDER[b.tier]) return TIER_ORDER[b.tier]-TIER_ORDER[a.tier];
     const at=Number(a.target)||0,bt=Number(b.target)||0;
-    return at-bt||a.name.localeCompare(b.name);
+    return bt-at||a.name.localeCompare(b.name);
   });
 
   grid.innerHTML='';
-  if(!visible.length) grid.innerHTML='<div class="mystery-card">Earned badges will appear here.</div>';
-  let renderedGroup='';
+  if(!visible.length) grid.innerHTML=`<div class="mystery-card">${filter==='special'?'Special discoveries will appear here.':'Earned achievements will appear here.'}</div>`;
   visible.forEach(def=>{
-    if(def.group!==renderedGroup){
-      renderedGroup=def.group;
-      const heading=document.createElement('div');
-      heading.className='achievement-group-heading';
-      const groupCount=visible.filter(x=>x.group===def.group).length;
-      heading.innerHTML=`<strong>${def.group}</strong><span>${groupCount} badge${groupCount===1?'':'s'}</span>`;
-      grid.appendChild(heading);
-    }
     const unlocked=!!state.achievements[def.id],p=achievementProgress(def,ctx),count=state.achievementMoments.filter(m=>m.achievementId===def.id).length,stage=specialEvolutionStage(def,count);
     const btn=document.createElement('button');
     btn.type='button';
+    btn.dataset.achievementId=def.id;
     btn.className=`achievement-card tier-${def.tier}${unlocked?'':' locked'}${def.special?' special-card':''}${state.featuredAchievement===def.id?' is-featured':''}`;
     const progress=def.special
       ? (count>1?`${count} ${def.momentNoun||'moments'}${stage?` · ${specialEvolutionLabel(stage)}`:''}`:'Special discovery')
       : (unlocked?'Unlocked':`${Math.min(p.current,p.target)} / ${p.target}`);
-    btn.innerHTML=`<div class="${badgeMedalClasses(def,count)}"><span>${unlocked||!def.special?def.icon:'?'}</span>${badgeDecorationsHtml(def,count)}</div><div><span class="name">${unlocked||!def.special?achievementDisplayName(def):'???'}</span><span class="meta">${tierLabel(def)} · ${def.group}</span><span class="progress-text">${progress}</span>${!def.special&&!unlocked?`<div class="achievement-progress-track"><div class="achievement-progress-fill" style="width:${p.pct}%"></div></div>`:''}</div>${state.featuredAchievement===def.id?'<span class="featured-card-marker">★ Featured</span>':''}`;
+    btn.innerHTML=`<div class="${badgeMedalClasses(def,count)}"><span>${unlocked||!def.special?def.icon:'?'}</span>${badgeDecorationsHtml(def,count)}</div><div><span class="name">${unlocked||!def.special?achievementDisplayName(def):'???'}</span><span class="meta">${tierLabel(def)}</span><span class="progress-text">${progress}</span>${!def.special&&!unlocked?`<div class="achievement-progress-track"><div class="achievement-progress-fill" style="width:${p.pct}%"></div></div>`:''}</div>${state.featuredAchievement===def.id?'<span class="featured-card-marker">★ Featured</span>':''}`;
     btn.addEventListener('click',()=>openAchievementDetail(def.id));
     grid.appendChild(btn);
   });
@@ -4995,6 +5143,42 @@ function bindDeveloperLab(){
   };
   $('#dev-preview-gilded')?.addEventListener('click',()=>previewEvolution(3,'Gilded'));
   $('#dev-preview-ascended')?.addEventListener('click',()=>previewEvolution(7,'Ascended'));
+
+  const previewMainFeatured=(achievementId)=>{
+    const button=$('#main-featured-achievement');
+    const def=achievementDef(achievementId);
+    if(!button) return;
+    if(!def){
+      button.hidden=true;
+      return;
+    }
+    const count=def.special&&def.repeatable?3:0;
+    const stage=specialEvolutionStage(def,count);
+    button.hidden=false;
+    button.className=`main-featured-achievement tier-${def.tier}${def.special?' special-card':''}${stage?` evolved-${stage}`:''}`;
+    const mainIcon=$('#main-featured-icon');
+    if(mainIcon){mainIcon.textContent='';mainIcon.dataset.icon=def.icon;}
+    $('#main-featured-name').textContent=achievementDisplayName(def);
+    const specialMarker=$('#main-featured-special'); if(specialMarker) specialMarker.hidden=!def.special;
+    const evolution=$('#main-featured-evolution');
+    if(evolution){
+      evolution.hidden=!stage;
+      evolution.textContent=evolutionStarsText(stage);
+    }
+    $('#main-featured-tier').textContent=`${tierLabel(def)}${stage?` · ${specialEvolutionLabel(stage)}`:''}`;
+    button.onclick=()=>goToAchievementInProgress(def.id);
+  };
+  $$('[data-dev-header-preview]').forEach(btn=>btn.addEventListener('click',()=>{
+    const level=Math.max(1,Number(btn.dataset.devHeaderPreview)||1);
+    applyLevelVisual(level);
+    previewMainFeatured(btn.dataset.previewAchievement||'');
+    devStatus(`Previewing workout header at Level ${level.toLocaleString()}. No data changed.`);
+  }));
+  $('#dev-header-preview-reset')?.addEventListener('click',()=>{
+    renderGamify();
+    renderMainFeaturedAchievement();
+    devStatus('Restored your actual workout header.');
+  });
 
   $$('[data-dev-level-preview]').forEach(btn=>btn.addEventListener('click',()=>{
     const level=Math.max(1,Number(btn.dataset.devLevelPreview)||1);
