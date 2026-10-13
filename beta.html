@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-build="2026.10.13-beta.16">
+<html lang="en" data-build="2026.10.13-beta.17">
 <head>
 <meta charset="utf-8">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
@@ -254,6 +254,12 @@ button{font:inherit}
 }
 .deploy-watch.ready .deploy-dot{background:#69e7b8}
 .deploy-watch.error .deploy-dot{background:#e98585}
+
+.live-mirror-status{
+  display:flex;align-items:center;justify-content:center;gap:6px;
+  margin:-5px 0 12px;color:#7f8a99;font-size:8.5px;line-height:1.3;text-align:center
+}
+.live-mirror-status span:first-child{color:#69e7b8;font-size:11px;font-weight:900}
 @keyframes deployPulse{
   0%{box-shadow:0 0 0 0 rgba(217,166,74,.45)}
   70%{box-shadow:0 0 0 7px rgba(217,166,74,0)}
@@ -313,7 +319,8 @@ button{font:inherit}
   display:flex;align-items:flex-end;justify-content:center;
   padding:0;overscroll-behavior:contain;touch-action:none
 }
-.whats-new-overlay[hidden]{display:none!important}
+.whats-new-overlay[hidden]{display:none!important;pointer-events:none!important}
+.whats-new-overlay:not([hidden]){pointer-events:auto}
 .whats-new-card{
   width:100%;max-width:560px;max-height:min(82dvh,720px);
   background:#171b24;border:1px solid #333a49;border-bottom:0;
@@ -475,7 +482,8 @@ button{font:inherit}
 @keyframes mythic-breathe{0%,100%{filter:saturate(1);transform:translateZ(0) scale(1)}50%{filter:saturate(1.25);transform:translateZ(0) scale(1.025)}}
 
 .achievement-overlay{position:fixed;inset:0;z-index:10050;background:rgba(5,7,11,.84);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);display:grid;place-items:center;padding:18px}
-.achievement-overlay[hidden]{display:none!important}
+.achievement-overlay[hidden]{display:none!important;pointer-events:none!important}
+.achievement-overlay:not([hidden]){pointer-events:auto}
 .achievement-reveal{width:min(440px,100%);max-height:88dvh;overflow:auto;border:1px solid #3c4350;border-radius:24px;background:linear-gradient(180deg,#1b202a,#11141a);padding:22px;text-align:center;position:relative;box-shadow:0 26px 90px rgba(0,0,0,.58)}
 .achievement-reveal.tier-mythic{background:radial-gradient(circle at 50% 5%,rgba(123,55,213,.34),transparent 39%),linear-gradient(180deg,#1b1727,#101218)}
 .achievement-reveal.special-reveal{border-color:#625571;background:radial-gradient(circle at 50% 0,rgba(109,60,146,.25),transparent 42%),linear-gradient(180deg,#191922,#0f1116)}
@@ -510,6 +518,10 @@ button{font:inherit}
   <div class="deploy-watch checking" id="deploy-watch" role="status" aria-live="polite">
     <span class="deploy-dot" aria-hidden="true"></span>
     <span id="deploy-watch-text">Checking deployment status…</span>
+  </div>
+  <div class="live-mirror-status" id="live-mirror-status">
+    <span aria-hidden="true">↻</span>
+    <span>Normal Beta mirrors progress from your live LiftLoop app</span>
   </div>
   <div class="dev-mode-banner" id="dev-mode-banner" hidden>
     🧪 Test Mode · isolated Beta data
@@ -1347,7 +1359,7 @@ button{font:inherit}
     <button type="button" class="update-check" id="open-whats-new" style="margin-left:6px">What’s New</button>
     <div class="update-status" id="update-status">Automatic update check enabled</div>
   </div>
-  <p style="text-align:center;color:#697383;font-size:9px;margin:18px 0 6px">Build 2026.10.13-beta.16 · developer lab</p>
+  <p style="text-align:center;color:#697383;font-size:9px;margin:18px 0 6px">Build 2026.10.13-beta.17 · interaction fix + live mirror</p>
   <p class="credit">
     Video demonstrations are embedded from their original YouTube sources. Previous vector artwork source:
     <a href="https://github.com/InlitX/GymMane" target="_blank" rel="noopener">GymMane</a>,
@@ -1362,10 +1374,60 @@ const $=(s,r=document)=>r.querySelector(s);
 const $$=(s,r=document)=>[...r.querySelectorAll(s)];
 
 // BETA_STORAGE_ROUTER_START
+const LIFTLOOP_LIVE_STORAGE_KEY='liftloop-state';
 const LIFTLOOP_BETA_STORAGE_KEY='liftloop-beta-state';
 const LIFTLOOP_DEV_STORAGE_KEY='liftloop-beta-dev-state';
 const LIFTLOOP_DEV_MODE=sessionStorage.getItem('liftloop-beta-dev-mode')==='1';
 const LIFTLOOP_STORAGE_KEY=LIFTLOOP_DEV_MODE ? LIFTLOOP_DEV_STORAGE_KEY : LIFTLOOP_BETA_STORAGE_KEY;
+
+const LIFTLOOP_BETA_ONLY_STATE_KEYS=[
+  'achievements',
+  'achievementMoments',
+  'featuredAchievement',
+  'achievementFilter',
+  'achievementSystemVersion'
+];
+
+function safeParseState(raw){
+  try{
+    const value=JSON.parse(raw||'{}');
+    return value&&typeof value==='object'&&!Array.isArray(value)?value:{};
+  }catch(e){ return {}; }
+}
+
+function mirroredBetaSnapshot(){
+  const live=safeParseState(localStorage.getItem(LIFTLOOP_LIVE_STORAGE_KEY));
+  const beta=safeParseState(localStorage.getItem(LIFTLOOP_BETA_STORAGE_KEY));
+
+  // If the live app has never stored state on this device, retain Beta as-is.
+  if(!Object.keys(live).length) return beta;
+
+  // Start with the exact live app state, then retain only Beta-specific metadata
+  // that the stable build does not know about yet.
+  const merged=JSON.parse(JSON.stringify(live));
+  LIFTLOOP_BETA_ONLY_STATE_KEYS.forEach(key=>{
+    if(Object.prototype.hasOwnProperty.call(beta,key)){
+      merged[key]=beta[key];
+    }
+  });
+  return merged;
+}
+
+function syncLiveIntoBetaStorage(){
+  if(LIFTLOOP_DEV_MODE) return false;
+  try{
+    const current=localStorage.getItem(LIFTLOOP_BETA_STORAGE_KEY)||'{}';
+    const merged=JSON.stringify(mirroredBetaSnapshot());
+    if(merged!==current){
+      localStorage.setItem(LIFTLOOP_BETA_STORAGE_KEY,merged);
+      return true;
+    }
+  }catch(e){}
+  return false;
+}
+
+// Pull the current stable LiftLoop progress into normal Beta before Beta state loads.
+syncLiveIntoBetaStorage();
 
 let state={};
 try{ state=JSON.parse(localStorage.getItem(LIFTLOOP_STORAGE_KEY)||'{}'); }catch(e){ state={}; }
@@ -2342,7 +2404,7 @@ function renderProgress(){
       hist.appendChild(row);
     });
   }
-  if(typeof renderAchievements==='function') renderAchievements();
+  if(window.__liftloopAchievementsReady && typeof renderAchievements==='function') renderAchievements();
 }
 function renderAllSetRows(){
   $$('.exercise:not(.routine-hidden)').forEach(renderSetRows);
@@ -2565,6 +2627,8 @@ try{ state=JSON.parse(localStorage.getItem('liftloop-state')||'{}'); }catch(e){ 
     `const save=()=>{try{localStorage.setItem('liftloop-state',JSON.stringify(state));}catch(e){}};`);
   s=s.replace(/\s*<div class="dev-mode-banner"[\s\S]*?<\/div>\s*/,'\n  ');
 
+  s=s.replace(/\s*<div class="live-mirror-status"[\s\S]*?<\/div>\s*/,'\n  ');
+  s=s.replace(/<script id="beta-ui-safety-bootstrap">[\s\S]*?<\/script>/g,'');
   // The promotion tool is Beta-only; remove it from the generated stable app.
   s=s.replace(/<div class="release-box">[\s\S]*?<\/div>/,'');
   s=s.replace(/function makeStableFromBetaSource\(source\)\{[\s\S]*?document\.getElementById\('prepare-stable'\)\?\.addEventListener\('click',[\s\S]*?\n\}\);\s*/,'');
@@ -2595,13 +2659,18 @@ $('#prepare-stable')?.addEventListener('click',async()=>{
 
 // Beta popup: list ONLY changes introduced since the currently published Beta build.
 const LIFTLOOP_CHANGELOG = {
-  '2026.10.13-beta.16': {
+  '2026.10.13-beta.17': {
     title: 'What changed in this Beta update',
     changes: [
       {
-        icon:'🧪',
-        title:'Developer Lab',
-        text:'Beta now includes an isolated Test Mode, achievement/reveal previews, Special evolution testing, preset workout profiles, and quick UI previews without changing your real Beta history.'
+        icon:'🛠️',
+        title:'Beta controls fixed',
+        text:'Fixed an achievement initialization-order error that stopped What’s New, Check for Update, and Developer Lab controls from receiving their handlers.'
+      },
+      {
+        icon:'↻',
+        title:'Live progress mirror',
+        text:'Normal Beta now copies the current live LiftLoop state on launch and when returning to Beta, while Test Mode remains fully isolated and never writes back to the live app.'
       }
     ]
   }
@@ -3298,6 +3367,8 @@ function renderAchievements(){
     });
   }
 }
+window.__liftloopAchievementsReady=true;
+
 function bindAchievementUI(){
   bindAchievementOverlays();
   $$('.achievement-filter').forEach(btn=>btn.addEventListener('click',()=>{
@@ -3680,10 +3751,23 @@ if(updateButton) updateButton.addEventListener('click',()=>checkForLiftLoopUpdat
 // Check immediately, when returning to the app, and keep watching if a commit is awaiting Pages.
 window.addEventListener('load',()=>checkForLiftLoopUpdate(false));
 document.addEventListener('visibilitychange',()=>{
-  if(document.visibilityState==='visible') checkForLiftLoopUpdate(false);
-  else clearTimeout(deploymentWatchTimer);
+  if(document.visibilityState==='visible'){
+    if(!LIFTLOOP_DEV_MODE && syncLiveIntoBetaStorage()){
+      const status=document.getElementById('live-mirror-status');
+      if(status) status.innerHTML='<span aria-hidden="true">✓</span><span>Live progress changed · syncing Beta…</span>';
+      setTimeout(()=>location.reload(),180);
+      return;
+    }
+    checkForLiftLoopUpdate(false);
+  }else clearTimeout(deploymentWatchTimer);
 });
-window.addEventListener('pageshow',()=>checkForLiftLoopUpdate(false));
+window.addEventListener('pageshow',()=>{
+  if(!LIFTLOOP_DEV_MODE && syncLiveIntoBetaStorage()){
+    setTimeout(()=>location.reload(),120);
+    return;
+  }
+  checkForLiftLoopUpdate(false);
+});
 
 
 // Keep the Home Screen app current without deleting/re-adding it after every update.
@@ -3750,6 +3834,56 @@ if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
     </div>
   </section>
 </div>
+
+
+<script id="beta-ui-safety-bootstrap">
+(() => {
+  const byId=id=>document.getElementById(id);
+
+  // Always start inactive full-screen layers in a genuinely non-interactive state.
+  ['whats-new-overlay','achievement-overlay','achievement-detail-overlay'].forEach(id=>{
+    const el=byId(id);
+    if(el?.hasAttribute('hidden')) el.style.pointerEvents='none';
+  });
+
+  // If the main script is healthy, re-binding these functions is idempotent enough
+  // for Beta and guarantees the controls recover after initialization-order changes.
+  try{
+    if(typeof bindWhatsNewUI==='function' && !byId('open-whats-new')?.dataset.safetyBound){
+      const open=byId('open-whats-new');
+      if(open){
+        open.dataset.safetyBound='1';
+        open.addEventListener('click',()=>{ if(typeof renderWhatsNew==='function') renderWhatsNew(); });
+      }
+    }
+  }catch(e){}
+
+  try{
+    const update=byId('update-check');
+    if(update && !update.dataset.safetyBound){
+      update.dataset.safetyBound='1';
+      update.addEventListener('click',()=>{
+        if(typeof checkForLiftLoopUpdate==='function') checkForLiftLoopUpdate(true);
+      });
+    }
+  }catch(e){}
+
+  try{
+    if(typeof bindDeveloperLab==='function') bindDeveloperLab();
+  }catch(e){
+    const status=byId('dev-status');
+    if(status) status.textContent='Developer Lab initialization error: '+(e?.message||'unknown error');
+  }
+
+  // Surface future runtime failures directly in Beta instead of silently leaving dead controls.
+  window.addEventListener('error',event=>{
+    const status=byId('dev-status');
+    if(status){
+      status.textContent=`Beta runtime error: ${event.message||'unknown error'}`;
+    }
+  });
+})();
+</script>
 
 </body>
 </html>
