@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-build="2026.10.13-beta.22">
+<html lang="en" data-build="2026.10.13-beta.23">
 <head>
 <meta charset="utf-8">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
@@ -78,55 +78,93 @@ button{font:inherit}
 
 /* Progress / leveling */
 .gamify-card{margin-top:12px;border:1px solid var(--line);background:linear-gradient(180deg,#171b25,#14171e);border-radius:18px;padding:14px}
-.gamify-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
-.level-badge{display:flex;align-items:center;gap:10px;min-width:0}
-.level-orb{width:54px;height:54px;border-radius:17px;display:grid;place-items:center;background:#232a3a;border:1px solid #343c52;font-weight:900;font-size:19px}
+.gamify-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.level-badge{display:flex;align-items:center;gap:11px;min-width:0}
+.level-orb{
+  position:relative;width:58px;height:58px;border-radius:18px;display:grid;place-items:center;
+  background:#232a3a;border:1px solid #343c52;font-weight:950;font-size:20px;flex:0 0 58px;
+  transition:.25s
+}
+.level-orb:before,.level-orb:after{content:"";position:absolute;pointer-events:none}
+.level-orb.frame-1{border-color:#46516f;box-shadow:0 0 0 2px rgba(120,132,255,.06)}
+.level-orb.frame-2{border-color:#5a678e;box-shadow:0 0 0 2px rgba(120,132,255,.1),0 0 18px rgba(105,119,230,.12)}
+.level-orb.frame-3{border-color:#a07a32;background:linear-gradient(145deg,#2b2930,#332917);box-shadow:0 0 0 2px rgba(229,180,74,.12),0 0 22px rgba(229,180,74,.13)}
+.level-orb.frame-4{border-color:#8a62bd;background:linear-gradient(145deg,#252236,#2c1d3d);box-shadow:0 0 0 2px rgba(157,94,226,.13),0 0 26px rgba(145,75,224,.18)}
+.level-orb.frame-5{border-color:#6c79df;background:radial-gradient(circle at 28% 22%,#303a61,#211d39 65%);box-shadow:0 0 0 2px rgba(116,130,239,.16),0 0 30px rgba(116,88,228,.22)}
+.level-orb.frame-6,.level-orb.frame-7,.level-orb.frame-8,.level-orb.frame-9{
+  border-color:#a46cf1;background:radial-gradient(circle at 30% 22%,#6b5fc0,#33234e 38%,#161825 78%);
+  box-shadow:0 0 0 2px rgba(183,117,255,.2),0 0 34px rgba(150,79,235,.28)
+}
+.level-orb.frame-7{box-shadow:0 0 0 2px rgba(114,225,222,.2),0 0 38px rgba(116,101,244,.3)}
+.level-orb.frame-8{box-shadow:0 0 0 2px rgba(239,122,223,.22),0 0 42px rgba(160,83,244,.34)}
+.level-orb.frame-9{box-shadow:0 0 0 2px rgba(255,213,116,.24),0 0 48px rgba(167,82,255,.38)}
+.level-orb.frame-4:after,.level-orb.frame-5:after,.level-orb.frame-6:after,.level-orb.frame-7:after,.level-orb.frame-8:after,.level-orb.frame-9:after{
+  inset:-5px;border-radius:22px;border:1px solid rgba(190,146,255,.18)
+}
+.level-orb.frame-6:before,.level-orb.frame-7:before,.level-orb.frame-8:before,.level-orb.frame-9:before{
+  inset:-10px;border-radius:26px;border:1px solid rgba(111,225,222,.11);transform:rotate(45deg)
+}
+.level-prestige{
+  position:absolute;right:-7px;bottom:-7px;min-width:25px;height:20px;padding:0 5px;border-radius:999px;
+  display:grid;place-items:center;background:#11151c;border:1px solid #4c5265;color:#d7c8ff;
+  font-size:7px;font-weight:950
+}
+.level-prestige[hidden]{display:none!important}
 .level-copy{min-width:0}
-.level-copy .eyebrow{font-size:10px;letter-spacing:.12em;color:var(--muted);font-weight:850}
-.level-copy .level-title{font-size:17px;font-weight:900;margin-top:2px}
-.level-copy .rank{font-size:11px;color:var(--muted);margin-top:2px}
-
+.level-copy .eyebrow{font-size:9px;letter-spacing:.11em;color:var(--muted);font-weight:850}
+.level-copy .rank{font-size:15px;color:#f0f3f8;font-weight:900;margin-top:3px}
 .main-featured-achievement{
-  display:inline-flex;align-items:center;gap:6px;margin-top:7px;padding:5px 8px 5px 6px;
-  border:1px solid #343b49;border-radius:999px;background:#1b2029;color:#e8edf5;
-  max-width:235px;text-align:left;touch-action:manipulation
+  position:relative;display:grid;grid-template-columns:46px minmax(0,1fr);align-items:center;gap:9px;
+  margin-top:9px;padding:7px 11px 7px 7px;border:1px solid #343b49;border-radius:14px;
+  background:linear-gradient(135deg,#1b2029,#171a22);color:#eef2f7;max-width:290px;text-align:left;
+  touch-action:manipulation;overflow:visible
 }
 .main-featured-achievement[hidden]{display:none!important}
-.main-featured-icon{
-  width:22px;height:22px;border-radius:8px;display:grid;place-items:center;flex:0 0 22px;
-  background:#292f3a;font-size:10px;font-weight:950
+.main-featured-icon-wrap{position:relative;width:46px;height:46px}
+.main-featured-icon{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;background:#292f3a;font-size:17px;font-weight:950}
+.main-featured-special{
+  position:absolute;right:-5px;bottom:-5px;width:19px;height:19px;border-radius:7px;
+  display:grid;place-items:center;background:#20162e;border:1px solid #8d64b8;color:#f0d9ff;
+  font-size:8px;font-weight:950;box-shadow:0 0 12px rgba(181,104,255,.25)
 }
+.main-featured-special[hidden]{display:none!important}
 .main-featured-copy{min-width:0}
-.main-featured-name{
-  display:block;font-size:9px;font-weight:900;line-height:1.05;white-space:nowrap;
-  overflow:hidden;text-overflow:ellipsis
-}
-.main-featured-tier{
-  display:block;margin-top:2px;color:#8f99a8;font-size:6.8px;font-weight:900;
-  letter-spacing:.08em;text-transform:uppercase
-}
+.main-featured-name{display:block;font-size:11px;font-weight:950;line-height:1.08;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.main-featured-tier{display:block;margin-top:4px;color:#939eae;font-size:7.5px;font-weight:900;letter-spacing:.08em;text-transform:uppercase}
 .main-featured-achievement.tier-bronze .main-featured-icon{background:linear-gradient(145deg,#8b4e2f,#d69255);color:#fff}
 .main-featured-achievement.tier-silver .main-featured-icon{background:linear-gradient(145deg,#66707c,#dce3ea);color:#101820}
 .main-featured-achievement.tier-gold .main-featured-icon{background:linear-gradient(145deg,#a16a09,#ffd66b);color:#302000}
-.main-featured-achievement.tier-mythic{
-  border-color:#704ca0;background:linear-gradient(135deg,#241735,#161824)
-}
+.main-featured-achievement.tier-mythic{border-color:#704ca0;background:linear-gradient(135deg,#241735,#161824)}
 .main-featured-achievement.tier-mythic .main-featured-icon{
   background:radial-gradient(circle at 30% 22%,#f2b8ff,#9e52ff 32%,#35196a 72%);
-  color:#fff;box-shadow:0 0 12px rgba(154,79,255,.4)
+  color:#fff;box-shadow:0 0 18px rgba(154,79,255,.45)
 }
+.main-featured-achievement.special-card{border-color:#69547d;box-shadow:0 0 0 1px rgba(180,112,238,.08),0 0 18px rgba(115,70,158,.09)}
+.main-featured-achievement.evolved-1{box-shadow:0 0 0 1px rgba(225,186,102,.12),0 0 20px rgba(209,163,76,.11)}
+.main-featured-achievement.evolved-2{box-shadow:0 0 0 1px rgba(148,217,255,.15),0 0 26px rgba(162,103,255,.2)}
 .stats-mini{display:flex;gap:12px;text-align:right}
 .stats-mini strong{display:block;font-size:16px}
-.stats-mini span{display:block;color:var(--muted);font-size:10px;margin-top:2px}
-.milestone{margin-top:12px}
-.milestone-row{display:flex;justify-content:space-between;color:var(--muted);font-size:10px;margin-bottom:6px}
-.milestone-track{height:7px;background:#242a36;border-radius:99px;overflow:hidden}
+.stats-mini span{display:block;color:var(--muted);font-size:8px;margin-top:2px;letter-spacing:.05em}
+.milestone{margin-top:11px}
+.milestone-row{display:flex;color:var(--muted);font-size:9px;margin-bottom:5px}
+.milestone-track{height:6px;background:#242a36;border-radius:99px;overflow:hidden}
 .milestone-fill{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:99px;transition:width .25s}
-.recent-workouts{margin-top:11px;padding-top:10px;border-top:1px solid var(--line)}
-.recent-title{font-size:10px;letter-spacing:.12em;color:var(--muted);font-weight:850;margin-bottom:7px}
-.recent-list{display:flex;gap:6px;overflow:auto;padding-bottom:2px}
-.history-chip{white-space:nowrap;border:1px solid #303746;background:#202530;border-radius:999px;padding:7px 9px;font-size:10px;color:#cfd5df}
-.history-empty{font-size:11px;color:var(--muted)}
+.consistency-status{display:none!important}
+.recent-workouts{margin-top:9px;padding-top:8px;border-top:1px solid var(--line)}
+.recent-workouts summary{cursor:pointer;list-style:none;color:#7f8997;font-size:9px;font-weight:850;display:flex;align-items:center;justify-content:space-between}
+.recent-workouts summary::-webkit-details-marker{display:none}
+.recent-workouts summary:after{content:"⌄";font-size:12px}
+.recent-workouts[open] summary:after{transform:rotate(180deg)}
+.recent-list{display:flex;gap:6px;overflow:auto;padding:8px 0 1px}
+.history-chip{white-space:nowrap;border:1px solid #303746;background:#202530;border-radius:999px;padding:6px 8px;font-size:9px;color:#cfd5df}
+.history-empty{font-size:10px;color:var(--muted)}
+@media(max-width:520px){
+  .gamify-top{gap:8px}
+  .level-orb{width:54px;height:54px;flex-basis:54px}
+  .main-featured-achievement{grid-template-columns:42px minmax(0,1fr);max-width:235px}
+  .main-featured-icon-wrap,.main-featured-icon{width:42px;height:42px}
+  .stats-mini{gap:8px}
+}
 .finish-workout{width:100%;margin-top:14px;border:0;border-radius:14px;padding:14px 12px;background:linear-gradient(135deg,var(--accent),#6772e8);color:white;font-weight:900;min-height:49px;box-shadow:0 8px 24px rgba(70,80,180,.18)}
 .finish-workout:disabled{background:#252a35;color:#707988;box-shadow:none}
 .finish-workout.completed{background:#19362e;color:#7cf0c1;border:1px solid #2c5a4c}
@@ -508,124 +546,149 @@ button{font:inherit}
 /* BETA_DEV_LAB_CSS_END */
 
 /* Achievements / Trophy Case */
-.achievement-panel{overflow:hidden}
-.achievement-head-copy{color:var(--muted);font-size:9px;line-height:1.45;margin-top:3px}
-.achievement-summary{display:flex;gap:7px;flex-wrap:wrap}
-.achievement-summary-chip{border:1px solid #343b49;background:#20252e;border-radius:999px;padding:6px 9px;font-size:9px;font-weight:850;color:#cfd5df}
-
-.achievement-guide{border:1px solid #303744;border-radius:13px;background:#141820;margin:0 0 10px;overflow:hidden}
-.achievement-guide summary{cursor:pointer;list-style:none;padding:10px 11px;color:#dce2eb;font-size:9px;font-weight:900;display:flex;justify-content:space-between;align-items:center}
-.achievement-guide summary::-webkit-details-marker{display:none}
-.achievement-guide summary:after{content:"⌄";color:#8993a1;font-size:13px}
-.achievement-guide[open] summary:after{transform:rotate(180deg)}
-.achievement-guide-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;padding:0 9px 9px}
-.achievement-guide-grid>div{border:1px solid #292f39;border-radius:10px;background:#191e26;padding:8px}
-.achievement-guide-grid strong{display:block;font-size:8.5px;color:#e2e7ef;margin-bottom:3px}
-.achievement-guide-grid span{display:block;color:#909aa8;font-size:7.8px;line-height:1.45}
-.achievement-guide-grid b{color:#d8dfff}
-@media(max-width:520px){.achievement-guide-grid{grid-template-columns:1fr}}
-.featured-badge{position:relative;display:grid;grid-template-columns:74px 1fr auto;gap:12px;align-items:center;padding:13px;margin:10px 0 12px;border:1px solid #343b49;border-radius:16px;background:linear-gradient(135deg,#1a1e27,#12151c);overflow:hidden}
-.featured-badge.empty{grid-template-columns:1fr;text-align:center;color:var(--muted);font-size:10px}
-.featured-copy .eyebrow{font-size:8px;letter-spacing:.13em;text-transform:uppercase;color:#8d97a5;font-weight:900}
-.featured-copy strong{display:block;font-size:16px;margin-top:4px}
-.featured-copy span{display:block;color:#9aa4b2;font-size:9px;line-height:1.4;margin-top:4px}
-.featured-tier{align-self:start;font-size:8px;font-weight:950;letter-spacing:.1em;text-transform:uppercase;border:1px solid #414958;border-radius:999px;padding:5px 7px;color:#d8dee8;background:#202631}
-.achievement-filters{display:flex;gap:5px;overflow:auto;padding-bottom:3px;margin:0 0 10px}
-.achievement-filter{flex:0 0 auto;border:1px solid #303744;background:#191e27;color:#909aaa;border-radius:999px;padding:7px 10px;font-size:9px;font-weight:900}
-.achievement-filter.active{background:#30396f;color:#fff;border-color:#46529a}
+.achievement-panel{overflow:hidden;padding:15px}
+.achievement-hero-head h3{margin:0;font-size:25px;letter-spacing:-.035em}
+.achievement-summary{display:none!important}
+.featured-badge{
+  position:relative;display:grid;grid-template-columns:96px minmax(0,1fr) auto;gap:14px;align-items:center;
+  padding:15px;margin:14px 0 10px;border:1px solid #343b49;border-radius:20px;
+  background:linear-gradient(135deg,#1a1e27,#12151c);overflow:visible;min-height:126px
+}
+.featured-badge.empty{
+  display:grid;grid-template-columns:1fr;place-items:center;min-height:88px;color:#737e8d;
+  font-size:10px;background:#151920;border-style:dashed
+}
+.featured-badge .badge-medallion{width:96px;height:96px;border-radius:30px;font-size:35px}
+.featured-badge .badge-medallion:after{inset:6px;border-radius:24px}
+.featured-badge .special-marker{width:27px;height:27px;border-radius:9px;font-size:11px;right:-6px;bottom:-6px}
+.featured-copy{min-width:0}
+.featured-copy .eyebrow{font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:#7f8998;font-weight:900}
+.featured-copy strong{display:block;margin-top:4px;font-size:20px;line-height:1.02;letter-spacing:-.025em}
+.featured-copy span{display:block;margin-top:7px;color:#929cab;font-size:9px;line-height:1.35}
+.featured-tier{
+  align-self:start;border:1px solid #363d49;background:#20252e;border-radius:999px;
+  padding:5px 7px;color:#a8b1be;font-size:7px;font-weight:950;text-transform:uppercase;letter-spacing:.08em
+}
+.featured-badge.special-card{border-color:#5e4d70;background:radial-gradient(circle at 10% 20%,rgba(140,82,184,.18),transparent 30%),linear-gradient(135deg,#191923,#111319)}
+.featured-badge.tier-mythic{border-color:#684399;background:radial-gradient(circle at 10% 20%,rgba(144,72,219,.24),transparent 34%),linear-gradient(135deg,#1c1628,#11131a)}
+.achievement-tier-glimpse{display:flex;align-items:center;gap:7px;margin:2px 0 10px;padding:0 2px}
+.tier-glimpse{
+  width:34px;height:34px;border-radius:11px;display:grid;place-items:center;font-size:11px;
+  filter:saturate(.72);opacity:.58;border:1px solid rgba(255,255,255,.08)
+}
+.tier-glimpse.tier-bronze{background:linear-gradient(145deg,#69402b,#9c6745);color:#e8b993}
+.tier-glimpse.tier-silver{background:linear-gradient(145deg,#515b67,#939da8);color:#e0e5ea}
+.tier-glimpse.tier-gold{background:linear-gradient(145deg,#72510e,#bc9232);color:#ffe182}
+.tier-glimpse.tier-mythic{background:radial-gradient(circle at 30% 25%,#915cba,#4a2c70 68%);color:#eddcff;box-shadow:0 0 13px rgba(147,79,218,.12)}
+.trophy-case-details{margin-top:4px;border-top:1px solid #292f39}
+.trophy-case-details>summary{
+  cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;
+  padding:12px 2px 2px;color:#cbd2dc;font-size:11px;font-weight:900
+}
+.trophy-case-details>summary::-webkit-details-marker{display:none}
+.trophy-case-details[open] .trophy-case-chevron{transform:rotate(180deg)}
+.trophy-case-body{padding-top:10px}
+.achievement-filters{display:flex;gap:6px;margin-bottom:9px}
+.achievement-filter{border:1px solid #343b49;background:#20252e;color:#8e98a7;border-radius:999px;padding:6px 9px;font-size:8px;font-weight:900}
+.achievement-filter.active{background:#30396f;border-color:#46529a;color:#fff}
 .achievement-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
 .achievement-group-heading{
   grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;gap:10px;
   margin:9px 2px 0;padding-top:9px;border-top:1px solid #2b313c
 }
 .achievement-group-heading:first-child{margin-top:0;padding-top:0;border-top:0}
-.achievement-group-heading strong{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:#b9c1cd}
-.achievement-group-heading span{font-size:7.5px;color:#707b8a}
-.achievement-card{appearance:none;width:100%;border:1px solid #303744;background:#1b2029;color:var(--text);border-radius:14px;padding:10px;text-align:left;display:grid;grid-template-columns:54px minmax(0,1fr);gap:9px;align-items:center;min-height:82px;position:relative;overflow:hidden}
-.achievement-card.locked{opacity:.62}
-.achievement-card .name{display:block;font-size:11px;font-weight:900;line-height:1.2}
-.achievement-card .meta{display:block;margin-top:3px;color:#8f99a8;font-size:8px;font-weight:850;letter-spacing:.08em;text-transform:uppercase}
-.achievement-card .progress-text{display:block;margin-top:5px;color:#aeb6c4;font-size:8px;line-height:1.3}
+.achievement-group-heading strong{font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:#aab3c0}
+.achievement-group-heading span{display:none}
+.achievement-card{
+  position:relative;display:grid;grid-template-columns:52px 1fr;gap:9px;align-items:center;text-align:left;
+  border:1px solid #303745;background:#1b2029;border-radius:14px;padding:10px;color:#e6eaf0;min-height:76px
+}
+.achievement-card.locked{display:none!important}
+.achievement-card .name{display:block;font-size:10px;font-weight:900;line-height:1.2}
+.achievement-card .meta{display:block;color:#7f8998;font-size:7px;margin-top:3px;text-transform:uppercase;letter-spacing:.06em}
+.achievement-card .progress-text{display:block;color:#9ba4b2;font-size:7.5px;margin-top:4px;line-height:1.3}
+.achievement-progress-track{height:5px;background:#282e38;border-radius:99px;overflow:hidden;margin-top:6px}
+.achievement-progress-fill{height:100%;background:linear-gradient(90deg,#6e79e7,#69e7b8);border-radius:99px}
 .achievement-card.special-card{border-color:#464151;background:linear-gradient(135deg,#1b1c24,#121319)}
-
 .achievement-card.is-featured{border-color:#7785e4;box-shadow:0 0 0 1px rgba(120,132,255,.12)}
 .featured-card-marker{
   position:absolute;right:7px;top:7px;border:1px solid #5663a7;background:#262d55;color:#cfd5ff;
-  border-radius:999px;padding:3px 5px;font-size:6.5px;font-weight:950;letter-spacing:.06em;text-transform:uppercase
+  border-radius:999px;padding:3px 5px;font-size:6px;font-weight:950;letter-spacing:.06em;text-transform:uppercase
 }
-.special-history{
-  margin-top:10px;border:1px solid #343b49;border-radius:12px;background:#11151b;overflow:hidden
+.badge-medallion{
+  position:relative;width:52px;height:52px;border-radius:17px;display:grid;place-items:center;
+  font-size:20px;font-weight:950;overflow:visible;isolation:isolate
 }
-.special-history summary{
-  cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:10px;
-  align-items:center;padding:10px 11px;color:#dce1e9;font-size:9px;font-weight:900
+.badge-medallion:after{content:"";position:absolute;inset:4px;border-radius:13px;border:1px solid rgba(255,255,255,.18);pointer-events:none}
+.badge-medallion.tier-bronze{background:linear-gradient(145deg,#70422c,#c77c49);color:#fff4ea}
+.badge-medallion.tier-silver{background:linear-gradient(145deg,#5d6772,#d8e0e7);color:#17202a}
+.badge-medallion.tier-gold{background:linear-gradient(145deg,#8e5e08,#ffd66b);color:#382500}
+.badge-medallion.tier-mythic{background:radial-gradient(circle at 30% 25%,#f2b8ff,#9b4fff 30%,#38196d 72%);color:#fff;box-shadow:0 0 18px rgba(155,79,255,.22)}
+.badge-medallion.special{box-shadow:0 0 0 2px #141820,0 0 0 3px rgba(181,104,255,.56),0 0 16px rgba(147,83,214,.22)}
+.special-marker{
+  position:absolute;right:-5px;bottom:-5px;width:20px;height:20px;border-radius:7px;display:grid;place-items:center;
+  background:#1b1325;border:1px solid #8c62b7;color:#eedaff;font-size:8px;font-weight:950
 }
+.achievement-guide{margin:12px 0 0;border-top:1px solid #292f3a;padding-top:8px}
+.achievement-guide>summary{
+  cursor:pointer;list-style:none;width:28px;height:28px;border:1px solid #343b49;border-radius:9px;
+  display:grid;place-items:center;color:#818c9b;font-size:10px;font-weight:950
+}
+.achievement-guide>summary::-webkit-details-marker{display:none}
+.achievement-guide-grid.compact{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;margin-top:8px}
+.achievement-guide-grid.compact>div{background:#171b22;border-radius:10px;padding:8px}
+.achievement-guide-grid.compact strong{display:block;font-size:8px}
+.achievement-guide-grid.compact span{display:block;color:#808a98;font-size:7.5px;margin-top:2px}
+.mystery-card{grid-column:1/-1;border:1px dashed #3e3749;border-radius:13px;padding:11px;text-align:center;color:#8d8497;font-size:8px;line-height:1.4}
+.moments-collapsible{padding:0!important;overflow:hidden}
+.moments-collapsible[hidden]{display:none!important}
+.moments-collapsible>summary{
+  cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;
+  padding:13px;color:#d8dde5;font-size:12px;font-weight:900
+}
+.moments-collapsible>summary::-webkit-details-marker{display:none}
+.moments-collapsible>summary:after{content:"⌄";margin-left:auto;padding-left:9px;color:#7f8997}
+.moments-collapsible[open]>summary:after{transform:rotate(180deg)}
+#special-moments-count{color:#7f8997;font-size:8px;margin-left:7px}
+.moments-list{padding:0 13px 11px}
+.moment-card{
+  appearance:none;width:100%;display:grid;grid-template-columns:34px 1fr auto 14px;gap:9px;align-items:start;
+  padding:9px 0;border:0;border-top:1px solid #292f3a;background:transparent;color:inherit;text-align:left;font:inherit;cursor:pointer
+}
+.moment-card:first-child{border-top:0}
+.moment-icon{width:34px;height:34px;border-radius:11px;background:#242a34;display:grid;place-items:center;font-size:12px}
+.moment-card strong{display:block;font-size:9px}
+.moment-card p{margin:3px 0 0;color:#8993a1;font-size:8px;line-height:1.35}
+.moment-card time{font-size:7px;color:#697483;white-space:nowrap}
+.moment-card .moment-open{align-self:center;color:#727d8b;font-size:13px}
+.moments-helper{display:none}
+.special-history{margin-top:10px;border:1px solid #343b49;border-radius:12px;background:#11151b;overflow:hidden}
+.special-history summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:10px;align-items:center;padding:10px 11px;color:#dce1e9;font-size:9px;font-weight:900}
 .special-history summary::-webkit-details-marker{display:none}
 .special-history summary:after{content:"⌄";color:#8c96a5;font-size:13px}
 .special-history[open] summary:after{transform:rotate(180deg)}
 .special-history-list{padding:0 10px 9px}
-.special-history-row{
-  display:grid;grid-template-columns:30px 1fr auto;gap:8px;align-items:start;
-  border-top:1px solid #292f39;padding:9px 0
-}
+.special-history-row{display:grid;grid-template-columns:30px 1fr auto;gap:8px;align-items:start;border-top:1px solid #292f39;padding:9px 0}
 .special-history-row:first-child{border-top:0}
-.special-history-icon{
-  width:30px;height:30px;border-radius:10px;background:#252b36;display:grid;place-items:center;font-size:11px
-}
+.special-history-icon{width:30px;height:30px;border-radius:10px;background:#252b36;display:grid;place-items:center;font-size:11px}
 .special-history-row strong{display:block;font-size:9px;line-height:1.25}
 .special-history-row p{margin:3px 0 0;color:#969fad;font-size:8px;line-height:1.4}
 .special-history-row time{font-size:7px;color:#697483;white-space:nowrap}
 .achievement-evidence{margin-top:10px;border-top:1px solid #2b313c;padding-top:9px}
 .achievement-evidence-title{font-size:8px;color:#8e98a7;font-weight:900;letter-spacing:.1em;text-transform:uppercase;margin-bottom:7px}
-.achievement-evidence-row{
-  display:flex;justify-content:space-between;gap:12px;padding:5px 0;border-top:1px solid #252b34;
-  font-size:8px;color:#9ba5b2
-}
+.achievement-evidence-row{display:flex;justify-content:space-between;gap:12px;padding:5px 0;border-top:1px solid #252b34;font-size:8px;color:#9ba5b2}
 .achievement-evidence-row:first-of-type{border-top:0}
 .achievement-evidence-row strong{color:#e5e9ef;font-size:8.5px;text-align:right}
 .pr-evidence-list{display:grid;gap:5px;margin-top:7px}
-.pr-evidence{
-  display:flex;justify-content:space-between;gap:10px;border-radius:9px;background:#1a2028;padding:7px 8px;
-  font-size:7.5px;color:#98a2af
-}
+.pr-evidence{display:flex;justify-content:space-between;gap:10px;border-radius:9px;background:#1a2028;padding:7px 8px;font-size:7.5px;color:#98a2af}
 .pr-evidence strong{color:#dce2eb;font-size:8px}
-.moment-card{
-  appearance:none;width:100%;background:transparent;color:inherit;text-align:left;font:inherit;cursor:pointer
+@media(max-width:520px){
+  .achievement-grid{grid-template-columns:1fr}
+  .featured-badge{grid-template-columns:84px minmax(0,1fr);min-height:114px}
+  .featured-badge .badge-medallion{width:84px;height:84px;border-radius:27px;font-size:31px}
+  .featured-tier{grid-column:2;justify-self:start;margin-top:-4px}
+  .featured-copy strong{font-size:18px}
 }
-.moment-card .moment-open{align-self:center;color:#727d8b;font-size:13px}
-.moments-helper{color:#7f8997;font-size:8px;margin:-3px 0 7px}
-.achievement-progress-track{height:4px;border-radius:99px;background:#303640;overflow:hidden;margin-top:6px}
-.achievement-progress-fill{height:100%;background:#7d88ff;border-radius:99px}
-.badge-medallion{width:54px;height:54px;border-radius:18px;display:grid;place-items:center;position:relative;isolation:isolate;font-size:22px;font-weight:950;border:1px solid rgba(255,255,255,.18);box-shadow:inset 0 0 18px rgba(255,255,255,.08),0 8px 22px rgba(0,0,0,.22)}
-.badge-medallion:after{content:"";position:absolute;inset:5px;border-radius:14px;border:1px solid rgba(255,255,255,.16);z-index:-1}
-.tier-bronze .badge-medallion,.badge-medallion.tier-bronze{background:linear-gradient(145deg,#8b4e2f,#d69255 46%,#6e3826)}
-.tier-silver .badge-medallion,.badge-medallion.tier-silver{background:linear-gradient(145deg,#58616d,#dce3ea 46%,#69727f);color:#111820}
-.tier-gold .badge-medallion,.badge-medallion.tier-gold{background:linear-gradient(145deg,#8a5b08,#ffd66b 43%,#a66d0b);color:#302000;box-shadow:inset 0 0 18px rgba(255,255,255,.18),0 8px 26px rgba(218,164,45,.18)}
-.tier-mythic .badge-medallion,.badge-medallion.tier-mythic{
-  background:radial-gradient(circle at 30% 22%,#f2b8ff 0,#aa5dff 18%,#4c238e 53%,#17112d 78%);
-  color:white;border-color:#bb80ff;box-shadow:0 0 0 1px rgba(194,130,255,.24),0 0 26px rgba(141,72,255,.34),inset 0 0 16px rgba(255,255,255,.18);
-  animation:mythic-breathe 2.8s ease-in-out infinite
-}
-.tier-mythic .badge-medallion:before,.badge-medallion.tier-mythic:before{content:"";position:absolute;inset:-3px;border-radius:21px;background:conic-gradient(from 30deg,#9f62ff,#e24fd2,#6fdcff,#9f62ff);z-index:-2;opacity:.58;filter:blur(1px)}
-.special-card .badge-medallion,.badge-medallion.special{
-  outline:2px solid #111218;outline-offset:2px
-}
-.special-card .badge-medallion:before,.badge-medallion.special:before{
-  content:"";position:absolute;inset:-4px;border-radius:22px;background:conic-gradient(from 110deg,#16171f,#a866ff,#5ee5df,#ffd36a,#16171f);z-index:-2;opacity:.42
-}
-.badge-medallion.evolved-1{box-shadow:0 0 0 2px rgba(255,213,106,.28),0 0 24px rgba(255,213,106,.22),inset 0 0 18px rgba(255,255,255,.12)}
-.badge-medallion.evolved-2{box-shadow:0 0 0 2px rgba(119,231,255,.35),0 0 32px rgba(170,93,255,.38),inset 0 0 20px rgba(255,255,255,.18);animation:mythic-breathe 2.3s ease-in-out infinite}
-.special-marker{position:absolute;right:-3px;bottom:-3px;width:20px;height:20px;border-radius:8px;background:#11141b;border:1px solid #5a5268;display:grid;place-items:center;font-size:9px;color:#e5d9ff}
-.mystery-card{border:1px dashed #393f4a;border-radius:14px;padding:15px;text-align:center;color:#818c9b;font-size:9px;line-height:1.5;background:#141820;grid-column:1/-1}
-.moments-list{display:grid;gap:7px}
-.moment-card{display:grid;grid-template-columns:34px 1fr auto 14px;gap:9px;align-items:start;padding:9px 0;border:0;border-top:1px solid #292f3a}
-.moment-card:first-child{border-top:0}
-.moment-icon{width:34px;height:34px;border-radius:11px;background:#252b36;display:grid;place-items:center}
-.moment-card strong{font-size:10px;display:block}
-.moment-card p{font-size:8.5px;color:#9ba5b3;line-height:1.4;margin:3px 0 0}
-.moment-card time{font-size:8px;color:#707b89;white-space:nowrap}
-@keyframes mythic-breathe{0%,100%{filter:saturate(1);transform:translateZ(0) scale(1)}50%{filter:saturate(1.25);transform:translateZ(0) scale(1.025)}}
-
 .achievement-overlay{
   position:fixed;inset:0;z-index:10050;display:grid;place-items:center;padding:18px;
   background:rgba(5,7,11,.12);backdrop-filter:none;-webkit-backdrop-filter:none;overflow:hidden
@@ -919,7 +982,7 @@ button{font:inherit}
   </div>
   <header class="brand">
     <img src="icon-180.png" alt="LiftLoop logo">
-    <div><h1>LiftLoop</h1><p>Tap an exercise to watch the movement</p><div class="profile-greeting" id="profile-greeting"></div></div>
+    <div><h1>LiftLoop</h1><div class="profile-greeting" id="profile-greeting"></div></div>
   </header>
 
   <nav class="tabs" aria-label="Workout days">
@@ -932,13 +995,18 @@ button{font:inherit}
   <section class="gamify-card" aria-label="LiftLoop progress">
     <div class="gamify-top">
       <div class="level-badge">
-        <div class="level-orb"><span id="level-number">1</span></div>
+        <div class="level-orb frame-0" id="level-orb">
+          <span id="level-number">1</span>
+          <span class="level-prestige" id="level-prestige" hidden></span>
+        </div>
         <div class="level-copy">
           <div class="eyebrow">LIFTLOOP LEVEL</div>
-          <div class="level-title">Level <span id="level-label">1</span></div>
           <div class="rank" id="rank-label">Starting Line</div>
           <button type="button" class="main-featured-achievement" id="main-featured-achievement" hidden aria-label="Open featured achievement">
-            <span class="main-featured-icon" id="main-featured-icon">★</span>
+            <span class="main-featured-icon-wrap">
+              <span class="main-featured-icon" id="main-featured-icon">★</span>
+              <span class="main-featured-special" id="main-featured-special" hidden>✦</span>
+            </span>
             <span class="main-featured-copy">
               <span class="main-featured-name" id="main-featured-name">Featured achievement</span>
               <span class="main-featured-tier" id="main-featured-tier"></span>
@@ -948,18 +1016,18 @@ button{font:inherit}
       </div>
       <div class="stats-mini">
         <div><strong id="workout-count">0</strong><span>WORKOUTS</span></div>
-        <div><strong id="streak-count">0/3</strong><span id="streak-label">LAST 7 DAYS</span></div>
+        <div><strong id="streak-count">0/3</strong><span id="streak-label">STREAK</span></div>
       </div>
     </div>
     <div class="milestone">
-      <div class="milestone-row"><span id="milestone-copy">0 / 5 to next milestone</span><span id="milestone-level">Level 5</span></div>
+      <div class="milestone-row"><span id="milestone-copy">0 / 5</span></div>
       <div class="milestone-track"><div class="milestone-fill" id="milestone-fill"></div></div>
     </div>
-    <div class="consistency-status" id="consistency-status">3 workouts in any rolling 7 days keeps your consistency goal alive.</div>
-    <div class="recent-workouts">
-      <div class="recent-title">RECENT WORKOUTS</div>
-      <div class="recent-list" id="recent-workouts"><span class="history-empty">Complete a workout and it’ll show up here.</span></div>
-    </div>
+    <div class="consistency-status" id="consistency-status" hidden></div>
+    <details class="recent-workouts">
+      <summary>Recent workouts</summary>
+      <div class="recent-list" id="recent-workouts"><span class="history-empty">No workouts yet.</span></div>
+    </details>
   </section>
 
 
@@ -1562,7 +1630,7 @@ button{font:inherit}
 
   <section class="day progress-page" id="day-progress" data-day="progress">
     <div class="day-head">
-      <div><h2>Progress</h2><p>Your strength and workout history</p></div>
+      <div><h2>Progress</h2></div>
       <button type="button" class="progress-unit" id="progress-unit-toggle">lb</button>
     </div>
 
@@ -1573,51 +1641,83 @@ button{font:inherit}
       <div class="progress-stat"><span>Exercises tracked</span><strong id="progress-exercises-count">0</strong></div>
     </div>
 
-    <div class="progress-panel achievement-panel" id="achievement-panel">
+
+
+    <div class="progress-panel">
       <div class="progress-panel-head">
-        <div>
-          <h3>Achievements</h3>
-          <div class="achievement-head-copy">Core achievements show goals and progress. Special is a discovery type—not a tier above Mythic.</div>
-        </div>
-        <div class="achievement-summary" id="achievement-summary"></div>
+        <h3>Exercise progress</h3>
       </div>
-      <details class="achievement-guide" id="achievement-guide">
-        <summary>How LiftLoop achievements work</summary>
-        <div class="achievement-guide-grid">
-          <div><strong>Level + Rank</strong><span>Every finished workout adds one level. Starting Line, Builder, Grinder, Veteran, Iron, Elite, and Legend are your long-term rank—not achievement rarity.</span></div>
-          <div><strong>Core</strong><span>Visible goals with progress. These are the achievements counted toward Trophy Case completion.</span></div>
-          <div><strong>Rarity tier</strong><span><b>Bronze → Silver → Gold → Mythic.</b> Mythic is always the highest achievement tier.</span></div>
-          <div><strong>Special</strong><span>A hidden training pattern LiftLoop discovers. Specials can be <b>Bronze, Silver, Gold, or Mythic</b>; “Special” is a category modifier, not a fifth rarity tier.</span></div>
-          <div><strong>Moments</strong><span>When a repeatable Special happens again, LiftLoop records the real event in that badge’s history instead of creating disposable duplicate badges.</span></div>
-          <div><strong>Gilded + Ascended</strong><span>Repeatable Specials can visually evolve after enough distinct Moments. The app does not show a next-unlock counter, so it rewards natural training instead of farming.</span></div>
-          <div><strong>Century prestige</strong><span>Century Club unlocks at 100 workouts. At 200, 300, 400 and every later hundred, the same Mythic badge advances and records another Century Mark.</span></div>
-          <div><strong>Working Weight PR</strong><span>Your first full-prescription result sets the baseline. A later sustainable improvement across every prescribed set at target reps is a genuine Working Weight PR.</span></div>
+      <select class="progress-select" id="progress-exercise-select" aria-label="Choose an exercise"></select>
+
+      <div class="progress-chart-wrap" id="progress-chart-wrap">
+        <div class="progress-empty">Log a working weight on an exercise to start its chart.</div>
+      </div>
+
+      <div class="progress-metrics">
+        <div class="progress-metric"><span id="progress-start-label">Starting working</span><strong id="progress-start">—</strong></div>
+        <div class="progress-metric"><span id="progress-latest-label">Latest working</span><strong id="progress-latest">—</strong></div>
+        <div class="progress-metric"><span id="progress-best-label">Working PR</span><strong id="progress-best">—</strong></div>
+        <div class="progress-metric"><span>Change</span><strong id="progress-change">—</strong></div>
+      </div>
+      <div class="progress-caption" id="progress-caption">For assisted movements, using less assistance counts as improvement.</div>
+    </div>
+
+    <div class="progress-panel">
+      <div class="progress-panel-head"><h3>Biggest improvements</h3></div>
+      <div class="progress-ranking" id="progress-ranking">
+        <div class="history-empty">Log an exercise more than once and your improvements will appear here.</div>
+      </div>
+    </div>
+
+    <div class="progress-panel">
+      <div class="progress-panel-head"><h3>Workout history</h3></div>
+      <div class="progress-history" id="progress-workout-history">
+        <div class="history-empty">Finished workouts will appear here.</div>
+      </div>
+    </div>
+
+    <div class="progress-panel achievement-panel" id="achievement-panel">
+      <div class="achievement-hero-head"><h3>Achievements</h3></div>
+
+      <div class="featured-badge empty" id="featured-achievement">Feature an earned badge.</div>
+
+      <div class="achievement-tier-glimpse" aria-label="Achievement tiers">
+        <div class="tier-glimpse tier-bronze" aria-label="Bronze tier"><span>◆</span></div>
+        <div class="tier-glimpse tier-silver" aria-label="Silver tier"><span>◆</span></div>
+        <div class="tier-glimpse tier-gold" aria-label="Gold tier"><span>◆</span></div>
+        <div class="tier-glimpse tier-mythic" aria-label="Mythic tier"><span>✦</span></div>
+      </div>
+
+      <details class="trophy-case-details" id="trophy-case-details">
+        <summary><span>Trophy Case</span><span class="trophy-case-chevron">⌄</span></summary>
+        <div class="trophy-case-body">
+          <div class="achievement-summary" id="achievement-summary" hidden></div>
+          <div class="achievement-filters" id="achievement-filters">
+            <button type="button" class="achievement-filter active" data-ach-filter="earned">Earned</button>
+            <button type="button" class="achievement-filter" data-ach-filter="core">Core</button>
+            <button type="button" class="achievement-filter" data-ach-filter="special">Special</button>
+          </div>
+          <div class="achievement-grid" id="achievement-grid"></div>
+          <details class="achievement-guide" id="achievement-guide">
+            <summary>?</summary>
+            <div class="achievement-guide-grid compact">
+              <div><strong>Core</strong><span>Visible goals.</span></div>
+              <div><strong>Special</strong><span>Hidden discoveries.</span></div>
+              <div><strong>Gilded</strong><span>3 natural Moments.</span></div>
+              <div><strong>Ascended</strong><span>7 natural Moments.</span></div>
+            </div>
+          </details>
         </div>
       </details>
-      <div class="featured-badge empty" id="featured-achievement">Unlock a badge and you can feature it here.</div>
-      <div class="achievement-filters" id="achievement-filters">
-        <button type="button" class="achievement-filter active" data-ach-filter="all">All</button>
-        <button type="button" class="achievement-filter" data-ach-filter="unlocked">Unlocked</button>
-        <button type="button" class="achievement-filter" data-ach-filter="locked">Locked</button>
-        <button type="button" class="achievement-filter" data-ach-filter="special">Special</button>
-      </div>
-      <div class="achievement-grid" id="achievement-grid"></div>
     </div>
 
-    <div class="progress-panel" id="special-moments-panel">
-      <div class="progress-panel-head">
-        <div>
-          <h3>Special Moments</h3>
-          <div class="achievement-head-copy">Training stories LiftLoop noticed. Repeated moments can deepen an existing Special badge instead of creating disposable copies.</div>
-        </div>
-      </div>
-      <div class="moments-list" id="achievement-moments">
-        <div class="history-empty">Special Moments will appear when LiftLoop notices an unusual pattern in your training history.</div>
-      </div>
-    </div>
+    <details class="progress-panel moments-collapsible" id="special-moments-panel" hidden>
+      <summary><span>Special Moments</span><span id="special-moments-count"></span></summary>
+      <div class="moments-list" id="achievement-moments"></div>
+    </details>
 
     <!-- BETA_DEV_LAB_START -->
-    <details class="dev-lab" id="beta-dev-lab" open>
+    <details class="dev-lab" id="beta-dev-lab">
       <summary>
         <span>🧪 Developer Lab</span>
         <span class="dev-mode-pill" id="dev-mode-pill">Preview mode · safe</span>
@@ -1764,39 +1864,6 @@ button{font:inherit}
     </details>
     <!-- BETA_DEV_LAB_END -->
 
-    <div class="progress-panel">
-      <div class="progress-panel-head">
-        <h3>Exercise progress</h3>
-      </div>
-      <select class="progress-select" id="progress-exercise-select" aria-label="Choose an exercise"></select>
-
-      <div class="progress-chart-wrap" id="progress-chart-wrap">
-        <div class="progress-empty">Log a working weight on an exercise to start its chart.</div>
-      </div>
-
-      <div class="progress-metrics">
-        <div class="progress-metric"><span id="progress-start-label">Starting working</span><strong id="progress-start">—</strong></div>
-        <div class="progress-metric"><span id="progress-latest-label">Latest working</span><strong id="progress-latest">—</strong></div>
-        <div class="progress-metric"><span id="progress-best-label">Working PR</span><strong id="progress-best">—</strong></div>
-        <div class="progress-metric"><span>Change</span><strong id="progress-change">—</strong></div>
-      </div>
-      <div class="progress-caption" id="progress-caption">For assisted movements, using less assistance counts as improvement.</div>
-    </div>
-
-    <div class="progress-panel">
-      <div class="progress-panel-head"><h3>Biggest improvements</h3></div>
-      <div class="progress-ranking" id="progress-ranking">
-        <div class="history-empty">Log an exercise more than once and your improvements will appear here.</div>
-      </div>
-    </div>
-
-    <div class="progress-panel">
-      <div class="progress-panel-head"><h3>Workout history</h3></div>
-      <div class="progress-history" id="progress-workout-history">
-        <div class="history-empty">Finished workouts will appear here.</div>
-      </div>
-    </div>
-
     <div class="settings-panel">
       <h3>Your LiftLoop</h3>
       <div class="settings-copy">Your profile and workout data are stored only on this device.</div>
@@ -1836,7 +1903,7 @@ button{font:inherit}
     <button type="button" class="update-check" id="open-whats-new" style="margin-left:6px">What’s New</button>
     <div class="update-status" id="update-status">Automatic update check enabled</div>
   </div>
-  <p style="text-align:center;color:#697383;font-size:9px;margin:18px 0 6px">Build 2026.10.13-beta.22 · expanded achievements + Special discovery clarity</p>
+  <p style="text-align:center;color:#697383;font-size:9px;margin:18px 0 6px">Build 2026.10.13-beta.23 · cleaner hierarchy</p>
   <p class="credit">
     Video demonstrations are embedded from their original YouTube sources. Previous vector artwork source:
     <a href="https://github.com/InlitX/GymMane" target="_blank" rel="noopener">GymMane</a>,
@@ -1922,7 +1989,7 @@ state.weightUnit = state.weightUnit || 'lb';
 state.achievements = state.achievements && typeof state.achievements==='object' ? state.achievements : {};
 state.achievementMoments = Array.isArray(state.achievementMoments) ? state.achievementMoments : [];
 state.featuredAchievement = typeof state.featuredAchievement==='string' ? state.featuredAchievement : '';
-state.achievementFilter = typeof state.achievementFilter==='string' ? state.achievementFilter : 'all';
+state.achievementFilter = ['earned','core','special'].includes(state.achievementFilter) ? state.achievementFilter : 'earned';
 state.achievementSystemVersion = Number(state.achievementSystemVersion)||0;
 const save=()=>{try{localStorage.setItem(LIFTLOOP_STORAGE_KEY,JSON.stringify(state));}catch(e){}};
 
@@ -2317,43 +2384,54 @@ function rankFor(level){
   if(level>=5) return 'Builder';
   return 'Starting Line';
 }
+
+function levelFrameFor(level){
+  if(level>=10000) return 9;
+  if(level>=5000) return 8;
+  if(level>=2500) return 7;
+  if(level>=1000) return 6;
+  if(level>=500) return 5;
+  if(level>=250) return 4;
+  if(level>=100) return 3;
+  if(level>=50) return 2;
+  if(level>=25) return 1;
+  return 0;
+}
+function levelPrestigeCount(level){
+  return Math.floor(Math.max(0,level-1)/100);
+}
 function renderGamify(){
   const workouts=state.workoutHistory.length;
   const level=workouts+1;
   $('#level-number').textContent=level;
-  $('#level-label').textContent=level;
   $('#rank-label').textContent=rankFor(level);
   $('#workout-count').textContent=workouts;
+
+  const orb=$('#level-orb');
+  if(orb) orb.className=`level-orb frame-${levelFrameFor(level)}`;
+  const prestige=$('#level-prestige');
+  const prestigeCount=levelPrestigeCount(level);
+  if(prestige){
+    prestige.hidden=prestigeCount<1;
+    prestige.textContent=prestigeCount>0?`✦${prestigeCount}`:'';
+  }
+
   const rollingCount=rollingGoalCount();
   $('#streak-count').textContent=`${Math.min(rollingCount,3)}/3`;
-  $('#streak-label').textContent=rollingCount>=3?'7-DAY GOAL ✓':'LAST 7 DAYS';
-  const consistency=$('#consistency-status');
-  if(consistency){
-    const maintained=rollingGoalMaintainedDays();
-    consistency.classList.toggle('met',rollingCount>=3);
-    if(rollingCount>=3){
-      consistency.textContent=maintained>1
-        ? `Goal met · ${rollingCount} workouts in the last 7 days · maintained for ${maintained} days`
-        : `Goal met · ${rollingCount} workouts in the last 7 days`;
-    }else{
-      const remaining=Math.max(0,3-rollingCount);
-      consistency.textContent=`${rollingCount} of 3 workouts in the last 7 days · ${remaining} more to hit your rolling goal`;
-    }
-  }
+  $('#streak-label').textContent='STREAK';
   applyWorkoutPriority(false);
 
   const milestone=Math.ceil(level/5)*5 || 5;
   const base=milestone-5;
   const within=level-base;
-  $('#milestone-copy').textContent=`${within} / 5 to next milestone`;
-  $('#milestone-level').textContent=`Level ${milestone}`;
+  $('#milestone-copy').textContent=`${within} / 5`;
   $('#milestone-fill').style.width=`${Math.min(100,Math.max(0,within/5*100))}%`;
 
   const recent=$('#recent-workouts');
   recent.innerHTML='';
   const items=[...state.workoutHistory].slice(-5).reverse();
   if(!items.length){
-    recent.innerHTML='<span class="history-empty">Complete a workout and it’ll show up here.</span>';
+    recent.innerHTML='<span class="history-empty">No workouts yet.</span>';
   }else{
     items.forEach(w=>{
       const chip=document.createElement('span');
@@ -3136,23 +3214,23 @@ $('#prepare-stable')?.addEventListener('click',async()=>{
 
 // Beta popup: list ONLY changes introduced since the currently published Beta build.
 const LIFTLOOP_CHANGELOG = {
-  '2026.10.13-beta.22': {
+  '2026.10.13-beta.23': {
     title: 'What changed in this Beta update',
     changes: [
       {
-        icon:'✦',
-        title:'Specials now span every rarity tier',
-        text:'Bronze Specials join the existing Silver, Gold, and Mythic discoveries. Special remains a category modifier, while Bronze → Silver → Gold → Mythic remains the prestige ladder.'
+        icon:'◫',
+        title:'Cleaner workout hierarchy',
+        text:'Redundant helper copy is gone, streak and milestone labels are shorter, Recent Workouts is collapsible, and the Level frame now grows visually with long-term progress.'
       },
       {
-        icon:'🏆',
-        title:'Much larger Core achievement catalogue',
-        text:'LiftLoop now has 35 visible Core achievements covering journey, consistency, PR breadth, workout balance, completion, detailed logging, and timed training.'
+        icon:'★',
+        title:'Featured badges are larger',
+        text:'Featured achievements now have a much larger badge treatment on Progress and a clearer main-screen display that preserves Special, Gilded, and Ascended styling.'
       },
       {
-        icon:'?',
-        title:'Special Discovery reveal',
-        text:'The first unlock of a hidden Special now begins with a short mystery/discovery prelude before revealing the actual badge. Repeat Special Moments stay faster.'
+        icon:'⌄',
+        title:'Achievements stay out of the way',
+        text:'Exercise progress and workout history now come first. The Trophy Case is collapsed by default, shows earned badges instead of locked clutter, and Special Moments appear only when you have them.'
       }
     ]
   }
@@ -3238,6 +3316,16 @@ const LIFTLOOP_STABLE_RELEASE_NOTES = {
       icon:'✦',
       title:'Special Discovery reveals',
       text:'Hidden Specials now exist at every achievement tier and reveal through a brief discovery sequence the first time LiftLoop notices the pattern.'
+    },
+    {
+      icon:'◫',
+      title:'Cleaner workout hierarchy',
+      text:'The everyday workout view uses shorter labels and progressive disclosure so workout controls stay visually dominant.'
+    },
+    {
+      icon:'★',
+      title:'Stronger featured badges',
+      text:'Featured achievements are larger, preserve Special and evolved styling, and remain visible alongside your long-term Level rank.'
     },
     {
       icon:'100',
@@ -4046,10 +4134,12 @@ function renderMainFeaturedAchievement(){
   const count=state.achievementMoments.filter(m=>m.achievementId===def.id).length;
   const stage=specialEvolutionStage(def,count);
   button.hidden=false;
-  button.className=`main-featured-achievement tier-${def.tier}${def.special?' special-card':''}`;
+  button.className=`main-featured-achievement tier-${def.tier}${def.special?' special-card':''}${stage?` evolved-${stage}`:''}`;
   $('#main-featured-icon').textContent=def.icon;
   $('#main-featured-name').textContent=achievementDisplayName(def);
-  $('#main-featured-tier').textContent=`Featured · ${tierLabel(def)}${stage?` · ${specialEvolutionLabel(stage)}`:''}`;
+  const specialMarker=$('#main-featured-special');
+  if(specialMarker) specialMarker.hidden=!def.special;
+  $('#main-featured-tier').textContent=`${tierLabel(def)}${stage?` · ${specialEvolutionLabel(stage)}`:''}`;
   button.onclick=()=>openAchievementDetail(def.id);
 }
 
@@ -4063,8 +4153,9 @@ function renderFeaturedAchievement(){
   }
   const count=state.achievementMoments.filter(m=>m.achievementId===def.id).length;
   const stage=specialEvolutionStage(def,count);
-  box.className=`featured-badge tier-${def.tier}${def.special?' special-card':''}`;
-  box.innerHTML=`<div class="${badgeMedalClasses(def,count)}"><span>${def.icon}</span>${def.special?'<span class="special-marker">✦</span>':''}</div><div class="featured-copy"><div class="eyebrow">Featured badge</div><strong>${achievementDisplayName(def)}</strong><span>${def.description}${def.special&&count>1?` · ${count} ${def.momentNoun||'moments'}`:''}</span></div><div class="featured-tier">${tierLabel(def)}${stage?` · ${specialEvolutionLabel(stage)}`:''}</div>`;
+  box.className=`featured-badge tier-${def.tier}${def.special?' special-card':''}${stage?` evolved-${stage}`:''}`;
+  const momentText=def.special&&count>1?`${count} ${def.momentNoun||'moments'}`:'';
+  box.innerHTML=`<div class="${badgeMedalClasses(def,count)}"><span>${def.icon}</span>${def.special?'<span class="special-marker">✦</span>':''}</div><div class="featured-copy"><div class="eyebrow">Featured</div><strong>${achievementDisplayName(def)}</strong>${momentText?`<span>${momentText}</span>`:''}</div><div class="featured-tier">${tierLabel(def)}${stage?` · ${specialEvolutionLabel(stage)}`:''}</div>`;
   box.onclick=()=>openAchievementDetail(def.id);
 }
 function developerPreviewMoments(def,count=3){
@@ -4212,18 +4303,16 @@ function renderAchievements(){
   const ctx=achievementContext(),defs=achievementDefs(),normal=defs.filter(d=>!d.special),special=defs.filter(d=>d.special);
   const normalUnlocked=normal.filter(d=>state.achievements[d.id]).length;
   const specialUnlocked=special.filter(d=>state.achievements[d.id]).length;
-  summary.innerHTML=`<span class="achievement-summary-chip">${normalUnlocked}/${normal.length} Core earned</span><span class="achievement-summary-chip">${specialUnlocked} Special found</span>`;
+  summary.textContent='';
   renderFeaturedAchievement();
   renderMainFeaturedAchievement();
 
-  const filter=state.achievementFilter||'all';
+  const filter=['earned','core','special'].includes(state.achievementFilter)?state.achievementFilter:'earned';
   $$('.achievement-filter').forEach(b=>b.classList.toggle('active',b.dataset.achFilter===filter));
 
-  let visible=normal;
-  if(filter==='unlocked') visible=defs.filter(d=>state.achievements[d.id]);
-  else if(filter==='locked') visible=normal.filter(d=>!state.achievements[d.id]);
+  let visible=defs.filter(d=>state.achievements[d.id]);
+  if(filter==='core') visible=normal.filter(d=>state.achievements[d.id]);
   else if(filter==='special') visible=special.filter(d=>state.achievements[d.id]);
-  else visible=[...normal,...special.filter(d=>state.achievements[d.id])];
 
   const groupOrder=['Journey','Consistency','Progress','Training','Completion','Logging','Special'];
   visible=[...visible].sort((a,b)=>{
@@ -4235,6 +4324,7 @@ function renderAchievements(){
   });
 
   grid.innerHTML='';
+  if(!visible.length) grid.innerHTML='<div class="mystery-card">Earned badges will appear here.</div>';
   let renderedGroup='';
   visible.forEach(def=>{
     if(def.group!==renderedGroup){
@@ -4258,19 +4348,14 @@ function renderAchievements(){
     btn.addEventListener('click',()=>openAchievementDetail(def.id));
     grid.appendChild(btn);
   });
-  if(filter==='special'){
-    const mystery=document.createElement('div');
-    mystery.className='mystery-card';
-    mystery.textContent=specialUnlocked ? 'Other Special achievements stay hidden until LiftLoop notices the pattern. They do not count against completion.' : 'Special achievements are discovered through meaningful training patterns. Their exact conditions stay hidden, and they do not count against completion.';
-    grid.appendChild(mystery);
-  }
 
   const rows=[...state.achievementMoments].sort((a,b)=>Number(b.ts)-Number(a.ts));
+  const momentsPanel=$('#special-moments-panel');
+  const momentsCount=$('#special-moments-count');
+  if(momentsPanel) momentsPanel.hidden=!rows.length;
+  if(momentsCount) momentsCount.textContent=rows.length?String(rows.length):'';
   moments.innerHTML='';
-  if(!rows.length){
-    moments.innerHTML='<div class="history-empty">Special Moments will appear when LiftLoop notices an unusual pattern in your training history. In Developer Lab, create a Gilded/Ascended Special to preview a full history.</div>';
-  }else{
-    moments.innerHTML='<div class="moments-helper">Tap any Moment to open that Special badge and its full history.</div>';
+  if(rows.length){
     rows.slice(0,20).forEach(m=>{
       const def=achievementDef(m.achievementId); if(!def)return;
       const el=document.createElement('button'); el.type='button'; el.className='moment-card';
