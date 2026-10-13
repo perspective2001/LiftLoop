@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-build="2026.10.13-beta.10">
+<html lang="en" data-build="2026.10.13-beta.12">
 <head>
 <meta charset="utf-8">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
@@ -1069,7 +1069,7 @@ button{font:inherit}
     <button type="button" class="update-check" id="open-whats-new" style="margin-left:6px">What’s New</button>
     <div class="update-status" id="update-status">Automatic update check enabled</div>
   </div>
-  <p style="text-align:center;color:#697383;font-size:9px;margin:18px 0 6px">Build 2026.10.13-beta.10 · workout entry polish</p>
+  <p style="text-align:center;color:#697383;font-size:9px;margin:18px 0 6px">Build 2026.10.13-beta.12 · exercise auto-advance</p>
   <p class="credit">
     Video demonstrations are embedded from their original YouTube sources. Previous vector artwork source:
     <a href="https://github.com/InlitX/GymMane" target="_blank" rel="noopener">GymMane</a>,
@@ -1336,7 +1336,13 @@ function carryCompletedWeightForward(btn){
   // Save the just-completed row first so the copied value is exactly what was typed.
   if(typeof persistRow==='function') persistRow(row);
   const current=state.currentSets[btn.dataset.key]||{};
-  if(!Number.isFinite(current.kg) || current.kg<=0) return;
+
+  // If the set changed weight mid-set, carry the FINAL weight used
+  // (drop OR increase) into the next set. Otherwise carry the main weight.
+  const finalKg=(Number.isFinite(current.dropKg) && current.dropKg>0)
+    ? current.dropKg
+    : current.kg;
+  if(!Number.isFinite(finalKg) || finalKg<=0) return;
 
   const rows=$$('.set-log-row',card);
   const index=rows.indexOf(row);
@@ -1350,9 +1356,49 @@ function carryCompletedWeightForward(btn){
 
   const nextDot=$('.set-dot',next);
   const nextState=ensureCurrentSet(card,nextDot,rows.indexOf(next));
-  nextState.kg=current.kg;
+  nextState.kg=finalKg;
   state.currentSets[nextDot.dataset.key]=nextState;
-  nextWeight.value=fmtNum(displayFromKg(current.kg));
+  nextWeight.value=fmtNum(displayFromKg(finalKg));
+}
+
+function autoAdvanceCompletedExercise(btn){
+  const card=btn.closest('.exercise');
+  if(!card || card.classList.contains('routine-hidden')) return;
+
+  const dots=$$('.set-dot',card);
+  const complete=dots.length>0 && dots.every(dot=>dot.classList.contains('done'));
+  if(!complete) return;
+
+  const head=$('.exercise-head',card);
+  const body=$('.exercise-body',card);
+
+  // Collapse the just-finished exercise.
+  if(head){
+    head.setAttribute('aria-expanded','false');
+    if(body) body.hidden=true;
+    if(typeof stopAnimation==='function') stopAnimation(card);
+  }
+
+  // Find the next enabled exercise in this workout, in displayed order.
+  const day=card.dataset.day;
+  const cards=$$('.exercise').filter(x=>x.dataset.day===day && !x.classList.contains('routine-hidden'));
+  const index=cards.indexOf(card);
+  const next=cards.slice(index+1).find(x=>!x.classList.contains('routine-hidden'));
+
+  if(!next) return;
+
+  const nextHead=$('.exercise-head',next);
+  if(!nextHead) return;
+
+  // Open the next exercise using the app's normal accordion handler.
+  if(nextHead.getAttribute('aria-expanded')!=='true'){
+    nextHead.click();
+  }
+
+  // Bring it into a comfortable viewport position on mobile.
+  setTimeout(()=>{
+    try{ next.scrollIntoView({behavior:'smooth',block:'start'}); }catch(e){}
+  },80);
 }
 
 function bindSetDot(btn){
@@ -1364,9 +1410,15 @@ function bindSetDot(btn){
     if(state.sessionCompleted[day]) state.sessionCompleted[day]=false;
     btn.classList.toggle('done');
     state[btn.dataset.key]=btn.classList.contains('done');
-    if(btn.classList.contains('done')) carryCompletedWeightForward(btn);
+
+    const justCompleted=btn.classList.contains('done');
+    if(justCompleted) carryCompletedWeightForward(btn);
+
     save();
     updateProgress(day);
+
+    // Only advance when this click completed the exercise.
+    if(justCompleted) autoAdvanceCompletedExercise(btn);
   });
 }
 $$('.set-dot').forEach(bindSetDot);
@@ -2168,23 +2220,13 @@ $('#prepare-stable')?.addEventListener('click',async()=>{
 
 // Beta popup: list ONLY changes introduced in this beta build.
 const LIFTLOOP_CHANGELOG = {
-  '2026.10.13-beta.10': {
+  '2026.10.13-beta.12': {
     title: 'What changed in this Beta update',
     changes: [
       {
-        icon:'✅',
-        title:'Completed exercises are easier to spot',
-        text:'When an exercise is collapsed and all of its planned sets are complete, its exercise number now lights up green.'
-      },
-      {
-        icon:'⌨️',
-        title:'Faster number entry',
-        text:'Tapping a workout number field selects the existing value so your next typed number replaces it immediately.'
-      },
-      {
-        icon:'➡️',
-        title:'Weight carries into the next set',
-        text:'After completing a set, the next unfinished set now assumes the weight you just used unless you already edited that next set manually.'
+        icon:'⏭️',
+        title:'Exercises now auto-advance',
+        text:'Checking the final set of an exercise collapses it and automatically opens the next enabled exercise in workout order.'
       }
     ]
   }
@@ -2210,6 +2252,16 @@ const LIFTLOOP_STABLE_RELEASE_NOTES = {
       icon:'➡️',
       title:'Smarter within-workout weight defaults',
       text:'Completing a set carries that working weight into the next unfinished set unless you already changed the next set yourself.'
+    },
+    {
+      icon:'↪️',
+      title:'Final weight carries forward',
+      text:'If a set changes weight partway through—lower or higher—the next set defaults to the final weight actually used.'
+    },
+    {
+      icon:'⏭️',
+      title:'Automatic exercise flow',
+      text:'Completing the final set collapses the finished exercise and opens the next enabled exercise automatically.'
     }
   ]
 };
