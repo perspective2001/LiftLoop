@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-build="2026.10.13-beta.21">
+<html lang="en" data-build="2026.10.13-beta.22">
 <head>
 <meta charset="utf-8">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
@@ -534,6 +534,13 @@ button{font:inherit}
 .achievement-filter{flex:0 0 auto;border:1px solid #303744;background:#191e27;color:#909aaa;border-radius:999px;padding:7px 10px;font-size:9px;font-weight:900}
 .achievement-filter.active{background:#30396f;color:#fff;border-color:#46529a}
 .achievement-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.achievement-group-heading{
+  grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;gap:10px;
+  margin:9px 2px 0;padding-top:9px;border-top:1px solid #2b313c
+}
+.achievement-group-heading:first-child{margin-top:0;padding-top:0;border-top:0}
+.achievement-group-heading strong{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:#b9c1cd}
+.achievement-group-heading span{font-size:7.5px;color:#707b8a}
 .achievement-card{appearance:none;width:100%;border:1px solid #303744;background:#1b2029;color:var(--text);border-radius:14px;padding:10px;text-align:left;display:grid;grid-template-columns:54px minmax(0,1fr);gap:9px;align-items:center;min-height:82px;position:relative;overflow:hidden}
 .achievement-card.locked{opacity:.62}
 .achievement-card .name{display:block;font-size:11px;font-weight:900;line-height:1.2}
@@ -747,6 +754,67 @@ button{font:inherit}
 #achievement-overlay.reveal-mythic .unlock-copy{animation-delay:1.5s;animation-duration:.7s}
 #achievement-overlay.reveal-mythic .unlock-count{animation-delay:1.68s;animation-duration:.65s}
 #achievement-overlay.reveal-mythic .unlock-actions{animation-delay:2.05s;animation-duration:.55s}
+.special-discovery-stage{
+  position:absolute;left:50%;top:45%;z-index:4;transform:translate(-50%,-50%);
+  display:grid;place-items:center;text-align:center;width:min(330px,82vw);pointer-events:none;
+  color:var(--discovery-color,#d9bdff);text-shadow:0 3px 22px rgba(0,0,0,.96)
+}
+.special-discovery-stage[hidden]{display:none!important}
+.special-discovery-sigil{
+  width:76px;height:76px;border-radius:25px;display:grid;place-items:center;font-size:30px;
+  border:1px solid rgba(220,190,255,.5);
+  box-shadow:0 0 35px rgba(180,110,255,.24);
+  background:radial-gradient(circle at 35% 25%,rgba(255,255,255,.16),rgba(18,16,25,.42));
+  animation:special-sigil-discover 1.08s cubic-bezier(.16,1,.3,1) both
+}
+.special-discovery-kicker{
+  margin-top:13px;font-size:8px;font-weight:950;letter-spacing:.24em;text-transform:uppercase;
+  animation:special-discovery-copy .95s .08s ease-out both
+}
+.special-discovery-stage strong{
+  margin-top:5px;font-size:31px;line-height:1;font-weight:1000;letter-spacing:.08em;text-transform:uppercase;
+  animation:special-discovery-copy .95s .15s ease-out both
+}
+.special-discovery-stage>span{
+  margin-top:8px;color:#f1edf6;font-size:9px;line-height:1.4;
+  animation:special-discovery-copy .85s .24s ease-out both
+}
+.special-first-discovery .special-discovery-stage{animation:special-discovery-stage-out 1.32s ease both}
+.reveal-bronze.special-first-discovery{--discovery-color:#d88a55}
+.reveal-silver.special-first-discovery{--discovery-color:#dce5ef}
+.reveal-gold.special-first-discovery{--discovery-color:#ffd76a}
+.reveal-mythic.special-first-discovery{--discovery-color:#d89aff}
+.reveal-bronze.special-first-discovery .special-discovery-sigil{box-shadow:0 0 34px rgba(216,138,85,.26)}
+.reveal-silver.special-first-discovery .special-discovery-sigil{box-shadow:0 0 34px rgba(220,229,239,.22)}
+.reveal-gold.special-first-discovery .special-discovery-sigil{box-shadow:0 0 38px rgba(255,215,106,.28)}
+.reveal-mythic.special-first-discovery .special-discovery-sigil{box-shadow:0 0 44px rgba(216,154,255,.34)}
+.special-first-discovery .unlock-medal{animation-delay:1.05s!important}
+.special-first-discovery .unlock-kicker{animation-delay:1.12s!important}
+.special-first-discovery .unlock-title{animation-delay:1.27s!important}
+.special-first-discovery .unlock-tier{animation-delay:1.42s!important}
+.special-first-discovery .unlock-copy{animation-delay:1.58s!important}
+.special-first-discovery .unlock-count{animation-delay:1.72s!important}
+.special-first-discovery .unlock-actions{animation-delay:1.95s!important}
+.reveal-mythic.special-first-discovery .unlock-medal{animation-delay:1.22s!important}
+.reveal-mythic.special-first-discovery .unlock-kicker{animation-delay:1.54s!important}
+.reveal-mythic.special-first-discovery .unlock-title{animation-delay:1.78s!important}
+.reveal-mythic.special-first-discovery .unlock-tier{animation-delay:2.08s!important}
+.reveal-mythic.special-first-discovery .unlock-copy{animation-delay:2.42s!important}
+.reveal-mythic.special-first-discovery .unlock-actions{animation-delay:2.95s!important}
+@keyframes special-sigil-discover{
+  0%{opacity:0;transform:scale(.35) rotate(-30deg);filter:blur(7px)}
+  48%{opacity:1;transform:scale(1.13) rotate(4deg);filter:blur(0)}
+  72%{transform:scale(.96) rotate(-1deg)}
+  100%{opacity:1;transform:scale(1)}
+}
+@keyframes special-discovery-copy{
+  0%{opacity:0;transform:translateY(9px);letter-spacing:.32em}
+  100%{opacity:1;transform:none}
+}
+@keyframes special-discovery-stage-out{
+  0%,66%{opacity:1}
+  100%{opacity:0}
+}
 #achievement-overlay.reveal-special .unlock-kicker{color:#f0e0ff}
 #achievement-overlay.reveal-special .unlock-tier{color:#e8d6ff}
 #achievement-overlay.reveal-special .achievement-reveal:after{
@@ -1519,7 +1587,7 @@ button{font:inherit}
           <div><strong>Level + Rank</strong><span>Every finished workout adds one level. Starting Line, Builder, Grinder, Veteran, Iron, Elite, and Legend are your long-term rank—not achievement rarity.</span></div>
           <div><strong>Core</strong><span>Visible goals with progress. These are the achievements counted toward Trophy Case completion.</span></div>
           <div><strong>Rarity tier</strong><span><b>Bronze → Silver → Gold → Mythic.</b> Mythic is always the highest achievement tier.</span></div>
-          <div><strong>Special</strong><span>A hidden training pattern LiftLoop discovers. “Special” is a category modifier, so a Gold · Special is still below a Mythic achievement.</span></div>
+          <div><strong>Special</strong><span>A hidden training pattern LiftLoop discovers. Specials can be <b>Bronze, Silver, Gold, or Mythic</b>; “Special” is a category modifier, not a fifth rarity tier.</span></div>
           <div><strong>Moments</strong><span>When a repeatable Special happens again, LiftLoop records the real event in that badge’s history instead of creating disposable duplicate badges.</span></div>
           <div><strong>Gilded + Ascended</strong><span>Repeatable Specials can visually evolve after enough distinct Moments. The app does not show a next-unlock counter, so it rewards natural training instead of farming.</span></div>
           <div><strong>Century prestige</strong><span>Century Club unlocks at 100 workouts. At 200, 300, 400 and every later hundred, the same Mythic badge advances and records another Century Mark.</span></div>
@@ -1556,15 +1624,15 @@ button{font:inherit}
       </summary>
       <div class="dev-lab-body">
         <div class="dev-lab-intro">
-          <strong>Test all 27 current achievement types without grinding workouts.</strong>
-          <span>18 are visible Core achievements and 9 are hidden Special discoveries—including true Mythic Specials. Visual previews never change progress; fake progress changes only work inside isolated Test Mode.</span>
+          <strong>Test all 46 current achievement types without grinding workouts.</strong>
+          <span>35 are visible Core achievements and 11 are hidden Special discoveries, with Specials represented at Bronze, Silver, Gold, and Mythic. Visual previews never change progress; fake progress changes only work inside isolated Test Mode.</span>
         </div>
 
         <section class="dev-lab-card compact-card">
           <div class="dev-card-head"><div class="dev-step-icon">?</div><div><h4>System map</h4><p>What each label actually means</p></div></div>
           <div class="dev-system-map">
             <div><b>Tier</b><span>Bronze → Silver → Gold → Mythic</span></div>
-            <div><b>Special</b><span>Hidden category; does not outrank the tier</span></div>
+            <div><b>Special</b><span>Hidden category available at Bronze, Silver, Gold, and Mythic; it never replaces rarity tier</span></div>
             <div><b>Moment</b><span>One real repeat occurrence of a Special pattern</span></div>
             <div><b>Gilded</b><span>Developer threshold: 3 Moments</span></div>
             <div><b>Ascended</b><span>Developer threshold: 7 Moments</span></div>
@@ -1601,7 +1669,10 @@ button{font:inherit}
             <button type="button" class="dev-btn" id="dev-preview-moment">✦ Preview Special Moment</button>
             <button type="button" class="dev-btn" id="dev-preview-tiers">◈ Preview tier sequence</button>
             <button type="button" class="dev-btn" id="dev-preview-retro">↶ Retroactive unlock screen</button>
-            <button type="button" class="dev-btn" id="dev-preview-mythic-special">✹ Preview Mythic Special</button>
+            <button type="button" class="dev-btn dev-special-tier-preview" data-special-tier="bronze">✦ Bronze Special</button>
+            <button type="button" class="dev-btn dev-special-tier-preview" data-special-tier="silver">✦ Silver Special</button>
+            <button type="button" class="dev-btn dev-special-tier-preview" data-special-tier="gold">✦ Gold Special</button>
+            <button type="button" class="dev-btn dev-special-tier-preview" data-special-tier="mythic">✹ Mythic Special</button>
             <button type="button" class="dev-btn" id="dev-preview-century">100× Preview Century II</button>
           </div>
           <div class="dev-preview-note" id="dev-preview-note">Select any badge above, then tap <strong>Preview unlock</strong>.</div>
@@ -1765,7 +1836,7 @@ button{font:inherit}
     <button type="button" class="update-check" id="open-whats-new" style="margin-left:6px">What’s New</button>
     <div class="update-status" id="update-status">Automatic update check enabled</div>
   </div>
-  <p style="text-align:center;color:#697383;font-size:9px;margin:18px 0 6px">Build 2026.10.13-beta.21 · achievement system clarity</p>
+  <p style="text-align:center;color:#697383;font-size:9px;margin:18px 0 6px">Build 2026.10.13-beta.22 · expanded achievements + Special discovery clarity</p>
   <p class="credit">
     Video demonstrations are embedded from their original YouTube sources. Previous vector artwork source:
     <a href="https://github.com/InlitX/GymMane" target="_blank" rel="noopener">GymMane</a>,
@@ -3065,13 +3136,24 @@ $('#prepare-stable')?.addEventListener('click',async()=>{
 
 // Beta popup: list ONLY changes introduced since the currently published Beta build.
 const LIFTLOOP_CHANGELOG = {
-  '2026.10.13-beta.21': {
+  '2026.10.13-beta.22': {
     title: 'What changed in this Beta update',
     changes: [
-      {icon:'◈',title:'Achievement hierarchy is clearer',text:'LiftLoop now explains Level/Rank, Core achievements, Bronze–Mythic rarity, Special discoveries, Moments, Gilded/Ascended evolution, and Working Weight PRs directly inside the Trophy Case.'},
-      {icon:'100',title:'Century Club now keeps going',text:'Century Club remains one Mythic badge after 100 workouts and gains a permanent Century Mark at 200, 300, 400, and every later hundred, with its own milestone history.'},
-      {icon:'✹',title:'True Mythic Specials',text:'Perfect Circuit and Three Peaks introduce Special discoveries whose actual tier is Mythic, making the hierarchy explicit: Special is a category, not a tier above Mythic.'},
-      {icon:'◐',title:'Unlock text stays readable',text:'Floating achievement reveals keep the borderless look but now use a soft localized contrast scrim and stronger text halo so the app behind them cannot swallow the lettering.'}
+      {
+        icon:'✦',
+        title:'Specials now span every rarity tier',
+        text:'Bronze Specials join the existing Silver, Gold, and Mythic discoveries. Special remains a category modifier, while Bronze → Silver → Gold → Mythic remains the prestige ladder.'
+      },
+      {
+        icon:'🏆',
+        title:'Much larger Core achievement catalogue',
+        text:'LiftLoop now has 35 visible Core achievements covering journey, consistency, PR breadth, workout balance, completion, detailed logging, and timed training.'
+      },
+      {
+        icon:'?',
+        title:'Special Discovery reveal',
+        text:'The first unlock of a hidden Special now begins with a short mystery/discovery prelude before revealing the actual badge. Repeat Special Moments stay faster.'
+      }
     ]
   }
 };
@@ -3146,6 +3228,16 @@ const LIFTLOOP_STABLE_RELEASE_NOTES = {
       icon:'✦',
       title:'Special Moment history',
       text:'Special badges now preserve the individual training moments that built them, including the story and date behind recurring discoveries.'
+    },
+    {
+      icon:'🏆',
+      title:'Expanded achievement catalogue',
+      text:'More long-term goals now cover consistency, balanced training, complete workouts, detailed logging, PR breadth, and timed work.'
+    },
+    {
+      icon:'✦',
+      title:'Special Discovery reveals',
+      text:'Hidden Specials now exist at every achievement tier and reveal through a brief discovery sequence the first time LiftLoop notices the pattern.'
     },
     {
       icon:'100',
@@ -3263,7 +3355,7 @@ if(document.readyState==='loading'){
 
 
 // ---------- Achievements, Special discoveries, and Moments ----------
-const ACHIEVEMENT_SYSTEM_VERSION=2;
+const ACHIEVEMENT_SYSTEM_VERSION=3;
 const TIER_ORDER={bronze:1,silver:2,gold:3,mythic:4};
 const DAY_NAMES={push:'Push',pull:'Pull',shoulders:'Shoulders + Core'};
 
@@ -3274,25 +3366,44 @@ function achievementDefList(){
     {id:'double_digits',name:'Double Digits',icon:'10',tier:'silver',group:'Journey',description:'Complete 10 workouts.',target:10,metric:'workouts'},
     {id:'quarter_century',name:'Quarter Century',icon:'25',tier:'silver',group:'Journey',description:'Complete 25 workouts.',target:25,metric:'workouts'},
     {id:'committed',name:'Committed',icon:'◆',tier:'gold',group:'Journey',description:'Complete 50 workouts.',target:50,metric:'workouts'},
+    {id:'long_haul',name:'Long Haul',icon:'75',tier:'gold',group:'Journey',description:'Complete 75 workouts.',target:75,metric:'workouts'},
     {id:'century_club',name:'Century Club',icon:'100',tier:'mythic',group:'Journey',description:'Complete 100 workouts.',target:100,metric:'workouts'},
 
     {id:'in_the_loop',name:'In the Loop',icon:'↻',tier:'bronze',group:'Consistency',description:'Complete 3 workouts inside a rolling 7-day period.',target:3,metric:'maxRolling7'},
     {id:'locked_in',name:'Locked In',icon:'🔒',tier:'silver',group:'Consistency',description:'Keep the 3-in-7 rolling goal alive for 7 consecutive days.',target:7,metric:'maxGoalDays'},
     {id:'built_different',name:'Built Different',icon:'⬢',tier:'gold',group:'Consistency',description:'Keep the 3-in-7 rolling goal alive for 30 consecutive days.',target:30,metric:'maxGoalDays'},
+    {id:'four_week_rhythm',name:'Four-Week Rhythm',icon:'4W',tier:'silver',group:'Consistency',description:'Train in 4 consecutive calendar weeks.',target:4,metric:'activeWeekStreak'},
+    {id:'season_in_motion',name:'Season in Motion',icon:'12W',tier:'gold',group:'Consistency',description:'Train in 12 consecutive calendar weeks.',target:12,metric:'activeWeekStreak'},
+    {id:'year_in_motion',name:'Year in Motion',icon:'52W',tier:'mythic',group:'Consistency',description:'Train in 52 consecutive calendar weeks.',target:52,metric:'activeWeekStreak'},
 
     {id:'first_breakthrough',name:'First Breakthrough',icon:'↗',tier:'bronze',group:'Progress',description:'Earn your first genuine Working Weight PR after establishing a baseline.',target:1,metric:'workingPRs'},
     {id:'pr_hunter',name:'PR Hunter',icon:'🎯',tier:'silver',group:'Progress',description:'Earn 10 genuine Working Weight PRs.',target:10,metric:'workingPRs'},
     {id:'limit_breaker',name:'Limit Breaker',icon:'⚡',tier:'gold',group:'Progress',description:'Earn 25 genuine Working Weight PRs.',target:25,metric:'workingPRs'},
+    {id:'broad_gains',name:'Broad Gains',icon:'↗5',tier:'silver',group:'Progress',description:'Earn a genuine Working Weight PR on 5 different exercises.',target:5,metric:'prExercises'},
+    {id:'wide_front',name:'Wide Front',icon:'↗10',tier:'gold',group:'Progress',description:'Earn a genuine Working Weight PR on 10 different exercises.',target:10,metric:'prExercises'},
+    {id:'breakthrough_machine',name:'Breakthrough Machine',icon:'50↗',tier:'mythic',group:'Progress',description:'Earn 50 genuine Working Weight PRs.',target:50,metric:'workingPRs'},
 
     {id:'full_rotation',name:'Full Rotation',icon:'△',tier:'bronze',group:'Training',description:'Complete Push, Pull, and Shoulders + Core at least once.',target:3,metric:'distinctDays'},
+    {id:'all_rounder',name:'All-Rounder',icon:'△5',tier:'silver',group:'Training',description:'Complete at least 5 Push, 5 Pull, and 5 Shoulders + Core workouts.',target:5,metric:'minDayCount'},
+    {id:'balanced_veteran',name:'Balanced Veteran',icon:'△20',tier:'gold',group:'Training',description:'Complete at least 20 workouts of each workout type.',target:20,metric:'minDayCount'},
+    {id:'split_master',name:'Split Master',icon:'△50',tier:'mythic',group:'Training',description:'Complete at least 50 workouts of each workout type.',target:50,metric:'minDayCount'},
     {id:'clean_sweep',name:'Clean Sweep',icon:'✓',tier:'bronze',group:'Completion',description:'Complete every planned set in a workout.',target:1,metric:'fullWorkouts'},
+    {id:'five_clean',name:'Five Clean',icon:'✓5',tier:'bronze',group:'Completion',description:'Complete 5 full workouts with every planned set finished.',target:5,metric:'fullWorkouts'},
+    {id:'twenty_clean',name:'Twenty Clean',icon:'✓20',tier:'silver',group:'Completion',description:'Complete 20 full workouts with every planned set finished.',target:20,metric:'fullWorkouts'},
+    {id:'fifty_clean',name:'Fifty Clean',icon:'✓50',tier:'gold',group:'Completion',description:'Complete 50 full workouts with every planned set finished.',target:50,metric:'fullWorkouts'},
     {id:'flawless_week',name:'Flawless Week',icon:'✦',tier:'gold',group:'Completion',description:'Complete 3 full workouts with no skipped sets inside a rolling 7-day period.',target:3,metric:'maxFullRolling7'},
     {id:'dialed_in',name:'Dialed In',icon:'⌁',tier:'bronze',group:'Logging',description:'Finish a full workout with complete set details recorded for every completed set.',target:1,metric:'dialedWorkouts'},
+    {id:'training_log',name:'Training Log',icon:'▤10',tier:'silver',group:'Logging',description:'Finish 10 fully detailed workouts with complete set logging.',target:10,metric:'dialedWorkouts'},
+    {id:'archivist',name:'Archivist',icon:'▤25',tier:'gold',group:'Logging',description:'Finish 25 fully detailed workouts with complete set logging.',target:25,metric:'dialedWorkouts'},
     {id:'against_clock',name:'Against the Clock',icon:'⏱',tier:'bronze',group:'Training',description:'Log a completed timed exercise.',target:1,metric:'timedSessions'},
-    {id:'loaded_clock',name:'Loaded Clock',icon:'⏱',tier:'silver',group:'Training',description:'Complete a timed exercise while also recording added load.',target:1,metric:'loadedTimedSessions'},
+    {id:'clockwork',name:'Clockwork',icon:'⏱10',tier:'silver',group:'Training',description:'Complete 10 timed exercise sessions.',target:10,metric:'timedSessions'},
+    {id:'loaded_clock',name:'Loaded Clock',icon:'⏱+',tier:'silver',group:'Training',description:'Complete a timed exercise while also recording added load.',target:1,metric:'loadedTimedSessions'},
+    {id:'loaded_clockwork',name:'Loaded Clockwork',icon:'⏱5+',tier:'gold',group:'Training',description:'Complete 5 timed exercise sessions while also recording added load.',target:5,metric:'loadedTimedSessions'},
 
     // Specials are deliberately hidden until discovered. They do not count
     // against achievement completion and do not expose farmable thresholds.
+    {id:'first_lap',name:'First Lap',icon:'↺',tier:'bronze',special:true,group:'Special',description:'Complete Push, Pull, and Shoulders + Core inside one rolling 14-day period.',clue:'A loop can close before it becomes a routine.',momentNoun:'Laps'},
+    {id:'clean_breakthrough',name:'Clean Breakthrough',icon:'✧',tier:'bronze',special:true,group:'Special',description:'A fully completed workout contains a genuine Working Weight PR.',clue:'Sometimes progress and completion arrive together.',momentNoun:'Breakthroughs'},
     {id:'triple_crown',name:'Triple Crown',icon:'♛',tier:'silver',special:true,group:'Special',description:'Complete all three workout types inside one rolling 7-day period.',clue:'Three paths can meet in a single week.',momentNoun:'Crowns'},
     {id:'conquered_it',name:'Conquered It',icon:'⚔',tier:'gold',special:true,repeatable:true,group:'Special',description:'A weight that once forced a mid-set reduction is later completed across the full prescription without needing that reduction.',clue:'Some weights are not conquered the first time.',momentNoun:'Conquests'},
     {id:'steady_climb',name:'Steady Climb',icon:'⛰',tier:'gold',special:true,repeatable:true,group:'Special',description:'The same exercise earns three separate genuine Working Weight PRs over time.',clue:'Some victories only appear when the same lift keeps moving.',momentNoun:'Climbs'},
@@ -3360,6 +3471,36 @@ function maxRollingGoalDaysHistorical(){
   return best;
 }
 function distinctWorkoutDays(){ return new Set(sortedWorkouts().map(w=>w.day).filter(d=>['push','pull','shoulders'].includes(d))).size; }
+function workoutDayCounts(){
+  const counts={push:0,pull:0,shoulders:0};
+  sortedWorkouts().forEach(w=>{ if(Object.prototype.hasOwnProperty.call(counts,w.day)) counts[w.day]++; });
+  return counts;
+}
+function minimumWorkoutDayCount(){
+  const c=workoutDayCounts();
+  return Math.min(c.push,c.pull,c.shoulders);
+}
+function localDayNumber(value){
+  const d=value instanceof Date?value:new Date(value);
+  return Math.floor(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())/86400000);
+}
+function localWeekStartDayNumber(value){
+  const d=value instanceof Date?value:new Date(value);
+  return localDayNumber(d)-((d.getDay()+6)%7);
+}
+function longestActiveWeekStreak(){
+  const weeks=[...new Set(sortedWorkouts().map(w=>localWeekStartDayNumber(w.ts)))].sort((x,y)=>x-y);
+  let best=0,run=0,prior=null;
+  weeks.forEach(week=>{
+    run=(prior!==null&&week-prior===7)?run+1:1;
+    best=Math.max(best,run);
+    prior=week;
+  });
+  return best;
+}
+function distinctPRExerciseCount(prs=workingPRTimeline()){
+  return new Set(prs.map(e=>e.key)).size;
+}
 
 function workingPRTimeline(){
   const events=[];
@@ -3434,6 +3575,31 @@ function workingPREventsInWindow(days=45){
 function rollingWorkoutCountAt(ts,onlyFull=false){
   const start=Number(ts)-7*86400000;
   return sortedWorkouts().filter(w=>Number(w.ts)>start&&Number(w.ts)<=Number(ts)&&(!onlyFull||workoutIsFull(w))).length;
+}
+function firstLapMoment(){
+  const rows=sortedWorkouts();
+  for(const endW of rows){
+    const start=Number(endW.ts)-14*86400000;
+    const window=rows.filter(w=>Number(w.ts)>start&&Number(w.ts)<=Number(endW.ts));
+    const days=new Set(window.map(w=>w.day));
+    if(['push','pull','shoulders'].every(d=>days.has(d))){
+      return {id:'first_lap:first',achievementId:'first_lap',ts:Number(endW.ts),title:'First Lap',detail:'Push, Pull, and Shoulders + Core all landed inside one rolling 14-day period.'};
+    }
+  }
+  return null;
+}
+function cleanBreakthroughMoment(prs){
+  const prTs=new Set(prs.map(e=>Number(e.ts)));
+  const w=sortedWorkouts().find(x=>workoutIsFull(x)&&prTs.has(Number(x.ts)));
+  if(!w) return null;
+  const exerciseNames=[...new Set(prs.filter(e=>Number(e.ts)===Number(w.ts)).map(e=>e.name))];
+  return {
+    id:'clean_breakthrough:first',
+    achievementId:'clean_breakthrough',
+    ts:Number(w.ts),
+    title:`Clean Breakthrough · ${w.name}`,
+    detail:`A full ${w.name} workout also produced a genuine Working Weight PR${exerciseNames.length?` on ${exerciseNames.join(', ')}`:''}.`
+  };
 }
 function tripleCrownMoment(){
   const rows=sortedWorkouts();
@@ -3586,6 +3752,8 @@ function threePeaksMoment(prs){
 function detectSpecialMoments(prs){
   const out=[];
   const maybe=x=>{if(x)out.push(x);};
+  maybe(firstLapMoment());
+  maybe(cleanBreakthroughMoment(prs));
   maybe(tripleCrownMoment());
   conqueredMoments().forEach(x=>out.push(x));
   steadyClimbMoments(prs).forEach(x=>out.push(x));
@@ -3608,7 +3776,10 @@ function achievementContext(){
     maxGoalDays:maxRollingGoalDaysHistorical(),
     workingPRs:prs.length,
     workingPREvents:prs,
+    prExercises:distinctPRExerciseCount(prs),
     distinctDays:distinctWorkoutDays(),
+    minDayCount:minimumWorkoutDayCount(),
+    activeWeekStreak:longestActiveWeekStreak(),
     fullWorkouts:full.length,
     maxFullRolling7:maxRollingCountFor(full,7),
     dialedWorkouts:dialedInWorkoutCount(),
@@ -3664,6 +3835,7 @@ function closeAchievementPresentation(){
     overlay.className='achievement-overlay';
   }
   const fx=$('#achievement-fx'); if(fx) fx.innerHTML='';
+  const discoveryStage=$('#special-discovery-stage'); if(discoveryStage) discoveryStage.hidden=true;
   achievementPresentationActive=false;
   setTimeout(pumpAchievementPresentation,180);
 }
@@ -3722,6 +3894,10 @@ function showAchievementPresentation(item){
   const count=state.achievementMoments.filter(m=>m.achievementId===def.id).length;
   const stage=specialEvolutionStage(def,count);
   applyAchievementRevealClasses(overlay,def);
+  const specialDiscovery=def.special&&item.kind==='unlock';
+  if(specialDiscovery) overlay.classList.add('special-first-discovery');
+  const discoveryStage=$('#special-discovery-stage');
+  if(discoveryStage) discoveryStage.hidden=!specialDiscovery;
   buildAchievementFx(def);
   card.className=`achievement-reveal tier-${def.tier}${def.special?' special-reveal':''}`;
   $('#achievement-reveal-medal').className=`${badgeMedalClasses(def,count)} unlock-medal`;
@@ -3729,8 +3905,8 @@ function showAchievementPresentation(item){
   $('#achievement-reveal-title').textContent=item.kind==='prestige'?`Century Club · ${romanNumeral(Number(item.prestigeCount)||centuryPrestigeCount())}`:(item.title||achievementDisplayName(def));
   $('#achievement-reveal-tier').textContent=tierLabel(def)+(stage?` · ${specialEvolutionLabel(stage)}`:'');
   $('#achievement-reveal-kicker').textContent=item.preview
-    ? (item.kind==='prestige'?'Preview · Century Mark':item.kind==='moment'?'Preview · Special Moment':'Preview · Achievement unlocked')
-    : (item.kind==='prestige'?'Century Mark reached':item.kind==='moment'?'Special Moment':item.kind==='evolution'?'Badge evolved':'Achievement unlocked');
+    ? (item.kind==='prestige'?'Preview · Century Mark':item.kind==='moment'?'Preview · Special Moment':def.special&&item.kind==='unlock'?'Preview · Special discovered':'Preview · Achievement unlocked')
+    : (item.kind==='prestige'?'Century Mark reached':item.kind==='moment'?'Special Moment':item.kind==='evolution'?'Badge evolved':def.special?'Special discovered':'Achievement unlocked');
   $('#achievement-reveal-copy').textContent=item.kind==='prestige'
     ? `${(Number(item.prestigeCount)||centuryPrestigeCount())*100} workouts completed. Century Club keeps the same Mythic identity while its prestige mark advances.`
     : (item.detail||def.description);
@@ -3941,6 +4117,12 @@ function normalAchievementEvidence(def,ctx){
   else if(def.metric==='dialedWorkouts') rows.push(['Fully detailed workouts',String(ctx.dialedWorkouts)]);
   else if(def.metric==='timedSessions') rows.push(['Timed sessions',String(ctx.timedSessions)]);
   else if(def.metric==='loadedTimedSessions') rows.push(['Loaded timed sessions',String(ctx.loadedTimedSessions)]);
+  else if(def.metric==='activeWeekStreak') rows.push(['Longest active-week run',`${ctx.activeWeekStreak} weeks`]);
+  else if(def.metric==='minDayCount'){
+    const c=workoutDayCounts();
+    rows.push(['Push / Pull / Shoulders',`${c.push} / ${c.pull} / ${c.shoulders}`]);
+  }
+  else if(def.metric==='prExercises') rows.push(['Exercises with a Working Weight PR',String(ctx.prExercises)]);
 
   let extra='';
   if(def.metric==='workingPRs'){
@@ -4043,14 +4225,26 @@ function renderAchievements(){
   else if(filter==='special') visible=special.filter(d=>state.achievements[d.id]);
   else visible=[...normal,...special.filter(d=>state.achievements[d.id])];
 
+  const groupOrder=['Journey','Consistency','Progress','Training','Completion','Logging','Special'];
   visible=[...visible].sort((a,b)=>{
-    const au=!!state.achievements[a.id],bu=!!state.achievements[b.id];
-    if(au!==bu)return bu-au;
-    return TIER_ORDER[b.tier]-TIER_ORDER[a.tier]||a.name.localeCompare(b.name);
+    const ag=groupOrder.indexOf(a.group),bg=groupOrder.indexOf(b.group);
+    if(ag!==bg) return ag-bg;
+    if(TIER_ORDER[a.tier]!==TIER_ORDER[b.tier]) return TIER_ORDER[a.tier]-TIER_ORDER[b.tier];
+    const at=Number(a.target)||0,bt=Number(b.target)||0;
+    return at-bt||a.name.localeCompare(b.name);
   });
 
   grid.innerHTML='';
+  let renderedGroup='';
   visible.forEach(def=>{
+    if(def.group!==renderedGroup){
+      renderedGroup=def.group;
+      const heading=document.createElement('div');
+      heading.className='achievement-group-heading';
+      const groupCount=visible.filter(x=>x.group===def.group).length;
+      heading.innerHTML=`<strong>${def.group}</strong><span>${groupCount} badge${groupCount===1?'':'s'}</span>`;
+      grid.appendChild(heading);
+    }
     const unlocked=!!state.achievements[def.id],p=achievementProgress(def,ctx),count=state.achievementMoments.filter(m=>m.achievementId===def.id).length,stage=specialEvolutionStage(def,count);
     const btn=document.createElement('button');
     btn.type='button';
@@ -4325,13 +4519,15 @@ function bindDeveloperLab(){
     const ids=['first_steps','double_digits','committed','century_club'].filter(id=>achievementDef(id));
     showRetroactiveAchievementSummary(ids);
   });
-  $('#dev-preview-mythic-special')?.addEventListener('click',()=>{
-    const def=achievementDef('perfect_circuit')||achievementDefs().find(d=>d.special&&d.tier==='mythic');
-    if(!def) return devStatus('No Mythic Special is available in this build.');
-    const select=$('#dev-achievement-select'); if(select) select.value=def.id;
+  $$('.dev-special-tier-preview').forEach(btn=>btn.addEventListener('click',()=>{
+    const tier=btn.dataset.specialTier;
+    const def=achievementDefs().find(d=>d.special&&d.tier===tier);
+    if(!def) return devStatus(`No ${tier} Special is available in this build.`);
+    const select=$('#dev-achievement-select');
+    if(select){select.value=def.id;select.dispatchEvent(new Event('change'));}
     queueAchievementPresentation({kind:'unlock',achievementId:def.id,preview:true});
-    devStatus(`Previewing ${def.name} · Mythic · Special.`);
-  });
+    devStatus(`Previewing ${def.name} · ${tier.charAt(0).toUpperCase()+tier.slice(1)} · Special.`);
+  }));
   $('#dev-preview-century')?.addEventListener('click',()=>{
     queueAchievementPresentation({kind:'prestige',achievementId:'century_club',prestigeCount:2,preview:true});
     devStatus('Previewing the 200-workout Century Club II prestige reveal.');
@@ -4556,6 +4752,12 @@ if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
 
 <div class="achievement-overlay" id="achievement-overlay" hidden>
   <div class="achievement-fx" id="achievement-fx" aria-hidden="true"></div>
+  <div class="special-discovery-stage" id="special-discovery-stage" hidden aria-hidden="true">
+    <div class="special-discovery-sigil">✦</div>
+    <div class="special-discovery-kicker">Pattern discovered</div>
+    <strong>Special</strong>
+    <span>LiftLoop noticed something unusual in your training.</span>
+  </div>
   <section class="achievement-reveal" id="achievement-reveal" role="dialog" aria-modal="true" aria-labelledby="achievement-reveal-title">
     <div class="unlock-kicker" id="achievement-reveal-kicker">Achievement unlocked</div>
     <div class="badge-medallion unlock-medal" id="achievement-reveal-medal"><span id="achievement-reveal-icon">★</span></div>
