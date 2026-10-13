@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-build="2026.10.13-beta.12">
+<html lang="en" data-build="2026.10.13-beta.14">
 <head>
 <meta charset="utf-8">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
@@ -341,6 +341,88 @@ button{font:inherit}
   width:100%;min-height:48px;border:0;border-radius:13px;
   background:linear-gradient(135deg,var(--accent),#6772e8);color:white;
   font-weight:900;font-size:12px;touch-action:manipulation
+}
+
+
+/* Achievements / Trophy Case */
+.achievement-panel{overflow:hidden}
+.achievement-head-copy{color:var(--muted);font-size:9px;line-height:1.45;margin-top:3px}
+.achievement-summary{display:flex;gap:7px;flex-wrap:wrap}
+.achievement-summary-chip{border:1px solid #343b49;background:#20252e;border-radius:999px;padding:6px 9px;font-size:9px;font-weight:850;color:#cfd5df}
+.featured-badge{position:relative;display:grid;grid-template-columns:74px 1fr auto;gap:12px;align-items:center;padding:13px;margin:10px 0 12px;border:1px solid #343b49;border-radius:16px;background:linear-gradient(135deg,#1a1e27,#12151c);overflow:hidden}
+.featured-badge.empty{grid-template-columns:1fr;text-align:center;color:var(--muted);font-size:10px}
+.featured-copy .eyebrow{font-size:8px;letter-spacing:.13em;text-transform:uppercase;color:#8d97a5;font-weight:900}
+.featured-copy strong{display:block;font-size:16px;margin-top:4px}
+.featured-copy span{display:block;color:#9aa4b2;font-size:9px;line-height:1.4;margin-top:4px}
+.featured-tier{align-self:start;font-size:8px;font-weight:950;letter-spacing:.1em;text-transform:uppercase;border:1px solid #414958;border-radius:999px;padding:5px 7px;color:#d8dee8;background:#202631}
+.achievement-filters{display:flex;gap:5px;overflow:auto;padding-bottom:3px;margin:0 0 10px}
+.achievement-filter{flex:0 0 auto;border:1px solid #303744;background:#191e27;color:#909aaa;border-radius:999px;padding:7px 10px;font-size:9px;font-weight:900}
+.achievement-filter.active{background:#30396f;color:#fff;border-color:#46529a}
+.achievement-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.achievement-card{appearance:none;width:100%;border:1px solid #303744;background:#1b2029;color:var(--text);border-radius:14px;padding:10px;text-align:left;display:grid;grid-template-columns:54px minmax(0,1fr);gap:9px;align-items:center;min-height:82px;position:relative;overflow:hidden}
+.achievement-card.locked{opacity:.62}
+.achievement-card .name{display:block;font-size:11px;font-weight:900;line-height:1.2}
+.achievement-card .meta{display:block;margin-top:3px;color:#8f99a8;font-size:8px;font-weight:850;letter-spacing:.08em;text-transform:uppercase}
+.achievement-card .progress-text{display:block;margin-top:5px;color:#aeb6c4;font-size:8px;line-height:1.3}
+.achievement-card.special-card{border-color:#464151;background:linear-gradient(135deg,#1b1c24,#121319)}
+.achievement-progress-track{height:4px;border-radius:99px;background:#303640;overflow:hidden;margin-top:6px}
+.achievement-progress-fill{height:100%;background:#7d88ff;border-radius:99px}
+.badge-medallion{width:54px;height:54px;border-radius:18px;display:grid;place-items:center;position:relative;isolation:isolate;font-size:22px;font-weight:950;border:1px solid rgba(255,255,255,.18);box-shadow:inset 0 0 18px rgba(255,255,255,.08),0 8px 22px rgba(0,0,0,.22)}
+.badge-medallion:after{content:"";position:absolute;inset:5px;border-radius:14px;border:1px solid rgba(255,255,255,.16);z-index:-1}
+.tier-bronze .badge-medallion,.badge-medallion.tier-bronze{background:linear-gradient(145deg,#8b4e2f,#d69255 46%,#6e3826)}
+.tier-silver .badge-medallion,.badge-medallion.tier-silver{background:linear-gradient(145deg,#58616d,#dce3ea 46%,#69727f);color:#111820}
+.tier-gold .badge-medallion,.badge-medallion.tier-gold{background:linear-gradient(145deg,#8a5b08,#ffd66b 43%,#a66d0b);color:#302000;box-shadow:inset 0 0 18px rgba(255,255,255,.18),0 8px 26px rgba(218,164,45,.18)}
+.tier-mythic .badge-medallion,.badge-medallion.tier-mythic{
+  background:radial-gradient(circle at 30% 22%,#f2b8ff 0,#aa5dff 18%,#4c238e 53%,#17112d 78%);
+  color:white;border-color:#bb80ff;box-shadow:0 0 0 1px rgba(194,130,255,.24),0 0 26px rgba(141,72,255,.34),inset 0 0 16px rgba(255,255,255,.18);
+  animation:mythic-breathe 2.8s ease-in-out infinite
+}
+.tier-mythic .badge-medallion:before,.badge-medallion.tier-mythic:before{content:"";position:absolute;inset:-3px;border-radius:21px;background:conic-gradient(from 30deg,#9f62ff,#e24fd2,#6fdcff,#9f62ff);z-index:-2;opacity:.58;filter:blur(1px)}
+.special-card .badge-medallion,.badge-medallion.special{
+  outline:2px solid #111218;outline-offset:2px
+}
+.special-card .badge-medallion:before,.badge-medallion.special:before{
+  content:"";position:absolute;inset:-4px;border-radius:22px;background:conic-gradient(from 110deg,#16171f,#a866ff,#5ee5df,#ffd36a,#16171f);z-index:-2;opacity:.72
+}
+.badge-medallion.evolved-1{box-shadow:0 0 0 2px rgba(255,213,106,.28),0 0 24px rgba(255,213,106,.22),inset 0 0 18px rgba(255,255,255,.12)}
+.badge-medallion.evolved-2{box-shadow:0 0 0 2px rgba(119,231,255,.35),0 0 32px rgba(170,93,255,.38),inset 0 0 20px rgba(255,255,255,.18);animation:mythic-breathe 2.3s ease-in-out infinite}
+.special-marker{position:absolute;right:-3px;bottom:-3px;width:20px;height:20px;border-radius:8px;background:#11141b;border:1px solid #5a5268;display:grid;place-items:center;font-size:9px;color:#e5d9ff}
+.mystery-card{border:1px dashed #393f4a;border-radius:14px;padding:15px;text-align:center;color:#818c9b;font-size:9px;line-height:1.5;background:#141820;grid-column:1/-1}
+.moments-list{display:grid;gap:7px}
+.moment-card{display:grid;grid-template-columns:34px 1fr auto;gap:9px;align-items:start;padding:9px 0;border-top:1px solid #292f3a}
+.moment-card:first-child{border-top:0}
+.moment-icon{width:34px;height:34px;border-radius:11px;background:#252b36;display:grid;place-items:center}
+.moment-card strong{font-size:10px;display:block}
+.moment-card p{font-size:8.5px;color:#9ba5b3;line-height:1.4;margin:3px 0 0}
+.moment-card time{font-size:8px;color:#707b89;white-space:nowrap}
+@keyframes mythic-breathe{0%,100%{filter:saturate(1);transform:translateZ(0) scale(1)}50%{filter:saturate(1.25);transform:translateZ(0) scale(1.025)}}
+
+.achievement-overlay{position:fixed;inset:0;z-index:10050;background:rgba(5,7,11,.84);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);display:grid;place-items:center;padding:18px}
+.achievement-overlay[hidden]{display:none!important}
+.achievement-reveal{width:min(440px,100%);max-height:88dvh;overflow:auto;border:1px solid #3c4350;border-radius:24px;background:linear-gradient(180deg,#1b202a,#11141a);padding:22px;text-align:center;position:relative;box-shadow:0 26px 90px rgba(0,0,0,.58)}
+.achievement-reveal.tier-mythic{background:radial-gradient(circle at 50% 5%,rgba(123,55,213,.34),transparent 39%),linear-gradient(180deg,#1b1727,#101218)}
+.achievement-reveal.special-reveal{border-color:#625571;background:radial-gradient(circle at 50% 0,rgba(109,60,146,.25),transparent 42%),linear-gradient(180deg,#191922,#0f1116)}
+.unlock-kicker{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:#929dab;font-weight:950}
+.unlock-medal{width:108px;height:108px;margin:19px auto 14px;border-radius:32px;font-size:42px}
+.unlock-title{font-size:26px;line-height:1.05;font-weight:950;letter-spacing:-.035em}
+.unlock-tier{margin-top:7px;font-size:9px;font-weight:950;letter-spacing:.13em;text-transform:uppercase;color:#a7b0bd}
+.unlock-copy{max-width:330px;margin:12px auto 0;color:#b0b9c5;font-size:11px;line-height:1.55}
+.unlock-count{margin-top:10px;color:#e4d6ff;font-size:10px;font-weight:850}
+.unlock-actions{display:flex;gap:8px;justify-content:center;margin-top:18px}
+.unlock-btn{border:1px solid #3b4352;background:#252c38;color:#edf1f7;border-radius:12px;padding:10px 14px;font-size:10px;font-weight:900;min-height:40px}
+.unlock-btn.primary{background:#4653ad;border-color:#5968cd}
+.retro-badges{display:flex;justify-content:center;flex-wrap:wrap;gap:8px;margin:17px auto 5px;max-width:330px}
+.retro-badges .badge-medallion{width:52px;height:52px;border-radius:17px;font-size:20px}
+.detail-progress{margin:14px 0 0;text-align:left;background:#161b23;border:1px solid #2d3440;border-radius:13px;padding:11px}
+.detail-progress .row{display:flex;justify-content:space-between;gap:10px;font-size:9px;color:#aab3bf}
+.detail-progress .achievement-progress-track{height:6px;margin-top:8px}
+@media(max-width:520px){
+  .achievement-grid{grid-template-columns:1fr}
+  .featured-badge{grid-template-columns:64px 1fr}
+  .featured-tier{display:none}
+}
+@media(prefers-reduced-motion:reduce){
+  .tier-mythic .badge-medallion,.badge-medallion.tier-mythic,.badge-medallion.evolved-2{animation:none}
 }
 
 </style>
@@ -997,6 +1079,36 @@ button{font:inherit}
       <div class="progress-stat"><span>Exercises tracked</span><strong id="progress-exercises-count">0</strong></div>
     </div>
 
+    <div class="progress-panel achievement-panel" id="achievement-panel">
+      <div class="progress-panel-head">
+        <div>
+          <h3>Achievements</h3>
+          <div class="achievement-head-copy">Visible achievements reward long-term training. Special achievements are discoveries and do not count against completion.</div>
+        </div>
+        <div class="achievement-summary" id="achievement-summary"></div>
+      </div>
+      <div class="featured-badge empty" id="featured-achievement">Unlock a badge and you can feature it here.</div>
+      <div class="achievement-filters" id="achievement-filters">
+        <button type="button" class="achievement-filter active" data-ach-filter="all">All</button>
+        <button type="button" class="achievement-filter" data-ach-filter="unlocked">Unlocked</button>
+        <button type="button" class="achievement-filter" data-ach-filter="locked">Locked</button>
+        <button type="button" class="achievement-filter" data-ach-filter="special">Special</button>
+      </div>
+      <div class="achievement-grid" id="achievement-grid"></div>
+    </div>
+
+    <div class="progress-panel" id="special-moments-panel">
+      <div class="progress-panel-head">
+        <div>
+          <h3>Special Moments</h3>
+          <div class="achievement-head-copy">Training stories LiftLoop noticed. Repeated moments can deepen an existing Special badge instead of creating disposable copies.</div>
+        </div>
+      </div>
+      <div class="moments-list" id="achievement-moments">
+        <div class="history-empty">Special Moments will appear when LiftLoop notices an unusual pattern in your training history.</div>
+      </div>
+    </div>
+
     <div class="progress-panel">
       <div class="progress-panel-head">
         <h3>Exercise progress</h3>
@@ -1008,9 +1120,9 @@ button{font:inherit}
       </div>
 
       <div class="progress-metrics">
-        <div class="progress-metric"><span id="progress-start-label">Starting target</span><strong id="progress-start">—</strong></div>
-        <div class="progress-metric"><span id="progress-latest-label">Latest target</span><strong id="progress-latest">—</strong></div>
-        <div class="progress-metric"><span id="progress-best-label">Target PR</span><strong id="progress-best">—</strong></div>
+        <div class="progress-metric"><span id="progress-start-label">Starting working</span><strong id="progress-start">—</strong></div>
+        <div class="progress-metric"><span id="progress-latest-label">Latest working</span><strong id="progress-latest">—</strong></div>
+        <div class="progress-metric"><span id="progress-best-label">Working PR</span><strong id="progress-best">—</strong></div>
         <div class="progress-metric"><span>Change</span><strong id="progress-change">—</strong></div>
       </div>
       <div class="progress-caption" id="progress-caption">For assisted movements, using less assistance counts as improvement.</div>
@@ -1069,7 +1181,7 @@ button{font:inherit}
     <button type="button" class="update-check" id="open-whats-new" style="margin-left:6px">What’s New</button>
     <div class="update-status" id="update-status">Automatic update check enabled</div>
   </div>
-  <p style="text-align:center;color:#697383;font-size:9px;margin:18px 0 6px">Build 2026.10.13-beta.12 · exercise auto-advance</p>
+  <p style="text-align:center;color:#697383;font-size:9px;margin:18px 0 6px">Build 2026.10.13-beta.14 · achievements</p>
   <p class="credit">
     Video demonstrations are embedded from their original YouTube sources. Previous vector artwork source:
     <a href="https://github.com/InlitX/GymMane" target="_blank" rel="noopener">GymMane</a>,
@@ -1095,6 +1207,11 @@ state.sessionCompleted = state.sessionCompleted || {};
 state.routinePrefs = state.routinePrefs || {};
 state.profileName = typeof state.profileName === 'string' ? state.profileName : '';
 state.weightUnit = state.weightUnit || 'lb';
+state.achievements = state.achievements && typeof state.achievements==='object' ? state.achievements : {};
+state.achievementMoments = Array.isArray(state.achievementMoments) ? state.achievementMoments : [];
+state.featuredAchievement = typeof state.featuredAchievement==='string' ? state.featuredAchievement : '';
+state.achievementFilter = typeof state.achievementFilter==='string' ? state.achievementFilter : 'all';
+state.achievementSystemVersion = Number(state.achievementSystemVersion)||0;
 const save=()=>{try{localStorage.setItem('liftloop-beta-state',JSON.stringify(state));}catch(e){}};
 
 function showDay(id){
@@ -1578,12 +1695,13 @@ $$('.finish-workout').forEach(btn=>btn.addEventListener('click',()=>{
   renderGamify();
   applyWorkoutPriority(false);
   renderProgress();
+  if(typeof evaluateAchievements==='function') evaluateAchievements({afterWorkout:true,triggerTs:ts,recordCount:prCount});
   const level=state.workoutHistory.length+1;
   showLevelToast(level);
   if(prCount>0){
     setTimeout(()=>{
       const t=$('#level-toast');
-      t.textContent=`${prCount} new PR${prCount===1?'':'s'} recorded`;
+      t.textContent=`${prCount} new record${prCount===1?'':'s'} recorded`;
       t.classList.add('show');
       setTimeout(()=>t.classList.remove('show'),1600);
     },1900);
@@ -1724,8 +1842,40 @@ function completeAllExercise(card){
   $$('.set-log-row',card).forEach((row,index)=>{ const dot=$('.set-dot',row), s=ensureCurrentSet(card,dot,index);
     if(Number.isFinite(usual) && usual>0) s.kg=usual;
     else if(mode.bodyweight && !Number.isFinite(s.kg)) s.kg=0; if(timed){if(Number.isFinite(usualSeconds))s.seconds=usualSeconds; else if(Number.isFinite(timeTarget))s.seconds=timeTarget; s.reps=null;} else {if(Number.isFinite(repTarget))s.reps=repTarget; s.seconds=null; s.dropKg=null; s.dropReps=null; $('.drop-editor',row)?.remove();} state.currentSets[dot.dataset.key]=s; dot.classList.add('done'); state[dot.dataset.key]=true; });
-  state.sessionCompleted[card.dataset.day]=false; save(); renderSetRows(card); updateProgress(card.dataset.day); renderGamify();
+  state.sessionCompleted[card.dataset.day]=false;
+  save();
+  renderSetRows(card);
+  updateProgress(card.dataset.day);
+  renderGamify();
+  if(typeof autoAdvanceCompletedExercise==='function'){
+    const lastDone=$$('.set-dot.done',card).at(-1);
+    if(lastDone) autoAdvanceCompletedExercise(lastDone);
+  }
 }
+function bindExerciseNumberQuickComplete(){
+  $$('.exercise .ex-num').forEach(num=>{
+    if(num.dataset.quickCompleteBound==='1') return;
+    num.dataset.quickCompleteBound='1';
+    num.addEventListener('click',e=>{
+      const card=num.closest('.exercise');
+      const head=$('.exercise-head',card);
+      if(!card || !head) return;
+
+      // Only use the number as a shortcut while the exercise is collapsed.
+      // When expanded, let the normal header behavior happen.
+      if(head.getAttribute('aria-expanded')==='true') return;
+
+      e.preventDefault();
+      e.stopPropagation();
+
+      // Ensure the logging rows/state exist even if this exercise was never opened.
+      renderSetRows(card);
+      completeAllExercise(card);
+    });
+  });
+}
+bindExerciseNumberQuickComplete();
+
 function ensureMetricModeControl(card){
   if(!isTimeCapableExercise(card)) return;
   const sets=$('.sets',card);
@@ -1802,6 +1952,29 @@ function sessionSummary(session,card){
   if(timed){const sets=(session.sets||[]).filter(s=>Number.isFinite(s.seconds)&&s.seconds>0), loads=sets.map(s=>s.kg).filter(Number.isFinite), bestLoad=loads.length?(mode.assistance?Math.min(...loads):Math.max(...loads)):NaN, bestDuration=sets.length?Math.max(...sets.map(s=>s.seconds)):NaN, totalSeconds=sets.reduce((n,s)=>n+s.seconds,0); return {timed:true,bestLoad,bestDuration,totalSeconds,target:null,volume:0,bestRepSegment:null};}
   const target=targetReps(card), segs=(session.sets||[]).flatMap(segmentsFromSet), valid=segs.filter(x=>Number.isFinite(x.kg)&&Number.isFinite(x.reps)&&x.reps>0), loads=valid.map(x=>x.kg), bestLoad=loads.length?(mode.assistance?Math.min(...loads):Math.max(...loads)):NaN, qualifying=target?valid.filter(x=>x.reps>=target):valid, qloads=qualifying.map(x=>x.kg), targetLoad=qloads.length?(mode.assistance?Math.min(...qloads):Math.max(...qloads)):NaN, volume=valid.reduce((n,x)=>n+x.kg*x.reps,0), bestRepSegment=valid.length?valid.reduce((best,x)=>{if(!best)return x;if(mode.assistance){if(x.kg<best.kg||(Math.abs(x.kg-best.kg)<1e-8&&x.reps>best.reps))return x;}else if(x.kg>best.kg||(Math.abs(x.kg-best.kg)<1e-8&&x.reps>best.reps))return x;return best;},null):null; return {timed:false,bestLoad,targetLoad,volume,bestRepSegment,target};
 }
+function workingWeightForSession(session,card){
+  if(!session || !card || isTimedExercise(card)) return NaN;
+  const target=Number(session.targetReps)>0 ? Number(session.targetReps) : targetReps(card);
+  if(!Number.isFinite(target) || target<=0) return NaN;
+  const expected=Number(session.prescribedSets)>0 ? Number(session.prescribedSets) : defaultPrescription(card).sets;
+  const sets=(session.sets||[]).filter(Boolean);
+  if(!Number.isFinite(expected) || expected<=0 || sets.length<expected) return NaN;
+
+  // A working-weight result means every prescribed set hit the target on its
+  // main weight. Extra drop work can exist, but it never upgrades the main result.
+  const prescribed=sets.slice(0,expected);
+  if(!prescribed.every(s=>Number.isFinite(s.reps)&&s.reps>=target)) return NaN;
+  const loads=prescribed.map(s=>s.kg).filter(Number.isFinite);
+  if(loads.length!==expected) return NaN;
+
+  const mode=trackerMode($('.ex-name',card)?.textContent.trim()||'');
+  if(mode.bodyweight && !loads.some(x=>x>0)) return NaN;
+  // For ordinary resistance, the lowest load held across all sets is the
+  // sustainable working weight. For assistance, the highest assistance needed
+  // across the sets is the sustainable assistance level (lower is better).
+  return mode.assistance ? Math.max(...loads) : Math.min(...loads);
+}
+
 function historicalPRsBefore(card,ts){
   const prior=historyFor(card).filter(s=>s.ts<ts), summaries=prior.map(s=>sessionSummary(s,card)), mode=trackerMode($('.ex-name',card)?.textContent.trim()||'');
   const bestLoads=summaries.map(x=>x.bestLoad).filter(Number.isFinite), targetLoads=summaries.map(x=>x.targetLoad).filter(Number.isFinite), vols=summaries.map(x=>x.volume).filter(Number.isFinite), durations=summaries.map(x=>x.bestDuration).filter(Number.isFinite);
@@ -1829,7 +2002,15 @@ function commitWorkoutSets(day,ts){
     if(!sets.some(s=>Number.isFinite(s.kg)||Number.isFinite(s.reps)||Number.isFinite(s.seconds))) return;
 
     state.setHistory[key]=Array.isArray(state.setHistory[key])?state.setHistory[key]:[];
-    const session={ts,sets};
+    const session={
+      ts,
+      sets,
+      prescribedSets:$$('.set-dot',card).length,
+      targetReps:targetReps(card),
+      targetSeconds:targetSeconds(card),
+      day,
+      exercise:$('.ex-name',card)?.textContent.trim()||'Exercise'
+    };
     const before=historicalPRsBefore(card,ts);
     const now=sessionSummary(session,card);
     const mode=trackerMode($('.ex-name',card)?.textContent.trim()||'');
@@ -1856,10 +2037,19 @@ function progressExerciseCatalog(){
   });
 }
 function performanceSeries(card){
-  const rows=historyFor(card).map(s=>({ts:s.ts,...sessionSummary(s,card)})); if(isTimedExercise(card))return rows.filter(x=>Number.isFinite(x.bestDuration)).map(x=>({ts:x.ts,value:x.bestDuration,kind:'seconds',bestLoad:x.bestLoad})); const target=targetReps(card); return rows.filter(x=>Number.isFinite(target?x.targetLoad:x.bestLoad)).map(x=>({ts:x.ts,value:target?x.targetLoad:x.bestLoad,kind:'weight',volume:x.volume,bestLoad:x.bestLoad}));
+  const sessions=historyFor(card);
+  if(isTimedExercise(card)){
+    return sessions.map(s=>({ts:s.ts,...sessionSummary(s,card)}))
+      .filter(x=>Number.isFinite(x.bestDuration))
+      .map(x=>({ts:x.ts,value:x.bestDuration,kind:'seconds',bestLoad:x.bestLoad}));
+  }
+  return sessions.map(s=>{
+    const summary=sessionSummary(s,card);
+    return {ts:s.ts,value:workingWeightForSession(s,card),kind:'weight',volume:summary.volume,bestLoad:summary.bestLoad};
+  }).filter(x=>Number.isFinite(x.value));
 }
 function progressChartSvg(series,mode){
-  if(!series.length)return '<div class="progress-empty">Finish a workout with set details to start this chart.</div>'; const kind=series[0].kind||'weight', vals=series.map(x=>kind==='seconds'?x.value:displayFromKg(x.value)), W=360,H=190,L=42,R=12,T=14,B=30, min0=Math.min(...vals), max0=Math.max(...vals), pad=Math.max((max0-min0)*0.18,kind==='seconds'?2:(state.weightUnit==='kg'?1:2)), min=Math.max(0,min0-pad), max=max0+pad, span=(max-min)||1, pts=vals.map((v,i)=>({x:L+(W-L-R)*(series.length===1?.5:i/(series.length-1)),y:T+(H-T-B)*(1-(v-min)/span),v})), line=pts.map(p=>`${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' '), baseY=H-B, area=`${pts[0].x.toFixed(1)},${baseY} ${line} ${pts.at(-1).x.toFixed(1)},${baseY}`; let grid='',labels=''; for(let i=0;i<4;i++){const y=T+(H-T-B)*(i/3),v=max-(max-min)*(i/3);grid+=`<line class="grid" x1="${L}" y1="${y}" x2="${W-R}" y2="${y}"></line>`;labels+=`<text class="axis-text" x="${L-6}" y="${y+3}" text-anchor="end">${Math.round(v*10)/10}</text>`;} const firstDate=new Date(series[0].ts).toLocaleDateString(undefined,{month:'short',day:'numeric'}), lastDate=new Date(series.at(-1).ts).toLocaleDateString(undefined,{month:'short',day:'numeric'}), dots=pts.map(p=>`<circle class="dot" cx="${p.x}" cy="${p.y}" r="4"></circle>`).join(''), title=kind==='seconds'?'Longest timed set over completed workouts':'Target-rep working weight over completed workouts', unit=kind==='seconds'?'sec':state.weightUnit; return `<div class="progress-chart-title">${title}</div><svg class="progress-chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="${title}">${grid}${labels}<polygon class="area" points="${area}"></polygon><polyline class="line" points="${line}"></polyline>${dots}<text class="axis-text" x="${L}" y="${H-8}">${firstDate}</text><text class="axis-text" x="${W-R}" y="${H-8}" text-anchor="end">${lastDate}</text><text class="axis-text" x="${W-R}" y="${T+9}" text-anchor="end">${unit}</text></svg>`;
+  if(!series.length)return '<div class="progress-empty">Finish a workout with set details to start this chart.</div>'; const kind=series[0].kind||'weight', vals=series.map(x=>kind==='seconds'?x.value:displayFromKg(x.value)), W=360,H=190,L=42,R=12,T=14,B=30, min0=Math.min(...vals), max0=Math.max(...vals), pad=Math.max((max0-min0)*0.18,kind==='seconds'?2:(state.weightUnit==='kg'?1:2)), min=Math.max(0,min0-pad), max=max0+pad, span=(max-min)||1, pts=vals.map((v,i)=>({x:L+(W-L-R)*(series.length===1?.5:i/(series.length-1)),y:T+(H-T-B)*(1-(v-min)/span),v})), line=pts.map(p=>`${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' '), baseY=H-B, area=`${pts[0].x.toFixed(1)},${baseY} ${line} ${pts.at(-1).x.toFixed(1)},${baseY}`; let grid='',labels=''; for(let i=0;i<4;i++){const y=T+(H-T-B)*(i/3),v=max-(max-min)*(i/3);grid+=`<line class="grid" x1="${L}" y1="${y}" x2="${W-R}" y2="${y}"></line>`;labels+=`<text class="axis-text" x="${L-6}" y="${y+3}" text-anchor="end">${Math.round(v*10)/10}</text>`;} const firstDate=new Date(series[0].ts).toLocaleDateString(undefined,{month:'short',day:'numeric'}), lastDate=new Date(series.at(-1).ts).toLocaleDateString(undefined,{month:'short',day:'numeric'}), dots=pts.map(p=>`<circle class="dot" cx="${p.x}" cy="${p.y}" r="4"></circle>`).join(''), title=kind==='seconds'?'Longest timed set over completed workouts':'Full-prescription working weight over completed workouts', unit=kind==='seconds'?'sec':state.weightUnit; return `<div class="progress-chart-title">${title}</div><svg class="progress-chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="${title}">${grid}${labels}<polygon class="area" points="${area}"></polygon><polyline class="line" points="${line}"></polyline>${dots}<text class="axis-text" x="${L}" y="${H-8}">${firstDate}</text><text class="axis-text" x="${W-R}" y="${H-8}" text-anchor="end">${lastDate}</text><text class="axis-text" x="${W-R}" y="${T+9}" text-anchor="end">${unit}</text></svg>`;
 }
 function renderProgress(){
   const select=$('#progress-exercise-select');
@@ -1904,9 +2094,9 @@ function renderProgress(){
     const pct=Number.isFinite(first)&&Math.abs(first)>1e-8&&Number.isFinite(last)
       ? (timed ? (last-first)/first*100 : (chosen.mode.assistance ? (first-last)/first*100 : (last-first)/first*100))
       : NaN;
-    $('#progress-start-label').textContent=timed?'Starting time':'Starting target';
-    $('#progress-latest-label').textContent=timed?'Latest time':'Latest target';
-    $('#progress-best-label').textContent=timed?'Time PR':'Target PR';
+    $('#progress-start-label').textContent=timed?'Starting time':'Starting working';
+    $('#progress-latest-label').textContent=timed?'Latest time':'Latest working';
+    $('#progress-best-label').textContent=timed?'Time PR':'Working PR';
     $('#progress-start').textContent=timed?(Number.isFinite(first)?`${first} sec`:'—'):fmt(first);
     $('#progress-latest').textContent=timed?(Number.isFinite(last)?`${last} sec`:'—'):fmt(last);
     $('#progress-best').textContent=timed?(Number.isFinite(best)?`${best} sec`:'—'):fmt(best);
@@ -1979,6 +2169,7 @@ function renderProgress(){
       hist.appendChild(row);
     });
   }
+  if(typeof renderAchievements==='function') renderAchievements();
 }
 function renderAllSetRows(){
   $$('.exercise:not(.routine-hidden)').forEach(renderSetRows);
@@ -2218,15 +2409,30 @@ $('#prepare-stable')?.addEventListener('click',async()=>{
 });
 
 
-// Beta popup: list ONLY changes introduced in this beta build.
+// Beta popup: list ONLY changes introduced since the currently published Beta build.
 const LIFTLOOP_CHANGELOG = {
-  '2026.10.13-beta.12': {
+  '2026.10.13-beta.14': {
     title: 'What changed in this Beta update',
     changes: [
       {
-        icon:'⏭️',
-        title:'Exercises now auto-advance',
-        text:'Checking the final set of an exercise collapses it and automatically opens the next enabled exercise in workout order.'
+        icon:'⚡',
+        title:'Tap an exercise number to quick-complete',
+        text:'While an exercise is collapsed, tapping its number completes all sets with your usual working weight and automatically opens the next enabled exercise.'
+      },
+      {
+        icon:'🏆',
+        title:'Achievements and Trophy Case',
+        text:'LiftLoop now has Bronze, Silver, Gold, and Mythic achievements, a Featured Badge, retroactive unlocks, and visible progress toward normal achievements.'
+      },
+      {
+        icon:'✦',
+        title:'Special discoveries and Moments',
+        text:'Hidden Special achievements recognize meaningful training patterns without counting against completion. Repeatable Specials can collect Moments and visually evolve.'
+      },
+      {
+        icon:'↗',
+        title:'Working Weight PRs are stricter',
+        text:'Progress achievements now use full-prescription Working Weight PRs, so a single heavier low-rep set does not count as the same kind of PR.'
       }
     ]
   }
@@ -2262,6 +2468,26 @@ const LIFTLOOP_STABLE_RELEASE_NOTES = {
       icon:'⏭️',
       title:'Automatic exercise flow',
       text:'Completing the final set collapses the finished exercise and opens the next enabled exercise automatically.'
+    },
+    {
+      icon:'⚡',
+      title:'One-tap exercise completion',
+      text:'Tap a collapsed exercise number to complete all of its sets using your usual working weight and move straight to the next exercise.'
+    },
+    {
+      icon:'🏆',
+      title:'Achievements and Trophy Case',
+      text:'Track Bronze, Silver, Gold, and Mythic achievements, feature a favorite badge, and receive retroactive credit from existing LiftLoop history.'
+    },
+    {
+      icon:'✦',
+      title:'Special achievements and Moments',
+      text:'Meaningful hidden training patterns can unlock Special badges and recurring Moments without creating unhealthy completion pressure.'
+    },
+    {
+      icon:'↗',
+      title:'More meaningful Working Weight PRs',
+      text:'Working Weight progress now reflects completing the full prescribed sets at the sustainable load rather than merely touching a heavier weight for fewer reps.'
     }
   ]
 };
@@ -2363,6 +2589,560 @@ if(document.readyState==='loading'){
 }
 
 
+
+// ---------- Achievements, Special discoveries, and Moments ----------
+const ACHIEVEMENT_SYSTEM_VERSION=1;
+const TIER_ORDER={bronze:1,silver:2,gold:3,mythic:4};
+const DAY_NAMES={push:'Push',pull:'Pull',shoulders:'Shoulders + Core'};
+
+function achievementDefList(){
+  return [
+    {id:'first_steps',name:'First Steps',icon:'👟',tier:'bronze',group:'Journey',description:'Complete your first LiftLoop workout.',target:1,metric:'workouts'},
+    {id:'finding_rhythm',name:'Finding Your Rhythm',icon:'◉',tier:'bronze',group:'Journey',description:'Complete 5 workouts.',target:5,metric:'workouts'},
+    {id:'double_digits',name:'Double Digits',icon:'10',tier:'silver',group:'Journey',description:'Complete 10 workouts.',target:10,metric:'workouts'},
+    {id:'quarter_century',name:'Quarter Century',icon:'25',tier:'silver',group:'Journey',description:'Complete 25 workouts.',target:25,metric:'workouts'},
+    {id:'committed',name:'Committed',icon:'◆',tier:'gold',group:'Journey',description:'Complete 50 workouts.',target:50,metric:'workouts'},
+    {id:'century_club',name:'Century Club',icon:'100',tier:'mythic',group:'Journey',description:'Complete 100 workouts.',target:100,metric:'workouts'},
+
+    {id:'in_the_loop',name:'In the Loop',icon:'↻',tier:'bronze',group:'Consistency',description:'Complete 3 workouts inside a rolling 7-day period.',target:3,metric:'maxRolling7'},
+    {id:'locked_in',name:'Locked In',icon:'🔒',tier:'silver',group:'Consistency',description:'Keep the 3-in-7 rolling goal alive for 7 consecutive days.',target:7,metric:'maxGoalDays'},
+    {id:'built_different',name:'Built Different',icon:'⬢',tier:'gold',group:'Consistency',description:'Keep the 3-in-7 rolling goal alive for 30 consecutive days.',target:30,metric:'maxGoalDays'},
+
+    {id:'first_breakthrough',name:'First Breakthrough',icon:'↗',tier:'bronze',group:'Progress',description:'Earn your first genuine Working Weight PR after establishing a baseline.',target:1,metric:'workingPRs'},
+    {id:'pr_hunter',name:'PR Hunter',icon:'🎯',tier:'silver',group:'Progress',description:'Earn 10 genuine Working Weight PRs.',target:10,metric:'workingPRs'},
+    {id:'limit_breaker',name:'Limit Breaker',icon:'⚡',tier:'gold',group:'Progress',description:'Earn 25 genuine Working Weight PRs.',target:25,metric:'workingPRs'},
+
+    {id:'full_rotation',name:'Full Rotation',icon:'△',tier:'bronze',group:'Training',description:'Complete Push, Pull, and Shoulders + Core at least once.',target:3,metric:'distinctDays'},
+    {id:'clean_sweep',name:'Clean Sweep',icon:'✓',tier:'bronze',group:'Completion',description:'Complete every planned set in a workout.',target:1,metric:'fullWorkouts'},
+    {id:'flawless_week',name:'Flawless Week',icon:'✦',tier:'gold',group:'Completion',description:'Complete 3 full workouts with no skipped sets inside a rolling 7-day period.',target:3,metric:'maxFullRolling7'},
+    {id:'dialed_in',name:'Dialed In',icon:'⌁',tier:'bronze',group:'Logging',description:'Finish a full workout with complete set details recorded for every completed set.',target:1,metric:'dialedWorkouts'},
+    {id:'against_clock',name:'Against the Clock',icon:'⏱',tier:'bronze',group:'Training',description:'Log a completed timed exercise.',target:1,metric:'timedSessions'},
+    {id:'loaded_clock',name:'Loaded Clock',icon:'⏱',tier:'silver',group:'Training',description:'Complete a timed exercise while also recording added load.',target:1,metric:'loadedTimedSessions'},
+
+    // Specials are deliberately hidden until discovered. They do not count
+    // against achievement completion and do not expose farmable thresholds.
+    {id:'triple_crown',name:'Triple Crown',icon:'♛',tier:'silver',special:true,group:'Special',description:'Complete all three workout types inside one rolling 7-day period.',clue:'Three paths can meet in a single week.',momentNoun:'Crowns'},
+    {id:'conquered_it',name:'Conquered It',icon:'⚔',tier:'gold',special:true,repeatable:true,group:'Special',description:'A weight that once forced a mid-set reduction is later completed across the full prescription without needing that reduction.',clue:'Some weights are not conquered the first time.',momentNoun:'Conquests'},
+    {id:'steady_climb',name:'Steady Climb',icon:'⛰',tier:'gold',special:true,repeatable:true,group:'Special',description:'The same exercise earns three separate genuine Working Weight PRs over time.',clue:'Some victories only appear when the same lift keeps moving.',momentNoun:'Climbs'},
+    {id:'across_board',name:'Across the Board',icon:'✣',tier:'gold',special:true,group:'Special',description:'Working Weight PRs land across Push, Pull, and Shoulders + Core within the same training chapter.',clue:'Progress is stronger when it is not confined to one day.',momentNoun:'Moments'},
+    {id:'perfect_storm',name:'Perfect Storm',icon:'✺',tier:'gold',special:true,repeatable:true,group:'Special',description:'A full workout, a genuine Working Weight PR, and the rolling weekly goal all land together.',clue:'Sometimes several good things land on the same day.',momentNoun:'Storms'},
+    {id:'balanced_build',name:'Balanced Build',icon:'⬡',tier:'silver',special:true,group:'Special',description:'A substantial run of training stays meaningfully balanced across all three workout types.',clue:'A balanced routine leaves a pattern.',momentNoun:'Moments'},
+    {id:'full_spectrum',name:'Full Spectrum',icon:'◈',tier:'silver',special:true,group:'Special',description:'Your history includes weighted resistance, bodyweight or assisted work, and timed training.',clue:'Strength has more than one language.',momentNoun:'Moments'}
+  ];
+}
+function achievementDefs(){ return achievementDefList(); }
+function achievementDef(id){ return achievementDefs().find(x=>x.id===id); }
+
+function sortedWorkouts(){ return [...state.workoutHistory].filter(w=>Number.isFinite(Number(w.ts))).sort((a,b)=>Number(a.ts)-Number(b.ts)); }
+function workoutIsFull(w){
+  if(!w) return false;
+  if(w.partial===true) return false;
+  if(Number.isFinite(w.completedSets)&&Number.isFinite(w.totalSets)) return w.totalSets>0 && w.completedSets>=w.totalSets;
+  // Older LiftLoop versions only allowed workout completion after all sets,
+  // so pre-partial-history entries are treated as full.
+  return true;
+}
+function maxRollingCountFor(workouts,days=7){
+  const rows=[...workouts].sort((a,b)=>Number(a.ts)-Number(b.ts));
+  let best=0,left=0,windowMs=days*86400000;
+  for(let right=0;right<rows.length;right++){
+    const end=Number(rows[right].ts);
+    while(left<=right && Number(rows[left].ts)<=end-windowMs) left++;
+    best=Math.max(best,right-left+1);
+  }
+  return best;
+}
+function maxRollingGoalDaysHistorical(){
+  const rows=sortedWorkouts();
+  if(rows.length<3) return 0;
+  const first=new Date(Number(rows[0].ts)); first.setHours(23,59,59,999);
+  const last=new Date(Number(rows.at(-1).ts)); last.setDate(last.getDate()+7); last.setHours(23,59,59,999);
+  let streak=0,best=0;
+  for(let d=new Date(first);d<=last;d.setDate(d.getDate()+1)){
+    const end=d.getTime(), start=end-7*86400000;
+    const count=rows.filter(w=>Number(w.ts)>start&&Number(w.ts)<=end).length;
+    if(count>=3){ streak++; best=Math.max(best,streak); } else streak=0;
+  }
+  return best;
+}
+function distinctWorkoutDays(){ return new Set(sortedWorkouts().map(w=>w.day).filter(d=>['push','pull','shoulders'].includes(d))).size; }
+
+function workingPRTimeline(){
+  const events=[];
+  progressExerciseCatalog().forEach(item=>{
+    const sessions=[...historyFor(item.card)].sort((a,b)=>Number(a.ts)-Number(b.ts));
+    let baseline=NaN;
+    sessions.forEach(session=>{
+      const value=workingWeightForSession(session,item.card);
+      if(!Number.isFinite(value)) return;
+      if(!Number.isFinite(baseline)){ baseline=value; return; } // baseline is not a PR
+      const improved=item.mode.assistance ? value<baseline-1e-8 : value>baseline+1e-8;
+      if(improved){
+        events.push({ts:Number(session.ts),key:item.key,name:item.name,day:item.day,value,previous:baseline});
+        baseline=value;
+      }
+    });
+  });
+  return events.sort((a,b)=>a.ts-b.ts);
+}
+
+function setHistorySessionsAt(ts){
+  const out=[];
+  Object.entries(state.setHistory||{}).forEach(([key,sessions])=>{
+    (Array.isArray(sessions)?sessions:[]).forEach(session=>{
+      if(Number(session.ts)===Number(ts)) out.push({key,session});
+    });
+  });
+  return out;
+}
+function nameFromExerciseKey(key){ return String(key||'').split('::').slice(1).join('::')||'Exercise'; }
+function dayFromExerciseKey(key){ return String(key||'').split('::')[0]||''; }
+function dialedInWorkoutCount(){
+  return sortedWorkouts().filter(w=>{
+    if(!workoutIsFull(w)) return false;
+    const sessions=setHistorySessionsAt(w.ts);
+    if(!sessions.length) return false;
+    let loggedSets=0;
+    const valid=sessions.every(({key,session})=>{
+      const name=nameFromExerciseKey(key), mode=trackerMode(name);
+      return (session.sets||[]).every(s=>{
+        loggedSets++;
+        if(Number.isFinite(s.seconds)&&s.seconds>0) return !Number.isFinite(s.kg) || s.kg>=0;
+        if(!Number.isFinite(s.reps)||s.reps<=0) return false;
+        if(!mode.bodyweight && (!Number.isFinite(s.kg)||s.kg<=0)) return false;
+        if(Number.isFinite(s.dropReps)&&s.dropReps>0 && !mode.bodyweight && (!Number.isFinite(s.dropKg)||s.dropKg<=0)) return false;
+        return true;
+      });
+    });
+    if(!valid) return false;
+    return !Number.isFinite(w.completedSets) || loggedSets>=w.completedSets;
+  }).length;
+}
+function timedSessionStats(){
+  let timed=0,loaded=0;
+  Object.values(state.setHistory||{}).filter(Array.isArray).forEach(sessions=>sessions.forEach(session=>{
+    const hasTimed=(session.sets||[]).some(s=>Number.isFinite(s.seconds)&&s.seconds>0);
+    if(hasTimed){
+      timed++;
+      if((session.sets||[]).some(s=>Number.isFinite(s.seconds)&&s.seconds>0&&Number.isFinite(s.kg)&&s.kg>0)) loaded++;
+    }
+  }));
+  return {timed,loaded};
+}
+function workingPREventsInWindow(days=45){
+  const events=workingPRTimeline(), windows=[];
+  for(let i=0;i<events.length;i++){
+    const end=events[i].ts,start=end-days*86400000;
+    windows.push(events.filter(e=>e.ts>start&&e.ts<=end));
+  }
+  return windows;
+}
+function rollingWorkoutCountAt(ts,onlyFull=false){
+  const start=Number(ts)-7*86400000;
+  return sortedWorkouts().filter(w=>Number(w.ts)>start&&Number(w.ts)<=Number(ts)&&(!onlyFull||workoutIsFull(w))).length;
+}
+function tripleCrownMoment(){
+  const rows=sortedWorkouts();
+  for(const endW of rows){
+    const start=Number(endW.ts)-7*86400000;
+    const window=rows.filter(w=>Number(w.ts)>start&&Number(w.ts)<=Number(endW.ts));
+    const days=new Set(window.map(w=>w.day));
+    if(['push','pull','shoulders'].every(d=>days.has(d))){
+      return {id:`triple_crown:${localDateKey(endW.ts)}`,achievementId:'triple_crown',ts:Number(endW.ts),title:'Triple Crown',detail:'Push, Pull, and Shoulders + Core all landed inside one rolling 7-day period.'};
+    }
+  }
+  return null;
+}
+function conqueredMoments(){
+  const moments=[];
+  progressExerciseCatalog().forEach(item=>{
+    const card=item.card, mode=item.mode;
+    if(isTimedExercise(card)||mode.assistance||mode.bodyweight) return;
+    const sessions=[...historyFor(card)].sort((a,b)=>Number(a.ts)-Number(b.ts));
+    const targetNow=targetReps(card);
+    if(!Number.isFinite(targetNow)||targetNow<=0) return;
+    sessions.forEach((session,idx)=>{
+      const target=Number(session.targetReps)>0?Number(session.targetReps):targetNow;
+      (session.sets||[]).forEach(s=>{
+        if(!(Number.isFinite(s.kg)&&s.kg>0&&Number.isFinite(s.dropKg)&&s.dropKg>0&&s.dropKg<s.kg-1e-8&&Number.isFinite(s.dropReps)&&s.dropReps>0)) return;
+        if(!(Number.isFinite(s.reps)&&s.reps<target&&s.reps+s.dropReps>=target)) return;
+        const challenged=s.kg;
+        const later=sessions.slice(idx+1).find(next=>{
+          if(Number(next.ts)-Number(session.ts)<3*86400000) return false;
+          const w=workingWeightForSession(next,card);
+          return Number.isFinite(w)&&w>=challenged-1e-8;
+        });
+        if(!later) return;
+        const weightId=challenged.toFixed(3);
+        moments.push({
+          id:`conquered_it:${item.key}:${weightId}`,
+          achievementId:'conquered_it',
+          ts:Number(later.ts),
+          title:`Conquered It · ${item.name}`,
+          detail:`A load that previously needed a reduction was later completed across the full prescription at ${fmt(displayFromKg(challenged))}.`,
+          exerciseKey:item.key
+        });
+      });
+    });
+  });
+  const seen=new Set();
+  return moments.filter(m=>!seen.has(m.id)&&seen.add(m.id)).sort((a,b)=>a.ts-b.ts);
+}
+function steadyClimbMoments(prs){
+  const by=new Map();
+  prs.forEach(e=>{const arr=by.get(e.key)||[];arr.push(e);by.set(e.key,arr);});
+  const out=[];
+  by.forEach((arr,key)=>{
+    if(arr.length>=3){
+      const third=arr[2];
+      out.push({id:`steady_climb:${key}`,achievementId:'steady_climb',ts:third.ts,title:`Steady Climb · ${third.name}`,detail:'This exercise has produced three separate genuine Working Weight PRs.'});
+    }
+  });
+  return out;
+}
+function acrossBoardMoment(prs){
+  for(const end of prs){
+    const start=end.ts-45*86400000;
+    const win=prs.filter(e=>e.ts>start&&e.ts<=end.ts);
+    const days=new Set(win.map(e=>e.day));
+    if(['push','pull','shoulders'].every(d=>days.has(d))){
+      return {id:`across_board:${localDateKey(end.ts)}`,achievementId:'across_board',ts:end.ts,title:'Across the Board',detail:'Genuine Working Weight PRs appeared across Push, Pull, and Shoulders + Core within the same training chapter.'};
+    }
+  }
+  return null;
+}
+function perfectStormMoments(prs){
+  const prTs=new Set(prs.map(e=>Number(e.ts)));
+  return sortedWorkouts().filter(w=>workoutIsFull(w)&&prTs.has(Number(w.ts))&&rollingWorkoutCountAt(w.ts)>=3).map(w=>({
+    id:`perfect_storm:${Number(w.ts)}`,
+    achievementId:'perfect_storm',
+    ts:Number(w.ts),
+    title:'Perfect Storm',
+    detail:`${w.name}: full completion, a genuine Working Weight PR, and the rolling 3-in-7 goal all landed together.`
+  }));
+}
+function balancedBuildMoment(){
+  const rows=sortedWorkouts();
+  for(let i=11;i<rows.length;i++){
+    const win=rows.slice(i-11,i+1), counts={push:0,pull:0,shoulders:0};
+    win.forEach(w=>{if(counts[w.day]!=null)counts[w.day]++;});
+    if(counts.push>=3&&counts.pull>=3&&counts.shoulders>=3){
+      return {id:`balanced_build:${Number(rows[i].ts)}`,achievementId:'balanced_build',ts:Number(rows[i].ts),title:'Balanced Build',detail:'A 12-workout stretch kept meaningful representation across Push, Pull, and Shoulders + Core.'};
+    }
+  }
+  return null;
+}
+function fullSpectrumMoment(){
+  let weighted=false,body=false,timed=false,lastTs=0;
+  progressExerciseCatalog().forEach(item=>{
+    const mode=item.mode;
+    historyFor(item.card).forEach(session=>{
+      const ts=Number(session.ts)||0;
+      if((session.sets||[]).some(s=>Number.isFinite(s.seconds)&&s.seconds>0)){timed=true;lastTs=Math.max(lastTs,ts);}
+      if(mode.bodyweight||mode.assistance){
+        if((session.sets||[]).some(s=>(Number.isFinite(s.reps)&&s.reps>0)||(Number.isFinite(s.seconds)&&s.seconds>0))){body=true;lastTs=Math.max(lastTs,ts);}
+      }else if((session.sets||[]).some(s=>Number.isFinite(s.kg)&&s.kg>0&&Number.isFinite(s.reps)&&s.reps>0)){weighted=true;lastTs=Math.max(lastTs,ts);}
+    });
+  });
+  return weighted&&body&&timed ? {id:'full_spectrum:first',achievementId:'full_spectrum',ts:lastTs||Date.now(),title:'Full Spectrum',detail:'Your LiftLoop history now spans weighted resistance, bodyweight or assisted work, and timed training.'} : null;
+}
+function detectSpecialMoments(prs){
+  const out=[];
+  const maybe=x=>{if(x)out.push(x);};
+  maybe(tripleCrownMoment());
+  conqueredMoments().forEach(x=>out.push(x));
+  steadyClimbMoments(prs).forEach(x=>out.push(x));
+  maybe(acrossBoardMoment(prs));
+  perfectStormMoments(prs).forEach(x=>out.push(x));
+  maybe(balancedBuildMoment());
+  maybe(fullSpectrumMoment());
+  const seen=new Set();
+  return out.filter(x=>x&&x.id&&!seen.has(x.id)&&seen.add(x.id)).sort((a,b)=>a.ts-b.ts);
+}
+
+function achievementContext(){
+  const workouts=sortedWorkouts(), full=workouts.filter(workoutIsFull), prs=workingPRTimeline(), timed=timedSessionStats();
+  const specialMoments=detectSpecialMoments(prs);
+  return {
+    workouts:workouts.length,
+    maxRolling7:maxRollingCountFor(workouts,7),
+    maxGoalDays:maxRollingGoalDaysHistorical(),
+    workingPRs:prs.length,
+    workingPREvents:prs,
+    distinctDays:distinctWorkoutDays(),
+    fullWorkouts:full.length,
+    maxFullRolling7:maxRollingCountFor(full,7),
+    dialedWorkouts:dialedInWorkoutCount(),
+    timedSessions:timed.timed,
+    loadedTimedSessions:timed.loaded,
+    specialMoments
+  };
+}
+function normalMetricValue(def,ctx){ return Number(ctx[def.metric])||0; }
+function achievementProgress(def,ctx){
+  if(def.special){
+    const count=state.achievementMoments.filter(m=>m.achievementId===def.id).length;
+    return {current:count,target:null,earned:count>0,pct:count>0?100:0};
+  }
+  const current=normalMetricValue(def,ctx), target=Number(def.target)||1;
+  return {current,target,earned:current>=target,pct:Math.max(0,Math.min(100,current/target*100))};
+}
+function specialEvolutionStage(def,count){
+  if(!def?.special||!def.repeatable) return 0;
+  if(count>=7) return 2;
+  if(count>=3) return 1;
+  return 0;
+}
+function specialEvolutionLabel(stage){ return stage>=2?'Ascended':stage===1?'Gilded':''; }
+
+let achievementPresentationQueue=[];
+let achievementPresentationActive=false;
+
+function tierLabel(def){
+  const base=def.tier.charAt(0).toUpperCase()+def.tier.slice(1);
+  return def.special?`${base} · Special`:base;
+}
+function badgeMedalClasses(def,count=0){
+  const stage=specialEvolutionStage(def,count);
+  return `badge-medallion tier-${def.tier}${def.special?' special':''}${stage?` evolved-${stage}`:''}`;
+}
+function queueAchievementPresentation(item){
+  achievementPresentationQueue.push(item);
+  pumpAchievementPresentation();
+}
+function pumpAchievementPresentation(){
+  if(achievementPresentationActive||!achievementPresentationQueue.length) return;
+  const whats=$('#whats-new-overlay');
+  if(whats && !whats.hidden){ setTimeout(pumpAchievementPresentation,700); return; }
+  const item=achievementPresentationQueue.shift();
+  achievementPresentationActive=true;
+  showAchievementPresentation(item);
+}
+function closeAchievementPresentation(){
+  const overlay=$('#achievement-overlay');
+  if(overlay) overlay.hidden=true;
+  achievementPresentationActive=false;
+  setTimeout(pumpAchievementPresentation,180);
+}
+function showAchievementPresentation(item){
+  const overlay=$('#achievement-overlay'),card=$('#achievement-reveal');
+  if(!overlay||!card){achievementPresentationActive=false;return;}
+  const def=achievementDef(item.achievementId||item.id);
+  if(!def){achievementPresentationActive=false;return;}
+  const count=state.achievementMoments.filter(m=>m.achievementId===def.id).length;
+  const stage=specialEvolutionStage(def,count);
+  card.className=`achievement-reveal tier-${def.tier}${def.special?' special-reveal':''}`;
+  $('#achievement-reveal-medal').className=`${badgeMedalClasses(def,count)} unlock-medal`;
+  $('#achievement-reveal-icon').textContent=def.icon;
+  $('#achievement-reveal-title').textContent=item.title||def.name;
+  $('#achievement-reveal-tier').textContent=tierLabel(def)+(stage?` · ${specialEvolutionLabel(stage)}`:'');
+  $('#achievement-reveal-kicker').textContent=item.kind==='moment'?'Special Moment':item.kind==='evolution'?'Badge evolved':'Achievement unlocked';
+  $('#achievement-reveal-copy').textContent=item.detail||def.description;
+  const countBox=$('#achievement-reveal-count');
+  countBox.textContent=def.special&&count>1 ? `${count} ${def.momentNoun||'moments'} recorded` : '';
+  const feature=$('#achievement-reveal-feature');
+  feature.hidden=!state.achievements[def.id];
+  feature.onclick=()=>{state.featuredAchievement=def.id;save();renderAchievements();feature.textContent='Featured ✓';};
+  overlay.hidden=false;
+}
+function showRetroactiveAchievementSummary(ids){
+  if(!ids.length) return;
+  const overlay=$('#achievement-overlay'),card=$('#achievement-reveal');
+  if(!overlay||!card) return;
+  if($('#whats-new-overlay') && !$('#whats-new-overlay').hidden){ setTimeout(()=>showRetroactiveAchievementSummary(ids),800); return; }
+  achievementPresentationActive=true;
+  card.className='achievement-reveal';
+  $('#achievement-reveal-kicker').textContent='History recognized';
+  $('#achievement-reveal-medal').className='badge-medallion unlock-medal tier-gold';
+  $('#achievement-reveal-icon').textContent='✦';
+  $('#achievement-reveal-title').textContent=`${ids.length} achievement${ids.length===1?'':'s'} earned`;
+  $('#achievement-reveal-tier').textContent='LiftLoop history';
+  $('#achievement-reveal-copy').textContent='These were awarded from workouts already stored on this device. You did not have to start over when Achievements arrived.';
+  const top=ids.map(achievementDef).filter(Boolean).sort((a,b)=>(TIER_ORDER[b.tier]-TIER_ORDER[a.tier])).slice(0,7);
+  $('#achievement-reveal-count').innerHTML=`<div class="retro-badges">${top.map(def=>`<div class="${badgeMedalClasses(def,state.achievementMoments.filter(m=>m.achievementId===def.id).length)}"><span>${def.icon}</span>${def.special?'<span class="special-marker">✦</span>':''}</div>`).join('')}</div>`;
+  const feature=$('#achievement-reveal-feature'); feature.hidden=true;
+  overlay.hidden=false;
+}
+function bindAchievementOverlays(){
+  $('#achievement-reveal-close')?.addEventListener('click',closeAchievementPresentation);
+  $('#achievement-overlay')?.addEventListener('click',e=>{if(e.target.id==='achievement-overlay')closeAchievementPresentation();});
+  $('#achievement-detail-close')?.addEventListener('click',()=>{$('#achievement-detail-overlay').hidden=true;});
+  $('#achievement-detail-overlay')?.addEventListener('click',e=>{if(e.target.id==='achievement-detail-overlay')e.currentTarget.hidden=true;});
+}
+
+function evaluateAchievements(opts={}){
+  const firstInstall=state.achievementSystemVersion<ACHIEVEMENT_SYSTEM_VERSION;
+  const ctx=achievementContext();
+  const oldMomentIds=new Set(state.achievementMoments.map(m=>m.id));
+  const newMoments=[];
+  ctx.specialMoments.forEach(m=>{
+    if(!oldMomentIds.has(m.id)){
+      state.achievementMoments.push(m);
+      oldMomentIds.add(m.id);
+      newMoments.push(m);
+    }
+  });
+  state.achievementMoments.sort((a,b)=>Number(a.ts)-Number(b.ts));
+
+  const newlyUnlocked=[];
+  achievementDefs().forEach(def=>{
+    const p=achievementProgress(def,ctx);
+    if(p.earned&&!state.achievements[def.id]){
+      state.achievements[def.id]={unlockedAt:def.special
+        ? Math.min(...state.achievementMoments.filter(m=>m.achievementId===def.id).map(m=>Number(m.ts)||Date.now()))
+        : Date.now(),evolutionStage:0};
+      newlyUnlocked.push(def.id);
+    }
+    if(def.special&&state.achievements[def.id]){
+      const count=state.achievementMoments.filter(m=>m.achievementId===def.id).length;
+      const stage=specialEvolutionStage(def,count);
+      const prior=Number(state.achievements[def.id].evolutionStage)||0;
+      if(stage>prior&&!firstInstall){
+        state.achievements[def.id].evolutionStage=stage;
+        queueAchievementPresentation({kind:'evolution',achievementId:def.id,title:`${def.name} · ${specialEvolutionLabel(stage)}`,detail:`This Special badge changed because your training history kept adding meaningful ${String(def.momentNoun||'moments').toLowerCase()}.`});
+      }else{
+        state.achievements[def.id].evolutionStage=Math.max(prior,stage);
+      }
+    }
+  });
+  state.achievementSystemVersion=ACHIEVEMENT_SYSTEM_VERSION;
+  if(!state.featuredAchievement||!state.achievements[state.featuredAchievement]){
+    const best=achievementDefs().filter(d=>state.achievements[d.id]).sort((a,b)=>TIER_ORDER[b.tier]-TIER_ORDER[a.tier]||Number(!!b.special)-Number(!!a.special))[0];
+    state.featuredAchievement=best?.id||'';
+  }
+  save();
+  renderAchievements();
+
+  if(firstInstall){
+    if(newlyUnlocked.length) setTimeout(()=>showRetroactiveAchievementSummary(newlyUnlocked),1150);
+  }else if(opts.afterWorkout){
+    const delay=Number(opts.recordCount)>0?3700:1900;
+    setTimeout(()=>{
+      newlyUnlocked.forEach(id=>queueAchievementPresentation({kind:'unlock',achievementId:id}));
+      newMoments.filter(m=>state.achievements[m.achievementId]&&!newlyUnlocked.includes(m.achievementId)).forEach(m=>{
+        queueAchievementPresentation({kind:'moment',achievementId:m.achievementId,title:m.title,detail:m.detail});
+      });
+    },delay);
+  }
+  return {newlyUnlocked,newMoments,ctx};
+}
+
+function renderFeaturedAchievement(){
+  const box=$('#featured-achievement'); if(!box)return;
+  const def=achievementDef(state.featuredAchievement);
+  if(!def||!state.achievements[def.id]){
+    box.className='featured-badge empty';
+    box.textContent='Unlock a badge and you can feature it here.';
+    return;
+  }
+  const count=state.achievementMoments.filter(m=>m.achievementId===def.id).length;
+  const stage=specialEvolutionStage(def,count);
+  box.className=`featured-badge tier-${def.tier}${def.special?' special-card':''}`;
+  box.innerHTML=`<div class="${badgeMedalClasses(def,count)}"><span>${def.icon}</span>${def.special?'<span class="special-marker">✦</span>':''}</div><div class="featured-copy"><div class="eyebrow">Featured badge</div><strong>${def.name}</strong><span>${def.description}${def.special&&count>1?` · ${count} ${def.momentNoun||'moments'}`:''}</span></div><div class="featured-tier">${tierLabel(def)}${stage?` · ${specialEvolutionLabel(stage)}`:''}</div>`;
+  box.onclick=()=>openAchievementDetail(def.id);
+}
+function openAchievementDetail(id){
+  const def=achievementDef(id),overlay=$('#achievement-detail-overlay');
+  if(!def||!overlay)return;
+  const ctx=achievementContext(), p=achievementProgress(def,ctx), unlocked=!!state.achievements[id], count=state.achievementMoments.filter(m=>m.achievementId===id).length,stage=specialEvolutionStage(def,count);
+  const card=$('#achievement-detail-card');
+  card.className=`achievement-reveal tier-${def.tier}${def.special?' special-reveal':''}`;
+  $('#achievement-detail-medal').className=`${badgeMedalClasses(def,count)} unlock-medal`;
+  $('#achievement-detail-icon').textContent=unlocked?def.icon:'?';
+  $('#achievement-detail-title').textContent=unlocked||!def.special?def.name:'???';
+  $('#achievement-detail-tier').textContent=unlocked?tierLabel(def)+(stage?` · ${specialEvolutionLabel(stage)}`:''):(def.special?'Special discovery':tierLabel(def));
+  $('#achievement-detail-kicker').textContent=unlocked?'Unlocked achievement':'Locked achievement';
+  $('#achievement-detail-copy').textContent=def.special&&!unlocked ? def.clue : def.description;
+  const prog=$('#achievement-detail-progress');
+  if(def.special){
+    prog.innerHTML=unlocked
+      ? `<div class="row"><span>Special Moments</span><strong>${count}</strong></div>${count>1?`<div class="progress-caption">This badge keeps its identity while new moments accumulate underneath it.</div>`:''}`
+      : `<div class="progress-caption">Special discoveries do not show a farmable progress counter and do not count against Trophy Case completion.</div>`;
+  }else{
+    prog.innerHTML=`<div class="row"><span>Progress</span><strong>${Math.min(p.current,p.target)} / ${p.target}</strong></div><div class="achievement-progress-track"><div class="achievement-progress-fill" style="width:${p.pct}%"></div></div>`;
+  }
+  const feature=$('#achievement-detail-feature');
+  feature.hidden=!unlocked;
+  feature.textContent=state.featuredAchievement===id?'Featured ✓':'Feature badge';
+  feature.onclick=()=>{state.featuredAchievement=id;save();renderAchievements();feature.textContent='Featured ✓';};
+  overlay.hidden=false;
+}
+function renderAchievements(){
+  const summary=$('#achievement-summary'),grid=$('#achievement-grid'),moments=$('#achievement-moments');
+  if(!summary||!grid||!moments)return;
+  const ctx=achievementContext(),defs=achievementDefs(),normal=defs.filter(d=>!d.special),special=defs.filter(d=>d.special);
+  const normalUnlocked=normal.filter(d=>state.achievements[d.id]).length;
+  const specialUnlocked=special.filter(d=>state.achievements[d.id]).length;
+  summary.innerHTML=`<span class="achievement-summary-chip">${normalUnlocked}/${normal.length} earned</span><span class="achievement-summary-chip">${specialUnlocked} special</span>`;
+  renderFeaturedAchievement();
+
+  const filter=state.achievementFilter||'all';
+  $$('.achievement-filter').forEach(b=>b.classList.toggle('active',b.dataset.achFilter===filter));
+
+  let visible=normal;
+  if(filter==='unlocked') visible=defs.filter(d=>state.achievements[d.id]);
+  else if(filter==='locked') visible=normal.filter(d=>!state.achievements[d.id]);
+  else if(filter==='special') visible=special.filter(d=>state.achievements[d.id]);
+  else visible=[...normal,...special.filter(d=>state.achievements[d.id])];
+
+  visible=[...visible].sort((a,b)=>{
+    const au=!!state.achievements[a.id],bu=!!state.achievements[b.id];
+    if(au!==bu)return bu-au;
+    return TIER_ORDER[b.tier]-TIER_ORDER[a.tier]||a.name.localeCompare(b.name);
+  });
+
+  grid.innerHTML='';
+  visible.forEach(def=>{
+    const unlocked=!!state.achievements[def.id],p=achievementProgress(def,ctx),count=state.achievementMoments.filter(m=>m.achievementId===def.id).length,stage=specialEvolutionStage(def,count);
+    const btn=document.createElement('button');
+    btn.type='button';
+    btn.className=`achievement-card tier-${def.tier}${unlocked?'':' locked'}${def.special?' special-card':''}`;
+    const progress=def.special
+      ? (count>1?`${count} ${def.momentNoun||'moments'}${stage?` · ${specialEvolutionLabel(stage)}`:''}`:'Special discovery')
+      : (unlocked?'Unlocked':`${Math.min(p.current,p.target)} / ${p.target}`);
+    btn.innerHTML=`<div class="${badgeMedalClasses(def,count)}"><span>${unlocked||!def.special?def.icon:'?'}</span>${def.special?'<span class="special-marker">✦</span>':''}</div><div><span class="name">${unlocked||!def.special?def.name:'???'}</span><span class="meta">${tierLabel(def)} · ${def.group}</span><span class="progress-text">${progress}</span>${!def.special&&!unlocked?`<div class="achievement-progress-track"><div class="achievement-progress-fill" style="width:${p.pct}%"></div></div>`:''}</div>`;
+    btn.addEventListener('click',()=>openAchievementDetail(def.id));
+    grid.appendChild(btn);
+  });
+  if(filter==='special'){
+    const mystery=document.createElement('div');
+    mystery.className='mystery-card';
+    mystery.textContent=specialUnlocked ? 'Other Special achievements stay hidden until LiftLoop notices the pattern. They do not count against completion.' : 'Special achievements are discovered through meaningful training patterns. Their exact conditions stay hidden, and they do not count against completion.';
+    grid.appendChild(mystery);
+  }
+
+  const rows=[...state.achievementMoments].sort((a,b)=>Number(b.ts)-Number(a.ts));
+  moments.innerHTML='';
+  if(!rows.length){
+    moments.innerHTML='<div class="history-empty">Special Moments will appear when LiftLoop notices an unusual pattern in your training history.</div>';
+  }else{
+    rows.slice(0,20).forEach(m=>{
+      const def=achievementDef(m.achievementId); if(!def)return;
+      const el=document.createElement('div'); el.className='moment-card';
+      el.innerHTML=`<div class="moment-icon">${def.icon}</div><div><strong>${m.title||def.name}</strong><p>${m.detail||def.description}</p></div><time>${new Date(Number(m.ts)||Date.now()).toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'})}</time>`;
+      moments.appendChild(el);
+    });
+  }
+}
+function bindAchievementUI(){
+  bindAchievementOverlays();
+  $$('.achievement-filter').forEach(btn=>btn.addEventListener('click',()=>{
+    state.achievementFilter=btn.dataset.achFilter||'all';
+    save();renderAchievements();
+  }));
+}
+
+if(document.readyState==='loading'){
+  document.addEventListener('DOMContentLoaded',()=>{
+    bindAchievementUI();
+    setTimeout(()=>evaluateAchievements({initial:true}),500);
+  },{once:true});
+}else{
+  bindAchievementUI();
+  setTimeout(()=>evaluateAchievements({initial:true}),500);
+}
+
+
 // Independent self-updater: does not depend on a service worker.
 const LIFTLOOP_BUILD=document.documentElement.dataset.build||'unknown';
 async function checkForLiftLoopUpdate(manual=false){
@@ -2411,6 +3191,37 @@ if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
 }
 
 </script>
+
+
+<div class="achievement-overlay" id="achievement-overlay" hidden>
+  <section class="achievement-reveal" id="achievement-reveal" role="dialog" aria-modal="true" aria-labelledby="achievement-reveal-title">
+    <div class="unlock-kicker" id="achievement-reveal-kicker">Achievement unlocked</div>
+    <div class="badge-medallion unlock-medal" id="achievement-reveal-medal"><span id="achievement-reveal-icon">★</span></div>
+    <div class="unlock-title" id="achievement-reveal-title">Achievement</div>
+    <div class="unlock-tier" id="achievement-reveal-tier"></div>
+    <div class="unlock-copy" id="achievement-reveal-copy"></div>
+    <div class="unlock-count" id="achievement-reveal-count"></div>
+    <div class="unlock-actions">
+      <button type="button" class="unlock-btn" id="achievement-reveal-close">Continue</button>
+      <button type="button" class="unlock-btn primary" id="achievement-reveal-feature" hidden>Feature badge</button>
+    </div>
+  </section>
+</div>
+
+<div class="achievement-overlay" id="achievement-detail-overlay" hidden>
+  <section class="achievement-reveal" id="achievement-detail-card" role="dialog" aria-modal="true" aria-labelledby="achievement-detail-title">
+    <div class="unlock-kicker" id="achievement-detail-kicker">Achievement</div>
+    <div class="badge-medallion unlock-medal" id="achievement-detail-medal"><span id="achievement-detail-icon">★</span></div>
+    <div class="unlock-title" id="achievement-detail-title">Achievement</div>
+    <div class="unlock-tier" id="achievement-detail-tier"></div>
+    <div class="unlock-copy" id="achievement-detail-copy"></div>
+    <div class="detail-progress" id="achievement-detail-progress"></div>
+    <div class="unlock-actions">
+      <button type="button" class="unlock-btn" id="achievement-detail-close">Close</button>
+      <button type="button" class="unlock-btn primary" id="achievement-detail-feature" hidden>Feature badge</button>
+    </div>
+  </section>
+</div>
 
 <div class="whats-new-overlay" id="whats-new-overlay" hidden>
   <section class="whats-new-card" id="whats-new-card" role="dialog" aria-modal="true" aria-labelledby="whats-new-title">
