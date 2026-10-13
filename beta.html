@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-build="2026.10.13-beta.19">
+<html lang="en" data-build="2026.10.13-beta.21">
 <head>
 <meta charset="utf-8">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
@@ -85,6 +85,36 @@ button{font:inherit}
 .level-copy .eyebrow{font-size:10px;letter-spacing:.12em;color:var(--muted);font-weight:850}
 .level-copy .level-title{font-size:17px;font-weight:900;margin-top:2px}
 .level-copy .rank{font-size:11px;color:var(--muted);margin-top:2px}
+
+.main-featured-achievement{
+  display:inline-flex;align-items:center;gap:6px;margin-top:7px;padding:5px 8px 5px 6px;
+  border:1px solid #343b49;border-radius:999px;background:#1b2029;color:#e8edf5;
+  max-width:235px;text-align:left;touch-action:manipulation
+}
+.main-featured-achievement[hidden]{display:none!important}
+.main-featured-icon{
+  width:22px;height:22px;border-radius:8px;display:grid;place-items:center;flex:0 0 22px;
+  background:#292f3a;font-size:10px;font-weight:950
+}
+.main-featured-copy{min-width:0}
+.main-featured-name{
+  display:block;font-size:9px;font-weight:900;line-height:1.05;white-space:nowrap;
+  overflow:hidden;text-overflow:ellipsis
+}
+.main-featured-tier{
+  display:block;margin-top:2px;color:#8f99a8;font-size:6.8px;font-weight:900;
+  letter-spacing:.08em;text-transform:uppercase
+}
+.main-featured-achievement.tier-bronze .main-featured-icon{background:linear-gradient(145deg,#8b4e2f,#d69255);color:#fff}
+.main-featured-achievement.tier-silver .main-featured-icon{background:linear-gradient(145deg,#66707c,#dce3ea);color:#101820}
+.main-featured-achievement.tier-gold .main-featured-icon{background:linear-gradient(145deg,#a16a09,#ffd66b);color:#302000}
+.main-featured-achievement.tier-mythic{
+  border-color:#704ca0;background:linear-gradient(135deg,#241735,#161824)
+}
+.main-featured-achievement.tier-mythic .main-featured-icon{
+  background:radial-gradient(circle at 30% 22%,#f2b8ff,#9e52ff 32%,#35196a 72%);
+  color:#fff;box-shadow:0 0 12px rgba(154,79,255,.4)
+}
 .stats-mini{display:flex;gap:12px;text-align:right}
 .stats-mini strong{display:block;font-size:16px}
 .stats-mini span{display:block;color:var(--muted);font-size:10px;margin-top:2px}
@@ -464,6 +494,11 @@ button{font:inherit}
 .dev-subsection h5{margin:0 0 7px;color:#94aaa4;font-size:8px;letter-spacing:.1em;text-transform:uppercase}
 .dev-scenario-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
 .dev-status{min-height:15px;margin:10px 2px 0;color:#9b92a8;font-size:9px;line-height:1.4}
+.dev-system-map{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+.dev-system-map>div{border:1px solid #303442;background:#151820;border-radius:9px;padding:7px}
+.dev-system-map b{display:block;color:#dfe5ee;font-size:8px;margin-bottom:2px}
+.dev-system-map span{display:block;color:#909aa7;font-size:7.5px;line-height:1.35}
+@media(max-width:520px){.dev-system-map{grid-template-columns:1fr}}
 @media(max-width:520px){
   .dev-primary-grid,.dev-mode-switcher{grid-template-columns:1fr}
   .dev-scenario-grid{grid-template-columns:repeat(2,1fr)}
@@ -477,6 +512,18 @@ button{font:inherit}
 .achievement-head-copy{color:var(--muted);font-size:9px;line-height:1.45;margin-top:3px}
 .achievement-summary{display:flex;gap:7px;flex-wrap:wrap}
 .achievement-summary-chip{border:1px solid #343b49;background:#20252e;border-radius:999px;padding:6px 9px;font-size:9px;font-weight:850;color:#cfd5df}
+
+.achievement-guide{border:1px solid #303744;border-radius:13px;background:#141820;margin:0 0 10px;overflow:hidden}
+.achievement-guide summary{cursor:pointer;list-style:none;padding:10px 11px;color:#dce2eb;font-size:9px;font-weight:900;display:flex;justify-content:space-between;align-items:center}
+.achievement-guide summary::-webkit-details-marker{display:none}
+.achievement-guide summary:after{content:"⌄";color:#8993a1;font-size:13px}
+.achievement-guide[open] summary:after{transform:rotate(180deg)}
+.achievement-guide-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;padding:0 9px 9px}
+.achievement-guide-grid>div{border:1px solid #292f39;border-radius:10px;background:#191e26;padding:8px}
+.achievement-guide-grid strong{display:block;font-size:8.5px;color:#e2e7ef;margin-bottom:3px}
+.achievement-guide-grid span{display:block;color:#909aa8;font-size:7.8px;line-height:1.45}
+.achievement-guide-grid b{color:#d8dfff}
+@media(max-width:520px){.achievement-guide-grid{grid-template-columns:1fr}}
 .featured-badge{position:relative;display:grid;grid-template-columns:74px 1fr auto;gap:12px;align-items:center;padding:13px;margin:10px 0 12px;border:1px solid #343b49;border-radius:16px;background:linear-gradient(135deg,#1a1e27,#12151c);overflow:hidden}
 .featured-badge.empty{grid-template-columns:1fr;text-align:center;color:var(--muted);font-size:10px}
 .featured-copy .eyebrow{font-size:8px;letter-spacing:.13em;text-transform:uppercase;color:#8d97a5;font-weight:900}
@@ -493,6 +540,53 @@ button{font:inherit}
 .achievement-card .meta{display:block;margin-top:3px;color:#8f99a8;font-size:8px;font-weight:850;letter-spacing:.08em;text-transform:uppercase}
 .achievement-card .progress-text{display:block;margin-top:5px;color:#aeb6c4;font-size:8px;line-height:1.3}
 .achievement-card.special-card{border-color:#464151;background:linear-gradient(135deg,#1b1c24,#121319)}
+
+.achievement-card.is-featured{border-color:#7785e4;box-shadow:0 0 0 1px rgba(120,132,255,.12)}
+.featured-card-marker{
+  position:absolute;right:7px;top:7px;border:1px solid #5663a7;background:#262d55;color:#cfd5ff;
+  border-radius:999px;padding:3px 5px;font-size:6.5px;font-weight:950;letter-spacing:.06em;text-transform:uppercase
+}
+.special-history{
+  margin-top:10px;border:1px solid #343b49;border-radius:12px;background:#11151b;overflow:hidden
+}
+.special-history summary{
+  cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:10px;
+  align-items:center;padding:10px 11px;color:#dce1e9;font-size:9px;font-weight:900
+}
+.special-history summary::-webkit-details-marker{display:none}
+.special-history summary:after{content:"⌄";color:#8c96a5;font-size:13px}
+.special-history[open] summary:after{transform:rotate(180deg)}
+.special-history-list{padding:0 10px 9px}
+.special-history-row{
+  display:grid;grid-template-columns:30px 1fr auto;gap:8px;align-items:start;
+  border-top:1px solid #292f39;padding:9px 0
+}
+.special-history-row:first-child{border-top:0}
+.special-history-icon{
+  width:30px;height:30px;border-radius:10px;background:#252b36;display:grid;place-items:center;font-size:11px
+}
+.special-history-row strong{display:block;font-size:9px;line-height:1.25}
+.special-history-row p{margin:3px 0 0;color:#969fad;font-size:8px;line-height:1.4}
+.special-history-row time{font-size:7px;color:#697483;white-space:nowrap}
+.achievement-evidence{margin-top:10px;border-top:1px solid #2b313c;padding-top:9px}
+.achievement-evidence-title{font-size:8px;color:#8e98a7;font-weight:900;letter-spacing:.1em;text-transform:uppercase;margin-bottom:7px}
+.achievement-evidence-row{
+  display:flex;justify-content:space-between;gap:12px;padding:5px 0;border-top:1px solid #252b34;
+  font-size:8px;color:#9ba5b2
+}
+.achievement-evidence-row:first-of-type{border-top:0}
+.achievement-evidence-row strong{color:#e5e9ef;font-size:8.5px;text-align:right}
+.pr-evidence-list{display:grid;gap:5px;margin-top:7px}
+.pr-evidence{
+  display:flex;justify-content:space-between;gap:10px;border-radius:9px;background:#1a2028;padding:7px 8px;
+  font-size:7.5px;color:#98a2af
+}
+.pr-evidence strong{color:#dce2eb;font-size:8px}
+.moment-card{
+  appearance:none;width:100%;background:transparent;color:inherit;text-align:left;font:inherit;cursor:pointer
+}
+.moment-card .moment-open{align-self:center;color:#727d8b;font-size:13px}
+.moments-helper{color:#7f8997;font-size:8px;margin:-3px 0 7px}
 .achievement-progress-track{height:4px;border-radius:99px;background:#303640;overflow:hidden;margin-top:6px}
 .achievement-progress-fill{height:100%;background:#7d88ff;border-radius:99px}
 .badge-medallion{width:54px;height:54px;border-radius:18px;display:grid;place-items:center;position:relative;isolation:isolate;font-size:22px;font-weight:950;border:1px solid rgba(255,255,255,.18);box-shadow:inset 0 0 18px rgba(255,255,255,.08),0 8px 22px rgba(0,0,0,.22)}
@@ -510,14 +604,14 @@ button{font:inherit}
   outline:2px solid #111218;outline-offset:2px
 }
 .special-card .badge-medallion:before,.badge-medallion.special:before{
-  content:"";position:absolute;inset:-4px;border-radius:22px;background:conic-gradient(from 110deg,#16171f,#a866ff,#5ee5df,#ffd36a,#16171f);z-index:-2;opacity:.72
+  content:"";position:absolute;inset:-4px;border-radius:22px;background:conic-gradient(from 110deg,#16171f,#a866ff,#5ee5df,#ffd36a,#16171f);z-index:-2;opacity:.42
 }
 .badge-medallion.evolved-1{box-shadow:0 0 0 2px rgba(255,213,106,.28),0 0 24px rgba(255,213,106,.22),inset 0 0 18px rgba(255,255,255,.12)}
 .badge-medallion.evolved-2{box-shadow:0 0 0 2px rgba(119,231,255,.35),0 0 32px rgba(170,93,255,.38),inset 0 0 20px rgba(255,255,255,.18);animation:mythic-breathe 2.3s ease-in-out infinite}
 .special-marker{position:absolute;right:-3px;bottom:-3px;width:20px;height:20px;border-radius:8px;background:#11141b;border:1px solid #5a5268;display:grid;place-items:center;font-size:9px;color:#e5d9ff}
 .mystery-card{border:1px dashed #393f4a;border-radius:14px;padding:15px;text-align:center;color:#818c9b;font-size:9px;line-height:1.5;background:#141820;grid-column:1/-1}
 .moments-list{display:grid;gap:7px}
-.moment-card{display:grid;grid-template-columns:34px 1fr auto;gap:9px;align-items:start;padding:9px 0;border-top:1px solid #292f3a}
+.moment-card{display:grid;grid-template-columns:34px 1fr auto 14px;gap:9px;align-items:start;padding:9px 0;border:0;border-top:1px solid #292f3a}
 .moment-card:first-child{border-top:0}
 .moment-icon{width:34px;height:34px;border-radius:11px;background:#252b36;display:grid;place-items:center}
 .moment-card strong{font-size:10px;display:block}
@@ -533,7 +627,8 @@ button{font:inherit}
 .achievement-overlay:not([hidden]){pointer-events:auto}
 #achievement-overlay .achievement-reveal{
   width:min(540px,100%);max-height:92dvh;overflow:visible;border:0;border-radius:0;
-  background:transparent;padding:24px 16px;text-align:center;position:relative;box-shadow:none;isolation:isolate
+  background:radial-gradient(ellipse at center,rgba(5,7,11,.84) 0%,rgba(5,7,11,.61) 42%,rgba(5,7,11,.24) 62%,transparent 78%);
+  padding:34px 22px;text-align:center;position:relative;box-shadow:none;isolation:isolate
 }
 #achievement-detail-overlay{background:rgba(5,7,11,.78);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
 #achievement-detail-overlay .achievement-reveal{
@@ -555,7 +650,7 @@ button{font:inherit}
 .unlock-medal{width:112px;height:112px;margin:18px auto 14px;border-radius:34px;font-size:43px}
 .unlock-title{
   font-size:29px;line-height:1.02;font-weight:950;letter-spacing:-.04em;
-  text-shadow:0 3px 18px rgba(0,0,0,.92),0 1px 2px rgba(0,0,0,.9)
+  text-shadow:0 0 5px #05070b,0 3px 20px #05070b,0 1px 2px #000
 }
 #achievement-overlay .unlock-title{opacity:0;animation:unlock-title-in .48s .28s cubic-bezier(.16,1,.3,1) forwards}
 .unlock-tier{
@@ -570,7 +665,7 @@ button{font:inherit}
 #achievement-overlay .unlock-tier{opacity:0;animation:unlock-banner-in .46s .36s cubic-bezier(.16,1,.3,1) forwards}
 .unlock-copy{
   max-width:350px;margin:13px auto 0;color:#eef1f6;font-size:11px;line-height:1.55;
-  text-shadow:0 2px 12px rgba(0,0,0,.95)
+  text-shadow:0 0 4px #05070b,0 2px 14px #05070b
 }
 #achievement-overlay .unlock-copy{opacity:0;animation:unlock-text-in .4s .42s ease-out forwards}
 .unlock-count{margin-top:10px;color:#efe5ff;font-size:10px;font-weight:850;text-shadow:0 2px 12px rgba(0,0,0,.92)}
@@ -608,23 +703,50 @@ button{font:inherit}
 #achievement-overlay.reveal-gold .unlock-medal{animation:gold-impact .78s cubic-bezier(.15,1.25,.25,1) forwards}
 #achievement-overlay.reveal-gold .fx-ring{color:#ffd76a;animation:fx-ring-out .85s .08s ease-out forwards}
 #achievement-overlay.reveal-gold .fx-particle{color:#ffd76a;animation:fx-particle-out .78s .12s cubic-bezier(.2,.7,.2,1) forwards}
+#achievement-overlay{isolation:isolate}
+#achievement-overlay .achievement-fx{z-index:1}
+#achievement-overlay .achievement-reveal{z-index:2}
 #achievement-overlay.reveal-mythic{
-  background:radial-gradient(circle at 50% 45%,rgba(73,31,122,.16),rgba(5,7,11,.05) 48%,transparent 72%)
+  background:rgba(6,5,11,.26);
+  animation:mythic-screen-wash 3.4s cubic-bezier(.16,1,.3,1) both
+}
+#achievement-overlay.reveal-mythic:before{
+  content:"";position:absolute;inset:-20%;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(circle at 50% 46%,rgba(158,82,255,.34),transparent 24%),
+    radial-gradient(circle at 20% 80%,rgba(74,210,229,.14),transparent 30%),
+    radial-gradient(circle at 80% 18%,rgba(232,82,211,.16),transparent 28%),
+    linear-gradient(120deg,rgba(18,8,33,.78),rgba(8,10,18,.45),rgba(28,10,39,.72));
+  transform:scale(.82);opacity:0;filter:saturate(1.25);
+  animation:mythic-world-awaken 3.4s cubic-bezier(.16,1,.3,1) both
+}
+#achievement-overlay.reveal-mythic:after{
+  content:"MYTHIC";position:absolute;z-index:0;left:50%;top:11%;pointer-events:none;
+  transform:translate(-50%,18px) scale(.88);opacity:0;
+  color:rgba(229,203,255,.16);font-weight:1000;letter-spacing:.24em;
+  font-size:clamp(38px,12vw,92px);white-space:nowrap;
+  text-shadow:0 0 35px rgba(151,76,255,.18);
+  animation:mythic-word-rise 2.8s .55s cubic-bezier(.16,1,.3,1) both
 }
 #achievement-overlay.reveal-mythic .achievement-reveal:before{
   content:"";position:absolute;left:50%;top:44%;width:250px;height:250px;border-radius:50%;
   transform:translate(-50%,-50%) scale(.45) rotate(-20deg);opacity:0;z-index:-1;
   background:conic-gradient(from 0deg,transparent,#8a4dff,#ef5ed8,#6fdcff,transparent,#8a4dff);
-  filter:blur(20px);animation:mythic-aura 1.35s cubic-bezier(.16,1,.3,1) forwards
+  filter:blur(22px);animation:mythic-aura 3.05s .12s cubic-bezier(.16,1,.3,1) forwards
 }
-#achievement-overlay.reveal-mythic .unlock-medal{animation:mythic-arrive 1.05s cubic-bezier(.12,1.25,.25,1) forwards}
+#achievement-overlay.reveal-mythic .unlock-medal{animation:mythic-arrive 2.25s .18s cubic-bezier(.12,1.18,.25,1) forwards}
 #achievement-overlay.reveal-mythic .unlock-tier{
   color:#e3c7ff;font-size:11px;letter-spacing:.22em;
-  animation:mythic-banner .7s .38s cubic-bezier(.16,1,.3,1) forwards
+  animation:mythic-banner 1.15s 1.12s cubic-bezier(.16,1,.3,1) forwards
 }
-#achievement-overlay.reveal-mythic .fx-ring{color:#a761ff;animation:fx-ring-out 1.15s .16s ease-out forwards}
-#achievement-overlay.reveal-mythic .fx-particle{color:#c47cff;animation:fx-particle-out 1.05s .24s cubic-bezier(.16,.75,.25,1) forwards}
-#achievement-overlay.reveal-mythic .fx-ray{color:#985cff;animation:fx-ray-flash .9s .08s ease-out forwards}
+#achievement-overlay.reveal-mythic .fx-ring{color:#a761ff;animation:fx-ring-out 2.25s .4s ease-out forwards}
+#achievement-overlay.reveal-mythic .fx-particle{color:#c47cff;animation:fx-particle-out 2.1s .7s cubic-bezier(.16,.75,.25,1) forwards}
+#achievement-overlay.reveal-mythic .fx-ray{color:#985cff;animation:fx-ray-flash 1.75s .35s ease-out forwards}
+#achievement-overlay.reveal-mythic .unlock-kicker{animation-delay:.72s;animation-duration:.7s}
+#achievement-overlay.reveal-mythic .unlock-title{animation-delay:.9s;animation-duration:.85s}
+#achievement-overlay.reveal-mythic .unlock-copy{animation-delay:1.5s;animation-duration:.7s}
+#achievement-overlay.reveal-mythic .unlock-count{animation-delay:1.68s;animation-duration:.65s}
+#achievement-overlay.reveal-mythic .unlock-actions{animation-delay:2.05s;animation-duration:.55s}
 #achievement-overlay.reveal-special .unlock-kicker{color:#f0e0ff}
 #achievement-overlay.reveal-special .unlock-tier{color:#e8d6ff}
 #achievement-overlay.reveal-special .achievement-reveal:after{
@@ -636,6 +758,22 @@ button{font:inherit}
 #achievement-overlay.reveal-special .fx-particle:nth-child(3n){color:#64e3dc}
 #achievement-overlay.reveal-special .fx-particle:nth-child(3n+1){color:#d66cff}
 #achievement-overlay.reveal-special .fx-particle:nth-child(3n+2){color:#ffd36a}
+@keyframes mythic-screen-wash{
+  0%{background:rgba(6,5,11,0)}
+  22%{background:rgba(6,5,11,.44)}
+  100%{background:rgba(6,5,11,.26)}
+}
+@keyframes mythic-world-awaken{
+  0%{opacity:0;transform:scale(.78) rotate(-4deg)}
+  30%{opacity:.9}
+  72%{opacity:.72;transform:scale(1.05) rotate(2deg)}
+  100%{opacity:.56;transform:scale(1) rotate(0)}
+}
+@keyframes mythic-word-rise{
+  0%{opacity:0;transform:translate(-50%,22px) scale(.86);letter-spacing:.38em}
+  45%{opacity:.24}
+  100%{opacity:.13;transform:translate(-50%,0) scale(1);letter-spacing:.24em}
+}
 @keyframes unlock-text-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 @keyframes unlock-title-in{from{opacity:0;transform:translateY(12px) scale(.97)}to{opacity:1;transform:none}}
 @keyframes unlock-banner-in{from{opacity:0;transform:scaleX(.65)}to{opacity:1;transform:scaleX(1)}}
@@ -731,6 +869,13 @@ button{font:inherit}
           <div class="eyebrow">LIFTLOOP LEVEL</div>
           <div class="level-title">Level <span id="level-label">1</span></div>
           <div class="rank" id="rank-label">Starting Line</div>
+          <button type="button" class="main-featured-achievement" id="main-featured-achievement" hidden aria-label="Open featured achievement">
+            <span class="main-featured-icon" id="main-featured-icon">★</span>
+            <span class="main-featured-copy">
+              <span class="main-featured-name" id="main-featured-name">Featured achievement</span>
+              <span class="main-featured-tier" id="main-featured-tier"></span>
+            </span>
+          </button>
         </div>
       </div>
       <div class="stats-mini">
@@ -1364,10 +1509,23 @@ button{font:inherit}
       <div class="progress-panel-head">
         <div>
           <h3>Achievements</h3>
-          <div class="achievement-head-copy">Visible achievements reward long-term training. Special achievements are discoveries and do not count against completion.</div>
+          <div class="achievement-head-copy">Core achievements show goals and progress. Special is a discovery type—not a tier above Mythic.</div>
         </div>
         <div class="achievement-summary" id="achievement-summary"></div>
       </div>
+      <details class="achievement-guide" id="achievement-guide">
+        <summary>How LiftLoop achievements work</summary>
+        <div class="achievement-guide-grid">
+          <div><strong>Level + Rank</strong><span>Every finished workout adds one level. Starting Line, Builder, Grinder, Veteran, Iron, Elite, and Legend are your long-term rank—not achievement rarity.</span></div>
+          <div><strong>Core</strong><span>Visible goals with progress. These are the achievements counted toward Trophy Case completion.</span></div>
+          <div><strong>Rarity tier</strong><span><b>Bronze → Silver → Gold → Mythic.</b> Mythic is always the highest achievement tier.</span></div>
+          <div><strong>Special</strong><span>A hidden training pattern LiftLoop discovers. “Special” is a category modifier, so a Gold · Special is still below a Mythic achievement.</span></div>
+          <div><strong>Moments</strong><span>When a repeatable Special happens again, LiftLoop records the real event in that badge’s history instead of creating disposable duplicate badges.</span></div>
+          <div><strong>Gilded + Ascended</strong><span>Repeatable Specials can visually evolve after enough distinct Moments. The app does not show a next-unlock counter, so it rewards natural training instead of farming.</span></div>
+          <div><strong>Century prestige</strong><span>Century Club unlocks at 100 workouts. At 200, 300, 400 and every later hundred, the same Mythic badge advances and records another Century Mark.</span></div>
+          <div><strong>Working Weight PR</strong><span>Your first full-prescription result sets the baseline. A later sustainable improvement across every prescribed set at target reps is a genuine Working Weight PR.</span></div>
+        </div>
+      </details>
       <div class="featured-badge empty" id="featured-achievement">Unlock a badge and you can feature it here.</div>
       <div class="achievement-filters" id="achievement-filters">
         <button type="button" class="achievement-filter active" data-ach-filter="all">All</button>
@@ -1398,9 +1556,21 @@ button{font:inherit}
       </summary>
       <div class="dev-lab-body">
         <div class="dev-lab-intro">
-          <strong>Test Beta without grinding workouts.</strong>
-          <span>Visual previews never change progress. Fake progress changes only work inside isolated Test Mode.</span>
+          <strong>Test all 27 current achievement types without grinding workouts.</strong>
+          <span>18 are visible Core achievements and 9 are hidden Special discoveries—including true Mythic Specials. Visual previews never change progress; fake progress changes only work inside isolated Test Mode.</span>
         </div>
+
+        <section class="dev-lab-card compact-card">
+          <div class="dev-card-head"><div class="dev-step-icon">?</div><div><h4>System map</h4><p>What each label actually means</p></div></div>
+          <div class="dev-system-map">
+            <div><b>Tier</b><span>Bronze → Silver → Gold → Mythic</span></div>
+            <div><b>Special</b><span>Hidden category; does not outrank the tier</span></div>
+            <div><b>Moment</b><span>One real repeat occurrence of a Special pattern</span></div>
+            <div><b>Gilded</b><span>Developer threshold: 3 Moments</span></div>
+            <div><b>Ascended</b><span>Developer threshold: 7 Moments</span></div>
+            <div><b>Century prestige</b><span>Century Club advances every +100 workouts forever</span></div>
+          </div>
+        </section>
 
         <section class="dev-lab-card preview-card">
           <div class="dev-card-head">
@@ -1431,6 +1601,8 @@ button{font:inherit}
             <button type="button" class="dev-btn" id="dev-preview-moment">✦ Preview Special Moment</button>
             <button type="button" class="dev-btn" id="dev-preview-tiers">◈ Preview tier sequence</button>
             <button type="button" class="dev-btn" id="dev-preview-retro">↶ Retroactive unlock screen</button>
+            <button type="button" class="dev-btn" id="dev-preview-mythic-special">✹ Preview Mythic Special</button>
+            <button type="button" class="dev-btn" id="dev-preview-century">100× Preview Century II</button>
           </div>
           <div class="dev-preview-note" id="dev-preview-note">Select any badge above, then tap <strong>Preview unlock</strong>.</div>
         </section>
@@ -1466,8 +1638,8 @@ button{font:inherit}
                 <button type="button" class="dev-btn primary dev-mutating" id="dev-unlock-selected">🏆 Unlock selected</button>
                 <button type="button" class="dev-btn dev-mutating" id="dev-lock-selected">🔒 Lock selected</button>
                 <button type="button" class="dev-btn dev-mutating" id="dev-add-moment">✦ Add Special Moment</button>
-                <button type="button" class="dev-btn dev-mutating" id="dev-gild-special">✨ Make Gilded</button>
-                <button type="button" class="dev-btn dev-mutating" id="dev-ascend-special">◈ Make Ascended</button>
+                <button type="button" class="dev-btn dev-mutating" id="dev-gild-special">✨ Make Gilded · 3 Moments</button>
+                <button type="button" class="dev-btn dev-mutating" id="dev-ascend-special">◈ Make Ascended · 7 Moments</button>
               </div>
             </div>
 
@@ -1480,6 +1652,10 @@ button{font:inherit}
                 <button type="button" class="dev-btn dev-mutating" data-dev-workouts="25">25 workouts</button>
                 <button type="button" class="dev-btn dev-mutating" data-dev-workouts="50">50 workouts</button>
                 <button type="button" class="dev-btn dev-mutating" data-dev-workouts="100">100 workouts</button>
+                <button type="button" class="dev-btn dev-mutating" data-dev-workouts="200">200 workouts</button>
+                <button type="button" class="dev-btn dev-mutating" data-dev-workouts="300">300 workouts</button>
+                <button type="button" class="dev-btn dev-mutating" data-dev-workouts="400">400 workouts</button>
+                <button type="button" class="dev-btn dev-mutating" data-dev-workouts="500">500 workouts</button>
                 <button type="button" class="dev-btn dev-mutating" id="dev-seed-rolling">3 workouts / 7 days</button>
                 <button type="button" class="dev-btn dev-mutating" id="dev-seed-rotation">Push + Pull + Shoulders</button>
               </div>
@@ -1589,7 +1765,7 @@ button{font:inherit}
     <button type="button" class="update-check" id="open-whats-new" style="margin-left:6px">What’s New</button>
     <div class="update-status" id="update-status">Automatic update check enabled</div>
   </div>
-  <p style="text-align:center;color:#697383;font-size:9px;margin:18px 0 6px">Build 2026.10.13-beta.19 · reward animations + clearer lab</p>
+  <p style="text-align:center;color:#697383;font-size:9px;margin:18px 0 6px">Build 2026.10.13-beta.21 · achievement system clarity</p>
   <p class="credit">
     Video demonstrations are embedded from their original YouTube sources. Previous vector artwork source:
     <a href="https://github.com/InlitX/GymMane" target="_blank" rel="noopener">GymMane</a>,
@@ -2889,19 +3065,13 @@ $('#prepare-stable')?.addEventListener('click',async()=>{
 
 // Beta popup: list ONLY changes introduced since the currently published Beta build.
 const LIFTLOOP_CHANGELOG = {
-  '2026.10.13-beta.19': {
+  '2026.10.13-beta.21': {
     title: 'What changed in this Beta update',
     changes: [
-      {
-        icon:'✨',
-        title:'Rarity-scaled achievement reveals',
-        text:'Unlocks now float directly over the app with no gray card. Bronze stays quick, Silver adds a metallic reveal, Gold gets an impact burst, and Mythic gets a staged ultraviolet aura, rarity banner, rays, and particles.'
-      },
-      {
-        icon:'🧪',
-        title:'Developer Lab is clearer',
-        text:'The Lab now separates safe visual previews from isolated Test Mode, includes a tier gallery, clearer controls, and fixes duplicate preview events.'
-      }
+      {icon:'◈',title:'Achievement hierarchy is clearer',text:'LiftLoop now explains Level/Rank, Core achievements, Bronze–Mythic rarity, Special discoveries, Moments, Gilded/Ascended evolution, and Working Weight PRs directly inside the Trophy Case.'},
+      {icon:'100',title:'Century Club now keeps going',text:'Century Club remains one Mythic badge after 100 workouts and gains a permanent Century Mark at 200, 300, 400, and every later hundred, with its own milestone history.'},
+      {icon:'✹',title:'True Mythic Specials',text:'Perfect Circuit and Three Peaks introduce Special discoveries whose actual tier is Mythic, making the hierarchy explicit: Special is a category, not a tier above Mythic.'},
+      {icon:'◐',title:'Unlock text stays readable',text:'Floating achievement reveals keep the borderless look but now use a soft localized contrast scrim and stronger text halo so the app behind them cannot swallow the lettering.'}
     ]
   }
 };
@@ -2966,6 +3136,26 @@ const LIFTLOOP_STABLE_RELEASE_NOTES = {
       icon:'✨',
       title:'Achievement reveals feel earned',
       text:'Achievement unlocks now use rarity-scaled motion and presentation, from quick Bronze feedback to a more dramatic Mythic and Special reveal.'
+    },
+    {
+      icon:'★',
+      title:'Featured achievements',
+      text:'Choose one unlocked badge to feature beneath your LiftLoop rank so a meaningful achievement stays visible during everyday training.'
+    },
+    {
+      icon:'✦',
+      title:'Special Moment history',
+      text:'Special badges now preserve the individual training moments that built them, including the story and date behind recurring discoveries.'
+    },
+    {
+      icon:'100',
+      title:'Century prestige',
+      text:'Century Club continues beyond 100 workouts, recording another permanent Century Mark every additional 100 workouts instead of ending the Journey track.'
+    },
+    {
+      icon:'✹',
+      title:'Mythic Special discoveries',
+      text:'Special is now clearly a category modifier rather than a rarity tier, including long-term Special patterns that can carry the Mythic tier.'
     }
   ]
 };
@@ -3073,7 +3263,7 @@ if(document.readyState==='loading'){
 
 
 // ---------- Achievements, Special discoveries, and Moments ----------
-const ACHIEVEMENT_SYSTEM_VERSION=1;
+const ACHIEVEMENT_SYSTEM_VERSION=2;
 const TIER_ORDER={bronze:1,silver:2,gold:3,mythic:4};
 const DAY_NAMES={push:'Push',pull:'Pull',shoulders:'Shoulders + Core'};
 
@@ -3109,11 +3299,33 @@ function achievementDefList(){
     {id:'across_board',name:'Across the Board',icon:'✣',tier:'gold',special:true,group:'Special',description:'Working Weight PRs land across Push, Pull, and Shoulders + Core within the same training chapter.',clue:'Progress is stronger when it is not confined to one day.',momentNoun:'Moments'},
     {id:'perfect_storm',name:'Perfect Storm',icon:'✺',tier:'gold',special:true,repeatable:true,group:'Special',description:'A full workout, a genuine Working Weight PR, and the rolling weekly goal all land together.',clue:'Sometimes several good things land on the same day.',momentNoun:'Storms'},
     {id:'balanced_build',name:'Balanced Build',icon:'⬡',tier:'silver',special:true,group:'Special',description:'A substantial run of training stays meaningfully balanced across all three workout types.',clue:'A balanced routine leaves a pattern.',momentNoun:'Moments'},
-    {id:'full_spectrum',name:'Full Spectrum',icon:'◈',tier:'silver',special:true,group:'Special',description:'Your history includes weighted resistance, bodyweight or assisted work, and timed training.',clue:'Strength has more than one language.',momentNoun:'Moments'}
+    {id:'full_spectrum',name:'Full Spectrum',icon:'◈',tier:'silver',special:true,group:'Special',description:'Your history includes weighted resistance, bodyweight or assisted work, and timed training.',clue:'Strength has more than one language.',momentNoun:'Moments'},
+    {id:'perfect_circuit',name:'Perfect Circuit',icon:'✹',tier:'mythic',special:true,repeatable:true,group:'Special',description:'Push, Pull, and Shoulders + Core are all completed in one rolling 7-day period, with a genuine Working Weight PR inside a full workout for every training day.',clue:'A complete loop can align with progress on every side.',momentNoun:'Circuits'},
+    {id:'three_peaks',name:'Three Peaks',icon:'♜',tier:'mythic',special:true,group:'Special',description:'Long-term progression reaches Steady Climb-level depth in Push, Pull, and Shoulders + Core—three genuine Working Weight PRs on an exercise in every training day.',clue:'Three different peaks can rise from the same training life.',momentNoun:'Peaks'}
   ];
 }
 function achievementDefs(){ return achievementDefList(); }
 function achievementDef(id){ return achievementDefs().find(x=>x.id===id); }
+function romanNumeral(n){
+  const map=[[1000,'M'],[900,'CM'],[500,'D'],[400,'CD'],[100,'C'],[90,'XC'],[50,'L'],[40,'XL'],[10,'X'],[9,'IX'],[5,'V'],[4,'IV'],[1,'I']];
+  let x=Math.max(1,Math.floor(Number(n)||1)),out='';
+  for(const [v,s] of map){while(x>=v){out+=s;x-=v;}}
+  return out;
+}
+function centuryPrestigeCount(workoutCount=sortedWorkouts().length){ return Math.floor(Math.max(0,Number(workoutCount)||0)/100); }
+function centuryDisplayName(workoutCount=sortedWorkouts().length){
+  const n=centuryPrestigeCount(workoutCount);
+  return n<=1?'Century Club':`Century Club · ${romanNumeral(n)}`;
+}
+function centuryMarks(){
+  const rows=sortedWorkouts(),out=[];
+  for(let mark=100;mark<=rows.length;mark+=100){
+    const w=rows[mark-1];
+    if(w) out.push({count:mark/100,workouts:mark,ts:Number(w.ts),title:mark===100?'Century Club':`Century Club · ${romanNumeral(mark/100)}`});
+  }
+  return out;
+}
+function achievementDisplayName(def){ return def?.id==='century_club'?centuryDisplayName():def?.name||'Achievement'; }
 
 function sortedWorkouts(){ return [...state.workoutHistory].filter(w=>Number.isFinite(Number(w.ts))).sort((a,b)=>Number(a.ts)-Number(b.ts)); }
 function workoutIsFull(w){
@@ -3328,6 +3540,49 @@ function fullSpectrumMoment(){
   });
   return weighted&&body&&timed ? {id:'full_spectrum:first',achievementId:'full_spectrum',ts:lastTs||Date.now(),title:'Full Spectrum',detail:'Your LiftLoop history now spans weighted resistance, bodyweight or assisted work, and timed training.'} : null;
 }
+function perfectCircuitMoments(prs){
+  const full=sortedWorkouts().filter(workoutIsFull);
+  const fullTs=new Set(full.map(w=>Number(w.ts)));
+  const out=[];
+  let lastAccepted=-Infinity;
+  for(const endW of full){
+    const end=Number(endW.ts),start=end-7*86400000;
+    if(end-lastAccepted<7*86400000) continue;
+    const window=full.filter(w=>Number(w.ts)>start&&Number(w.ts)<=end);
+    const workoutDays=new Set(window.map(w=>w.day));
+    if(!['push','pull','shoulders'].every(d=>workoutDays.has(d))) continue;
+    const prWindow=prs.filter(e=>e.ts>start&&e.ts<=end&&fullTs.has(Number(e.ts)));
+    const prDays=new Set(prWindow.map(e=>e.day));
+    if(!['push','pull','shoulders'].every(d=>prDays.has(d))) continue;
+    out.push({
+      id:`perfect_circuit:${localDateKey(end)}`,
+      achievementId:'perfect_circuit',
+      ts:end,
+      title:'Perfect Circuit',
+      detail:'Push, Pull, and Shoulders + Core were all completed inside one rolling week, and each training day contained a genuine Working Weight PR inside a full workout.'
+    });
+    lastAccepted=end;
+  }
+  return out;
+}
+function threePeaksMoment(prs){
+  const qualifying=[];
+  for(const day of ['push','pull','shoulders']){
+    const byExercise=new Map();
+    prs.filter(e=>e.day===day).forEach(e=>{
+      const arr=byExercise.get(e.key)||[];arr.push(e);byExercise.set(e.key,arr);
+    });
+    const candidates=[...byExercise.values()].filter(arr=>arr.length>=3).map(arr=>arr[2]).sort((a,b)=>a.ts-b.ts);
+    if(!candidates.length) return null;
+    qualifying.push(candidates[0]);
+  }
+  const ts=Math.max(...qualifying.map(x=>x.ts));
+  return {
+    id:'three_peaks:first',achievementId:'three_peaks',ts,title:'Three Peaks',
+    detail:`Long-term progression reached three genuine Working Weight PRs on an exercise in each training day: ${qualifying.map(x=>x.name).join(', ')}.`
+  };
+}
+
 function detectSpecialMoments(prs){
   const out=[];
   const maybe=x=>{if(x)out.push(x);};
@@ -3338,6 +3593,8 @@ function detectSpecialMoments(prs){
   perfectStormMoments(prs).forEach(x=>out.push(x));
   maybe(balancedBuildMoment());
   maybe(fullSpectrumMoment());
+  perfectCircuitMoments(prs).forEach(x=>out.push(x));
+  maybe(threePeaksMoment(prs));
   const seen=new Set();
   return out.filter(x=>x&&x.id&&!seen.has(x.id)&&seen.add(x.id)).sort((a,b)=>a.ts-b.ts);
 }
@@ -3411,9 +3668,11 @@ function closeAchievementPresentation(){
   setTimeout(pumpAchievementPresentation,180);
 }
 function achievementFxLevel(def){
-  if(def.special && def.tier==='mythic') return {particles:24,rays:10};
+  if(def.special && def.tier==='mythic') return {particles:30,rays:12};
   if(def.tier==='mythic') return {particles:20,rays:8};
-  if(def.special) return {particles:15,rays:4};
+  if(def.special&&def.tier==='gold') return {particles:9,rays:0};
+  if(def.special&&def.tier==='silver') return {particles:5,rays:0};
+  if(def.special) return {particles:7,rays:0};
   if(def.tier==='gold') return {particles:12,rays:0};
   return {particles:0,rays:0};
 }
@@ -3467,15 +3726,27 @@ function showAchievementPresentation(item){
   card.className=`achievement-reveal tier-${def.tier}${def.special?' special-reveal':''}`;
   $('#achievement-reveal-medal').className=`${badgeMedalClasses(def,count)} unlock-medal`;
   $('#achievement-reveal-icon').textContent=def.icon;
-  $('#achievement-reveal-title').textContent=item.title||def.name;
+  $('#achievement-reveal-title').textContent=item.kind==='prestige'?`Century Club · ${romanNumeral(Number(item.prestigeCount)||centuryPrestigeCount())}`:(item.title||achievementDisplayName(def));
   $('#achievement-reveal-tier').textContent=tierLabel(def)+(stage?` · ${specialEvolutionLabel(stage)}`:'');
-  $('#achievement-reveal-kicker').textContent=item.kind==='moment'?'Special Moment':item.kind==='evolution'?'Badge evolved':'Achievement unlocked';
-  $('#achievement-reveal-copy').textContent=item.detail||def.description;
+  $('#achievement-reveal-kicker').textContent=item.preview
+    ? (item.kind==='prestige'?'Preview · Century Mark':item.kind==='moment'?'Preview · Special Moment':'Preview · Achievement unlocked')
+    : (item.kind==='prestige'?'Century Mark reached':item.kind==='moment'?'Special Moment':item.kind==='evolution'?'Badge evolved':'Achievement unlocked');
+  $('#achievement-reveal-copy').textContent=item.kind==='prestige'
+    ? `${(Number(item.prestigeCount)||centuryPrestigeCount())*100} workouts completed. Century Club keeps the same Mythic identity while its prestige mark advances.`
+    : (item.detail||def.description);
   const countBox=$('#achievement-reveal-count');
-  countBox.textContent=def.special&&count>1 ? `${count} ${def.momentNoun||'moments'} recorded` : '';
+  countBox.textContent=item.kind==='prestige'
+    ? `Century Mark ${Number(item.prestigeCount)||centuryPrestigeCount()}`
+    : (def.special&&count>1 ? `${count} ${def.momentNoun||'moments'} recorded` : '');
   const feature=$('#achievement-reveal-feature');
-  feature.hidden=!state.achievements[def.id];
-  feature.onclick=()=>{state.featuredAchievement=def.id;save();renderAchievements();feature.textContent='Featured ✓';};
+  const preview=!!item.preview;
+  feature.hidden=preview||!state.achievements[def.id];
+  feature.textContent=state.featuredAchievement===def.id?'Featured ✓':'Feature badge';
+  feature.onclick=()=>{
+    if(setFeaturedAchievement(def.id)){
+      feature.textContent='Featured ✓';
+    }
+  };
   overlay.hidden=false;
 }
 function showRetroactiveAchievementSummary(ids){
@@ -3521,6 +3792,7 @@ function evaluateAchievements(opts={}){
   state.achievementMoments.sort((a,b)=>Number(a.ts)-Number(b.ts));
 
   const newlyUnlocked=[];
+  const prestigePresentations=[];
   achievementDefs().forEach(def=>{
     const p=achievementProgress(def,ctx);
     if(p.earned&&!state.achievements[def.id]){
@@ -3541,6 +3813,21 @@ function evaluateAchievements(opts={}){
       }
     }
   });
+
+  // Century Club is one Mythic identity that continues to prestige every 100 workouts.
+  const century=state.achievements.century_club;
+  if(century){
+    const currentCentury=centuryPrestigeCount(ctx.workouts);
+    const priorCentury=Math.max(1,Number(century.prestigeSeen)||1);
+    if(firstInstall){
+      century.prestigeSeen=Math.max(priorCentury,currentCentury);
+    }else if(currentCentury>=2&&currentCentury>priorCentury){
+      for(let mark=priorCentury+1;mark<=currentCentury;mark++) prestigePresentations.push(mark);
+      century.prestigeSeen=currentCentury;
+    }else{
+      century.prestigeSeen=Math.max(priorCentury,currentCentury);
+    }
+  }
   state.achievementSystemVersion=ACHIEVEMENT_SYSTEM_VERSION;
   if(!state.featuredAchievement||!state.achievements[state.featuredAchievement]){
     const best=achievementDefs().filter(d=>state.achievements[d.id]).sort((a,b)=>TIER_ORDER[b.tier]-TIER_ORDER[a.tier]||Number(!!b.special)-Number(!!a.special))[0];
@@ -3555,12 +3842,39 @@ function evaluateAchievements(opts={}){
     const delay=Number(opts.recordCount)>0?3700:1900;
     setTimeout(()=>{
       newlyUnlocked.forEach(id=>queueAchievementPresentation({kind:'unlock',achievementId:id}));
+      prestigePresentations.forEach(mark=>queueAchievementPresentation({kind:'prestige',achievementId:'century_club',prestigeCount:mark}));
       newMoments.filter(m=>state.achievements[m.achievementId]&&!newlyUnlocked.includes(m.achievementId)).forEach(m=>{
         queueAchievementPresentation({kind:'moment',achievementId:m.achievementId,title:m.title,detail:m.detail});
       });
     },delay);
   }
-  return {newlyUnlocked,newMoments,ctx};
+  return {newlyUnlocked,newMoments,prestigePresentations,ctx};
+}
+
+function setFeaturedAchievement(id){
+  const def=achievementDef(id);
+  if(!def||!state.achievements[id]) return false;
+  state.featuredAchievement=id;
+  save();
+  renderAchievements();
+  return true;
+}
+function renderMainFeaturedAchievement(){
+  const button=$('#main-featured-achievement');
+  if(!button) return;
+  const def=achievementDef(state.featuredAchievement);
+  if(!def||!state.achievements[def.id]){
+    button.hidden=true;
+    return;
+  }
+  const count=state.achievementMoments.filter(m=>m.achievementId===def.id).length;
+  const stage=specialEvolutionStage(def,count);
+  button.hidden=false;
+  button.className=`main-featured-achievement tier-${def.tier}${def.special?' special-card':''}`;
+  $('#main-featured-icon').textContent=def.icon;
+  $('#main-featured-name').textContent=achievementDisplayName(def);
+  $('#main-featured-tier').textContent=`Featured · ${tierLabel(def)}${stage?` · ${specialEvolutionLabel(stage)}`:''}`;
+  button.onclick=()=>openAchievementDetail(def.id);
 }
 
 function renderFeaturedAchievement(){
@@ -3574,43 +3888,151 @@ function renderFeaturedAchievement(){
   const count=state.achievementMoments.filter(m=>m.achievementId===def.id).length;
   const stage=specialEvolutionStage(def,count);
   box.className=`featured-badge tier-${def.tier}${def.special?' special-card':''}`;
-  box.innerHTML=`<div class="${badgeMedalClasses(def,count)}"><span>${def.icon}</span>${def.special?'<span class="special-marker">✦</span>':''}</div><div class="featured-copy"><div class="eyebrow">Featured badge</div><strong>${def.name}</strong><span>${def.description}${def.special&&count>1?` · ${count} ${def.momentNoun||'moments'}`:''}</span></div><div class="featured-tier">${tierLabel(def)}${stage?` · ${specialEvolutionLabel(stage)}`:''}</div>`;
+  box.innerHTML=`<div class="${badgeMedalClasses(def,count)}"><span>${def.icon}</span>${def.special?'<span class="special-marker">✦</span>':''}</div><div class="featured-copy"><div class="eyebrow">Featured badge</div><strong>${achievementDisplayName(def)}</strong><span>${def.description}${def.special&&count>1?` · ${count} ${def.momentNoun||'moments'}`:''}</span></div><div class="featured-tier">${tierLabel(def)}${stage?` · ${specialEvolutionLabel(stage)}`:''}</div>`;
   box.onclick=()=>openAchievementDetail(def.id);
 }
-function openAchievementDetail(id){
+function developerPreviewMoments(def,count=3){
+  const now=Date.now();
+  const examples={
+    conquered_it:[
+      ['Conquered It · Incline Dumbbell Bench Press','A load that once required a mid-set reduction was later completed across the full prescription.'],
+      ['Conquered It · Lat Pulldown','A previously reduced load was later held cleanly across every prescribed set.'],
+      ['Conquered It · Dumbbell Shoulder Press','The original working load was eventually completed without needing the earlier reduction.']
+    ],
+    steady_climb:[
+      ['Steady Climb · Incline Dumbbell Bench Press','This exercise reached another genuine Working Weight PR after multiple earlier improvements.'],
+      ['Steady Climb · Seated Cable Row','A third separate Working Weight PR turned repeated progress into a training story.'],
+      ['Steady Climb · Barbell Curl','Another sustained progression milestone was recorded over time.']
+    ],
+    perfect_storm:[
+      ['Perfect Storm · Push Day','Full workout completion, a genuine Working Weight PR, and the rolling 3-in-7 goal landed together.'],
+      ['Perfect Storm · Pull Day','Three meaningful wins aligned inside the same completed workout.'],
+      ['Perfect Storm · Shoulders + Core','Completion, progression, and consistency all landed on the same session.']
+    ]
+  };
+  const list=examples[def.id]||[
+    [`${def.name} · Moment 1`,def.description],
+    [`${def.name} · Moment 2`,def.description],
+    [`${def.name} · Moment 3`,def.description]
+  ];
+  return Array.from({length:count},(_,i)=>({
+    id:`preview-${def.id}-${i}`,
+    achievementId:def.id,
+    ts:now-(count-1-i)*10*86400000,
+    title:list[i%list.length][0],
+    detail:list[i%list.length][1]
+  }));
+}
+function normalAchievementEvidence(def,ctx){
+  const unlocked=state.achievements[def.id];
+  if(!unlocked) return '';
+  const rows=[];
+  const unlockedAt=Number(unlocked.unlockedAt);
+  if(Number.isFinite(unlockedAt)){
+    rows.push(['Earned',new Date(unlockedAt).toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'})]);
+  }
+  if(def.metric==='workouts') rows.push(['Workouts completed',String(ctx.workouts)]);
+  else if(def.metric==='maxRolling7') rows.push(['Best rolling 7 days',`${ctx.maxRolling7} workouts`]);
+  else if(def.metric==='maxGoalDays') rows.push(['Best goal-maintained run',`${ctx.maxGoalDays} days`]);
+  else if(def.metric==='workingPRs') rows.push(['Working Weight PRs',String(ctx.workingPRs)]);
+  else if(def.metric==='distinctDays') rows.push(['Workout types completed',`${ctx.distinctDays}/3`]);
+  else if(def.metric==='fullWorkouts') rows.push(['Full workouts',String(ctx.fullWorkouts)]);
+  else if(def.metric==='maxFullRolling7') rows.push(['Best full-workout week',`${ctx.maxFullRolling7} workouts`]);
+  else if(def.metric==='dialedWorkouts') rows.push(['Fully detailed workouts',String(ctx.dialedWorkouts)]);
+  else if(def.metric==='timedSessions') rows.push(['Timed sessions',String(ctx.timedSessions)]);
+  else if(def.metric==='loadedTimedSessions') rows.push(['Loaded timed sessions',String(ctx.loadedTimedSessions)]);
+
+  let extra='';
+  if(def.metric==='workingPRs'){
+    const recent=[...ctx.workingPREvents].slice(-5).reverse();
+    if(recent.length){
+      extra=`<div class="pr-evidence-list">${recent.map(e=>{
+        const from=fmt(displayFromKg(e.previous)),to=fmt(displayFromKg(e.value));
+        return `<div class="pr-evidence"><span><strong>${e.name}</strong><br>${new Date(e.ts).toLocaleDateString(undefined,{month:'short',day:'numeric'})}</span><span>${from} → ${to}</span></div>`;
+      }).join('')}</div>`;
+    }
+  }
+
+  return `<div class="achievement-evidence"><div class="achievement-evidence-title">Your accomplishment</div>${rows.map(r=>`<div class="achievement-evidence-row"><span>${r[0]}</span><strong>${r[1]}</strong></div>`).join('')}${extra}</div>`;
+}
+function specialHistoryHtml(def,moments,stage){
+  if(!moments.length) return '';
+  const noun=def.momentNoun||'moments';
+  return `<details class="special-history" ${moments.length<=4?'open':''}>
+    <summary><span>${noun} history</span><strong>${moments.length}${stage?` · ${specialEvolutionLabel(stage)}`:''}</strong></summary>
+    <div class="special-history-list">${[...moments].sort((a,b)=>Number(b.ts)-Number(a.ts)).map(m=>`
+      <div class="special-history-row">
+        <div class="special-history-icon">${def.icon}</div>
+        <div><strong>${m.title||def.name}</strong><p>${m.detail||def.description}</p></div>
+        <time>${new Date(Number(m.ts)||Date.now()).toLocaleDateString(undefined,{month:'short',day:'numeric',year:'2-digit'})}</time>
+      </div>`).join('')}
+    </div>
+  </details>`;
+}
+function openAchievementDetail(id,opts={}){
   const def=achievementDef(id),overlay=$('#achievement-detail-overlay');
   if(!def||!overlay)return;
-  const ctx=achievementContext(), p=achievementProgress(def,ctx), unlocked=!!state.achievements[id], count=state.achievementMoments.filter(m=>m.achievementId===id).length,stage=specialEvolutionStage(def,count);
+  const preview=!!opts.preview;
+  const ctx=achievementContext();
+  const p=achievementProgress(def,ctx);
+  const actualUnlocked=!!state.achievements[id];
+  const unlocked=preview||actualUnlocked;
+  const actualMoments=state.achievementMoments.filter(m=>m.achievementId===id);
+  const moments=preview&&def.special
+    ? developerPreviewMoments(def,def.repeatable?3:1)
+    : actualMoments;
+  const count=moments.length;
+  const stage=specialEvolutionStage(def,count);
+
   const card=$('#achievement-detail-card');
   card.className=`achievement-reveal tier-${def.tier}${def.special?' special-reveal':''}`;
   $('#achievement-detail-medal').className=`${badgeMedalClasses(def,count)} unlock-medal`;
   $('#achievement-detail-icon').textContent=unlocked?def.icon:'?';
-  $('#achievement-detail-title').textContent=unlocked||!def.special?def.name:'???';
+  $('#achievement-detail-title').textContent=unlocked||!def.special?achievementDisplayName(def):'???';
   $('#achievement-detail-tier').textContent=unlocked?tierLabel(def)+(stage?` · ${specialEvolutionLabel(stage)}`:''):(def.special?'Special discovery':tierLabel(def));
-  $('#achievement-detail-kicker').textContent=unlocked?'Unlocked achievement':'Locked achievement';
+  $('#achievement-detail-kicker').textContent=preview?'Developer preview':(unlocked?'Unlocked achievement':'Locked achievement');
   $('#achievement-detail-copy').textContent=def.special&&!unlocked ? def.clue : def.description;
+
   const prog=$('#achievement-detail-progress');
   if(def.special){
-    prog.innerHTML=unlocked
-      ? `<div class="row"><span>Special Moments</span><strong>${count}</strong></div>${count>1?`<div class="progress-caption">This badge keeps its identity while new moments accumulate underneath it.</div>`:''}`
-      : `<div class="progress-caption">Special discoveries do not show a farmable progress counter and do not count against Trophy Case completion.</div>`;
+    if(unlocked){
+      const evolution=stage
+        ? `<div class="achievement-evidence-row"><span>Current evolution</span><strong>${specialEvolutionLabel(stage)}</strong></div>`
+        : '';
+      prog.innerHTML=`<div class="row"><span>Special Moments recorded</span><strong>${count}</strong></div>${evolution}${specialHistoryHtml(def,moments,stage)}`;
+    }else{
+      prog.innerHTML=`<div class="progress-caption">Special discoveries do not show a farmable progress counter and do not count against Trophy Case completion.</div>`;
+    }
+  }else if(def.id==='century_club'&&unlocked){
+    const marks=preview?[{count:1,workouts:100,ts:Date.now(),title:'Century Club'}]:centuryMarks();
+    const currentCount=preview?100:ctx.workouts;
+    const next=((Math.floor(currentCount/100)+1)*100);
+    const within=currentCount%100;
+    prog.innerHTML=`<div class="row"><span>Century Marks</span><strong>${marks.length}</strong></div><div class="row"><span>Next prestige</span><strong>${within} / 100 to ${next}</strong></div><div class="achievement-progress-track"><div class="achievement-progress-fill" style="width:${within}%"></div></div><details class="special-history" open><summary><span>Century history</span><strong>${marks.length} mark${marks.length===1?'':'s'}</strong></summary><div class="special-history-list">${marks.slice().reverse().map(m=>`<div class="special-history-row"><div class="special-history-icon">100</div><div><strong>${m.title}</strong><p>${m.workouts} completed LiftLoop workouts.</p></div><time>${new Date(m.ts).toLocaleDateString(undefined,{month:'short',day:'numeric',year:'2-digit'})}</time></div>`).join('')}</div></details>`;
   }else{
-    prog.innerHTML=`<div class="row"><span>Progress</span><strong>${Math.min(p.current,p.target)} / ${p.target}</strong></div><div class="achievement-progress-track"><div class="achievement-progress-fill" style="width:${p.pct}%"></div></div>`;
+    prog.innerHTML=`<div class="row"><span>Progress</span><strong>${preview?`${p.target} / ${p.target}`:`${Math.min(p.current,p.target)} / ${p.target}`}</strong></div><div class="achievement-progress-track"><div class="achievement-progress-fill" style="width:${preview?100:p.pct}%"></div></div>${preview?`<div class="progress-caption">Preview of the unlocked badge. Requirement: ${def.description}</div>`:normalAchievementEvidence(def,ctx)}`;
   }
+
   const feature=$('#achievement-detail-feature');
-  feature.hidden=!unlocked;
+  feature.hidden=preview||!actualUnlocked;
   feature.textContent=state.featuredAchievement===id?'Featured ✓':'Feature badge';
-  feature.onclick=()=>{state.featuredAchievement=id;save();renderAchievements();feature.textContent='Featured ✓';};
+  feature.onclick=()=>{
+    if(setFeaturedAchievement(id)){
+      feature.textContent='Featured ✓';
+    }
+  };
   overlay.hidden=false;
 }
+
 function renderAchievements(){
   const summary=$('#achievement-summary'),grid=$('#achievement-grid'),moments=$('#achievement-moments');
   if(!summary||!grid||!moments)return;
   const ctx=achievementContext(),defs=achievementDefs(),normal=defs.filter(d=>!d.special),special=defs.filter(d=>d.special);
   const normalUnlocked=normal.filter(d=>state.achievements[d.id]).length;
   const specialUnlocked=special.filter(d=>state.achievements[d.id]).length;
-  summary.innerHTML=`<span class="achievement-summary-chip">${normalUnlocked}/${normal.length} earned</span><span class="achievement-summary-chip">${specialUnlocked} special</span>`;
+  summary.innerHTML=`<span class="achievement-summary-chip">${normalUnlocked}/${normal.length} Core earned</span><span class="achievement-summary-chip">${specialUnlocked} Special found</span>`;
   renderFeaturedAchievement();
+  renderMainFeaturedAchievement();
 
   const filter=state.achievementFilter||'all';
   $$('.achievement-filter').forEach(b=>b.classList.toggle('active',b.dataset.achFilter===filter));
@@ -3632,11 +4054,13 @@ function renderAchievements(){
     const unlocked=!!state.achievements[def.id],p=achievementProgress(def,ctx),count=state.achievementMoments.filter(m=>m.achievementId===def.id).length,stage=specialEvolutionStage(def,count);
     const btn=document.createElement('button');
     btn.type='button';
-    btn.className=`achievement-card tier-${def.tier}${unlocked?'':' locked'}${def.special?' special-card':''}`;
+    btn.className=`achievement-card tier-${def.tier}${unlocked?'':' locked'}${def.special?' special-card':''}${state.featuredAchievement===def.id?' is-featured':''}`;
     const progress=def.special
       ? (count>1?`${count} ${def.momentNoun||'moments'}${stage?` · ${specialEvolutionLabel(stage)}`:''}`:'Special discovery')
-      : (unlocked?'Unlocked':`${Math.min(p.current,p.target)} / ${p.target}`);
-    btn.innerHTML=`<div class="${badgeMedalClasses(def,count)}"><span>${unlocked||!def.special?def.icon:'?'}</span>${def.special?'<span class="special-marker">✦</span>':''}</div><div><span class="name">${unlocked||!def.special?def.name:'???'}</span><span class="meta">${tierLabel(def)} · ${def.group}</span><span class="progress-text">${progress}</span>${!def.special&&!unlocked?`<div class="achievement-progress-track"><div class="achievement-progress-fill" style="width:${p.pct}%"></div></div>`:''}</div>`;
+      : (def.id==='century_club'&&unlocked
+          ? `${centuryPrestigeCount(ctx.workouts)} Century Mark${centuryPrestigeCount(ctx.workouts)===1?'':'s'} · ${ctx.workouts%100}/100 to next`
+          : (unlocked?'Unlocked':`${Math.min(p.current,p.target)} / ${p.target}`));
+    btn.innerHTML=`<div class="${badgeMedalClasses(def,count)}"><span>${unlocked||!def.special?def.icon:'?'}</span>${def.special?'<span class="special-marker">✦</span>':''}</div><div><span class="name">${unlocked||!def.special?achievementDisplayName(def):'???'}</span><span class="meta">${tierLabel(def)} · ${def.group}</span><span class="progress-text">${progress}</span>${!def.special&&!unlocked?`<div class="achievement-progress-track"><div class="achievement-progress-fill" style="width:${p.pct}%"></div></div>`:''}</div>${state.featuredAchievement===def.id?'<span class="featured-card-marker">★ Featured</span>':''}`;
     btn.addEventListener('click',()=>openAchievementDetail(def.id));
     grid.appendChild(btn);
   });
@@ -3650,12 +4074,14 @@ function renderAchievements(){
   const rows=[...state.achievementMoments].sort((a,b)=>Number(b.ts)-Number(a.ts));
   moments.innerHTML='';
   if(!rows.length){
-    moments.innerHTML='<div class="history-empty">Special Moments will appear when LiftLoop notices an unusual pattern in your training history.</div>';
+    moments.innerHTML='<div class="history-empty">Special Moments will appear when LiftLoop notices an unusual pattern in your training history. In Developer Lab, create a Gilded/Ascended Special to preview a full history.</div>';
   }else{
+    moments.innerHTML='<div class="moments-helper">Tap any Moment to open that Special badge and its full history.</div>';
     rows.slice(0,20).forEach(m=>{
       const def=achievementDef(m.achievementId); if(!def)return;
-      const el=document.createElement('div'); el.className='moment-card';
-      el.innerHTML=`<div class="moment-icon">${def.icon}</div><div><strong>${m.title||def.name}</strong><p>${m.detail||def.description}</p></div><time>${new Date(Number(m.ts)||Date.now()).toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'})}</time>`;
+      const el=document.createElement('button'); el.type='button'; el.className='moment-card';
+      el.innerHTML=`<div class="moment-icon">${def.icon}</div><div><strong>${m.title||def.name}</strong><p>${m.detail||def.description}</p></div><time>${new Date(Number(m.ts)||Date.now()).toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'})}</time><span class="moment-open">›</span>`;
+      el.addEventListener('click',()=>openAchievementDetail(def.id));
       moments.appendChild(el);
     });
   }
@@ -3697,7 +4123,7 @@ function devSetMutatingEnabled(){
   if(live) live.hidden=active;
   if(test) test.hidden=!active;
   if(pill){
-    pill.textContent=active?'Test Mode · isolated':'Live Beta data';
+    pill.textContent=active?'Test Mode · isolated':'Preview mode · safe';
     pill.classList.toggle('active',active);
   }
   if(banner) banner.hidden=!active;
@@ -3735,18 +4161,33 @@ function resetDeveloperSandbox(fresh=false){
   localStorage.setItem(LIFTLOOP_DEV_STORAGE_KEY,payload);
   location.reload();
 }
+function devSpecialMomentSample(def,index){
+  const exercise=['Incline Dumbbell Bench Press','Lat Pulldown','Dumbbell Shoulder Press','Seated Cable Row'][index%4];
+  if(def.id==='conquered_it'){
+    return {title:`Conquered It · ${exercise}`,detail:`${exercise}: a load that previously required a reduction was later completed across the full prescription.`};
+  }
+  if(def.id==='steady_climb'){
+    return {title:`Steady Climb · ${exercise}`,detail:`${exercise} reached another genuine Working Weight PR, adding another chapter to its progression history.`};
+  }
+  if(def.id==='perfect_storm'){
+    const day=['Push Day','Pull Day','Shoulders + Core'][index%3];
+    return {title:`Perfect Storm · ${day}`,detail:`${day}: full completion, a genuine Working Weight PR, and the rolling 3-in-7 goal landed together.`};
+  }
+  return {title:`${def.name} · Test Moment ${index+1}`,detail:`Developer sample showing how a real ${def.name} Moment would be recorded in the badge history.`};
+}
 function devEnsureSpecialMoment(def,countTarget=1){
   if(!def?.special || !LIFTLOOP_DEV_MODE) return;
   state.achievements[def.id]=state.achievements[def.id]||{unlockedAt:Date.now(),evolutionStage:0};
   let count=state.achievementMoments.filter(m=>m.achievementId===def.id).length;
   while(count<countTarget){
-    const ts=Date.now()+count;
+    const ts=Date.now()-(countTarget-1-count)*9*86400000;
+    const sample=devSpecialMomentSample(def,count);
     state.achievementMoments.push({
       id:`dev-${def.id}-${ts}-${count}`,
       achievementId:def.id,
       ts,
-      title:def.name,
-      detail:`Developer Test Moment ${count+1} for ${def.name}.`
+      title:sample.title,
+      detail:sample.detail
     });
     count++;
   }
@@ -3754,6 +4195,7 @@ function devEnsureSpecialMoment(def,countTarget=1){
   save();
   renderAchievements();
 }
+
 function devUnlockAchievement(id,show=true){
   if(!LIFTLOOP_DEV_MODE) return devStatus('Enter Test Mode before changing achievement state.');
   const def=achievementDef(id); if(!def)return;
@@ -3832,9 +4274,11 @@ function devResetAchievements(){
 }
 function previewAchievementTierSequence(){
   const picks=['bronze','silver','gold','mythic'].map(t=>achievementDefs().find(d=>!d.special&&d.tier===t)).filter(Boolean);
-  const special=achievementDefs().find(d=>d.special);
-  if(special) picks.push(special);
-  picks.forEach((def,i)=>setTimeout(()=>queueAchievementPresentation({kind:'unlock',achievementId:def.id}),i*500));
+  const goldSpecial=achievementDefs().find(d=>d.special&&d.tier==='gold');
+  const mythicSpecial=achievementDefs().find(d=>d.special&&d.tier==='mythic');
+  if(goldSpecial) picks.push(goldSpecial);
+  if(mythicSpecial) picks.push(mythicSpecial);
+  picks.forEach((def,i)=>setTimeout(()=>queueAchievementPresentation({kind:'unlock',achievementId:def.id,preview:true}),i*900));
 }
 function bindDeveloperLab(){
   const lab=$('#beta-dev-lab');
@@ -3853,7 +4297,7 @@ function bindDeveloperLab(){
     }
     const note=$('#dev-preview-note');
     if(note && def){
-      note.innerHTML=`Selected: <strong>${def.name}</strong> · ${tierLabel(def)}${def.special?' · Special':''}. Previewing never changes progress.`;
+      note.innerHTML=`Selected: <strong>${achievementDisplayName(def)}</strong> · ${tierLabel(def)}. Previewing never changes progress.`;
     }
   };
   $('#dev-achievement-select')?.addEventListener('change',updatePreviewControls);
@@ -3867,19 +4311,30 @@ function bindDeveloperLab(){
 
   $('#dev-preview-unlock')?.addEventListener('click',()=>{
     const id=devAchievementId();
-    queueAchievementPresentation({kind:'unlock',achievementId:id});
+    queueAchievementPresentation({kind:'unlock',achievementId:id,preview:true});
     devStatus(`Previewing ${achievementDef(id)?.name||'achievement'} unlock. No data changed.`);
   });
-  $('#dev-preview-detail')?.addEventListener('click',()=>openAchievementDetail(devAchievementId()));
+  $('#dev-preview-detail')?.addEventListener('click',()=>openAchievementDetail(devAchievementId(),{preview:true}));
   $('#dev-preview-moment')?.addEventListener('click',()=>{
     const def=achievementDef(devAchievementId());
     if(!def?.special) return devStatus('Choose a Special achievement to preview a Special Moment.');
-    queueAchievementPresentation({kind:'moment',achievementId:def.id,title:def.name,detail:'Developer preview of a recurring Special Moment.'});
+    queueAchievementPresentation({kind:'moment',achievementId:def.id,title:def.name,detail:'Developer preview of a recurring Special Moment.',preview:true});
   });
   $('#dev-preview-tiers')?.addEventListener('click',previewAchievementTierSequence);
   $('#dev-preview-retro')?.addEventListener('click',()=>{
     const ids=['first_steps','double_digits','committed','century_club'].filter(id=>achievementDef(id));
     showRetroactiveAchievementSummary(ids);
+  });
+  $('#dev-preview-mythic-special')?.addEventListener('click',()=>{
+    const def=achievementDef('perfect_circuit')||achievementDefs().find(d=>d.special&&d.tier==='mythic');
+    if(!def) return devStatus('No Mythic Special is available in this build.');
+    const select=$('#dev-achievement-select'); if(select) select.value=def.id;
+    queueAchievementPresentation({kind:'unlock',achievementId:def.id,preview:true});
+    devStatus(`Previewing ${def.name} · Mythic · Special.`);
+  });
+  $('#dev-preview-century')?.addEventListener('click',()=>{
+    queueAchievementPresentation({kind:'prestige',achievementId:'century_club',prestigeCount:2,preview:true});
+    devStatus('Previewing the 200-workout Century Club II prestige reveal.');
   });
 
   $('#dev-unlock-selected')?.addEventListener('click',()=>devUnlockAchievement(devAchievementId(),true));
@@ -3890,21 +4345,24 @@ function bindDeveloperLab(){
     const count=state.achievementMoments.filter(m=>m.achievementId===def.id).length;
     devEnsureSpecialMoment(def,count+1);
     queueAchievementPresentation({kind:'moment',achievementId:def.id,title:def.name,detail:'Developer-created Special Moment.'});
-    devStatus(`Added Special Moment ${count+1} for ${def.name}.`);
+    devStatus(`Added Special Moment ${count+1} for ${def.name}. Opening its history…`);
+    openAchievementDetail(def.id);
   });
   $('#dev-gild-special')?.addEventListener('click',()=>{
     const def=achievementDef(devAchievementId());
     if(!def?.special||!def.repeatable) return devStatus('Choose a repeatable Special achievement.');
     devEnsureSpecialMoment(def,3);
     queueAchievementPresentation({kind:'evolution',achievementId:def.id,title:`${def.name} · Gilded`,detail:'Developer preview of the Gilded Special treatment.'});
-    devStatus(`${def.name} set to Gilded in Test Mode.`);
+    devStatus(`${def.name} set to Gilded in Test Mode. Opening its history…`);
+    openAchievementDetail(def.id);
   });
   $('#dev-ascend-special')?.addEventListener('click',()=>{
     const def=achievementDef(devAchievementId());
     if(!def?.special||!def.repeatable) return devStatus('Choose a repeatable Special achievement.');
     devEnsureSpecialMoment(def,7);
     queueAchievementPresentation({kind:'evolution',achievementId:def.id,title:`${def.name} · Ascended`,detail:'Developer preview of the Ascended Special treatment.'});
-    devStatus(`${def.name} set to Ascended in Test Mode.`);
+    devStatus(`${def.name} set to Ascended in Test Mode. Opening its history…`);
+    openAchievementDetail(def.id);
   });
 
   $$('[data-dev-workouts]').forEach(btn=>btn.addEventListener('click',()=>devSeedWorkoutCount(Number(btn.dataset.devWorkouts))));
