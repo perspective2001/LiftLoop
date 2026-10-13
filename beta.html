@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-build="2026.10.06-beta.9">
+<html lang="en" data-build="2026.10.13-beta.10">
 <head>
 <meta charset="utf-8">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
@@ -38,6 +38,11 @@ button{font:inherit}
 .exercise+.exercise{border-top:1px solid var(--line)}
 .exercise-head{width:100%;border:0;background:transparent;color:var(--text);display:grid;grid-template-columns:30px 1fr 28px;align-items:center;text-align:left;padding:14px 12px;min-height:66px}
 .ex-num{width:27px;height:27px;border-radius:9px;display:grid;place-items:center;background:#232837;color:var(--muted);font-size:12px;font-weight:850}
+.exercise.exercise-complete .exercise-head[aria-expanded="false"] .ex-num{
+  background:#1f6f55;color:#baf8dc;border:1px solid #3b9b79;
+  box-shadow:0 0 0 2px rgba(80,210,156,.08)
+}
+
 .ex-main{min-width:0;padding:0 8px}
 .ex-name{display:block;font-size:15px;font-weight:780;line-height:1.25}
 .dose{display:block;color:var(--muted);font-size:12px;margin-top:4px}
@@ -1064,7 +1069,7 @@ button{font:inherit}
     <button type="button" class="update-check" id="open-whats-new" style="margin-left:6px">What’s New</button>
     <div class="update-status" id="update-status">Automatic update check enabled</div>
   </div>
-  <p style="text-align:center;color:#697383;font-size:9px;margin:18px 0 6px">Build 2026.10.06-beta.9 · profile copy cleanup</p>
+  <p style="text-align:center;color:#697383;font-size:9px;margin:18px 0 6px">Build 2026.10.13-beta.10 · workout entry polish</p>
   <p class="credit">
     Video demonstrations are embedded from their original YouTube sources. Previous vector artwork source:
     <a href="https://github.com/InlitX/GymMane" target="_blank" rel="noopener">GymMane</a>,
@@ -1306,13 +1311,48 @@ function visibleSetDots(day){
   return $$('.exercise:not(.routine-hidden) .set-dot',section);
 }
 
+function updateExerciseCompletion(card){
+  if(!card || card.classList.contains('routine-hidden')) return;
+  const dots=$$('.set-dot',card);
+  const complete=dots.length>0 && dots.every(dot=>dot.classList.contains('done'));
+  card.classList.toggle('exercise-complete',complete);
+}
 function updateProgress(day){
   const dots=visibleSetDots(day);
   const done=dots.filter(b=>b.classList.contains('done')).length;
   const pct=dots.length?Math.round(done/dots.length*100):0;
   const el=$(`#day-${day} .progress-count`);
   if(el) el.textContent=pct;
+  const section=$(`#day-${day}`);
+  if(section) $$('.exercise:not(.routine-hidden)',section).forEach(updateExerciseCompletion);
   if(typeof renderGamify==='function') renderGamify();
+}
+
+function carryCompletedWeightForward(btn){
+  const row=btn.closest('.set-log-row');
+  const card=btn.closest('.exercise');
+  if(!row || !card || !btn.classList.contains('done')) return;
+
+  // Save the just-completed row first so the copied value is exactly what was typed.
+  if(typeof persistRow==='function') persistRow(row);
+  const current=state.currentSets[btn.dataset.key]||{};
+  if(!Number.isFinite(current.kg) || current.kg<=0) return;
+
+  const rows=$$('.set-log-row',card);
+  const index=rows.indexOf(row);
+  if(index<0) return;
+
+  // Carry to the next unfinished set, unless the user has already manually edited it.
+  const next=rows.slice(index+1).find(r=>!$('.set-dot',r)?.classList.contains('done'));
+  if(!next) return;
+  const nextWeight=$('.set-weight',next);
+  if(!nextWeight || nextWeight.dataset.userEdited==='1') return;
+
+  const nextDot=$('.set-dot',next);
+  const nextState=ensureCurrentSet(card,nextDot,rows.indexOf(next));
+  nextState.kg=current.kg;
+  state.currentSets[nextDot.dataset.key]=nextState;
+  nextWeight.value=fmtNum(displayFromKg(current.kg));
 }
 
 function bindSetDot(btn){
@@ -1324,6 +1364,7 @@ function bindSetDot(btn){
     if(state.sessionCompleted[day]) state.sessionCompleted[day]=false;
     btn.classList.toggle('done');
     state[btn.dataset.key]=btn.classList.contains('done');
+    if(btn.classList.contains('done')) carryCompletedWeightForward(btn);
     save();
     updateProgress(day);
   });
@@ -1608,9 +1649,20 @@ function renderCurrentSessionSummary(card){
   if(timed){ const sets=rows.map(row=>state.currentSets[$('.set-dot',row)?.dataset.key]||{}), durations=sets.map(s=>s.seconds).filter(v=>Number.isFinite(v)&&v>0), loads=sets.map(s=>s.kg).filter(Number.isFinite); const bestLoad=loads.length?(mode.assistance?Math.min(...loads):Math.max(...loads)):NaN, bestTime=durations.length?Math.max(...durations):NaN, totalTime=durations.reduce((a,b)=>a+b,0); $('.summary-best span',box).textContent='Best set load'; $('.summary-target span',box).textContent='Best time'; $('.summary-volume span',box).textContent='Total time'; $('.summary-best strong',box).textContent=fmt(displayFromKg(bestLoad)); $('.summary-target strong',box).textContent=Number.isFinite(bestTime)?`${bestTime} sec`:'—'; $('.summary-volume strong',box).textContent=totalTime>0?`${totalTime} sec`:'—'; return; }
   const all=[]; rows.forEach(row=>{const s=state.currentSets[$('.set-dot',row)?.dataset.key]||{}; all.push(...segmentsFromSet(s));}); const target=targetReps(card), best=all.length?(mode.assistance?Math.min(...all.map(x=>x.kg)):Math.max(...all.map(x=>x.kg))):NaN, targetVals=target?all.filter(x=>x.reps>=target).map(x=>x.kg):all.map(x=>x.kg), targetBest=targetVals.length?(mode.assistance?Math.min(...targetVals):Math.max(...targetVals)):NaN, volume=all.reduce((n,x)=>n+x.kg*x.reps,0); $('.summary-best span',box).textContent='Best set load'; $('.summary-target span',box).textContent=target?'Target-rep load':'Best load'; $('.summary-volume span',box).textContent='Volume'; $('.summary-best strong',box).textContent=fmt(displayFromKg(best)); $('.summary-target strong',box).textContent=fmt(displayFromKg(targetBest)); $('.summary-volume strong',box).textContent=Number.isFinite(volume)&&volume>0?`${Math.round(displayFromKg(volume)).toLocaleString()}`:'—';
 }
+function bindTapToReplace(input){
+  if(!input || input.dataset.tapReplaceBound==='1') return;
+  input.dataset.tapReplaceBound='1';
+  const selectAll=()=>setTimeout(()=>{
+    try{ input.select(); }catch(e){}
+  },0);
+  input.addEventListener('focus',selectAll);
+  input.addEventListener('click',selectAll);
+}
+
 function addDropEditor(row,prefill){
   if($('.drop-editor',row))return; const card=row.closest('.exercise'); if(isTimedExercise(card))return; const s=state.currentSets[$('.set-dot',row).dataset.key]||{}; const div=document.createElement('div'); div.className='drop-editor';
   div.innerHTML=`<div class="drop-label">Drop within this set</div><input class="set-field drop-weight" inputmode="decimal" type="number" min="0" placeholder="${state.weightUnit}" value="${Number.isFinite(s.dropKg)?fmtNum(displayFromKg(s.dropKg)):''}"><div class="set-times">×</div><input class="set-field drop-reps" inputmode="numeric" type="number" min="0" placeholder="reps" value="${Number.isFinite(s.dropReps)?s.dropReps:''}"><button type="button" class="drop-remove">Remove</button>`; row.appendChild(div);
+  $$('.set-field',div).forEach(bindTapToReplace);
   $('.drop-weight',div).addEventListener('input',()=>persistRow(row));
   $('.drop-reps',div).addEventListener('input',()=>{ const dropReps=parseInt($('.drop-reps',div).value,10), target=targetReps(card), mainReps=$('.set-reps',row); if(Number.isFinite(dropReps)&&Number.isFinite(target)&&mainReps)mainReps.value=Math.max(0,target-dropReps); persistRow(row); });
   $('.drop-remove',div).addEventListener('click',()=>{ const id=$('.set-dot',row).dataset.key, cur=state.currentSets[id]||{}, target=targetReps(card); cur.dropKg=null; cur.dropReps=null; if(Number.isFinite(target)){cur.reps=target; const main=$('.set-reps',row); if(main)main.value=target;} state.currentSets[id]=cur; div.remove(); save(); renderCurrentSessionSummary(card); });
@@ -1673,13 +1725,23 @@ function renderSetRows(card){
   ensureMetricModeControl(card);
   const sets=$('.sets',card); if(!sets)return; const timed=isTimedExercise(card);
   if(!sets.classList.contains('set-log-grid')){ const dots=$$('.set-dot',sets); sets.innerHTML=''; sets.classList.add('set-log-grid'); const head=document.createElement('div'); head.className='set-log-head'; head.innerHTML=`<span></span><span class="weight-h">Weight</span><span></span><span class="reps-h">${timed?'Seconds':'Reps'}</span><span></span>`; sets.appendChild(head);
-    dots.forEach((dot,index)=>{ const row=document.createElement('div'); row.className='set-log-row'; row.appendChild(dot); row.insertAdjacentHTML('beforeend',`<input class="set-field set-weight" inputmode="decimal" type="number" min="0" aria-label="Set ${index+1} weight"><div class="set-times">×</div>${timed?`<input class="set-field set-seconds reps-field" inputmode="numeric" type="number" min="0" aria-label="Set ${index+1} seconds" placeholder="sec"><span></span>`:`<input class="set-field set-reps reps-field" inputmode="numeric" type="number" min="0" aria-label="Set ${index+1} reps"><button type="button" class="drop-toggle">+ Drop</button>`}`); sets.appendChild(row); if(!timed)$('.drop-toggle',row).addEventListener('click',()=>addDropEditor(row,true)); $$('.set-weight,.set-reps,.set-seconds',row).forEach(inp=>inp.addEventListener('input',()=>persistRow(row))); });
+    dots.forEach((dot,index)=>{ const row=document.createElement('div'); row.className='set-log-row'; row.appendChild(dot); row.insertAdjacentHTML('beforeend',`<input class="set-field set-weight" inputmode="decimal" type="number" min="0" aria-label="Set ${index+1} weight"><div class="set-times">×</div>${timed?`<input class="set-field set-seconds reps-field" inputmode="numeric" type="number" min="0" aria-label="Set ${index+1} seconds" placeholder="sec"><span></span>`:`<input class="set-field set-reps reps-field" inputmode="numeric" type="number" min="0" aria-label="Set ${index+1} reps"><button type="button" class="drop-toggle">+ Drop</button>`}`); sets.appendChild(row); if(!timed)$('.drop-toggle',row).addEventListener('click',()=>addDropEditor(row,true));
+      $$('.set-weight,.set-reps,.set-seconds',row).forEach(inp=>{
+        bindTapToReplace(inp);
+        inp.addEventListener('input',()=>{
+          if(inp.classList.contains('set-weight')) inp.dataset.userEdited='1';
+          persistRow(row);
+        });
+      });
+    });
     const complete=document.createElement('button'); complete.type='button'; complete.className='exercise-complete-all'; complete.textContent='✓ Complete all sets with usual weight'; complete.addEventListener('click',()=>completeAllExercise(card)); sets.insertAdjacentElement('afterend',complete);
     const note=document.createElement('div'); note.className='usual-weight-note'; complete.insertAdjacentElement('afterend',note); let anchor=note; if(timed){const hint=document.createElement('div'); hint.className='timed-hint'; hint.textContent='Timed exercise: log seconds instead of reps. Weight is optional.'; note.insertAdjacentElement('afterend',hint); anchor=hint;}
     const summary=document.createElement('div'); summary.className='session-summary'; summary.innerHTML=`<div class="session-chip summary-best"><span>Best set load</span><strong>—</strong></div><div class="session-chip summary-target"><span>${timed?'Best time':(targetReps(card)?'Target-rep load':'Best load')}</span><strong>—</strong></div><div class="session-chip summary-volume"><span>${timed?'Total time':'Volume'}</span><strong>—</strong></div>`; anchor.insertAdjacentElement('afterend',summary);
   }
   const usual=latestSessionUsualKg(card), complete=sets.nextElementSibling, note=complete?.nextElementSibling, usualTime=latestSessionUsualSeconds(card); if(note?.classList.contains('usual-weight-note')){let msg=Number.isFinite(usual)?`Most-used working weight: ${fmt(displayFromKg(usual))}.`:'No previous working weight yet.'; if(timed&&Number.isFinite(usualTime))msg+=` Usual time: ${usualTime} sec.`; msg+=' Change any set whenever you need to.'; note.textContent=msg;}
-  $$('.set-log-row',sets).forEach((row,index)=>{ const dot=$('.set-dot',row), s=ensureCurrentSet(card,dot,index), weight=$('.set-weight',row); weight.placeholder=state.weightUnit; weight.value=Number.isFinite(s.kg)?fmtNum(displayFromKg(s.kg)):''; if(timed){const seconds=$('.set-seconds',row); seconds.value=Number.isFinite(s.seconds)?s.seconds:'';} else {const reps=$('.set-reps',row); reps.value=Number.isFinite(s.reps)?s.reps:''; if(Number.isFinite(s.dropKg)||Number.isFinite(s.dropReps))addDropEditor(row,false); const dw=$('.drop-weight',row), dr=$('.drop-reps',row); if(dw){dw.placeholder=state.weightUnit; dw.value=Number.isFinite(s.dropKg)?fmtNum(displayFromKg(s.dropKg)):'';} if(dr)dr.value=Number.isFinite(s.dropReps)?s.dropReps:'';} });
+  $$('.set-log-row',sets).forEach((row,index)=>{ 
+    $$('.set-field',row).forEach(bindTapToReplace);
+    const dot=$('.set-dot',row), s=ensureCurrentSet(card,dot,index), weight=$('.set-weight',row); weight.placeholder=state.weightUnit; weight.value=Number.isFinite(s.kg)?fmtNum(displayFromKg(s.kg)):''; if(timed){const seconds=$('.set-seconds',row); seconds.value=Number.isFinite(s.seconds)?s.seconds:'';} else {const reps=$('.set-reps',row); reps.value=Number.isFinite(s.reps)?s.reps:''; if(Number.isFinite(s.dropKg)||Number.isFinite(s.dropReps))addDropEditor(row,false); const dw=$('.drop-weight',row), dr=$('.drop-reps',row); if(dw){dw.placeholder=state.weightUnit; dw.value=Number.isFinite(s.dropKg)?fmtNum(displayFromKg(s.dropKg)):'';} if(dr)dr.value=Number.isFinite(s.dropReps)?s.dropReps:'';} });
   const allDone=$$('.set-dot',card).length>0&&$$('.set-dot',card).every(d=>d.classList.contains('done')); if(complete?.classList.contains('exercise-complete-all')){complete.classList.toggle('done',allDone); complete.textContent=allDone?'All sets marked complete ✓':'✓ Complete all sets with usual weight';} renderCurrentSessionSummary(card);
 }
 function refreshDaySetRows(day){ exerciseCardsForDay(day).forEach(card=>renderSetRows(card)); }
@@ -2106,13 +2168,23 @@ $('#prepare-stable')?.addEventListener('click',async()=>{
 
 // Beta popup: list ONLY changes introduced in this beta build.
 const LIFTLOOP_CHANGELOG = {
-  '2026.10.06-beta.9': {
+  '2026.10.13-beta.10': {
     title: 'What changed in this Beta update',
     changes: [
       {
-        icon:'👤',
-        title:'Cleaner profile wording',
-        text:'The profile section now uses neutral wording and no longer refers to sharing LiftLoop with a friend.'
+        icon:'✅',
+        title:'Completed exercises are easier to spot',
+        text:'When an exercise is collapsed and all of its planned sets are complete, its exercise number now lights up green.'
+      },
+      {
+        icon:'⌨️',
+        title:'Faster number entry',
+        text:'Tapping a workout number field selects the existing value so your next typed number replaces it immediately.'
+      },
+      {
+        icon:'➡️',
+        title:'Weight carries into the next set',
+        text:'After completing a set, the next unfinished set now assumes the weight you just used unless you already edited that next set manually.'
       }
     ]
   }
@@ -2121,38 +2193,23 @@ const LIFTLOOP_CHANGELOG = {
 // Public release notes: cumulative NET changes since the last stable build.
 // Update this list while Beta evolves; Beta users do not see it until promotion.
 const LIFTLOOP_STABLE_RELEASE_NOTES = {
-  fromBuild:'2026.10.05.1',
+  fromBuild:'2026.10.06.2',
   title:'What’s new in LiftLoop',
   changes:[
     {
-      icon:'⏱️',
-      title:'Reps or time for timed movements',
-      text:'Russian twists and plank-style exercises can be tracked by reps or by time, with optional weight.'
+      icon:'✅',
+      title:'Completed exercises are easier to spot',
+      text:'Collapsed exercises now show a green exercise number once every planned set for that exercise is complete.'
     },
     {
-      icon:'✓',
-      title:'Partial workouts',
-      text:'You can finish a workout without completing every planned set. Unchecked sets and skipped exercises are saved as skipped, not completed.'
+      icon:'⌨️',
+      title:'Faster number entry',
+      text:'Tapping a workout number field selects the current value so a new number replaces it immediately.'
     },
     {
-      icon:'⚡',
-      title:'Faster set completion',
-      text:'Complete all sets can fill your most frequently used previous working weight instead of making you re-enter the same load.'
-    },
-    {
-      icon:'↘️',
-      title:'Smarter drop sets',
-      text:'Entering drop-set reps automatically adjusts the first portion of the set so the total matches the prescribed reps.'
-    },
-    {
-      icon:'📈',
-      title:'Timed progress tracking',
-      text:'Timed exercises now track duration progress while rep-based exercises continue tracking working weight and volume.'
-    },
-    {
-      icon:'✨',
-      title:'What’s New after updates',
-      text:'After a public update, LiftLoop shows the changes once on first launch, with the list limited to that public release.'
+      icon:'➡️',
+      title:'Smarter within-workout weight defaults',
+      text:'Completing a set carries that working weight into the next unfinished set unless you already changed the next set yourself.'
     }
   ]
 };
