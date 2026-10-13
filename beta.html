@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-build="2026.10.13-beta.17">
+<html lang="en" data-build="2026.10.13-beta.18">
 <head>
 <meta charset="utf-8">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
@@ -369,8 +369,10 @@ button{font:inherit}
 .whats-new-close{
   width:100%;min-height:48px;border:0;border-radius:13px;
   background:linear-gradient(135deg,var(--accent),#6772e8);color:white;
-  font-weight:900;font-size:12px;touch-action:manipulation
+  font-weight:900;font-size:12px;touch-action:manipulation;pointer-events:auto;position:relative;z-index:2
 }
+.whats-new-x{pointer-events:auto;position:relative;z-index:2}
+.whats-new-card{pointer-events:auto}
 
 
 
@@ -1359,7 +1361,7 @@ button{font:inherit}
     <button type="button" class="update-check" id="open-whats-new" style="margin-left:6px">What’s New</button>
     <div class="update-status" id="update-status">Automatic update check enabled</div>
   </div>
-  <p style="text-align:center;color:#697383;font-size:9px;margin:18px 0 6px">Build 2026.10.13-beta.17 · interaction fix + live mirror</p>
+  <p style="text-align:center;color:#697383;font-size:9px;margin:18px 0 6px">Build 2026.10.13-beta.18 · modal interaction fix</p>
   <p class="credit">
     Video demonstrations are embedded from their original YouTube sources. Previous vector artwork source:
     <a href="https://github.com/InlitX/GymMane" target="_blank" rel="noopener">GymMane</a>,
@@ -2659,18 +2661,13 @@ $('#prepare-stable')?.addEventListener('click',async()=>{
 
 // Beta popup: list ONLY changes introduced since the currently published Beta build.
 const LIFTLOOP_CHANGELOG = {
-  '2026.10.13-beta.17': {
+  '2026.10.13-beta.18': {
     title: 'What changed in this Beta update',
     changes: [
       {
         icon:'🛠️',
-        title:'Beta controls fixed',
-        text:'Fixed an achievement initialization-order error that stopped What’s New, Check for Update, and Developer Lab controls from receiving their handlers.'
-      },
-      {
-        icon:'↻',
-        title:'Live progress mirror',
-        text:'Normal Beta now copies the current live LiftLoop state on launch and when returning to Beta, while Test Mode remains fully isolated and never writes back to the live app.'
+        title:'What’s New is tappable again',
+        text:'Removed the pointer-events bug that made the visible update sheet ignore every tap, and added independent emergency close handlers for Got it, X, and backdrop dismissal.'
       }
     ]
   }
@@ -2756,12 +2753,16 @@ function renderWhatsNew(build=LIFTLOOP_BUILD){
       <div><strong>${change.title}</strong><span>${change.text}</span></div>`;
     list.appendChild(li);
   });
+  overlay.style.pointerEvents='';
   overlay.hidden=false;
   return true;
 }
 function dismissWhatsNew(){
   const overlay=document.getElementById('whats-new-overlay');
-  if(overlay) overlay.hidden=true;
+  if(overlay){
+    overlay.hidden=true;
+    overlay.style.pointerEvents='';
+  }
   try{ localStorage.setItem(whatsNewStorageKey(),LIFTLOOP_BUILD); }catch(e){}
 }
 function maybeShowWhatsNew(){
@@ -3840,11 +3841,40 @@ if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
 (() => {
   const byId=id=>document.getElementById(id);
 
-  // Always start inactive full-screen layers in a genuinely non-interactive state.
-  ['whats-new-overlay','achievement-overlay','achievement-detail-overlay'].forEach(id=>{
-    const el=byId(id);
-    if(el?.hasAttribute('hidden')) el.style.pointerEvents='none';
+  // Emergency modal controls are deliberately independent of the main app bootstrap.
+  // If another Beta feature crashes, the user must still be able to dismiss this sheet.
+  const emergencyDismissWhatsNew=()=>{
+    const overlay=byId('whats-new-overlay');
+    if(overlay){
+      overlay.hidden=true;
+      overlay.style.pointerEvents='';
+    }
+    try{
+      if(typeof whatsNewStorageKey==='function' && typeof LIFTLOOP_BUILD!=='undefined'){
+        localStorage.setItem(whatsNewStorageKey(),LIFTLOOP_BUILD);
+      }
+    }catch(e){}
+  };
+
+  ['whats-new-close','whats-new-x'].forEach(id=>{
+    const button=byId(id);
+    if(button && !button.dataset.emergencyBound){
+      button.dataset.emergencyBound='1';
+      button.addEventListener('click',emergencyDismissWhatsNew);
+      button.addEventListener('touchend',e=>{
+        e.preventDefault();
+        emergencyDismissWhatsNew();
+      },{passive:false});
+    }
   });
+
+  const emergencyOverlay=byId('whats-new-overlay');
+  if(emergencyOverlay && !emergencyOverlay.dataset.emergencyBound){
+    emergencyOverlay.dataset.emergencyBound='1';
+    emergencyOverlay.addEventListener('click',e=>{
+      if(e.target===emergencyOverlay) emergencyDismissWhatsNew();
+    });
+  }
 
   // If the main script is healthy, re-binding these functions is idempotent enough
   // for Beta and guarantees the controls recover after initialization-order changes.
