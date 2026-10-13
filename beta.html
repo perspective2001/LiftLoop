@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-build="2026.10.13-beta.25">
+<html lang="en" data-build="2026.10.13-beta.26">
 <head>
 <meta charset="utf-8">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
@@ -1323,6 +1323,42 @@ button{font:inherit}
   .featured-copy strong{font-size:19px!important}
 }
 
+
+/* ---------- Beta 26: two-step Featured interaction ---------- */
+.main-featured-achievement{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) 46px!important;
+  gap:0!important;
+  padding:0!important;
+  overflow:visible!important;
+}
+.main-featured-achievement[hidden]{display:none!important}
+.main-featured-preview{
+  appearance:none;border:0;background:transparent;color:inherit;
+  display:grid;grid-template-columns:66px minmax(0,1fr);align-items:center;gap:11px;
+  min-width:0;min-height:84px;padding:9px 10px 9px 9px;text-align:left;
+  border-radius:18px 0 0 18px;touch-action:manipulation
+}
+.main-featured-preview:active{background:rgba(255,255,255,.025)}
+.main-featured-arrow-button{
+  appearance:none;border:0;border-left:1px solid rgba(255,255,255,.07);
+  background:rgba(0,0,0,.08);color:#657181;
+  display:grid;place-items:center;min-width:46px;min-height:84px;
+  border-radius:0 18px 18px 0;touch-action:manipulation
+}
+.main-featured-arrow-button:active{background:rgba(255,255,255,.045);color:#aab3c0}
+.main-featured-arrow{font-size:25px;line-height:1}
+.main-featured-copy{min-width:0}
+.main-featured-name{white-space:normal!important;overflow:visible!important}
+@media(max-width:520px){
+  .main-featured-achievement{grid-template-columns:minmax(0,1fr) 42px!important}
+  .main-featured-preview{
+    grid-template-columns:60px minmax(0,1fr)!important;
+    min-height:78px!important;padding:9px 8px 9px 9px!important
+  }
+  .main-featured-arrow-button{min-width:42px!important;min-height:78px!important}
+}
+
 </style>
 </head>
 <body>
@@ -1376,18 +1412,22 @@ button{font:inherit}
       </div>
     </div>
 
-    <button type="button" class="main-featured-achievement" id="main-featured-achievement" hidden aria-label="View featured achievement in Progress">
-      <span class="main-featured-icon-wrap">
-        <span class="main-featured-icon" id="main-featured-icon">★</span>
-        <span class="main-featured-special" id="main-featured-special" hidden>✦</span>
-        <span class="main-featured-evolution" id="main-featured-evolution" hidden></span>
-      </span>
-      <span class="main-featured-copy">
-        <span class="main-featured-name" id="main-featured-name">Featured achievement</span>
-        <span class="main-featured-tier" id="main-featured-tier"></span>
-      </span>
-      <span class="main-featured-arrow" aria-hidden="true">›</span>
-    </button>
+    <div class="main-featured-achievement" id="main-featured-achievement" hidden>
+      <button type="button" class="main-featured-preview" id="main-featured-preview" aria-label="Preview featured achievement">
+        <span class="main-featured-icon-wrap">
+          <span class="main-featured-icon" id="main-featured-icon">★</span>
+          <span class="main-featured-special" id="main-featured-special" hidden>✦</span>
+          <span class="main-featured-evolution" id="main-featured-evolution" hidden></span>
+        </span>
+        <span class="main-featured-copy">
+          <span class="main-featured-name" id="main-featured-name">Featured achievement</span>
+          <span class="main-featured-tier" id="main-featured-tier"></span>
+        </span>
+      </button>
+      <button type="button" class="main-featured-arrow-button" id="main-featured-arrow-button" aria-label="Open featured achievement in Progress">
+        <span class="main-featured-arrow" aria-hidden="true">›</span>
+      </button>
+    </div>
 
     <div class="consistency-status" id="consistency-status" hidden></div>
     <details class="recent-workouts">
@@ -2322,7 +2362,7 @@ button{font:inherit}
     <button type="button" class="update-check" id="open-whats-new" style="margin-left:6px">What’s New</button>
     <div class="update-status" id="update-status">Automatic update check enabled</div>
   </div>
-  <p style="text-align:center;color:#697383;font-size:9px;margin:18px 0 6px">Build 2026.10.13-beta.25 · cleaner header + achievement navigation</p>
+  <p style="text-align:center;color:#697383;font-size:9px;margin:18px 0 6px">Build 2026.10.13-beta.26 · two-step featured interaction</p>
   <p class="credit">
     Video demonstrations are embedded from their original YouTube sources. Previous vector artwork source:
     <a href="https://github.com/InlitX/GymMane" target="_blank" rel="noopener">GymMane</a>,
@@ -3639,28 +3679,18 @@ $('#prepare-stable')?.addEventListener('click',async()=>{
 
 // Beta popup: list ONLY changes introduced since the currently published Beta build.
 const LIFTLOOP_CHANGELOG = {
-  '2026.10.13-beta.25': {
+  '2026.10.13-beta.26': {
     title: 'What changed in this Beta update',
     changes: [
       {
-        icon:'▰',
-        title:'Level and progress are one clear block',
-        text:'The Level number, rank, and 5-step progress bar now stay together, with responsive number sizing so large levels do not cover the rank.'
-      },
-      {
         icon:'★',
-        title:'Featured achievement is larger and navigates',
-        text:'The workout-screen Featured badge is now a full-width identity row with a larger badge. Tap it to jump directly to that achievement in Progress.'
+        title:'Featured badge uses two-step navigation',
+        text:'Tap the large Featured badge/title area for an in-place achievement preview. Only the separate › button jumps to that exact badge in Progress.'
       },
       {
-        icon:'✓',
-        title:'Featured can be turned off',
-        text:'The Feature control in achievement details is now a true toggle: Feature → ✓ Featured → Feature, and turning it off hides the workout-screen badge.'
-      },
-      {
-        icon:'⌄',
-        title:'Achievements are simpler',
-        text:'Journey, Consistency, Training, Completion, Logging, and Core labels are removed from the Trophy Case. It is now just Earned or Special.'
+        icon:'🧪',
+        title:'Level and lifetime previews fixed',
+        text:'Developer Lab Level-frame and lifetime-milestone previews now use a delegated tap handler so those safe preview buttons remain responsive.'
       }
     ]
   }
@@ -3776,6 +3806,11 @@ const LIFTLOOP_STABLE_RELEASE_NOTES = {
       icon:'⌄',
       title:'Simpler Trophy Case',
       text:'Achievement browsing focuses on earned badges and Special discoveries instead of category labels and locked clutter.'
+    },
+    {
+      icon:'★',
+      title:'Safer Featured navigation',
+      text:'Tapping the Featured badge previews it in place, while a separate arrow opens its exact location in Progress.'
     },
     {
       icon:'100',
@@ -4658,7 +4693,15 @@ function renderMainFeaturedAchievement(){
     evolution.textContent=evolutionStarsText(stage);
   }
   $('#main-featured-tier').textContent=`${tierLabel(def)}${stage?` · ${specialEvolutionLabel(stage)}`:''}`;
-  button.onclick=()=>goToAchievementInProgress(def.id);
+
+  const previewButton=$('#main-featured-preview');
+  if(previewButton){
+    previewButton.onclick=()=>openAchievementDetail(def.id);
+  }
+  const arrowButton=$('#main-featured-arrow-button');
+  if(arrowButton){
+    arrowButton.onclick=()=>goToAchievementInProgress(def.id);
+  }
 }
 
 function renderFeaturedAchievement(){
@@ -5093,6 +5136,43 @@ function bindDeveloperLab(){
   $('#dev-achievement-select')?.addEventListener('change',updatePreviewControls);
   updatePreviewControls();
 
+  // Delegated safe-preview controls: one Lab listener survives future markup changes
+  // and avoids individually dead Level/Lifetime buttons.
+  lab.addEventListener('click',event=>{
+    const levelButton=event.target.closest?.('[data-dev-level-preview]');
+    if(levelButton && lab.contains(levelButton)){
+      const level=Math.max(1,Number(levelButton.dataset.devLevelPreview)||1);
+      applyLevelVisual(level);
+      devStatus(`Previewing Level ${level.toLocaleString()} visual only. Tap Actual to restore.`);
+      return;
+    }
+
+    const levelReset=event.target.closest?.('#dev-level-preview-reset');
+    if(levelReset && lab.contains(levelReset)){
+      renderGamify();
+      devStatus('Restored your actual Level display.');
+      return;
+    }
+
+    const lifetimeButton=event.target.closest?.('.dev-lifetime-preview');
+    if(lifetimeButton && lab.contains(lifetimeButton)){
+      const id=lifetimeButton.dataset.achievementId;
+      const def=achievementDef(id);
+      if(!def){
+        devStatus('That lifetime milestone is unavailable in this build.');
+        return;
+      }
+      const select=$('#dev-achievement-select');
+      if(select){
+        select.value=id;
+        select.dispatchEvent(new Event('change'));
+      }
+      queueAchievementPresentation({kind:'unlock',achievementId:id,preview:true});
+      devStatus(`Previewing ${def.name}. No data changed.`);
+      return;
+    }
+  });
+
   $('#dev-enter-copy')?.addEventListener('click',()=>enterDeveloperTestMode(false));
   $('#dev-enter-fresh')?.addEventListener('click',()=>enterDeveloperTestMode(true));
   $('#dev-exit')?.addEventListener('click',exitDeveloperTestMode);
@@ -5166,7 +5246,10 @@ function bindDeveloperLab(){
       evolution.textContent=evolutionStarsText(stage);
     }
     $('#main-featured-tier').textContent=`${tierLabel(def)}${stage?` · ${specialEvolutionLabel(stage)}`:''}`;
-    button.onclick=()=>goToAchievementInProgress(def.id);
+    const previewButton=$('#main-featured-preview');
+    if(previewButton) previewButton.onclick=()=>openAchievementDetail(def.id,{preview:true});
+    const arrowButton=$('#main-featured-arrow-button');
+    if(arrowButton) arrowButton.onclick=()=>goToAchievementInProgress(def.id);
   };
   $$('[data-dev-header-preview]').forEach(btn=>btn.addEventListener('click',()=>{
     const level=Math.max(1,Number(btn.dataset.devHeaderPreview)||1);
@@ -5179,25 +5262,6 @@ function bindDeveloperLab(){
     renderMainFeaturedAchievement();
     devStatus('Restored your actual workout header.');
   });
-
-  $$('[data-dev-level-preview]').forEach(btn=>btn.addEventListener('click',()=>{
-    const level=Math.max(1,Number(btn.dataset.devLevelPreview)||1);
-    applyLevelVisual(level);
-    devStatus(`Previewing Level ${level.toLocaleString()} visual only. Tap Actual to restore.`);
-  }));
-  $('#dev-level-preview-reset')?.addEventListener('click',()=>{
-    renderGamify();
-    devStatus('Restored your actual Level display.');
-  });
-  $$('.dev-lifetime-preview').forEach(btn=>btn.addEventListener('click',()=>{
-    const id=btn.dataset.achievementId;
-    const def=achievementDef(id);
-    if(!def) return;
-    const select=$('#dev-achievement-select');
-    if(select){select.value=id;select.dispatchEvent(new Event('change'));}
-    queueAchievementPresentation({kind:'unlock',achievementId:id,preview:true});
-    devStatus(`Previewing ${def.name}. No data changed.`);
-  }));
 
   $('#dev-unlock-selected')?.addEventListener('click',()=>devUnlockAchievement(devAchievementId(),true));
   $('#dev-lock-selected')?.addEventListener('click',()=>devLockAchievement(devAchievementId()));
