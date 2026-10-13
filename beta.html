@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-build="2026.10.13-beta.14">
+<html lang="en" data-build="2026.10.13-beta.16">
 <head>
 <meta charset="utf-8">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
@@ -238,6 +238,28 @@ button{font:inherit}
 .update-check{border:1px solid #343b49;background:#20252e;color:#cbd2dc;border-radius:10px;padding:8px 11px;font-size:10px;font-weight:800}
 .update-status{margin-top:6px;color:#717c8b;font-size:9px}
 
+.deploy-watch{
+  display:flex;align-items:center;justify-content:center;gap:7px;
+  margin:-5px 0 12px;padding:8px 10px;border:1px solid #303744;border-radius:11px;
+  background:#171c24;color:#929cab;font-size:9px;font-weight:800
+}
+.deploy-watch .deploy-dot{
+  width:7px;height:7px;border-radius:50%;background:#657081;flex:0 0 7px
+}
+.deploy-watch.checking .deploy-dot,
+.deploy-watch.publishing .deploy-dot{
+  background:#d9a64a;
+  box-shadow:0 0 0 0 rgba(217,166,74,.45);
+  animation:deployPulse 1.2s ease-out infinite
+}
+.deploy-watch.ready .deploy-dot{background:#69e7b8}
+.deploy-watch.error .deploy-dot{background:#e98585}
+@keyframes deployPulse{
+  0%{box-shadow:0 0 0 0 rgba(217,166,74,.45)}
+  70%{box-shadow:0 0 0 7px rgba(217,166,74,0)}
+  100%{box-shadow:0 0 0 0 rgba(217,166,74,0)}
+}
+
 
 /* Profile, backup and per-device routine settings */
 .settings-panel{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:13px;margin-top:12px}
@@ -344,6 +366,61 @@ button{font:inherit}
 }
 
 
+
+/* BETA_DEV_LAB_CSS_START */
+.dev-mode-banner{
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  margin:-5px 0 12px;padding:9px 10px;border-radius:12px;
+  border:1px solid #805dba;background:linear-gradient(135deg,#2a1d3d,#1c203b);
+  color:#eadcff;font-size:10px;font-weight:950;letter-spacing:.08em;text-transform:uppercase
+}
+.dev-mode-banner[hidden]{display:none!important}
+.dev-lab{
+  margin-top:12px;border:1px solid #4d3d68;border-radius:18px;
+  background:linear-gradient(180deg,#181421,#15171e);overflow:hidden
+}
+.dev-lab summary{
+  list-style:none;cursor:pointer;padding:13px 14px;display:flex;align-items:center;
+  justify-content:space-between;gap:10px;font-size:12px;font-weight:950
+}
+.dev-lab summary::-webkit-details-marker{display:none}
+.dev-lab summary:after{content:"⌄";color:#aa95d0;font-size:17px}
+.dev-lab[open] summary:after{transform:rotate(180deg)}
+.dev-lab-body{padding:0 13px 14px;border-top:1px solid #372c48}
+.dev-lab-copy{color:#9c93aa;font-size:9px;line-height:1.5;margin:10px 0}
+.dev-mode-pill{
+  display:inline-flex;align-items:center;gap:5px;border:1px solid #4a4159;
+  background:#211c29;border-radius:999px;padding:5px 8px;color:#ada5b8;
+  font-size:8px;font-weight:900;white-space:nowrap
+}
+.dev-mode-pill.active{border-color:#7b5fab;background:#302342;color:#eadcff}
+.dev-section{border-top:1px solid #30283b;padding-top:11px;margin-top:11px}
+.dev-section:first-of-type{border-top:0;padding-top:0}
+.dev-section h4{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#aa95d0;margin:0 0 8px}
+.dev-actions{display:flex;flex-wrap:wrap;gap:7px}
+.dev-btn{
+  min-height:36px;border:1px solid #453956;background:#211c2a;color:#e9e2f2;
+  border-radius:10px;padding:7px 9px;font-size:9px;font-weight:850
+}
+.dev-btn.primary{background:#433062;border-color:#694c93;color:#fff}
+.dev-btn.safe{background:#1b2927;border-color:#31564e;color:#9ce9d2}
+.dev-btn.danger{background:#2a1b20;border-color:#5b313b;color:#f1a6b5}
+.dev-btn:disabled{opacity:.42}
+.dev-select{
+  width:100%;height:40px;border:1px solid #453956;background:#100e15;color:#fff;
+  border-radius:10px;padding:0 10px;font-size:11px;font-weight:800;margin-bottom:8px
+}
+.dev-scenario-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.dev-status{min-height:15px;margin-top:8px;color:#9b92a8;font-size:9px;line-height:1.4}
+.dev-warning{
+  margin-top:9px;padding:8px 9px;border-radius:10px;background:#201925;
+  border:1px solid #44354f;color:#bfb1ca;font-size:8.5px;line-height:1.45
+}
+@media(max-width:520px){
+  .dev-scenario-grid{grid-template-columns:repeat(2,1fr)}
+}
+/* BETA_DEV_LAB_CSS_END */
+
 /* Achievements / Trophy Case */
 .achievement-panel{overflow:hidden}
 .achievement-head-copy{color:var(--muted);font-size:9px;line-height:1.45;margin-top:3px}
@@ -430,6 +507,13 @@ button{font:inherit}
 <body>
 <main class="app">
   <div class="beta-banner"><span class="beta-dot"></span>LiftLoop Beta · Test changes here first</div>
+  <div class="deploy-watch checking" id="deploy-watch" role="status" aria-live="polite">
+    <span class="deploy-dot" aria-hidden="true"></span>
+    <span id="deploy-watch-text">Checking deployment status…</span>
+  </div>
+  <div class="dev-mode-banner" id="dev-mode-banner" hidden>
+    🧪 Test Mode · isolated Beta data
+  </div>
   <header class="brand">
     <img src="icon-180.png" alt="LiftLoop logo">
     <div><h1>LiftLoop</h1><p>Tap an exercise to watch the movement</p><div class="profile-greeting" id="profile-greeting"></div></div>
@@ -1109,6 +1193,88 @@ button{font:inherit}
       </div>
     </div>
 
+    <!-- BETA_DEV_LAB_START -->
+    <details class="dev-lab" id="beta-dev-lab">
+      <summary>
+        <span>🧪 Developer Lab · Beta only</span>
+        <span class="dev-mode-pill" id="dev-mode-pill">Live Beta data</span>
+      </summary>
+      <div class="dev-lab-body">
+        <div class="dev-lab-copy">
+          Preview UI states instantly, or enter isolated Test Mode to create fake progress without changing your real Beta history.
+        </div>
+
+        <div class="dev-section">
+          <h4>Sandbox</h4>
+          <div class="dev-actions" id="dev-live-actions">
+            <button type="button" class="dev-btn primary" id="dev-enter-copy">Enter Test Mode · copy current data</button>
+            <button type="button" class="dev-btn" id="dev-enter-fresh">Enter fresh Test Mode</button>
+          </div>
+          <div class="dev-actions" id="dev-test-actions" hidden>
+            <button type="button" class="dev-btn safe" id="dev-exit">Exit Test Mode</button>
+            <button type="button" class="dev-btn" id="dev-reset-copy">Reset to real Beta copy</button>
+            <button type="button" class="dev-btn danger" id="dev-reset-fresh">Reset Test Mode empty</button>
+          </div>
+          <div class="dev-warning">
+            Test Mode stores everything under a separate local key. Exiting Test Mode returns to your untouched Beta data.
+          </div>
+        </div>
+
+        <div class="dev-section">
+          <h4>Achievement preview</h4>
+          <select class="dev-select" id="dev-achievement-select" aria-label="Choose achievement to test"></select>
+          <div class="dev-actions">
+            <button type="button" class="dev-btn primary" id="dev-preview-unlock">Preview unlock</button>
+            <button type="button" class="dev-btn" id="dev-preview-detail">Open current detail</button>
+            <button type="button" class="dev-btn" id="dev-preview-moment">Preview Special Moment</button>
+            <button type="button" class="dev-btn" id="dev-preview-tiers">Preview all tiers</button>
+            <button type="button" class="dev-btn" id="dev-preview-retro">Preview retroactive batch</button>
+          </div>
+        </div>
+
+        <div class="dev-section">
+          <h4>Sandbox achievement state</h4>
+          <div class="dev-actions">
+            <button type="button" class="dev-btn primary dev-mutating" id="dev-unlock-selected">Unlock selected</button>
+            <button type="button" class="dev-btn dev-mutating" id="dev-lock-selected">Lock selected</button>
+            <button type="button" class="dev-btn dev-mutating" id="dev-add-moment">Add Special Moment</button>
+            <button type="button" class="dev-btn dev-mutating" id="dev-gild-special">Make Special Gilded</button>
+            <button type="button" class="dev-btn dev-mutating" id="dev-ascend-special">Make Special Ascended</button>
+          </div>
+        </div>
+
+        <div class="dev-section">
+          <h4>Preset profiles</h4>
+          <div class="dev-scenario-grid">
+            <button type="button" class="dev-btn dev-mutating" data-dev-workouts="1">1 workout</button>
+            <button type="button" class="dev-btn dev-mutating" data-dev-workouts="5">5 workouts</button>
+            <button type="button" class="dev-btn dev-mutating" data-dev-workouts="10">10 workouts</button>
+            <button type="button" class="dev-btn dev-mutating" data-dev-workouts="25">25 workouts</button>
+            <button type="button" class="dev-btn dev-mutating" data-dev-workouts="50">50 workouts</button>
+            <button type="button" class="dev-btn dev-mutating" data-dev-workouts="100">100 workouts</button>
+            <button type="button" class="dev-btn dev-mutating" id="dev-seed-rolling">3-in-7 goal</button>
+            <button type="button" class="dev-btn dev-mutating" id="dev-seed-rotation">Full Rotation</button>
+            <button type="button" class="dev-btn dev-mutating" id="dev-unlock-normal">Unlock all normal</button>
+            <button type="button" class="dev-btn dev-mutating" id="dev-unlock-special">Unlock all Special</button>
+            <button type="button" class="dev-btn dev-mutating" id="dev-unlock-everything">Full Trophy Case</button>
+            <button type="button" class="dev-btn danger dev-mutating" id="dev-reset-achievements">Reset achievements</button>
+          </div>
+        </div>
+
+        <div class="dev-section">
+          <h4>Other UI previews</h4>
+          <div class="dev-actions">
+            <button type="button" class="dev-btn" id="dev-preview-whats-new">What’s New</button>
+            <button type="button" class="dev-btn" id="dev-preview-level">Level-up toast</button>
+            <button type="button" class="dev-btn" id="dev-preview-pr">PR toast</button>
+          </div>
+        </div>
+
+        <div class="dev-status" id="dev-status">Developer previews are safe. State-changing controls require Test Mode.</div>
+      </div>
+    </details>
+    <!-- BETA_DEV_LAB_END -->
+
     <div class="progress-panel">
       <div class="progress-panel-head">
         <h3>Exercise progress</h3>
@@ -1181,7 +1347,7 @@ button{font:inherit}
     <button type="button" class="update-check" id="open-whats-new" style="margin-left:6px">What’s New</button>
     <div class="update-status" id="update-status">Automatic update check enabled</div>
   </div>
-  <p style="text-align:center;color:#697383;font-size:9px;margin:18px 0 6px">Build 2026.10.13-beta.14 · achievements</p>
+  <p style="text-align:center;color:#697383;font-size:9px;margin:18px 0 6px">Build 2026.10.13-beta.16 · developer lab</p>
   <p class="credit">
     Video demonstrations are embedded from their original YouTube sources. Previous vector artwork source:
     <a href="https://github.com/InlitX/GymMane" target="_blank" rel="noopener">GymMane</a>,
@@ -1195,8 +1361,15 @@ button{font:inherit}
 const $=(s,r=document)=>r.querySelector(s);
 const $$=(s,r=document)=>[...r.querySelectorAll(s)];
 
+// BETA_STORAGE_ROUTER_START
+const LIFTLOOP_BETA_STORAGE_KEY='liftloop-beta-state';
+const LIFTLOOP_DEV_STORAGE_KEY='liftloop-beta-dev-state';
+const LIFTLOOP_DEV_MODE=sessionStorage.getItem('liftloop-beta-dev-mode')==='1';
+const LIFTLOOP_STORAGE_KEY=LIFTLOOP_DEV_MODE ? LIFTLOOP_DEV_STORAGE_KEY : LIFTLOOP_BETA_STORAGE_KEY;
+
 let state={};
-try{ state=JSON.parse(localStorage.getItem('liftloop-beta-state')||'{}'); }catch(e){ state={}; }
+try{ state=JSON.parse(localStorage.getItem(LIFTLOOP_STORAGE_KEY)||'{}'); }catch(e){ state={}; }
+// BETA_STORAGE_ROUTER_END
 
 // Initialize every feature before any progress/render function can run.
 state.workoutHistory = Array.isArray(state.workoutHistory) ? state.workoutHistory : [];
@@ -1212,7 +1385,7 @@ state.achievementMoments = Array.isArray(state.achievementMoments) ? state.achie
 state.featuredAchievement = typeof state.featuredAchievement==='string' ? state.featuredAchievement : '';
 state.achievementFilter = typeof state.achievementFilter==='string' ? state.achievementFilter : 'all';
 state.achievementSystemVersion = Number(state.achievementSystemVersion)||0;
-const save=()=>{try{localStorage.setItem('liftloop-beta-state',JSON.stringify(state));}catch(e){}};
+const save=()=>{try{localStorage.setItem(LIFTLOOP_STORAGE_KEY,JSON.stringify(state));}catch(e){}};
 
 function showDay(id){
   $$('.tab').forEach(b=>b.classList.toggle('active',b.dataset.tab===id));
@@ -2381,6 +2554,17 @@ function makeStableFromBetaSource(source){
   },null,2)};`;
   s=s.replace(/const LIFTLOOP_CHANGELOG = \{[\s\S]*?\n\};/,stableChangelog);
 
+  // Strip Beta-only Developer Lab and restore production storage routing.
+  s=s.replace(/<!-- BETA_DEV_LAB_START -->[\s\S]*?<!-- BETA_DEV_LAB_END -->/g,'');
+  s=s.replace(/\/\* BETA_DEV_LAB_CSS_START \*\/[\s\S]*?\/\* BETA_DEV_LAB_CSS_END \*\//g,'');
+  s=s.replace(/\/\/ BETA_DEV_LAB_JS_START[\s\S]*?\/\/ BETA_DEV_LAB_JS_END/g,'');
+  s=s.replace(/\/\/ BETA_STORAGE_ROUTER_START[\s\S]*?\/\/ BETA_STORAGE_ROUTER_END/g,
+    `let state={};
+try{ state=JSON.parse(localStorage.getItem('liftloop-state')||'{}'); }catch(e){ state={}; }`);
+  s=s.replace(/const save=\(\)=>\{try\{localStorage\.setItem\(LIFTLOOP_STORAGE_KEY,JSON\.stringify\(state\)\);\}catch\(e\)\{\}\};/g,
+    `const save=()=>{try{localStorage.setItem('liftloop-state',JSON.stringify(state));}catch(e){}};`);
+  s=s.replace(/\s*<div class="dev-mode-banner"[\s\S]*?<\/div>\s*/,'\n  ');
+
   // The promotion tool is Beta-only; remove it from the generated stable app.
   s=s.replace(/<div class="release-box">[\s\S]*?<\/div>/,'');
   s=s.replace(/function makeStableFromBetaSource\(source\)\{[\s\S]*?document\.getElementById\('prepare-stable'\)\?\.addEventListener\('click',[\s\S]*?\n\}\);\s*/,'');
@@ -2411,28 +2595,13 @@ $('#prepare-stable')?.addEventListener('click',async()=>{
 
 // Beta popup: list ONLY changes introduced since the currently published Beta build.
 const LIFTLOOP_CHANGELOG = {
-  '2026.10.13-beta.14': {
+  '2026.10.13-beta.16': {
     title: 'What changed in this Beta update',
     changes: [
       {
-        icon:'⚡',
-        title:'Tap an exercise number to quick-complete',
-        text:'While an exercise is collapsed, tapping its number completes all sets with your usual working weight and automatically opens the next enabled exercise.'
-      },
-      {
-        icon:'🏆',
-        title:'Achievements and Trophy Case',
-        text:'LiftLoop now has Bronze, Silver, Gold, and Mythic achievements, a Featured Badge, retroactive unlocks, and visible progress toward normal achievements.'
-      },
-      {
-        icon:'✦',
-        title:'Special discoveries and Moments',
-        text:'Hidden Special achievements recognize meaningful training patterns without counting against completion. Repeatable Specials can collect Moments and visually evolve.'
-      },
-      {
-        icon:'↗',
-        title:'Working Weight PRs are stricter',
-        text:'Progress achievements now use full-prescription Working Weight PRs, so a single heavier low-rep set does not count as the same kind of PR.'
+        icon:'🧪',
+        title:'Developer Lab',
+        text:'Beta now includes an isolated Test Mode, achievement/reveal previews, Special evolution testing, preset workout profiles, and quick UI previews without changing your real Beta history.'
       }
     ]
   }
@@ -2488,6 +2657,11 @@ const LIFTLOOP_STABLE_RELEASE_NOTES = {
       icon:'↗',
       title:'More meaningful Working Weight PRs',
       text:'Working Weight progress now reflects completing the full prescribed sets at the sustainable load rather than merely touching a heavier weight for fewer reps.'
+    },
+    {
+      icon:'☁️',
+      title:'Clear update status',
+      text:'LiftLoop now shows when a new commit is still publishing and confirms when the updated app is actually ready.'
     }
   ]
 };
@@ -3143,37 +3317,371 @@ if(document.readyState==='loading'){
 }
 
 
-// Independent self-updater: does not depend on a service worker.
-const LIFTLOOP_BUILD=document.documentElement.dataset.build||'unknown';
-async function checkForLiftLoopUpdate(manual=false){
-  const status=document.getElementById('update-status');
+
+// BETA_DEV_LAB_JS_START
+function devStatus(text){
+  const el=$('#dev-status');
+  if(el) el.textContent=text;
+}
+function devAchievementId(){
+  return $('#dev-achievement-select')?.value || achievementDefs()[0]?.id || '';
+}
+function devSetMutatingEnabled(){
+  const active=LIFTLOOP_DEV_MODE;
+  $$('.dev-mutating').forEach(btn=>btn.disabled=!active);
+  const live=$('#dev-live-actions'),test=$('#dev-test-actions'),pill=$('#dev-mode-pill'),banner=$('#dev-mode-banner');
+  if(live) live.hidden=active;
+  if(test) test.hidden=!active;
+  if(pill){
+    pill.textContent=active?'Test Mode · isolated':'Live Beta data';
+    pill.classList.toggle('active',active);
+  }
+  if(banner) banner.hidden=!active;
+}
+function devPopulateAchievementSelect(){
+  const select=$('#dev-achievement-select');
+  if(!select) return;
+  const prior=select.value;
+  select.innerHTML='';
+  achievementDefs().forEach(def=>{
+    const o=document.createElement('option');
+    o.value=def.id;
+    o.textContent=`${def.special?'✦ ':''}${def.name} · ${def.tier.toUpperCase()}${def.special?' · Special':''}`;
+    select.appendChild(o);
+  });
+  if(prior && achievementDef(prior)) select.value=prior;
+}
+function enterDeveloperTestMode(fresh=false){
   try{
-    if(manual && status) status.textContent='Checking…';
-    const url=`./beta.html?__liftloop_update=${Date.now()}`;
-    const res=await fetch(url,{cache:'no-store',headers:{'Cache-Control':'no-cache'}});
-    if(!res.ok) throw new Error(`HTTP ${res.status}`);
-    const text=await res.text();
-    const match=text.match(/<html[^>]*data-build=["']([^"']+)["']/i);
-    const latest=match?.[1];
-    if(latest && latest!==LIFTLOOP_BUILD){
-      if(status) status.textContent=`Updating ${LIFTLOOP_BUILD} → ${latest}…`;
-      const target=`./beta.html?v=${encodeURIComponent(latest)}&refresh=${Date.now()}`;
-      location.replace(target);
+    const payload=fresh ? '{}' : (localStorage.getItem(LIFTLOOP_BETA_STORAGE_KEY)||'{}');
+    localStorage.setItem(LIFTLOOP_DEV_STORAGE_KEY,payload);
+    sessionStorage.setItem('liftloop-beta-dev-mode','1');
+    location.reload();
+  }catch(e){
+    devStatus('Could not enter Test Mode.');
+  }
+}
+function exitDeveloperTestMode(){
+  sessionStorage.removeItem('liftloop-beta-dev-mode');
+  location.reload();
+}
+function resetDeveloperSandbox(fresh=false){
+  if(!LIFTLOOP_DEV_MODE) return;
+  const payload=fresh ? '{}' : (localStorage.getItem(LIFTLOOP_BETA_STORAGE_KEY)||'{}');
+  localStorage.setItem(LIFTLOOP_DEV_STORAGE_KEY,payload);
+  location.reload();
+}
+function devEnsureSpecialMoment(def,countTarget=1){
+  if(!def?.special || !LIFTLOOP_DEV_MODE) return;
+  state.achievements[def.id]=state.achievements[def.id]||{unlockedAt:Date.now(),evolutionStage:0};
+  let count=state.achievementMoments.filter(m=>m.achievementId===def.id).length;
+  while(count<countTarget){
+    const ts=Date.now()+count;
+    state.achievementMoments.push({
+      id:`dev-${def.id}-${ts}-${count}`,
+      achievementId:def.id,
+      ts,
+      title:def.name,
+      detail:`Developer Test Moment ${count+1} for ${def.name}.`
+    });
+    count++;
+  }
+  state.achievements[def.id].evolutionStage=specialEvolutionStage(def,count);
+  save();
+  renderAchievements();
+}
+function devUnlockAchievement(id,show=true){
+  if(!LIFTLOOP_DEV_MODE) return devStatus('Enter Test Mode before changing achievement state.');
+  const def=achievementDef(id); if(!def)return;
+  if(def.special){
+    devEnsureSpecialMoment(def,1);
+  }else{
+    state.achievements[id]={unlockedAt:Date.now(),evolutionStage:0};
+    save();renderAchievements();
+  }
+  if(show) queueAchievementPresentation({kind:'unlock',achievementId:id});
+  devStatus(`${def.name} unlocked in Test Mode.`);
+}
+function devLockAchievement(id){
+  if(!LIFTLOOP_DEV_MODE) return devStatus('Enter Test Mode before changing achievement state.');
+  const def=achievementDef(id); if(!def)return;
+  delete state.achievements[id];
+  state.achievementMoments=state.achievementMoments.filter(m=>m.achievementId!==id);
+  if(state.featuredAchievement===id) state.featuredAchievement='';
+  save();renderAchievements();
+  devStatus(`${def.name} reset to locked in Test Mode.`);
+}
+function devUnlockSet(filterFn){
+  if(!LIFTLOOP_DEV_MODE) return devStatus('Enter Test Mode before changing achievement state.');
+  achievementDefs().filter(filterFn).forEach(def=>{
+    if(def.special) devEnsureSpecialMoment(def,1);
+    else state.achievements[def.id]={unlockedAt:Date.now(),evolutionStage:0};
+  });
+  save();renderAchievements();
+}
+function devSeedWorkoutCount(n){
+  if(!LIFTLOOP_DEV_MODE) return;
+  state.workoutHistory=[];
+  const days=['push','pull','shoulders'];
+  const now=Date.now();
+  for(let i=0;i<n;i++){
+    // Four-day spacing keeps Journey testing from automatically farming 3-in-7.
+    const ts=now-(n-1-i)*4*86400000;
+    const day=days[i%3];
+    state.workoutHistory.push({
+      ts,day,name:DAY_NAMES[day]||day,
+      completedSets:18,totalSets:18,partial:false
+    });
+  }
+  state.achievements={};
+  state.achievementMoments=[];
+  state.featuredAchievement='';
+  state.achievementSystemVersion=ACHIEVEMENT_SYSTEM_VERSION;
+  save();
+  evaluateAchievements({initial:false});
+  renderGamify();renderProgress();
+  devStatus(`Seeded ${n} fake workout${n===1?'':'s'} in isolated Test Mode.`);
+}
+function devSeedRecentRotation(){
+  if(!LIFTLOOP_DEV_MODE) return;
+  state.workoutHistory=[];
+  const now=Date.now();
+  ['push','pull','shoulders'].forEach((day,i)=>{
+    state.workoutHistory.push({
+      ts:now-(2-i)*86400000,day,name:DAY_NAMES[day],
+      completedSets:18,totalSets:18,partial:false
+    });
+  });
+  state.achievements={};state.achievementMoments=[];state.featuredAchievement='';
+  state.achievementSystemVersion=ACHIEVEMENT_SYSTEM_VERSION;
+  save();evaluateAchievements({initial:false});renderGamify();renderProgress();
+  devStatus('Seeded Push + Pull + Shoulders/Core inside the last 3 days.');
+}
+function devResetAchievements(){
+  if(!LIFTLOOP_DEV_MODE) return;
+  state.achievements={};
+  state.achievementMoments=[];
+  state.featuredAchievement='';
+  state.achievementSystemVersion=ACHIEVEMENT_SYSTEM_VERSION;
+  save();renderAchievements();
+  devStatus('Achievement state reset. Workout history was left untouched.');
+}
+function previewAchievementTierSequence(){
+  const picks=['bronze','silver','gold','mythic'].map(t=>achievementDefs().find(d=>!d.special&&d.tier===t)).filter(Boolean);
+  const special=achievementDefs().find(d=>d.special);
+  if(special) picks.push(special);
+  picks.forEach((def,i)=>setTimeout(()=>queueAchievementPresentation({kind:'unlock',achievementId:def.id}),i*500));
+}
+function bindDeveloperLab(){
+  devPopulateAchievementSelect();
+  devSetMutatingEnabled();
+
+  $('#dev-enter-copy')?.addEventListener('click',()=>enterDeveloperTestMode(false));
+  $('#dev-enter-fresh')?.addEventListener('click',()=>enterDeveloperTestMode(true));
+  $('#dev-exit')?.addEventListener('click',exitDeveloperTestMode);
+  $('#dev-reset-copy')?.addEventListener('click',()=>resetDeveloperSandbox(false));
+  $('#dev-reset-fresh')?.addEventListener('click',()=>resetDeveloperSandbox(true));
+
+  $('#dev-preview-unlock')?.addEventListener('click',()=>{
+    const id=devAchievementId();
+    queueAchievementPresentation({kind:'unlock',achievementId:id});
+    devStatus(`Previewing ${achievementDef(id)?.name||'achievement'} unlock. No data changed.`);
+  });
+  $('#dev-preview-detail')?.addEventListener('click',()=>openAchievementDetail(devAchievementId()));
+  $('#dev-preview-moment')?.addEventListener('click',()=>{
+    const def=achievementDef(devAchievementId());
+    if(!def?.special) return devStatus('Choose a Special achievement to preview a Special Moment.');
+    queueAchievementPresentation({kind:'moment',achievementId:def.id,title:def.name,detail:'Developer preview of a recurring Special Moment.'});
+  });
+  $('#dev-preview-tiers')?.addEventListener('click',previewAchievementTierSequence);
+  $('#dev-preview-retro')?.addEventListener('click',()=>{
+    const ids=['first_steps','double_digits','committed','century_club'].filter(id=>achievementDef(id));
+    showRetroactiveAchievementSummary(ids);
+  });
+
+  $('#dev-unlock-selected')?.addEventListener('click',()=>devUnlockAchievement(devAchievementId(),true));
+  $('#dev-lock-selected')?.addEventListener('click',()=>devLockAchievement(devAchievementId()));
+  $('#dev-add-moment')?.addEventListener('click',()=>{
+    const def=achievementDef(devAchievementId());
+    if(!def?.special) return devStatus('Choose a Special achievement first.');
+    const count=state.achievementMoments.filter(m=>m.achievementId===def.id).length;
+    devEnsureSpecialMoment(def,count+1);
+    queueAchievementPresentation({kind:'moment',achievementId:def.id,title:def.name,detail:'Developer-created Special Moment.'});
+    devStatus(`Added Special Moment ${count+1} for ${def.name}.`);
+  });
+  $('#dev-gild-special')?.addEventListener('click',()=>{
+    const def=achievementDef(devAchievementId());
+    if(!def?.special||!def.repeatable) return devStatus('Choose a repeatable Special achievement.');
+    devEnsureSpecialMoment(def,3);
+    queueAchievementPresentation({kind:'evolution',achievementId:def.id,title:`${def.name} · Gilded`,detail:'Developer preview of the Gilded Special treatment.'});
+    devStatus(`${def.name} set to Gilded in Test Mode.`);
+  });
+  $('#dev-ascend-special')?.addEventListener('click',()=>{
+    const def=achievementDef(devAchievementId());
+    if(!def?.special||!def.repeatable) return devStatus('Choose a repeatable Special achievement.');
+    devEnsureSpecialMoment(def,7);
+    queueAchievementPresentation({kind:'evolution',achievementId:def.id,title:`${def.name} · Ascended`,detail:'Developer preview of the Ascended Special treatment.'});
+    devStatus(`${def.name} set to Ascended in Test Mode.`);
+  });
+
+  $$('[data-dev-workouts]').forEach(btn=>btn.addEventListener('click',()=>devSeedWorkoutCount(Number(btn.dataset.devWorkouts))));
+  $('#dev-seed-rolling')?.addEventListener('click',devSeedRecentRotation);
+  $('#dev-seed-rotation')?.addEventListener('click',devSeedRecentRotation);
+  $('#dev-unlock-normal')?.addEventListener('click',()=>{
+    devUnlockSet(def=>!def.special);
+    devStatus('All visible achievements unlocked in Test Mode.');
+  });
+  $('#dev-unlock-special')?.addEventListener('click',()=>{
+    devUnlockSet(def=>def.special);
+    devStatus('All Special achievements unlocked in Test Mode.');
+  });
+  $('#dev-unlock-everything')?.addEventListener('click',()=>{
+    devUnlockSet(()=>true);
+    devStatus('Full Trophy Case created in Test Mode.');
+  });
+  $('#dev-reset-achievements')?.addEventListener('click',devResetAchievements);
+
+  $('#dev-preview-whats-new')?.addEventListener('click',()=>renderWhatsNew(LIFTLOOP_BUILD));
+  $('#dev-preview-level')?.addEventListener('click',()=>showLevelToast(state.workoutHistory.length+2));
+  $('#dev-preview-pr')?.addEventListener('click',()=>{
+    const t=$('#level-toast'); if(!t)return;
+    t.textContent='3 new PRs recorded';
+    t.classList.add('show');
+    setTimeout(()=>t.classList.remove('show'),1800);
+  });
+
+  if(LIFTLOOP_DEV_MODE){
+    const lab=$('#beta-dev-lab');
+    if(lab) lab.open=true;
+    devStatus('Test Mode active. All state changes are isolated from your real Beta profile.');
+  }
+}
+if(document.readyState==='loading'){
+  document.addEventListener('DOMContentLoaded',bindDeveloperLab,{once:true});
+}else{
+  bindDeveloperLab();
+}
+// BETA_DEV_LAB_JS_END
+
+
+// Independent self-updater + deployment watcher.
+const LIFTLOOP_BUILD=document.documentElement.dataset.build||'unknown';
+const LIFTLOOP_REPO_FILE=location.pathname.endsWith('/beta.html')?'beta.html':'index.html';
+const LIFTLOOP_PAGE_URL=LIFTLOOP_REPO_FILE==='beta.html'?'./beta.html':'./index.html';
+const LIFTLOOP_RAW_URL=`https://raw.githubusercontent.com/perspective2001/LiftLoop/main/${LIFTLOOP_REPO_FILE}`;
+let deploymentWatchTimer=null;
+
+function buildFromHtml(text){
+  return text?.match(/<html[^>]*data-build=["']([^"']+)["']/i)?.[1]||'';
+}
+function setDeploymentStatus(kind,text){
+  const watch=document.getElementById('deploy-watch');
+  const watchText=document.getElementById('deploy-watch-text');
+  const bottom=document.getElementById('update-status');
+  if(watch){
+    watch.classList.remove('checking','publishing','ready','error');
+    if(kind) watch.classList.add(kind);
+  }
+  if(watchText) watchText.textContent=text;
+  if(bottom) bottom.textContent=text;
+}
+function scheduleDeploymentWatch(){
+  clearTimeout(deploymentWatchTimer);
+  if(document.visibilityState==='hidden') return;
+  deploymentWatchTimer=setTimeout(()=>checkForLiftLoopUpdate(false,true),4000);
+}
+async function fetchBuild(url){
+  const join=url.includes('?')?'&':'?';
+  const res=await fetch(`${url}${join}__liftloop_status=${Date.now()}`,{
+    cache:'no-store',
+    headers:{'Cache-Control':'no-cache'}
+  });
+  if(!res.ok) throw new Error(`HTTP ${res.status}`);
+  return buildFromHtml(await res.text());
+}
+async function checkForLiftLoopUpdate(manual=false,watching=false){
+  clearTimeout(deploymentWatchTimer);
+  if(manual) setDeploymentStatus('checking','Checking GitHub and GitHub Pages…');
+  else if(!watching) setDeploymentStatus('checking','Checking deployment status…');
+
+  let repoBuild='';
+  let pagesBuild='';
+
+  try{
+    // Repo = committed source. Pages = what the installed app can actually receive.
+    const results=await Promise.allSettled([
+      fetchBuild(LIFTLOOP_RAW_URL),
+      fetchBuild(LIFTLOOP_PAGE_URL)
+    ]);
+    if(results[0].status==='fulfilled') repoBuild=results[0].value;
+    if(results[1].status==='fulfilled') pagesBuild=results[1].value;
+
+    // New commit exists, but GitHub Pages has not published that build yet.
+    if(repoBuild && pagesBuild && repoBuild!==pagesBuild){
+      setDeploymentStatus(
+        'publishing',
+        `Commit received · publishing ${repoBuild}…`
+      );
+      scheduleDeploymentWatch();
+      return false;
+    }
+
+    // Pages now has a build newer than the one currently running.
+    if(pagesBuild && pagesBuild!==LIFTLOOP_BUILD){
+      setDeploymentStatus(
+        'ready',
+        `Published · updating ${LIFTLOOP_BUILD} → ${pagesBuild}…`
+      );
+      const target=LIFTLOOP_REPO_FILE==='beta.html'
+        ? `./beta.html?v=${encodeURIComponent(pagesBuild)}&refresh=${Date.now()}`
+        : `./?v=${encodeURIComponent(pagesBuild)}&refresh=${Date.now()}`;
+      setTimeout(()=>location.replace(target),350);
       return true;
     }
-    if(status) status.textContent=manual ? `You're on the latest build (${LIFTLOOP_BUILD})` : 'Automatic update check enabled';
+
+    // Both sources agree with the currently running build.
+    if((!repoBuild || repoBuild===LIFTLOOP_BUILD) &&
+       (!pagesBuild || pagesBuild===LIFTLOOP_BUILD)){
+      setDeploymentStatus('ready',`Up to date · ${LIFTLOOP_BUILD}`);
+      return false;
+    }
+
+    // Repo may be temporarily unreachable while Pages still confirms we're current.
+    if(pagesBuild===LIFTLOOP_BUILD){
+      setDeploymentStatus('ready',`Pages ready · ${LIFTLOOP_BUILD}`);
+      return false;
+    }
+
+    setDeploymentStatus('checking','Checking deployment status…');
+    return false;
   }catch(err){
-    if(manual && status) status.textContent='Could not check right now — try again when online';
+    // Fallback to the Pages-only update check if the repo source cannot be reached.
+    try{
+      pagesBuild=await fetchBuild(LIFTLOOP_PAGE_URL);
+      if(pagesBuild && pagesBuild!==LIFTLOOP_BUILD){
+        setDeploymentStatus('ready',`Published · updating to ${pagesBuild}…`);
+        const target=LIFTLOOP_REPO_FILE==='beta.html'
+          ? `./beta.html?v=${encodeURIComponent(pagesBuild)}&refresh=${Date.now()}`
+          : `./?v=${encodeURIComponent(pagesBuild)}&refresh=${Date.now()}`;
+        setTimeout(()=>location.replace(target),350);
+        return true;
+      }
+      setDeploymentStatus('ready',`Up to date · ${LIFTLOOP_BUILD}`);
+    }catch(e){
+      setDeploymentStatus('error','Could not check deployment right now');
+    }
   }
   return false;
 }
+
 const updateButton=document.getElementById('update-check');
 if(updateButton) updateButton.addEventListener('click',()=>checkForLiftLoopUpdate(true));
 
-// Check immediately on launch and whenever the standalone app becomes active again.
+// Check immediately, when returning to the app, and keep watching if a commit is awaiting Pages.
 window.addEventListener('load',()=>checkForLiftLoopUpdate(false));
 document.addEventListener('visibilitychange',()=>{
   if(document.visibilityState==='visible') checkForLiftLoopUpdate(false);
+  else clearTimeout(deploymentWatchTimer);
 });
 window.addEventListener('pageshow',()=>checkForLiftLoopUpdate(false));
 
