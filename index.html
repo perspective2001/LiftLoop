@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-build="2026.10.06.2">
+<html lang="en" data-build="2026.10.13.26">
 <head>
 <meta charset="utf-8">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
@@ -38,6 +38,11 @@ button{font:inherit}
 .exercise+.exercise{border-top:1px solid var(--line)}
 .exercise-head{width:100%;border:0;background:transparent;color:var(--text);display:grid;grid-template-columns:30px 1fr 28px;align-items:center;text-align:left;padding:14px 12px;min-height:66px}
 .ex-num{width:27px;height:27px;border-radius:9px;display:grid;place-items:center;background:#232837;color:var(--muted);font-size:12px;font-weight:850}
+.exercise.exercise-complete .exercise-head[aria-expanded="false"] .ex-num{
+  background:#1f6f55;color:#baf8dc;border:1px solid #3b9b79;
+  box-shadow:0 0 0 2px rgba(80,210,156,.08)
+}
+
 .ex-main{min-width:0;padding:0 8px}
 .ex-name{display:block;font-size:15px;font-weight:780;line-height:1.25}
 .dose{display:block;color:var(--muted);font-size:12px;margin-top:4px}
@@ -73,25 +78,93 @@ button{font:inherit}
 
 /* Progress / leveling */
 .gamify-card{margin-top:12px;border:1px solid var(--line);background:linear-gradient(180deg,#171b25,#14171e);border-radius:18px;padding:14px}
-.gamify-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
-.level-badge{display:flex;align-items:center;gap:10px;min-width:0}
-.level-orb{width:54px;height:54px;border-radius:17px;display:grid;place-items:center;background:#232a3a;border:1px solid #343c52;font-weight:900;font-size:19px}
+.gamify-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.level-badge{display:flex;align-items:center;gap:11px;min-width:0}
+.level-orb{
+  position:relative;width:58px;height:58px;border-radius:18px;display:grid;place-items:center;
+  background:#232a3a;border:1px solid #343c52;font-weight:950;font-size:20px;flex:0 0 58px;
+  transition:.25s
+}
+.level-orb:before,.level-orb:after{content:"";position:absolute;pointer-events:none}
+.level-orb.frame-1{border-color:#46516f;box-shadow:0 0 0 2px rgba(120,132,255,.06)}
+.level-orb.frame-2{border-color:#5a678e;box-shadow:0 0 0 2px rgba(120,132,255,.1),0 0 18px rgba(105,119,230,.12)}
+.level-orb.frame-3{border-color:#a07a32;background:linear-gradient(145deg,#2b2930,#332917);box-shadow:0 0 0 2px rgba(229,180,74,.12),0 0 22px rgba(229,180,74,.13)}
+.level-orb.frame-4{border-color:#8a62bd;background:linear-gradient(145deg,#252236,#2c1d3d);box-shadow:0 0 0 2px rgba(157,94,226,.13),0 0 26px rgba(145,75,224,.18)}
+.level-orb.frame-5{border-color:#6c79df;background:radial-gradient(circle at 28% 22%,#303a61,#211d39 65%);box-shadow:0 0 0 2px rgba(116,130,239,.16),0 0 30px rgba(116,88,228,.22)}
+.level-orb.frame-6,.level-orb.frame-7,.level-orb.frame-8,.level-orb.frame-9{
+  border-color:#a46cf1;background:radial-gradient(circle at 30% 22%,#6b5fc0,#33234e 38%,#161825 78%);
+  box-shadow:0 0 0 2px rgba(183,117,255,.2),0 0 34px rgba(150,79,235,.28)
+}
+.level-orb.frame-7{box-shadow:0 0 0 2px rgba(114,225,222,.2),0 0 38px rgba(116,101,244,.3)}
+.level-orb.frame-8{box-shadow:0 0 0 2px rgba(239,122,223,.22),0 0 42px rgba(160,83,244,.34)}
+.level-orb.frame-9{box-shadow:0 0 0 2px rgba(255,213,116,.24),0 0 48px rgba(167,82,255,.38)}
+.level-orb.frame-4:after,.level-orb.frame-5:after,.level-orb.frame-6:after,.level-orb.frame-7:after,.level-orb.frame-8:after,.level-orb.frame-9:after{
+  inset:-5px;border-radius:22px;border:1px solid rgba(190,146,255,.18)
+}
+.level-orb.frame-6:before,.level-orb.frame-7:before,.level-orb.frame-8:before,.level-orb.frame-9:before{
+  inset:-10px;border-radius:26px;border:1px solid rgba(111,225,222,.11);transform:rotate(45deg)
+}
+.level-prestige{
+  position:absolute;right:-7px;bottom:-7px;min-width:25px;height:20px;padding:0 5px;border-radius:999px;
+  display:grid;place-items:center;background:#11151c;border:1px solid #4c5265;color:#d7c8ff;
+  font-size:7px;font-weight:950
+}
+.level-prestige[hidden]{display:none!important}
 .level-copy{min-width:0}
-.level-copy .eyebrow{font-size:10px;letter-spacing:.12em;color:var(--muted);font-weight:850}
-.level-copy .level-title{font-size:17px;font-weight:900;margin-top:2px}
-.level-copy .rank{font-size:11px;color:var(--muted);margin-top:2px}
+.level-copy .eyebrow{font-size:9px;letter-spacing:.11em;color:var(--muted);font-weight:850}
+.level-copy .rank{font-size:15px;color:#f0f3f8;font-weight:900;margin-top:3px}
+.main-featured-achievement{
+  position:relative;display:grid;grid-template-columns:46px minmax(0,1fr);align-items:center;gap:9px;
+  margin-top:9px;padding:7px 11px 7px 7px;border:1px solid #343b49;border-radius:14px;
+  background:linear-gradient(135deg,#1b2029,#171a22);color:#eef2f7;max-width:290px;text-align:left;
+  touch-action:manipulation;overflow:visible
+}
+.main-featured-achievement[hidden]{display:none!important}
+.main-featured-icon-wrap{position:relative;width:46px;height:46px}
+.main-featured-icon{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;background:#292f3a;font-size:17px;font-weight:950}
+.main-featured-special{
+  position:absolute;right:-5px;bottom:-5px;width:19px;height:19px;border-radius:7px;
+  display:grid;place-items:center;background:#20162e;border:1px solid #8d64b8;color:#f0d9ff;
+  font-size:8px;font-weight:950;box-shadow:0 0 12px rgba(181,104,255,.25)
+}
+.main-featured-special[hidden]{display:none!important}
+.main-featured-copy{min-width:0}
+.main-featured-name{display:block;font-size:11px;font-weight:950;line-height:1.08;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.main-featured-tier{display:block;margin-top:4px;color:#939eae;font-size:7.5px;font-weight:900;letter-spacing:.08em;text-transform:uppercase}
+.main-featured-achievement.tier-bronze .main-featured-icon{background:linear-gradient(145deg,#8b4e2f,#d69255);color:#fff}
+.main-featured-achievement.tier-silver .main-featured-icon{background:linear-gradient(145deg,#66707c,#dce3ea);color:#101820}
+.main-featured-achievement.tier-gold .main-featured-icon{background:linear-gradient(145deg,#a16a09,#ffd66b);color:#302000}
+.main-featured-achievement.tier-mythic{border-color:#704ca0;background:linear-gradient(135deg,#241735,#161824)}
+.main-featured-achievement.tier-mythic .main-featured-icon{
+  background:radial-gradient(circle at 30% 22%,#f2b8ff,#9e52ff 32%,#35196a 72%);
+  color:#fff;box-shadow:0 0 18px rgba(154,79,255,.45)
+}
+.main-featured-achievement.special-card{border-color:#69547d;box-shadow:0 0 0 1px rgba(180,112,238,.08),0 0 18px rgba(115,70,158,.09)}
+.main-featured-achievement.evolved-1{box-shadow:0 0 0 1px rgba(225,186,102,.12),0 0 20px rgba(209,163,76,.11)}
+.main-featured-achievement.evolved-2{box-shadow:0 0 0 1px rgba(148,217,255,.15),0 0 26px rgba(162,103,255,.2)}
 .stats-mini{display:flex;gap:12px;text-align:right}
 .stats-mini strong{display:block;font-size:16px}
-.stats-mini span{display:block;color:var(--muted);font-size:10px;margin-top:2px}
-.milestone{margin-top:12px}
-.milestone-row{display:flex;justify-content:space-between;color:var(--muted);font-size:10px;margin-bottom:6px}
-.milestone-track{height:7px;background:#242a36;border-radius:99px;overflow:hidden}
+.stats-mini span{display:block;color:var(--muted);font-size:8px;margin-top:2px;letter-spacing:.05em}
+.milestone{margin-top:11px}
+.milestone-row{display:flex;color:var(--muted);font-size:9px;margin-bottom:5px}
+.milestone-track{height:6px;background:#242a36;border-radius:99px;overflow:hidden}
 .milestone-fill{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:99px;transition:width .25s}
-.recent-workouts{margin-top:11px;padding-top:10px;border-top:1px solid var(--line)}
-.recent-title{font-size:10px;letter-spacing:.12em;color:var(--muted);font-weight:850;margin-bottom:7px}
-.recent-list{display:flex;gap:6px;overflow:auto;padding-bottom:2px}
-.history-chip{white-space:nowrap;border:1px solid #303746;background:#202530;border-radius:999px;padding:7px 9px;font-size:10px;color:#cfd5df}
-.history-empty{font-size:11px;color:var(--muted)}
+.consistency-status{display:none!important}
+.recent-workouts{margin-top:9px;padding-top:8px;border-top:1px solid var(--line)}
+.recent-workouts summary{cursor:pointer;list-style:none;color:#7f8997;font-size:9px;font-weight:850;display:flex;align-items:center;justify-content:space-between}
+.recent-workouts summary::-webkit-details-marker{display:none}
+.recent-workouts summary:after{content:"⌄";font-size:12px}
+.recent-workouts[open] summary:after{transform:rotate(180deg)}
+.recent-list{display:flex;gap:6px;overflow:auto;padding:8px 0 1px}
+.history-chip{white-space:nowrap;border:1px solid #303746;background:#202530;border-radius:999px;padding:6px 8px;font-size:9px;color:#cfd5df}
+.history-empty{font-size:10px;color:var(--muted)}
+@media(max-width:520px){
+  .gamify-top{gap:8px}
+  .level-orb{width:54px;height:54px;flex-basis:54px}
+  .main-featured-achievement{grid-template-columns:42px minmax(0,1fr);max-width:235px}
+  .main-featured-icon-wrap,.main-featured-icon{width:42px;height:42px}
+  .stats-mini{gap:8px}
+}
 .finish-workout{width:100%;margin-top:14px;border:0;border-radius:14px;padding:14px 12px;background:linear-gradient(135deg,var(--accent),#6772e8);color:white;font-weight:900;min-height:49px;box-shadow:0 8px 24px rgba(70,80,180,.18)}
 .finish-workout:disabled{background:#252a35;color:#707988;box-shadow:none}
 .finish-workout.completed{background:#19362e;color:#7cf0c1;border:1px solid #2c5a4c}
@@ -233,6 +306,34 @@ button{font:inherit}
 .update-check{border:1px solid #343b49;background:#20252e;color:#cbd2dc;border-radius:10px;padding:8px 11px;font-size:10px;font-weight:800}
 .update-status{margin-top:6px;color:#717c8b;font-size:9px}
 
+.deploy-watch{
+  display:flex;align-items:center;justify-content:center;gap:7px;
+  margin:-5px 0 12px;padding:8px 10px;border:1px solid #303744;border-radius:11px;
+  background:#171c24;color:#929cab;font-size:9px;font-weight:800
+}
+.deploy-watch .deploy-dot{
+  width:7px;height:7px;border-radius:50%;background:#657081;flex:0 0 7px
+}
+.deploy-watch.checking .deploy-dot,
+.deploy-watch.publishing .deploy-dot{
+  background:#d9a64a;
+  box-shadow:0 0 0 0 rgba(217,166,74,.45);
+  animation:deployPulse 1.2s ease-out infinite
+}
+.deploy-watch.ready .deploy-dot{background:#69e7b8}
+.deploy-watch.error .deploy-dot{background:#e98585}
+
+.live-mirror-status{
+  display:flex;align-items:center;justify-content:center;gap:6px;
+  margin:-5px 0 12px;color:#7f8a99;font-size:8.5px;line-height:1.3;text-align:center
+}
+.live-mirror-status span:first-child{color:#69e7b8;font-size:11px;font-weight:900}
+@keyframes deployPulse{
+  0%{box-shadow:0 0 0 0 rgba(217,166,74,.45)}
+  70%{box-shadow:0 0 0 7px rgba(217,166,74,0)}
+  100%{box-shadow:0 0 0 0 rgba(217,166,74,0)}
+}
+
 
 /* Profile, backup and per-device routine settings */
 .settings-panel{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:13px;margin-top:12px}
@@ -276,13 +377,18 @@ button{font:inherit}
 .metric-mode{display:flex;gap:4px;background:#171c24;border:1px solid #303744;border-radius:10px;padding:4px;margin:8px 0 4px}
 .metric-mode-btn{flex:1;border:0;border-radius:7px;padding:7px 8px;background:transparent;color:#8f99a8;font-size:9px;font-weight:900}
 .metric-mode-btn.active{background:#30396f;color:#fff}
+.release-box{margin-top:12px;padding-top:11px;border-top:1px solid #2d3440}
+.release-warning{font-size:9px;color:#8f99a8;line-height:1.4;margin:7px 0}
+
+
 .whats-new-overlay{
   position:fixed;inset:0;z-index:9999;background:rgba(7,9,13,.76);
   backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
   display:flex;align-items:flex-end;justify-content:center;
   padding:0;overscroll-behavior:contain;touch-action:none
 }
-.whats-new-overlay[hidden]{display:none!important}
+.whats-new-overlay[hidden]{display:none!important;pointer-events:none!important}
+.whats-new-overlay:not([hidden]){pointer-events:auto}
 .whats-new-card{
   width:100%;max-width:560px;max-height:min(82dvh,720px);
   background:#171b24;border:1px solid #333a49;border-bottom:0;
@@ -331,16 +437,838 @@ button{font:inherit}
 .whats-new-close{
   width:100%;min-height:48px;border:0;border-radius:13px;
   background:linear-gradient(135deg,var(--accent),#6772e8);color:white;
-  font-weight:900;font-size:12px;touch-action:manipulation
+  font-weight:900;font-size:12px;touch-action:manipulation;pointer-events:auto;position:relative;z-index:2
+}
+.whats-new-x{pointer-events:auto;position:relative;z-index:2}
+.whats-new-card{pointer-events:auto}
+
+
+
+
+
+/* Achievements / Trophy Case */
+.achievement-panel{overflow:hidden;padding:15px}
+.achievement-hero-head h3{margin:0;font-size:25px;letter-spacing:-.035em}
+.achievement-summary{display:none!important}
+.featured-badge{
+  position:relative;display:grid;grid-template-columns:96px minmax(0,1fr) auto;gap:14px;align-items:center;
+  padding:15px;margin:14px 0 10px;border:1px solid #343b49;border-radius:20px;
+  background:linear-gradient(135deg,#1a1e27,#12151c);overflow:visible;min-height:126px
+}
+.featured-badge.empty{
+  display:grid;grid-template-columns:1fr;place-items:center;min-height:88px;color:#737e8d;
+  font-size:10px;background:#151920;border-style:dashed
+}
+.featured-badge .badge-medallion{width:96px;height:96px;border-radius:30px;font-size:35px}
+.featured-badge .badge-medallion:after{inset:6px;border-radius:24px}
+.featured-badge .special-marker{width:27px;height:27px;border-radius:9px;font-size:11px;right:-6px;bottom:-6px}
+.featured-copy{min-width:0}
+.featured-copy .eyebrow{font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:#7f8998;font-weight:900}
+.featured-copy strong{display:block;margin-top:4px;font-size:20px;line-height:1.02;letter-spacing:-.025em}
+.featured-copy span{display:block;margin-top:7px;color:#929cab;font-size:9px;line-height:1.35}
+.featured-tier{
+  align-self:start;border:1px solid #363d49;background:#20252e;border-radius:999px;
+  padding:5px 7px;color:#a8b1be;font-size:7px;font-weight:950;text-transform:uppercase;letter-spacing:.08em
+}
+.featured-badge.special-card{border-color:#5e4d70;background:radial-gradient(circle at 10% 20%,rgba(140,82,184,.18),transparent 30%),linear-gradient(135deg,#191923,#111319)}
+.featured-badge.tier-mythic{border-color:#684399;background:radial-gradient(circle at 10% 20%,rgba(144,72,219,.24),transparent 34%),linear-gradient(135deg,#1c1628,#11131a)}
+.achievement-tier-glimpse{display:flex;align-items:center;gap:7px;margin:2px 0 10px;padding:0 2px}
+.tier-glimpse{
+  width:34px;height:34px;border-radius:11px;display:grid;place-items:center;font-size:11px;
+  filter:saturate(.72);opacity:.58;border:1px solid rgba(255,255,255,.08)
+}
+.tier-glimpse.tier-bronze{background:linear-gradient(145deg,#69402b,#9c6745);color:#e8b993}
+.tier-glimpse.tier-silver{background:linear-gradient(145deg,#515b67,#939da8);color:#e0e5ea}
+.tier-glimpse.tier-gold{background:linear-gradient(145deg,#72510e,#bc9232);color:#ffe182}
+.tier-glimpse.tier-mythic{background:radial-gradient(circle at 30% 25%,#915cba,#4a2c70 68%);color:#eddcff;box-shadow:0 0 13px rgba(147,79,218,.12)}
+.trophy-case-details{margin-top:4px;border-top:1px solid #292f39}
+.trophy-case-details>summary{
+  cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;
+  padding:12px 2px 2px;color:#cbd2dc;font-size:11px;font-weight:900
+}
+.trophy-case-details>summary::-webkit-details-marker{display:none}
+.trophy-case-details[open] .trophy-case-chevron{transform:rotate(180deg)}
+.trophy-case-body{padding-top:10px}
+.achievement-filters{display:flex;gap:6px;margin-bottom:9px}
+.achievement-filter{border:1px solid #343b49;background:#20252e;color:#8e98a7;border-radius:999px;padding:6px 9px;font-size:8px;font-weight:900}
+.achievement-filter.active{background:#30396f;border-color:#46529a;color:#fff}
+.achievement-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.achievement-group-heading{
+  grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;gap:10px;
+  margin:9px 2px 0;padding-top:9px;border-top:1px solid #2b313c
+}
+.achievement-group-heading:first-child{margin-top:0;padding-top:0;border-top:0}
+.achievement-group-heading strong{font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:#aab3c0}
+.achievement-group-heading span{display:none}
+.achievement-card{
+  position:relative;display:grid;grid-template-columns:52px 1fr;gap:9px;align-items:center;text-align:left;
+  border:1px solid #303745;background:#1b2029;border-radius:14px;padding:10px;color:#e6eaf0;min-height:76px
+}
+.achievement-card.locked{display:none!important}
+.achievement-card .name{display:block;font-size:10px;font-weight:900;line-height:1.2}
+.achievement-card .meta{display:block;color:#7f8998;font-size:7px;margin-top:3px;text-transform:uppercase;letter-spacing:.06em}
+.achievement-card .progress-text{display:block;color:#9ba4b2;font-size:7.5px;margin-top:4px;line-height:1.3}
+.achievement-progress-track{height:5px;background:#282e38;border-radius:99px;overflow:hidden;margin-top:6px}
+.achievement-progress-fill{height:100%;background:linear-gradient(90deg,#6e79e7,#69e7b8);border-radius:99px}
+.achievement-card.special-card{border-color:#464151;background:linear-gradient(135deg,#1b1c24,#121319)}
+.achievement-card.is-featured{border-color:#7785e4;box-shadow:0 0 0 1px rgba(120,132,255,.12)}
+.featured-card-marker{
+  position:absolute;right:7px;top:7px;border:1px solid #5663a7;background:#262d55;color:#cfd5ff;
+  border-radius:999px;padding:3px 5px;font-size:6px;font-weight:950;letter-spacing:.06em;text-transform:uppercase
+}
+.badge-medallion{
+  position:relative;width:52px;height:52px;border-radius:17px;display:grid;place-items:center;
+  font-size:20px;font-weight:950;overflow:visible;isolation:isolate
+}
+.badge-medallion:after{content:"";position:absolute;inset:4px;border-radius:13px;border:1px solid rgba(255,255,255,.18);pointer-events:none}
+.badge-medallion.tier-bronze{background:linear-gradient(145deg,#70422c,#c77c49);color:#fff4ea}
+.badge-medallion.tier-silver{background:linear-gradient(145deg,#5d6772,#d8e0e7);color:#17202a}
+.badge-medallion.tier-gold{background:linear-gradient(145deg,#8e5e08,#ffd66b);color:#382500}
+.badge-medallion.tier-mythic{background:radial-gradient(circle at 30% 25%,#f2b8ff,#9b4fff 30%,#38196d 72%);color:#fff;box-shadow:0 0 18px rgba(155,79,255,.22)}
+.badge-medallion.special{box-shadow:0 0 0 2px #141820,0 0 0 3px rgba(181,104,255,.56),0 0 16px rgba(147,83,214,.22)}
+.special-marker{
+  position:absolute;right:-5px;bottom:-5px;width:20px;height:20px;border-radius:7px;display:grid;place-items:center;
+  background:#1b1325;border:1px solid #8c62b7;color:#eedaff;font-size:8px;font-weight:950
+}
+.achievement-guide{margin:12px 0 0;border-top:1px solid #292f3a;padding-top:8px}
+.achievement-guide>summary{
+  cursor:pointer;list-style:none;width:28px;height:28px;border:1px solid #343b49;border-radius:9px;
+  display:grid;place-items:center;color:#818c9b;font-size:10px;font-weight:950
+}
+.achievement-guide>summary::-webkit-details-marker{display:none}
+.achievement-guide-grid.compact{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;margin-top:8px}
+.achievement-guide-grid.compact>div{background:#171b22;border-radius:10px;padding:8px}
+.achievement-guide-grid.compact strong{display:block;font-size:8px}
+.achievement-guide-grid.compact span{display:block;color:#808a98;font-size:7.5px;margin-top:2px}
+.mystery-card{grid-column:1/-1;border:1px dashed #3e3749;border-radius:13px;padding:11px;text-align:center;color:#8d8497;font-size:8px;line-height:1.4}
+.moments-collapsible{padding:0!important;overflow:hidden}
+.moments-collapsible[hidden]{display:none!important}
+.moments-collapsible>summary{
+  cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;
+  padding:13px;color:#d8dde5;font-size:12px;font-weight:900
+}
+.moments-collapsible>summary::-webkit-details-marker{display:none}
+.moments-collapsible>summary:after{content:"⌄";margin-left:auto;padding-left:9px;color:#7f8997}
+.moments-collapsible[open]>summary:after{transform:rotate(180deg)}
+#special-moments-count{color:#7f8997;font-size:8px;margin-left:7px}
+.moments-list{padding:0 13px 11px}
+.moment-card{
+  appearance:none;width:100%;display:grid;grid-template-columns:34px 1fr auto 14px;gap:9px;align-items:start;
+  padding:9px 0;border:0;border-top:1px solid #292f3a;background:transparent;color:inherit;text-align:left;font:inherit;cursor:pointer
+}
+.moment-card:first-child{border-top:0}
+.moment-icon{width:34px;height:34px;border-radius:11px;background:#242a34;display:grid;place-items:center;font-size:12px}
+.moment-card strong{display:block;font-size:9px}
+.moment-card p{margin:3px 0 0;color:#8993a1;font-size:8px;line-height:1.35}
+.moment-card time{font-size:7px;color:#697483;white-space:nowrap}
+.moment-card .moment-open{align-self:center;color:#727d8b;font-size:13px}
+.moments-helper{display:none}
+.special-history{margin-top:10px;border:1px solid #343b49;border-radius:12px;background:#11151b;overflow:hidden}
+.special-history summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:10px;align-items:center;padding:10px 11px;color:#dce1e9;font-size:9px;font-weight:900}
+.special-history summary::-webkit-details-marker{display:none}
+.special-history summary:after{content:"⌄";color:#8c96a5;font-size:13px}
+.special-history[open] summary:after{transform:rotate(180deg)}
+.special-history-list{padding:0 10px 9px}
+.special-history-row{display:grid;grid-template-columns:30px 1fr auto;gap:8px;align-items:start;border-top:1px solid #292f39;padding:9px 0}
+.special-history-row:first-child{border-top:0}
+.special-history-icon{width:30px;height:30px;border-radius:10px;background:#252b36;display:grid;place-items:center;font-size:11px}
+.special-history-row strong{display:block;font-size:9px;line-height:1.25}
+.special-history-row p{margin:3px 0 0;color:#969fad;font-size:8px;line-height:1.4}
+.special-history-row time{font-size:7px;color:#697483;white-space:nowrap}
+.achievement-evidence{margin-top:10px;border-top:1px solid #2b313c;padding-top:9px}
+.achievement-evidence-title{font-size:8px;color:#8e98a7;font-weight:900;letter-spacing:.1em;text-transform:uppercase;margin-bottom:7px}
+.achievement-evidence-row{display:flex;justify-content:space-between;gap:12px;padding:5px 0;border-top:1px solid #252b34;font-size:8px;color:#9ba5b2}
+.achievement-evidence-row:first-of-type{border-top:0}
+.achievement-evidence-row strong{color:#e5e9ef;font-size:8.5px;text-align:right}
+.pr-evidence-list{display:grid;gap:5px;margin-top:7px}
+.pr-evidence{display:flex;justify-content:space-between;gap:10px;border-radius:9px;background:#1a2028;padding:7px 8px;font-size:7.5px;color:#98a2af}
+.pr-evidence strong{color:#dce2eb;font-size:8px}
+@media(max-width:520px){
+  .achievement-grid{grid-template-columns:1fr}
+  .featured-badge{grid-template-columns:84px minmax(0,1fr);min-height:114px}
+  .featured-badge .badge-medallion{width:84px;height:84px;border-radius:27px;font-size:31px}
+  .featured-tier{grid-column:2;justify-self:start;margin-top:-4px}
+  .featured-copy strong{font-size:18px}
+}
+.achievement-overlay{
+  position:fixed;inset:0;z-index:10050;display:grid;place-items:center;padding:18px;
+  background:rgba(5,7,11,.12);backdrop-filter:none;-webkit-backdrop-filter:none;overflow:hidden
+}
+.achievement-overlay[hidden]{display:none!important;pointer-events:none!important}
+.achievement-overlay:not([hidden]){pointer-events:auto}
+#achievement-overlay .achievement-reveal{
+  width:min(540px,100%);max-height:92dvh;overflow:visible;border:0;border-radius:0;
+  background:radial-gradient(ellipse at center,rgba(5,7,11,.84) 0%,rgba(5,7,11,.61) 42%,rgba(5,7,11,.24) 62%,transparent 78%);
+  padding:34px 22px;text-align:center;position:relative;box-shadow:none;isolation:isolate
+}
+#achievement-detail-overlay{background:rgba(5,7,11,.78);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+#achievement-detail-overlay .achievement-reveal{
+  width:min(440px,100%);max-height:88dvh;overflow:auto;border:1px solid #3c4350;
+  border-radius:24px;background:linear-gradient(180deg,#1b202a,#11141a);padding:22px;
+  text-align:center;position:relative;box-shadow:0 26px 90px rgba(0,0,0,.58)
+}
+#achievement-detail-overlay .achievement-reveal.tier-mythic{
+  background:radial-gradient(circle at 50% 5%,rgba(123,55,213,.34),transparent 39%),linear-gradient(180deg,#1b1727,#101218)
+}
+#achievement-detail-overlay .achievement-reveal.special-reveal{
+  border-color:#625571;background:radial-gradient(circle at 50% 0,rgba(109,60,146,.25),transparent 42%),linear-gradient(180deg,#191922,#0f1116)
+}
+.unlock-kicker{
+  font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:#c3cad4;font-weight:950;
+  text-shadow:0 2px 12px rgba(0,0,0,.9)
+}
+#achievement-overlay .unlock-kicker{opacity:0;animation:unlock-text-in .38s .22s ease-out forwards}
+.unlock-medal{width:112px;height:112px;margin:18px auto 14px;border-radius:34px;font-size:43px}
+.unlock-title{
+  font-size:29px;line-height:1.02;font-weight:950;letter-spacing:-.04em;
+  text-shadow:0 0 5px #05070b,0 3px 20px #05070b,0 1px 2px #000
+}
+#achievement-overlay .unlock-title{opacity:0;animation:unlock-title-in .48s .28s cubic-bezier(.16,1,.3,1) forwards}
+.unlock-tier{
+  margin:9px auto 0;font-size:10px;font-weight:950;letter-spacing:.16em;text-transform:uppercase;
+  color:#d6dce5;display:flex;align-items:center;justify-content:center;gap:10px;
+  text-shadow:0 2px 12px rgba(0,0,0,.9)
+}
+.unlock-tier:before,.unlock-tier:after{
+  content:"";width:42px;height:1px;background:linear-gradient(90deg,transparent,currentColor);opacity:.55
+}
+.unlock-tier:after{transform:scaleX(-1)}
+#achievement-overlay .unlock-tier{opacity:0;animation:unlock-banner-in .46s .36s cubic-bezier(.16,1,.3,1) forwards}
+.unlock-copy{
+  max-width:350px;margin:13px auto 0;color:#eef1f6;font-size:11px;line-height:1.55;
+  text-shadow:0 0 4px #05070b,0 2px 14px #05070b
+}
+#achievement-overlay .unlock-copy{opacity:0;animation:unlock-text-in .4s .42s ease-out forwards}
+.unlock-count{margin-top:10px;color:#efe5ff;font-size:10px;font-weight:850;text-shadow:0 2px 12px rgba(0,0,0,.92)}
+#achievement-overlay .unlock-count{opacity:0;animation:unlock-text-in .4s .47s ease-out forwards}
+.unlock-actions{display:flex;gap:8px;justify-content:center;margin-top:18px}
+#achievement-overlay .unlock-actions{opacity:0;animation:unlock-text-in .35s .55s ease-out forwards}
+.unlock-btn{
+  border:1px solid rgba(255,255,255,.24);background:rgba(22,26,34,.88);color:#edf1f7;
+  border-radius:12px;padding:10px 14px;font-size:10px;font-weight:900;min-height:40px;
+  box-shadow:0 8px 24px rgba(0,0,0,.3);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)
+}
+.unlock-btn.primary{background:rgba(70,83,173,.93);border-color:#7885e7}
+.retro-badges{display:flex;justify-content:center;flex-wrap:wrap;gap:8px;margin:17px auto 5px;max-width:330px}
+.retro-badges .badge-medallion{width:52px;height:52px;border-radius:17px;font-size:20px}
+.detail-progress{margin:14px 0 0;text-align:left;background:#161b23;border:1px solid #2d3440;border-radius:13px;padding:11px}
+.detail-progress .row{display:flex;justify-content:space-between;gap:10px;font-size:9px;color:#aab3bf}
+.detail-progress .achievement-progress-track{height:6px;margin-top:8px}
+.achievement-fx{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:-1}
+.achievement-fx .fx-ring{
+  position:absolute;left:50%;top:46%;width:180px;height:180px;border-radius:50%;
+  border:2px solid currentColor;transform:translate(-50%,-50%) scale(.2);opacity:0
+}
+.achievement-fx .fx-particle{
+  position:absolute;left:50%;top:46%;width:6px;height:6px;border-radius:50%;
+  background:currentColor;box-shadow:0 0 12px currentColor;opacity:0;transform:translate(-50%,-50%)
+}
+.achievement-fx .fx-ray{
+  position:absolute;left:50%;top:46%;width:3px;height:155px;border-radius:99px;
+  transform-origin:50% 100%;background:linear-gradient(to top,currentColor,transparent);opacity:0
+}
+#achievement-overlay .unlock-medal{position:relative;z-index:2;opacity:0;transform:scale(.72)}
+#achievement-overlay.reveal-bronze .unlock-medal{animation:bronze-pop .58s cubic-bezier(.2,1.35,.35,1) forwards}
+#achievement-overlay.reveal-silver .unlock-medal{animation:silver-land .68s cubic-bezier(.16,1,.3,1) forwards}
+#achievement-overlay.reveal-silver .unlock-medal:after{animation:silver-sheen .7s .18s ease-out}
+#achievement-overlay.reveal-gold .unlock-medal{animation:gold-impact .78s cubic-bezier(.15,1.25,.25,1) forwards}
+#achievement-overlay.reveal-gold .fx-ring{color:#ffd76a;animation:fx-ring-out .85s .08s ease-out forwards}
+#achievement-overlay.reveal-gold .fx-particle{color:#ffd76a;animation:fx-particle-out .78s .12s cubic-bezier(.2,.7,.2,1) forwards}
+#achievement-overlay{isolation:isolate}
+#achievement-overlay .achievement-fx{z-index:1}
+#achievement-overlay .achievement-reveal{z-index:2}
+#achievement-overlay.reveal-mythic{
+  background:rgba(6,5,11,.26);
+  animation:mythic-screen-wash 3.4s cubic-bezier(.16,1,.3,1) both
+}
+#achievement-overlay.reveal-mythic:before{
+  content:"";position:absolute;inset:-20%;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(circle at 50% 46%,rgba(158,82,255,.34),transparent 24%),
+    radial-gradient(circle at 20% 80%,rgba(74,210,229,.14),transparent 30%),
+    radial-gradient(circle at 80% 18%,rgba(232,82,211,.16),transparent 28%),
+    linear-gradient(120deg,rgba(18,8,33,.78),rgba(8,10,18,.45),rgba(28,10,39,.72));
+  transform:scale(.82);opacity:0;filter:saturate(1.25);
+  animation:mythic-world-awaken 3.4s cubic-bezier(.16,1,.3,1) both
+}
+#achievement-overlay.reveal-mythic:after{
+  content:"MYTHIC";position:absolute;z-index:0;left:50%;top:11%;pointer-events:none;
+  transform:translate(-50%,18px) scale(.88);opacity:0;
+  color:rgba(229,203,255,.16);font-weight:1000;letter-spacing:.24em;
+  font-size:clamp(38px,12vw,92px);white-space:nowrap;
+  text-shadow:0 0 35px rgba(151,76,255,.18);
+  animation:mythic-word-rise 2.8s .55s cubic-bezier(.16,1,.3,1) both
+}
+#achievement-overlay.reveal-mythic .achievement-reveal:before{
+  content:"";position:absolute;left:50%;top:44%;width:250px;height:250px;border-radius:50%;
+  transform:translate(-50%,-50%) scale(.45) rotate(-20deg);opacity:0;z-index:-1;
+  background:conic-gradient(from 0deg,transparent,#8a4dff,#ef5ed8,#6fdcff,transparent,#8a4dff);
+  filter:blur(22px);animation:mythic-aura 3.05s .12s cubic-bezier(.16,1,.3,1) forwards
+}
+#achievement-overlay.reveal-mythic .unlock-medal{animation:mythic-arrive 2.25s .18s cubic-bezier(.12,1.18,.25,1) forwards}
+#achievement-overlay.reveal-mythic .unlock-tier{
+  color:#e3c7ff;font-size:11px;letter-spacing:.22em;
+  animation:mythic-banner 1.15s 1.12s cubic-bezier(.16,1,.3,1) forwards
+}
+#achievement-overlay.reveal-mythic .fx-ring{color:#a761ff;animation:fx-ring-out 2.25s .4s ease-out forwards}
+#achievement-overlay.reveal-mythic .fx-particle{color:#c47cff;animation:fx-particle-out 2.1s .7s cubic-bezier(.16,.75,.25,1) forwards}
+#achievement-overlay.reveal-mythic .fx-ray{color:#985cff;animation:fx-ray-flash 1.75s .35s ease-out forwards}
+#achievement-overlay.reveal-mythic .unlock-kicker{animation-delay:.72s;animation-duration:.7s}
+#achievement-overlay.reveal-mythic .unlock-title{animation-delay:.9s;animation-duration:.85s}
+#achievement-overlay.reveal-mythic .unlock-copy{animation-delay:1.5s;animation-duration:.7s}
+#achievement-overlay.reveal-mythic .unlock-count{animation-delay:1.68s;animation-duration:.65s}
+#achievement-overlay.reveal-mythic .unlock-actions{animation-delay:2.05s;animation-duration:.55s}
+.special-discovery-stage{
+  position:absolute;left:50%;top:45%;z-index:4;transform:translate(-50%,-50%);
+  display:grid;place-items:center;text-align:center;width:min(330px,82vw);pointer-events:none;
+  color:var(--discovery-color,#d9bdff);text-shadow:0 3px 22px rgba(0,0,0,.96)
+}
+.special-discovery-stage[hidden]{display:none!important}
+.special-discovery-sigil{
+  width:76px;height:76px;border-radius:25px;display:grid;place-items:center;font-size:30px;
+  border:1px solid rgba(220,190,255,.5);
+  box-shadow:0 0 35px rgba(180,110,255,.24);
+  background:radial-gradient(circle at 35% 25%,rgba(255,255,255,.16),rgba(18,16,25,.42));
+  animation:special-sigil-discover 1.08s cubic-bezier(.16,1,.3,1) both
+}
+.special-discovery-kicker{
+  margin-top:13px;font-size:8px;font-weight:950;letter-spacing:.24em;text-transform:uppercase;
+  animation:special-discovery-copy .95s .08s ease-out both
+}
+.special-discovery-stage strong{
+  margin-top:5px;font-size:31px;line-height:1;font-weight:1000;letter-spacing:.08em;text-transform:uppercase;
+  animation:special-discovery-copy .95s .15s ease-out both
+}
+.special-discovery-stage>span{
+  margin-top:8px;color:#f1edf6;font-size:9px;line-height:1.4;
+  animation:special-discovery-copy .85s .24s ease-out both
+}
+.special-first-discovery .special-discovery-stage{animation:special-discovery-stage-out 1.32s ease both}
+.reveal-bronze.special-first-discovery{--discovery-color:#d88a55}
+.reveal-silver.special-first-discovery{--discovery-color:#dce5ef}
+.reveal-gold.special-first-discovery{--discovery-color:#ffd76a}
+.reveal-mythic.special-first-discovery{--discovery-color:#d89aff}
+.reveal-bronze.special-first-discovery .special-discovery-sigil{box-shadow:0 0 34px rgba(216,138,85,.26)}
+.reveal-silver.special-first-discovery .special-discovery-sigil{box-shadow:0 0 34px rgba(220,229,239,.22)}
+.reveal-gold.special-first-discovery .special-discovery-sigil{box-shadow:0 0 38px rgba(255,215,106,.28)}
+.reveal-mythic.special-first-discovery .special-discovery-sigil{box-shadow:0 0 44px rgba(216,154,255,.34)}
+.special-first-discovery .unlock-medal{animation-delay:1.05s!important}
+.special-first-discovery .unlock-kicker{animation-delay:1.12s!important}
+.special-first-discovery .unlock-title{animation-delay:1.27s!important}
+.special-first-discovery .unlock-tier{animation-delay:1.42s!important}
+.special-first-discovery .unlock-copy{animation-delay:1.58s!important}
+.special-first-discovery .unlock-count{animation-delay:1.72s!important}
+.special-first-discovery .unlock-actions{animation-delay:1.95s!important}
+.reveal-mythic.special-first-discovery .unlock-medal{animation-delay:1.22s!important}
+.reveal-mythic.special-first-discovery .unlock-kicker{animation-delay:1.54s!important}
+.reveal-mythic.special-first-discovery .unlock-title{animation-delay:1.78s!important}
+.reveal-mythic.special-first-discovery .unlock-tier{animation-delay:2.08s!important}
+.reveal-mythic.special-first-discovery .unlock-copy{animation-delay:2.42s!important}
+.reveal-mythic.special-first-discovery .unlock-actions{animation-delay:2.95s!important}
+@keyframes special-sigil-discover{
+  0%{opacity:0;transform:scale(.35) rotate(-30deg);filter:blur(7px)}
+  48%{opacity:1;transform:scale(1.13) rotate(4deg);filter:blur(0)}
+  72%{transform:scale(.96) rotate(-1deg)}
+  100%{opacity:1;transform:scale(1)}
+}
+@keyframes special-discovery-copy{
+  0%{opacity:0;transform:translateY(9px);letter-spacing:.32em}
+  100%{opacity:1;transform:none}
+}
+@keyframes special-discovery-stage-out{
+  0%,66%{opacity:1}
+  100%{opacity:0}
+}
+#achievement-overlay.reveal-special .unlock-kicker{color:#f0e0ff}
+#achievement-overlay.reveal-special .unlock-tier{color:#e8d6ff}
+#achievement-overlay.reveal-special .achievement-reveal:after{
+  content:"";position:absolute;left:50%;top:44%;width:220px;height:220px;border-radius:50%;
+  transform:translate(-50%,-50%) rotate(0deg);opacity:0;z-index:-1;border:1px solid rgba(255,255,255,.18);
+  box-shadow:0 0 35px rgba(167,97,255,.24),inset 0 0 35px rgba(96,225,221,.08);
+  animation:special-prism 1.4s .05s cubic-bezier(.16,1,.3,1) forwards
+}
+#achievement-overlay.reveal-special .fx-particle:nth-child(3n){color:#64e3dc}
+#achievement-overlay.reveal-special .fx-particle:nth-child(3n+1){color:#d66cff}
+#achievement-overlay.reveal-special .fx-particle:nth-child(3n+2){color:#ffd36a}
+@keyframes mythic-screen-wash{
+  0%{background:rgba(6,5,11,0)}
+  22%{background:rgba(6,5,11,.44)}
+  100%{background:rgba(6,5,11,.26)}
+}
+@keyframes mythic-world-awaken{
+  0%{opacity:0;transform:scale(.78) rotate(-4deg)}
+  30%{opacity:.9}
+  72%{opacity:.72;transform:scale(1.05) rotate(2deg)}
+  100%{opacity:.56;transform:scale(1) rotate(0)}
+}
+@keyframes mythic-word-rise{
+  0%{opacity:0;transform:translate(-50%,22px) scale(.86);letter-spacing:.38em}
+  45%{opacity:.24}
+  100%{opacity:.13;transform:translate(-50%,0) scale(1);letter-spacing:.24em}
+}
+@keyframes unlock-text-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes unlock-title-in{from{opacity:0;transform:translateY(12px) scale(.97)}to{opacity:1;transform:none}}
+@keyframes unlock-banner-in{from{opacity:0;transform:scaleX(.65)}to{opacity:1;transform:scaleX(1)}}
+@keyframes bronze-pop{0%{opacity:0;transform:scale(.55) translateY(12px)}68%{opacity:1;transform:scale(1.08) translateY(-2px)}100%{opacity:1;transform:scale(1)}}
+@keyframes silver-land{0%{opacity:0;transform:scale(.62) rotate(-7deg)}65%{opacity:1;transform:scale(1.04) rotate(1deg)}100%{opacity:1;transform:scale(1) rotate(0)}}
+@keyframes silver-sheen{0%{filter:brightness(1)}45%{filter:brightness(1.65)}100%{filter:brightness(1)}}
+@keyframes gold-impact{0%{opacity:0;transform:scale(.45) rotate(-5deg)}58%{opacity:1;transform:scale(1.13) rotate(1deg)}75%{transform:scale(.97)}100%{opacity:1;transform:scale(1)}}
+@keyframes mythic-arrive{
+  0%{opacity:0;transform:scale(.28) rotate(-13deg);filter:blur(8px) saturate(.6)}
+  48%{opacity:1;transform:scale(1.18) rotate(2deg);filter:blur(0) saturate(1.45)}
+  68%{transform:scale(.96) rotate(-1deg)}
+  82%{transform:scale(1.045)}
+  100%{opacity:1;transform:scale(1);filter:saturate(1.15)}
+}
+@keyframes mythic-aura{
+  0%{opacity:0;transform:translate(-50%,-50%) scale(.35) rotate(-35deg)}
+  45%{opacity:.82}
+  100%{opacity:.32;transform:translate(-50%,-50%) scale(1.18) rotate(115deg)}
+}
+@keyframes mythic-banner{
+  0%{opacity:0;letter-spacing:.45em;transform:scaleX(.45)}
+  100%{opacity:1;letter-spacing:.22em;transform:scaleX(1)}
+}
+@keyframes special-prism{
+  0%{opacity:0;transform:translate(-50%,-50%) scale(.55) rotate(-90deg)}
+  45%{opacity:.85}
+  100%{opacity:.25;transform:translate(-50%,-50%) scale(1.12) rotate(90deg)}
+}
+@keyframes fx-ring-out{
+  0%{opacity:.8;transform:translate(-50%,-50%) scale(.2)}
+  100%{opacity:0;transform:translate(-50%,-50%) scale(1.8)}
+}
+@keyframes fx-particle-out{
+  0%{opacity:0;transform:translate(-50%,-50%) scale(.4)}
+  20%{opacity:1}
+  100%{opacity:0;transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy))) scale(.1)}
+}
+@keyframes fx-ray-flash{
+  0%{opacity:0;transform:translate(-50%,-100%) rotate(var(--r)) scaleY(.35)}
+  25%{opacity:.45}
+  100%{opacity:0;transform:translate(-50%,-100%) rotate(var(--r)) scaleY(1.25)}
+}
+@media(max-width:520px){
+  .achievement-grid{grid-template-columns:1fr}
+  .featured-badge{grid-template-columns:64px 1fr}
+  .featured-tier{display:none}
+  #achievement-overlay .achievement-reveal{padding:20px 8px}
+  .unlock-title{font-size:27px}
+}
+@media(prefers-reduced-motion:reduce){
+  .tier-mythic .badge-medallion,.badge-medallion.tier-mythic,.badge-medallion.evolved-2,
+  #achievement-overlay .unlock-medal,#achievement-overlay .unlock-kicker,#achievement-overlay .unlock-title,
+  #achievement-overlay .unlock-tier,#achievement-overlay .unlock-copy,#achievement-overlay .unlock-count,
+  #achievement-overlay .unlock-actions,#achievement-overlay .achievement-reveal:before,
+  #achievement-overlay .achievement-reveal:after,.achievement-fx *{
+    animation:none!important;transition:none!important;opacity:1!important;transform:none!important
+  }
+}
+
+
+/* ---------- Beta 24 prestige material + hierarchy overrides ---------- */
+
+/* Level layout: number sits at the top; featured identity spans underneath. */
+.level-badge{
+  display:grid!important;
+  grid-template-columns:58px minmax(0,1fr);
+  grid-template-rows:auto auto;
+  align-items:start!important;
+  gap:7px 11px!important;
+  min-width:0;
+}
+.level-orb{grid-column:1;grid-row:1;align-self:start}
+.level-copy{grid-column:2;grid-row:1;align-self:start;padding-top:1px}
+.main-featured-achievement{
+  grid-column:1/-1!important;
+  grid-row:2;
+  width:min(340px,100%)!important;
+  max-width:none!important;
+  grid-template-columns:54px minmax(0,1fr)!important;
+  padding:8px 13px 8px 8px!important;
+  margin-top:2px!important;
+  border-radius:16px!important;
+}
+.main-featured-icon-wrap,.main-featured-icon{width:54px!important;height:54px!important}
+.main-featured-icon{border-radius:17px!important;font-size:19px!important}
+.main-featured-name{font-size:12px!important}
+.main-featured-tier{font-size:8px!important}
+.main-featured-evolution{
+  position:absolute;left:-4px;top:-7px;z-index:7;padding:2px 4px;border-radius:999px;
+  color:#ffe7a2;background:#111318;border:1px solid rgba(255,209,105,.55);
+  font-size:7px;letter-spacing:-1px;text-shadow:0 0 8px rgba(255,207,91,.5)
+}
+.main-featured-evolution[hidden]{display:none!important}
+.main-featured-special{
+  background:#090b10!important;
+  border-color:#b8a6cf!important;
+  color:#fff!important;
+  box-shadow:0 0 10px rgba(189,139,255,.35),0 0 16px rgba(112,228,225,.13)!important
+}
+
+/* Outer tier is material. Inner diamond is a separate identity surface. */
+.badge-medallion{
+  overflow:visible!important;
+  border:1px solid rgba(255,255,255,.09)!important;
+  background:#11141a!important;
+  box-shadow:0 7px 20px rgba(0,0,0,.25)!important
+}
+.badge-medallion>span:first-child{
+  position:relative;z-index:5;display:grid;place-items:center;line-height:1;
+  text-shadow:0 2px 8px rgba(0,0,0,.8)
+}
+.badge-medallion:before{
+  content:"";position:absolute;z-index:1;left:50%;top:50%;width:58%;height:58%;
+  transform:translate(-50%,-50%) rotate(45deg);border-radius:9px;
+  background:linear-gradient(145deg,#05070a,#151920 65%,#080a0d);
+  border:1px solid rgba(255,255,255,.11);
+  box-shadow:inset 0 0 14px rgba(255,255,255,.025),0 4px 14px rgba(0,0,0,.45)
+}
+.badge-medallion:after{
+  content:"";position:absolute;z-index:2;left:50%;top:50%;width:47%;height:47%;
+  transform:translate(-50%,-50%) rotate(45deg);border-radius:7px;
+  border:1px solid rgba(255,255,255,.08);pointer-events:none
+}
+.badge-medallion.tier-bronze{
+  background:linear-gradient(145deg,#3b2418,#a15c36 50%,#512d1d)!important;
+  border-color:#a36744!important;color:#f7ddc8!important
+}
+.badge-medallion.tier-silver{
+  background:linear-gradient(145deg,#252b33,#aeb7c2 48%,#4d5662)!important;
+  border-color:#9da8b5!important;color:#f0f3f6!important
+}
+.badge-medallion.tier-gold{
+  background:linear-gradient(145deg,#4b3004,#e9b53c 48%,#7a500b)!important;
+  border-color:#d4a83f!important;color:#fff3c4!important
+}
+/* Mythic is no longer "purple metal": obsidian frame + opal/platinum core. */
+.badge-medallion.tier-mythic{
+  background:
+    linear-gradient(#10131a,#10131a) padding-box,
+    conic-gradient(from 205deg,#7be7eb,#f7f3ff,#d6b7ff,#ffdca8,#82e1e7,#f7f3ff) border-box!important;
+  border:2px solid transparent!important;
+  color:#0b0e14!important;
+  box-shadow:0 0 0 1px rgba(255,255,255,.08),0 0 20px rgba(149,113,232,.22),0 0 34px rgba(95,217,220,.09)!important
+}
+.badge-medallion.tier-mythic:before{
+  background:linear-gradient(120deg,#f9fbff 5%,#bcecff 25%,#f0ddff 48%,#fff1c6 69%,#d7fbff 88%,#fff 100%)!important;
+  background-size:240% 240%!important;
+  border-color:rgba(255,255,255,.78)!important;
+  box-shadow:inset 0 0 14px rgba(255,255,255,.72),0 0 16px rgba(205,181,255,.34),0 0 25px rgba(117,225,232,.18)!important;
+  animation:mythicCoreShimmer 5.5s linear infinite
+}
+.badge-medallion.tier-mythic:after{
+  border-color:rgba(255,255,255,.46)!important;
+  box-shadow:inset 0 0 12px rgba(255,255,255,.25)
+}
+/* Special modifies the inner diamond, not merely the outer border. */
+.badge-medallion.special{
+  box-shadow:0 0 0 1px rgba(255,255,255,.06),0 0 17px rgba(199,143,255,.18),0 0 27px rgba(103,225,221,.08)!important
+}
+.badge-medallion.special:before{
+  background:conic-gradient(from 180deg,#07090d,#50426d,#0b2022,#806420,#17101e,#07090d)!important;
+  background-size:180% 180%!important;
+  border-color:rgba(224,207,245,.42)!important;
+  box-shadow:inset 0 0 14px rgba(255,255,255,.06),0 0 17px rgba(184,115,239,.2),0 0 23px rgba(91,224,217,.08)!important;
+  animation:specialCoreShift 6s linear infinite
+}
+.badge-medallion.tier-mythic.special:before{
+  background:linear-gradient(120deg,#ffffff,#b9f5f2,#e8c8ff,#fff0b8,#c5e8ff,#fff)!important;
+  background-size:280% 280%!important;
+  border-color:#fff!important;
+  box-shadow:inset 0 0 17px rgba(255,255,255,.8),0 0 20px rgba(194,140,255,.38),0 0 30px rgba(94,232,225,.2)!important;
+  animation:mythicSpecialCore 4.2s linear infinite
+}
+.special-marker{
+  z-index:9!important;
+  background:linear-gradient(145deg,#050609,#18131d)!important;
+  border:1px solid rgba(220,199,240,.74)!important;color:#fff!important;
+  box-shadow:0 0 10px rgba(200,138,255,.3),0 0 17px rgba(103,225,219,.11)!important
+}
+.evolution-stars{
+  position:absolute;z-index:10;left:-6px;top:-8px;padding:2px 5px;border-radius:999px;
+  font-size:8px;font-weight:1000;letter-spacing:-1px;background:#0b0d12;
+  pointer-events:none
+}
+.evolution-stars.gilded{
+  color:#ffe59a;border:1px solid rgba(255,211,95,.72);
+  text-shadow:0 0 8px rgba(255,205,73,.65);box-shadow:0 0 12px rgba(255,199,61,.17)
+}
+.evolution-stars.ascended{
+  color:#f5eeff;border:1px solid rgba(215,186,255,.72);
+  text-shadow:0 0 8px rgba(191,130,255,.72),0 0 11px rgba(88,226,224,.5);
+  box-shadow:0 0 14px rgba(178,106,255,.2)
+}
+@keyframes mythicCoreShimmer{
+  0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}
+}
+@keyframes specialCoreShift{
+  0%{filter:hue-rotate(0deg) brightness(1);background-position:0% 50%}
+  50%{filter:hue-rotate(12deg) brightness(1.1);background-position:100% 50%}
+  100%{filter:hue-rotate(0deg) brightness(1);background-position:0% 50%}
+}
+@keyframes mythicSpecialCore{
+  0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}
+}
+
+/* Featured Progress trophy: no giant purple box; let the badge provide prestige. */
+.featured-badge{
+  border:0!important;
+  background:linear-gradient(135deg,rgba(24,28,36,.72),rgba(16,19,25,.28))!important;
+  box-shadow:none!important;
+  overflow:visible!important
+}
+.featured-badge.special-card,.featured-badge.tier-mythic{
+  border:0!important;background:linear-gradient(135deg,rgba(24,28,36,.74),rgba(16,19,25,.28))!important
+}
+.featured-badge .badge-medallion{filter:none!important}
+
+/* Unlock: larger, shorter, more readable. */
+#achievement-overlay .achievement-reveal{
+  width:min(620px,100%)!important;
+  padding:42px 24px!important
+}
+#achievement-overlay .unlock-medal{
+  width:138px!important;height:138px!important;border-radius:42px!important;
+  font-size:48px!important;margin:20px auto 18px!important
+}
+#achievement-overlay.reveal-mythic .unlock-medal{
+  width:164px!important;height:164px!important;border-radius:49px!important;font-size:56px!important
+}
+#achievement-overlay .unlock-title{font-size:35px!important;max-width:520px;margin-left:auto;margin-right:auto}
+#achievement-overlay .unlock-tier{
+  font-size:13px!important;letter-spacing:.18em!important;margin-top:11px!important
+}
+#achievement-overlay.reveal-mythic .unlock-tier{font-size:15px!important}
+#achievement-overlay.reveal-mythic.reveal-special .unlock-tier{
+  font-size:16px!important;letter-spacing:.22em!important;color:#f7f5ff!important
+}
+#achievement-overlay .unlock-copy{
+  max-width:430px!important;font-size:13px!important;line-height:1.4!important;margin-top:14px!important
+}
+#achievement-overlay .unlock-count{font-size:9px!important;color:#c9c1d4!important}
+#achievement-overlay .unlock-actions{margin-top:22px!important}
+#achievement-overlay .unlock-btn{min-height:44px!important;padding:10px 17px!important;font-size:10px!important}
+
+/* Detail view is informational, not a second giant purple trophy card. */
+#achievement-detail-overlay .achievement-reveal,
+#achievement-detail-overlay .achievement-reveal.tier-mythic,
+#achievement-detail-overlay .achievement-reveal.special-reveal{
+  border:0!important;
+  background:linear-gradient(180deg,#171b22,#101319)!important;
+  box-shadow:0 24px 80px rgba(0,0,0,.6)!important
+}
+#achievement-detail-overlay .unlock-medal{
+  width:124px!important;height:124px!important;border-radius:38px!important;font-size:43px!important
+}
+#achievement-detail-overlay .unlock-title{font-size:30px!important}
+#achievement-detail-overlay .unlock-tier{font-size:12px!important}
+#achievement-detail-overlay .unlock-copy{font-size:11px!important;max-width:360px!important}
+.detail-progress{
+  margin-top:13px!important;padding:0!important;background:transparent!important;border:0!important
+}
+.special-history{
+  margin-top:8px!important;border:0!important;border-top:1px solid #2c323c!important;
+  border-radius:0!important;background:transparent!important
+}
+.special-history summary{
+  padding:11px 1px!important;font-size:9px!important
+}
+.special-history-list{padding:0!important}
+.special-history-row{
+  grid-template-columns:24px minmax(0,1fr) auto!important;
+  padding:9px 1px!important
+}
+.special-history-index{
+  width:22px;height:22px;border-radius:8px;display:grid;place-items:center;
+  background:#202630;color:#8f99a7;font-size:7px;font-weight:900
+}
+.feature-toggle{
+  background:#171b22!important;border-color:#353d49!important;color:#b8c0cb!important
+}
+.feature-toggle.is-featured{
+  background:#30396f!important;border-color:#6674d2!important;color:#fff!important
+}
+
+/* Developer level preview is easier to scan. */
+.dev-lab-card .dev-subsection:first-of-type{margin-top:0;padding-top:0;border-top:0}
+
+@media(max-width:520px){
+  .level-badge{grid-template-columns:54px minmax(0,1fr)!important}
+  .main-featured-achievement{width:100%!important;grid-template-columns:50px minmax(0,1fr)!important}
+  .main-featured-icon-wrap,.main-featured-icon{width:50px!important;height:50px!important}
+  #achievement-overlay .unlock-medal{width:126px!important;height:126px!important}
+  #achievement-overlay.reveal-mythic .unlock-medal{width:148px!important;height:148px!important}
+  #achievement-overlay .unlock-title{font-size:31px!important}
+}
+
+
+.main-featured-icon{position:relative;overflow:hidden;isolation:isolate;background:#11141a!important;color:#fff!important}
+.main-featured-icon:before{
+  content:"";position:absolute;z-index:1;left:50%;top:50%;width:58%;height:58%;
+  transform:translate(-50%,-50%) rotate(45deg);border-radius:7px;
+  background:linear-gradient(145deg,#05070a,#151920);border:1px solid rgba(255,255,255,.12)
+}
+.main-featured-icon{font-size:0!important}
+.main-featured-icon:after{
+  content:attr(data-icon);position:relative;z-index:3;font-size:18px;line-height:1;
+  display:grid;place-items:center
+}
+.main-featured-achievement.tier-bronze .main-featured-icon{background:linear-gradient(145deg,#3b2418,#a15c36 50%,#512d1d)!important}
+.main-featured-achievement.tier-silver .main-featured-icon{background:linear-gradient(145deg,#252b33,#aeb7c2 48%,#4d5662)!important}
+.main-featured-achievement.tier-gold .main-featured-icon{background:linear-gradient(145deg,#4b3004,#e9b53c 48%,#7a500b)!important}
+.main-featured-achievement.tier-mythic .main-featured-icon{
+  background:linear-gradient(#10131a,#10131a) padding-box,conic-gradient(from 205deg,#7be7eb,#f7f3ff,#d6b7ff,#ffdca8,#82e1e7,#f7f3ff) border-box!important;
+  border:2px solid transparent!important
+}
+.main-featured-achievement.tier-mythic .main-featured-icon:before{
+  background:linear-gradient(120deg,#f9fbff,#bcecff,#f0ddff,#fff1c6,#d7fbff,#fff)!important;
+  background-size:240% 240%!important;animation:mythicCoreShimmer 5.5s linear infinite
+}
+.main-featured-achievement.special-card .main-featured-icon:before{
+  background:conic-gradient(from 180deg,#07090d,#50426d,#0b2022,#806420,#17101e,#07090d)!important;
+}
+.main-featured-achievement.tier-mythic.special-card .main-featured-icon:before{
+  background:linear-gradient(120deg,#fff,#b9f5f2,#e8c8ff,#fff0b8,#c5e8ff,#fff)!important;
+  background-size:280% 280%!important;animation:mythicSpecialCore 4.2s linear infinite
+}
+
+
+/* UI refinements */
+.gamify-top{align-items:flex-start!important}
+.level-zone{min-width:0;flex:1}
+.level-identity{display:grid;grid-template-columns:66px minmax(0,1fr);align-items:center;gap:11px;min-width:0}
+.level-badge{display:contents!important}
+.level-orb{
+  width:66px!important;height:66px!important;min-width:66px!important;border-radius:20px!important;
+  font-size:22px!important;line-height:1!important
+}
+.level-orb.digits-4{font-size:18px!important}
+.level-orb.digits-5{font-size:15px!important}
+.level-orb.digits-6{font-size:13px!important}
+.level-copy{min-width:0!important;padding:0!important}
+.level-copy .eyebrow{font-size:8px!important;letter-spacing:.14em!important}
+.level-copy .rank{
+  margin-top:3px!important;font-size:17px!important;line-height:1.05!important;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis
+}
+.level-milestone{
+  display:grid!important;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:8px;
+  margin:7px 0 0!important;padding-left:77px
+}
+.level-milestone .milestone-track{height:6px!important;margin:0!important}
+.milestone-count{min-width:25px;text-align:right;color:#798493;font-size:8px;font-weight:850;font-variant-numeric:tabular-nums}
+.stats-mini{padding-top:3px;flex:0 0 auto!important}
+
+.main-featured-achievement{
+  width:100%!important;max-width:none!important;display:grid!important;
+  grid-template-columns:66px minmax(0,1fr) 20px!important;align-items:center!important;
+  gap:11px!important;margin-top:13px!important;padding:9px 11px 9px 9px!important;
+  min-height:84px!important;border-radius:18px!important;overflow:visible!important;text-align:left!important
+}
+.main-featured-achievement[hidden]{display:none!important}
+.main-featured-icon-wrap,.main-featured-icon{width:66px!important;height:66px!important}
+.main-featured-icon{border-radius:20px!important}
+.main-featured-icon:after{font-size:21px!important}
+.main-featured-name{
+  font-size:14px!important;line-height:1.08!important;white-space:normal!important;
+  overflow:visible!important;text-overflow:clip!important
+}
+.main-featured-tier{font-size:8.5px!important;margin-top:5px!important}
+.main-featured-arrow{color:#657181;font-size:24px;font-weight:400;align-self:center;justify-self:end}
+.main-featured-special{width:21px!important;height:21px!important;right:-5px!important;bottom:-5px!important}
+.main-featured-evolution{font-size:8px!important;top:-8px!important}
+.recent-workouts{margin-top:10px!important}
+
+.featured-badge{
+  grid-template-columns:104px minmax(0,1fr)!important;gap:17px!important;
+  min-height:134px!important;padding:15px 17px!important;overflow:visible!important
+}
+.featured-badge .badge-medallion{width:104px!important;height:104px!important;border-radius:32px!important}
+.featured-copy{min-width:0!important;overflow:visible!important;padding:2px 2px 2px 0}
+.featured-copy strong{
+  margin:0!important;padding:0 1px!important;font-size:22px!important;line-height:1.04!important;
+  white-space:normal!important;overflow:visible!important;word-break:normal!important
+}
+.featured-copy .featured-subline{
+  display:block;margin-top:8px!important;color:#929cab;font-size:9px!important;
+  font-weight:850;letter-spacing:.04em;text-transform:uppercase
+}
+.featured-tier{display:none!important}
+
+.achievement-group-heading{display:none!important}
+.achievement-filters{gap:7px!important}
+.achievement-filter{min-width:76px}
+.achievement-card .meta{font-size:7.5px!important}
+.achievement-focus-pulse{animation:achievementFocusPulse 1.4s ease-out!important}
+@keyframes achievementFocusPulse{
+  0%{box-shadow:0 0 0 0 rgba(128,143,255,.55)}
+  40%{box-shadow:0 0 0 5px rgba(128,143,255,.22),0 0 26px rgba(128,114,239,.22)}
+  100%{box-shadow:0 0 0 0 rgba(128,143,255,0)}
+}
+.feature-toggle{min-width:88px!important;background:#15191f!important;border-color:#3a424e!important;color:#aeb7c3!important}
+.feature-toggle.is-featured{background:#26325d!important;border-color:#6475ce!important;color:#fff!important}
+
+@media(max-width:520px){
+  .gamify-top{display:grid!important;grid-template-columns:minmax(0,1fr) auto!important}
+  .level-identity{grid-template-columns:60px minmax(0,1fr)!important}
+  .level-orb{width:60px!important;height:60px!important;min-width:60px!important}
+  .level-milestone{padding-left:71px!important}
+  .level-copy .rank{font-size:15px!important;max-width:125px}
+  .stats-mini{gap:8px!important}
+  .main-featured-achievement{grid-template-columns:60px minmax(0,1fr) 18px!important;min-height:78px!important}
+  .main-featured-icon-wrap,.main-featured-icon{width:60px!important;height:60px!important}
+  .main-featured-name{font-size:13px!important}
+  .featured-badge{grid-template-columns:88px minmax(0,1fr)!important;gap:13px!important}
+  .featured-badge .badge-medallion{width:88px!important;height:88px!important}
+  .featured-copy strong{font-size:19px!important}
+}
+
+
+/* UI refinements */
+.main-featured-achievement{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) 46px!important;
+  gap:0!important;
+  padding:0!important;
+  overflow:visible!important;
+}
+.main-featured-achievement[hidden]{display:none!important}
+.main-featured-preview{
+  appearance:none;border:0;background:transparent;color:inherit;
+  display:grid;grid-template-columns:66px minmax(0,1fr);align-items:center;gap:11px;
+  min-width:0;min-height:84px;padding:9px 10px 9px 9px;text-align:left;
+  border-radius:18px 0 0 18px;touch-action:manipulation
+}
+.main-featured-preview:active{background:rgba(255,255,255,.025)}
+.main-featured-arrow-button{
+  appearance:none;border:0;border-left:1px solid rgba(255,255,255,.07);
+  background:rgba(0,0,0,.08);color:#657181;
+  display:grid;place-items:center;min-width:46px;min-height:84px;
+  border-radius:0 18px 18px 0;touch-action:manipulation
+}
+.main-featured-arrow-button:active{background:rgba(255,255,255,.045);color:#aab3c0}
+.main-featured-arrow{font-size:25px;line-height:1}
+.main-featured-copy{min-width:0}
+.main-featured-name{white-space:normal!important;overflow:visible!important}
+@media(max-width:520px){
+  .main-featured-achievement{grid-template-columns:minmax(0,1fr) 42px!important}
+  .main-featured-preview{
+    grid-template-columns:60px minmax(0,1fr)!important;
+    min-height:78px!important;padding:9px 8px 9px 9px!important
+  }
+  .main-featured-arrow-button{min-width:42px!important;min-height:78px!important}
 }
 
 </style>
 </head>
 <body>
-<main class="app">
-  <header class="brand">
+<main class="app"><div class="deploy-watch checking" id="deploy-watch" role="status" aria-live="polite">
+    <span class="deploy-dot" aria-hidden="true"></span>
+    <span id="deploy-watch-text">Checking deployment status…</span>
+  </div><header class="brand">
     <img src="icon-180.png" alt="LiftLoop logo">
-    <div><h1>LiftLoop</h1><p>Tap an exercise to watch the movement</p><div class="profile-greeting" id="profile-greeting"></div></div>
+    <div><h1>LiftLoop</h1><div class="profile-greeting" id="profile-greeting"></div></div>
   </header>
 
   <nav class="tabs" aria-label="Workout days">
@@ -352,28 +1280,51 @@ button{font:inherit}
 
   <section class="gamify-card" aria-label="LiftLoop progress">
     <div class="gamify-top">
-      <div class="level-badge">
-        <div class="level-orb"><span id="level-number">1</span></div>
-        <div class="level-copy">
-          <div class="eyebrow">LIFTLOOP LEVEL</div>
-          <div class="level-title">Level <span id="level-label">1</span></div>
-          <div class="rank" id="rank-label">Starting Line</div>
+      <div class="level-zone">
+        <div class="level-identity">
+          <div class="level-orb frame-0" id="level-orb">
+            <span id="level-number">1</span>
+            <span class="level-prestige" id="level-prestige" hidden></span>
+          </div>
+          <div class="level-copy">
+            <div class="eyebrow">LEVEL</div>
+            <div class="rank" id="rank-label">Starting Line</div>
+          </div>
+        </div>
+        <div class="milestone level-milestone">
+          <div class="milestone-track"><div class="milestone-fill" id="milestone-fill"></div></div>
+          <span class="milestone-count" id="milestone-copy">0 / 5</span>
         </div>
       </div>
+
       <div class="stats-mini">
         <div><strong id="workout-count">0</strong><span>WORKOUTS</span></div>
-        <div><strong id="streak-count">0/3</strong><span id="streak-label">LAST 7 DAYS</span></div>
+        <div><strong id="streak-count">0/3</strong><span id="streak-label">STREAK</span></div>
       </div>
     </div>
-    <div class="milestone">
-      <div class="milestone-row"><span id="milestone-copy">0 / 5 to next milestone</span><span id="milestone-level">Level 5</span></div>
-      <div class="milestone-track"><div class="milestone-fill" id="milestone-fill"></div></div>
+
+    <div class="main-featured-achievement" id="main-featured-achievement" hidden>
+      <button type="button" class="main-featured-preview" id="main-featured-preview" aria-label="Preview featured achievement">
+        <span class="main-featured-icon-wrap">
+          <span class="main-featured-icon" id="main-featured-icon">★</span>
+          <span class="main-featured-special" id="main-featured-special" hidden>✦</span>
+          <span class="main-featured-evolution" id="main-featured-evolution" hidden></span>
+        </span>
+        <span class="main-featured-copy">
+          <span class="main-featured-name" id="main-featured-name">Featured achievement</span>
+          <span class="main-featured-tier" id="main-featured-tier"></span>
+        </span>
+      </button>
+      <button type="button" class="main-featured-arrow-button" id="main-featured-arrow-button" aria-label="Open featured achievement in Progress">
+        <span class="main-featured-arrow" aria-hidden="true">›</span>
+      </button>
     </div>
-    <div class="consistency-status" id="consistency-status">3 workouts in any rolling 7 days keeps your consistency goal alive.</div>
-    <div class="recent-workouts">
-      <div class="recent-title">RECENT WORKOUTS</div>
-      <div class="recent-list" id="recent-workouts"><span class="history-empty">Complete a workout and it’ll show up here.</span></div>
-    </div>
+
+    <div class="consistency-status" id="consistency-status" hidden></div>
+    <details class="recent-workouts">
+      <summary>Recent workouts</summary>
+      <div class="recent-list" id="recent-workouts"><span class="history-empty">No workouts yet.</span></div>
+    </details>
   </section>
 
 
@@ -976,7 +1927,7 @@ button{font:inherit}
 
   <section class="day progress-page" id="day-progress" data-day="progress">
     <div class="day-head">
-      <div><h2>Progress</h2><p>Your strength and workout history</p></div>
+      <div><h2>Progress</h2></div>
       <button type="button" class="progress-unit" id="progress-unit-toggle">lb</button>
     </div>
 
@@ -986,6 +1937,8 @@ button{font:inherit}
       <div class="progress-stat"><span>Weight logs</span><strong id="progress-log-count">0</strong></div>
       <div class="progress-stat"><span>Exercises tracked</span><strong id="progress-exercises-count">0</strong></div>
     </div>
+
+
 
     <div class="progress-panel">
       <div class="progress-panel-head">
@@ -998,9 +1951,9 @@ button{font:inherit}
       </div>
 
       <div class="progress-metrics">
-        <div class="progress-metric"><span id="progress-start-label">Starting target</span><strong id="progress-start">—</strong></div>
-        <div class="progress-metric"><span id="progress-latest-label">Latest target</span><strong id="progress-latest">—</strong></div>
-        <div class="progress-metric"><span id="progress-best-label">Target PR</span><strong id="progress-best">—</strong></div>
+        <div class="progress-metric"><span id="progress-start-label">Starting working</span><strong id="progress-start">—</strong></div>
+        <div class="progress-metric"><span id="progress-latest-label">Latest working</span><strong id="progress-latest">—</strong></div>
+        <div class="progress-metric"><span id="progress-best-label">Working PR</span><strong id="progress-best">—</strong></div>
         <div class="progress-metric"><span>Change</span><strong id="progress-change">—</strong></div>
       </div>
       <div class="progress-caption" id="progress-caption">For assisted movements, using less assistance counts as improvement.</div>
@@ -1020,6 +1973,47 @@ button{font:inherit}
       </div>
     </div>
 
+    <div class="progress-panel achievement-panel" id="achievement-panel">
+      <div class="achievement-hero-head"><h3>Achievements</h3></div>
+
+      <div class="featured-badge empty" id="featured-achievement">Feature an earned badge.</div>
+
+      <div class="achievement-tier-glimpse" aria-label="Achievement tiers">
+        <div class="tier-glimpse tier-bronze" aria-label="Bronze tier"><span>◆</span></div>
+        <div class="tier-glimpse tier-silver" aria-label="Silver tier"><span>◆</span></div>
+        <div class="tier-glimpse tier-gold" aria-label="Gold tier"><span>◆</span></div>
+        <div class="tier-glimpse tier-mythic" aria-label="Mythic tier"><span>✦</span></div>
+      </div>
+
+      <details class="trophy-case-details" id="trophy-case-details">
+        <summary><span>Trophy Case</span><span class="trophy-case-chevron">⌄</span></summary>
+        <div class="trophy-case-body">
+          <div class="achievement-summary" id="achievement-summary" hidden></div>
+          <div class="achievement-filters" id="achievement-filters">
+            <button type="button" class="achievement-filter active" data-ach-filter="earned">Earned</button>
+            <button type="button" class="achievement-filter" data-ach-filter="special">Special</button>
+          </div>
+          <div class="achievement-grid" id="achievement-grid"></div>
+          <details class="achievement-guide" id="achievement-guide">
+            <summary>?</summary>
+            <div class="achievement-guide-grid compact">
+              <div><strong>Earned</strong><span>Your unlocked achievements.</span></div>
+              <div><strong>Special</strong><span>Hidden discoveries.</span></div>
+              <div><strong>Gilded</strong><span>3 natural Moments.</span></div>
+              <div><strong>Ascended</strong><span>7 natural Moments.</span></div>
+            </div>
+          </details>
+        </div>
+      </details>
+    </div>
+
+    <details class="progress-panel moments-collapsible" id="special-moments-panel" hidden>
+      <summary><span>Special Moments</span><span id="special-moments-count"></span></summary>
+      <div class="moments-list" id="achievement-moments"></div>
+    </details>
+
+    
+
     <div class="settings-panel">
       <h3>Your LiftLoop</h3>
       <div class="settings-copy">Your profile and workout data are stored only on this device.</div>
@@ -1038,7 +2032,8 @@ button{font:inherit}
         <button type="button" class="settings-btn" id="restore-backup">Restore file</button>
         <input type="file" id="restore-file" accept=".json,application/json" hidden>
       </div>
-</div>
+      
+      </div>
       <div class="backup-status" id="backup-status"></div>
     </div>
 
@@ -1056,7 +2051,7 @@ button{font:inherit}
     <button type="button" class="update-check" id="open-whats-new" style="margin-left:6px">What’s New</button>
     <div class="update-status" id="update-status">Automatic update check enabled</div>
   </div>
-  <p style="text-align:center;color:#697383;font-size:9px;margin:18px 0 6px">Build 2026.10.06.2 · profile copy cleanup</p>
+  <p style="text-align:center;color:#697383;font-size:9px;margin:18px 0 6px">Build 2026.10.13.26 · stable release</p>
   <p class="credit">
     Video demonstrations are embedded from their original YouTube sources. Previous vector artwork source:
     <a href="https://github.com/InlitX/GymMane" target="_blank" rel="noopener">GymMane</a>,
@@ -1082,6 +2077,11 @@ state.sessionCompleted = state.sessionCompleted || {};
 state.routinePrefs = state.routinePrefs || {};
 state.profileName = typeof state.profileName === 'string' ? state.profileName : '';
 state.weightUnit = state.weightUnit || 'lb';
+state.achievements = state.achievements && typeof state.achievements==='object' ? state.achievements : {};
+state.achievementMoments = Array.isArray(state.achievementMoments) ? state.achievementMoments : [];
+state.featuredAchievement = typeof state.featuredAchievement==='string' ? state.featuredAchievement : '';
+state.achievementFilter = ['earned','special'].includes(state.achievementFilter) ? state.achievementFilter : 'earned';
+state.achievementSystemVersion = Number(state.achievementSystemVersion)||0;
 const save=()=>{try{localStorage.setItem('liftloop-state',JSON.stringify(state));}catch(e){}};
 
 function showDay(id){
@@ -1298,13 +2298,94 @@ function visibleSetDots(day){
   return $$('.exercise:not(.routine-hidden) .set-dot',section);
 }
 
+function updateExerciseCompletion(card){
+  if(!card || card.classList.contains('routine-hidden')) return;
+  const dots=$$('.set-dot',card);
+  const complete=dots.length>0 && dots.every(dot=>dot.classList.contains('done'));
+  card.classList.toggle('exercise-complete',complete);
+}
 function updateProgress(day){
   const dots=visibleSetDots(day);
   const done=dots.filter(b=>b.classList.contains('done')).length;
   const pct=dots.length?Math.round(done/dots.length*100):0;
   const el=$(`#day-${day} .progress-count`);
   if(el) el.textContent=pct;
+  const section=$(`#day-${day}`);
+  if(section) $$('.exercise:not(.routine-hidden)',section).forEach(updateExerciseCompletion);
   if(typeof renderGamify==='function') renderGamify();
+}
+
+function carryCompletedWeightForward(btn){
+  const row=btn.closest('.set-log-row');
+  const card=btn.closest('.exercise');
+  if(!row || !card || !btn.classList.contains('done')) return;
+
+  // Save the just-completed row first so the copied value is exactly what was typed.
+  if(typeof persistRow==='function') persistRow(row);
+  const current=state.currentSets[btn.dataset.key]||{};
+
+  // If the set changed weight mid-set, carry the FINAL weight used
+  // (drop OR increase) into the next set. Otherwise carry the main weight.
+  const finalKg=(Number.isFinite(current.dropKg) && current.dropKg>0)
+    ? current.dropKg
+    : current.kg;
+  if(!Number.isFinite(finalKg) || finalKg<=0) return;
+
+  const rows=$$('.set-log-row',card);
+  const index=rows.indexOf(row);
+  if(index<0) return;
+
+  // Carry to the next unfinished set, unless the user has already manually edited it.
+  const next=rows.slice(index+1).find(r=>!$('.set-dot',r)?.classList.contains('done'));
+  if(!next) return;
+  const nextWeight=$('.set-weight',next);
+  if(!nextWeight || nextWeight.dataset.userEdited==='1') return;
+
+  const nextDot=$('.set-dot',next);
+  const nextState=ensureCurrentSet(card,nextDot,rows.indexOf(next));
+  nextState.kg=finalKg;
+  state.currentSets[nextDot.dataset.key]=nextState;
+  nextWeight.value=fmtNum(displayFromKg(finalKg));
+}
+
+function autoAdvanceCompletedExercise(btn){
+  const card=btn.closest('.exercise');
+  if(!card || card.classList.contains('routine-hidden')) return;
+
+  const dots=$$('.set-dot',card);
+  const complete=dots.length>0 && dots.every(dot=>dot.classList.contains('done'));
+  if(!complete) return;
+
+  const head=$('.exercise-head',card);
+  const body=$('.exercise-body',card);
+
+  // Collapse the just-finished exercise.
+  if(head){
+    head.setAttribute('aria-expanded','false');
+    if(body) body.hidden=true;
+    if(typeof stopAnimation==='function') stopAnimation(card);
+  }
+
+  // Find the next enabled exercise in this workout, in displayed order.
+  const day=card.dataset.day;
+  const cards=$$('.exercise').filter(x=>x.dataset.day===day && !x.classList.contains('routine-hidden'));
+  const index=cards.indexOf(card);
+  const next=cards.slice(index+1).find(x=>!x.classList.contains('routine-hidden'));
+
+  if(!next) return;
+
+  const nextHead=$('.exercise-head',next);
+  if(!nextHead) return;
+
+  // Open the next exercise using the app's normal accordion handler.
+  if(nextHead.getAttribute('aria-expanded')!=='true'){
+    nextHead.click();
+  }
+
+  // Bring it into a comfortable viewport position on mobile.
+  setTimeout(()=>{
+    try{ next.scrollIntoView({behavior:'smooth',block:'start'}); }catch(e){}
+  },80);
 }
 
 function bindSetDot(btn){
@@ -1316,8 +2397,15 @@ function bindSetDot(btn){
     if(state.sessionCompleted[day]) state.sessionCompleted[day]=false;
     btn.classList.toggle('done');
     state[btn.dataset.key]=btn.classList.contains('done');
+
+    const justCompleted=btn.classList.contains('done');
+    if(justCompleted) carryCompletedWeightForward(btn);
+
     save();
     updateProgress(day);
+
+    // Only advance when this click completed the exercise.
+    if(justCompleted) autoAdvanceCompletedExercise(btn);
   });
 }
 $$('.set-dot').forEach(bindSetDot);
@@ -1387,43 +2475,60 @@ function rankFor(level){
   if(level>=5) return 'Builder';
   return 'Starting Line';
 }
+
+function levelFrameFor(level){
+  if(level>=10000) return 9;
+  if(level>=5000) return 8;
+  if(level>=2500) return 7;
+  if(level>=1000) return 6;
+  if(level>=500) return 5;
+  if(level>=250) return 4;
+  if(level>=100) return 3;
+  if(level>=50) return 2;
+  if(level>=25) return 1;
+  return 0;
+}
+function levelPrestigeCount(level){
+  return Math.floor(Math.max(0,level-1)/100);
+}
+function applyLevelVisual(level){
+  const safeLevel=Math.max(1,Math.floor(Number(level)||1));
+  const formattedLevel=safeLevel.toLocaleString();
+  $('#level-number').textContent=formattedLevel;
+  $('#rank-label').textContent=rankFor(safeLevel);
+  const orb=$('#level-orb');
+  if(orb){
+    const digits=String(safeLevel).length;
+    orb.className=`level-orb frame-${levelFrameFor(safeLevel)} digits-${Math.min(6,digits)}`;
+  }
+  const prestige=$('#level-prestige');
+  const prestigeCount=levelPrestigeCount(safeLevel);
+  if(prestige){
+    prestige.hidden=prestigeCount<1;
+    prestige.textContent=prestigeCount>0?`✦${prestigeCount}`:'';
+  }
+  const milestone=Math.ceil(safeLevel/5)*5 || 5;
+  const base=milestone-5;
+  const within=safeLevel-base;
+  $('#milestone-copy').textContent=`${within} / 5`;
+  $('#milestone-fill').style.width=`${Math.min(100,Math.max(0,within/5*100))}%`;
+}
 function renderGamify(){
   const workouts=state.workoutHistory.length;
   const level=workouts+1;
-  $('#level-number').textContent=level;
-  $('#level-label').textContent=level;
-  $('#rank-label').textContent=rankFor(level);
+  applyLevelVisual(level);
   $('#workout-count').textContent=workouts;
+
   const rollingCount=rollingGoalCount();
   $('#streak-count').textContent=`${Math.min(rollingCount,3)}/3`;
-  $('#streak-label').textContent=rollingCount>=3?'7-DAY GOAL ✓':'LAST 7 DAYS';
-  const consistency=$('#consistency-status');
-  if(consistency){
-    const maintained=rollingGoalMaintainedDays();
-    consistency.classList.toggle('met',rollingCount>=3);
-    if(rollingCount>=3){
-      consistency.textContent=maintained>1
-        ? `Goal met · ${rollingCount} workouts in the last 7 days · maintained for ${maintained} days`
-        : `Goal met · ${rollingCount} workouts in the last 7 days`;
-    }else{
-      const remaining=Math.max(0,3-rollingCount);
-      consistency.textContent=`${rollingCount} of 3 workouts in the last 7 days · ${remaining} more to hit your rolling goal`;
-    }
-  }
+  $('#streak-label').textContent='STREAK';
   applyWorkoutPriority(false);
-
-  const milestone=Math.ceil(level/5)*5 || 5;
-  const base=milestone-5;
-  const within=level-base;
-  $('#milestone-copy').textContent=`${within} / 5 to next milestone`;
-  $('#milestone-level').textContent=`Level ${milestone}`;
-  $('#milestone-fill').style.width=`${Math.min(100,Math.max(0,within/5*100))}%`;
 
   const recent=$('#recent-workouts');
   recent.innerHTML='';
   const items=[...state.workoutHistory].slice(-5).reverse();
   if(!items.length){
-    recent.innerHTML='<span class="history-empty">Complete a workout and it’ll show up here.</span>';
+    recent.innerHTML='<span class="history-empty">No workouts yet.</span>';
   }else{
     items.forEach(w=>{
       const chip=document.createElement('span');
@@ -1477,12 +2582,13 @@ $$('.finish-workout').forEach(btn=>btn.addEventListener('click',()=>{
   renderGamify();
   applyWorkoutPriority(false);
   renderProgress();
+  if(typeof evaluateAchievements==='function') evaluateAchievements({afterWorkout:true,triggerTs:ts,recordCount:prCount});
   const level=state.workoutHistory.length+1;
   showLevelToast(level);
   if(prCount>0){
     setTimeout(()=>{
       const t=$('#level-toast');
-      t.textContent=`${prCount} new PR${prCount===1?'':'s'} recorded`;
+      t.textContent=`${prCount} new record${prCount===1?'':'s'} recorded`;
       t.classList.add('show');
       setTimeout(()=>t.classList.remove('show'),1600);
     },1900);
@@ -1600,9 +2706,20 @@ function renderCurrentSessionSummary(card){
   if(timed){ const sets=rows.map(row=>state.currentSets[$('.set-dot',row)?.dataset.key]||{}), durations=sets.map(s=>s.seconds).filter(v=>Number.isFinite(v)&&v>0), loads=sets.map(s=>s.kg).filter(Number.isFinite); const bestLoad=loads.length?(mode.assistance?Math.min(...loads):Math.max(...loads)):NaN, bestTime=durations.length?Math.max(...durations):NaN, totalTime=durations.reduce((a,b)=>a+b,0); $('.summary-best span',box).textContent='Best set load'; $('.summary-target span',box).textContent='Best time'; $('.summary-volume span',box).textContent='Total time'; $('.summary-best strong',box).textContent=fmt(displayFromKg(bestLoad)); $('.summary-target strong',box).textContent=Number.isFinite(bestTime)?`${bestTime} sec`:'—'; $('.summary-volume strong',box).textContent=totalTime>0?`${totalTime} sec`:'—'; return; }
   const all=[]; rows.forEach(row=>{const s=state.currentSets[$('.set-dot',row)?.dataset.key]||{}; all.push(...segmentsFromSet(s));}); const target=targetReps(card), best=all.length?(mode.assistance?Math.min(...all.map(x=>x.kg)):Math.max(...all.map(x=>x.kg))):NaN, targetVals=target?all.filter(x=>x.reps>=target).map(x=>x.kg):all.map(x=>x.kg), targetBest=targetVals.length?(mode.assistance?Math.min(...targetVals):Math.max(...targetVals)):NaN, volume=all.reduce((n,x)=>n+x.kg*x.reps,0); $('.summary-best span',box).textContent='Best set load'; $('.summary-target span',box).textContent=target?'Target-rep load':'Best load'; $('.summary-volume span',box).textContent='Volume'; $('.summary-best strong',box).textContent=fmt(displayFromKg(best)); $('.summary-target strong',box).textContent=fmt(displayFromKg(targetBest)); $('.summary-volume strong',box).textContent=Number.isFinite(volume)&&volume>0?`${Math.round(displayFromKg(volume)).toLocaleString()}`:'—';
 }
+function bindTapToReplace(input){
+  if(!input || input.dataset.tapReplaceBound==='1') return;
+  input.dataset.tapReplaceBound='1';
+  const selectAll=()=>setTimeout(()=>{
+    try{ input.select(); }catch(e){}
+  },0);
+  input.addEventListener('focus',selectAll);
+  input.addEventListener('click',selectAll);
+}
+
 function addDropEditor(row,prefill){
   if($('.drop-editor',row))return; const card=row.closest('.exercise'); if(isTimedExercise(card))return; const s=state.currentSets[$('.set-dot',row).dataset.key]||{}; const div=document.createElement('div'); div.className='drop-editor';
   div.innerHTML=`<div class="drop-label">Drop within this set</div><input class="set-field drop-weight" inputmode="decimal" type="number" min="0" placeholder="${state.weightUnit}" value="${Number.isFinite(s.dropKg)?fmtNum(displayFromKg(s.dropKg)):''}"><div class="set-times">×</div><input class="set-field drop-reps" inputmode="numeric" type="number" min="0" placeholder="reps" value="${Number.isFinite(s.dropReps)?s.dropReps:''}"><button type="button" class="drop-remove">Remove</button>`; row.appendChild(div);
+  $$('.set-field',div).forEach(bindTapToReplace);
   $('.drop-weight',div).addEventListener('input',()=>persistRow(row));
   $('.drop-reps',div).addEventListener('input',()=>{ const dropReps=parseInt($('.drop-reps',div).value,10), target=targetReps(card), mainReps=$('.set-reps',row); if(Number.isFinite(dropReps)&&Number.isFinite(target)&&mainReps)mainReps.value=Math.max(0,target-dropReps); persistRow(row); });
   $('.drop-remove',div).addEventListener('click',()=>{ const id=$('.set-dot',row).dataset.key, cur=state.currentSets[id]||{}, target=targetReps(card); cur.dropKg=null; cur.dropReps=null; if(Number.isFinite(target)){cur.reps=target; const main=$('.set-reps',row); if(main)main.value=target;} state.currentSets[id]=cur; div.remove(); save(); renderCurrentSessionSummary(card); });
@@ -1612,8 +2729,40 @@ function completeAllExercise(card){
   $$('.set-log-row',card).forEach((row,index)=>{ const dot=$('.set-dot',row), s=ensureCurrentSet(card,dot,index);
     if(Number.isFinite(usual) && usual>0) s.kg=usual;
     else if(mode.bodyweight && !Number.isFinite(s.kg)) s.kg=0; if(timed){if(Number.isFinite(usualSeconds))s.seconds=usualSeconds; else if(Number.isFinite(timeTarget))s.seconds=timeTarget; s.reps=null;} else {if(Number.isFinite(repTarget))s.reps=repTarget; s.seconds=null; s.dropKg=null; s.dropReps=null; $('.drop-editor',row)?.remove();} state.currentSets[dot.dataset.key]=s; dot.classList.add('done'); state[dot.dataset.key]=true; });
-  state.sessionCompleted[card.dataset.day]=false; save(); renderSetRows(card); updateProgress(card.dataset.day); renderGamify();
+  state.sessionCompleted[card.dataset.day]=false;
+  save();
+  renderSetRows(card);
+  updateProgress(card.dataset.day);
+  renderGamify();
+  if(typeof autoAdvanceCompletedExercise==='function'){
+    const lastDone=$$('.set-dot.done',card).at(-1);
+    if(lastDone) autoAdvanceCompletedExercise(lastDone);
+  }
 }
+function bindExerciseNumberQuickComplete(){
+  $$('.exercise .ex-num').forEach(num=>{
+    if(num.dataset.quickCompleteBound==='1') return;
+    num.dataset.quickCompleteBound='1';
+    num.addEventListener('click',e=>{
+      const card=num.closest('.exercise');
+      const head=$('.exercise-head',card);
+      if(!card || !head) return;
+
+      // Only use the number as a shortcut while the exercise is collapsed.
+      // When expanded, let the normal header behavior happen.
+      if(head.getAttribute('aria-expanded')==='true') return;
+
+      e.preventDefault();
+      e.stopPropagation();
+
+      // Ensure the logging rows/state exist even if this exercise was never opened.
+      renderSetRows(card);
+      completeAllExercise(card);
+    });
+  });
+}
+bindExerciseNumberQuickComplete();
+
 function ensureMetricModeControl(card){
   if(!isTimeCapableExercise(card)) return;
   const sets=$('.sets',card);
@@ -1665,13 +2814,23 @@ function renderSetRows(card){
   ensureMetricModeControl(card);
   const sets=$('.sets',card); if(!sets)return; const timed=isTimedExercise(card);
   if(!sets.classList.contains('set-log-grid')){ const dots=$$('.set-dot',sets); sets.innerHTML=''; sets.classList.add('set-log-grid'); const head=document.createElement('div'); head.className='set-log-head'; head.innerHTML=`<span></span><span class="weight-h">Weight</span><span></span><span class="reps-h">${timed?'Seconds':'Reps'}</span><span></span>`; sets.appendChild(head);
-    dots.forEach((dot,index)=>{ const row=document.createElement('div'); row.className='set-log-row'; row.appendChild(dot); row.insertAdjacentHTML('beforeend',`<input class="set-field set-weight" inputmode="decimal" type="number" min="0" aria-label="Set ${index+1} weight"><div class="set-times">×</div>${timed?`<input class="set-field set-seconds reps-field" inputmode="numeric" type="number" min="0" aria-label="Set ${index+1} seconds" placeholder="sec"><span></span>`:`<input class="set-field set-reps reps-field" inputmode="numeric" type="number" min="0" aria-label="Set ${index+1} reps"><button type="button" class="drop-toggle">+ Drop</button>`}`); sets.appendChild(row); if(!timed)$('.drop-toggle',row).addEventListener('click',()=>addDropEditor(row,true)); $$('.set-weight,.set-reps,.set-seconds',row).forEach(inp=>inp.addEventListener('input',()=>persistRow(row))); });
+    dots.forEach((dot,index)=>{ const row=document.createElement('div'); row.className='set-log-row'; row.appendChild(dot); row.insertAdjacentHTML('beforeend',`<input class="set-field set-weight" inputmode="decimal" type="number" min="0" aria-label="Set ${index+1} weight"><div class="set-times">×</div>${timed?`<input class="set-field set-seconds reps-field" inputmode="numeric" type="number" min="0" aria-label="Set ${index+1} seconds" placeholder="sec"><span></span>`:`<input class="set-field set-reps reps-field" inputmode="numeric" type="number" min="0" aria-label="Set ${index+1} reps"><button type="button" class="drop-toggle">+ Drop</button>`}`); sets.appendChild(row); if(!timed)$('.drop-toggle',row).addEventListener('click',()=>addDropEditor(row,true));
+      $$('.set-weight,.set-reps,.set-seconds',row).forEach(inp=>{
+        bindTapToReplace(inp);
+        inp.addEventListener('input',()=>{
+          if(inp.classList.contains('set-weight')) inp.dataset.userEdited='1';
+          persistRow(row);
+        });
+      });
+    });
     const complete=document.createElement('button'); complete.type='button'; complete.className='exercise-complete-all'; complete.textContent='✓ Complete all sets with usual weight'; complete.addEventListener('click',()=>completeAllExercise(card)); sets.insertAdjacentElement('afterend',complete);
     const note=document.createElement('div'); note.className='usual-weight-note'; complete.insertAdjacentElement('afterend',note); let anchor=note; if(timed){const hint=document.createElement('div'); hint.className='timed-hint'; hint.textContent='Timed exercise: log seconds instead of reps. Weight is optional.'; note.insertAdjacentElement('afterend',hint); anchor=hint;}
     const summary=document.createElement('div'); summary.className='session-summary'; summary.innerHTML=`<div class="session-chip summary-best"><span>Best set load</span><strong>—</strong></div><div class="session-chip summary-target"><span>${timed?'Best time':(targetReps(card)?'Target-rep load':'Best load')}</span><strong>—</strong></div><div class="session-chip summary-volume"><span>${timed?'Total time':'Volume'}</span><strong>—</strong></div>`; anchor.insertAdjacentElement('afterend',summary);
   }
   const usual=latestSessionUsualKg(card), complete=sets.nextElementSibling, note=complete?.nextElementSibling, usualTime=latestSessionUsualSeconds(card); if(note?.classList.contains('usual-weight-note')){let msg=Number.isFinite(usual)?`Most-used working weight: ${fmt(displayFromKg(usual))}.`:'No previous working weight yet.'; if(timed&&Number.isFinite(usualTime))msg+=` Usual time: ${usualTime} sec.`; msg+=' Change any set whenever you need to.'; note.textContent=msg;}
-  $$('.set-log-row',sets).forEach((row,index)=>{ const dot=$('.set-dot',row), s=ensureCurrentSet(card,dot,index), weight=$('.set-weight',row); weight.placeholder=state.weightUnit; weight.value=Number.isFinite(s.kg)?fmtNum(displayFromKg(s.kg)):''; if(timed){const seconds=$('.set-seconds',row); seconds.value=Number.isFinite(s.seconds)?s.seconds:'';} else {const reps=$('.set-reps',row); reps.value=Number.isFinite(s.reps)?s.reps:''; if(Number.isFinite(s.dropKg)||Number.isFinite(s.dropReps))addDropEditor(row,false); const dw=$('.drop-weight',row), dr=$('.drop-reps',row); if(dw){dw.placeholder=state.weightUnit; dw.value=Number.isFinite(s.dropKg)?fmtNum(displayFromKg(s.dropKg)):'';} if(dr)dr.value=Number.isFinite(s.dropReps)?s.dropReps:'';} });
+  $$('.set-log-row',sets).forEach((row,index)=>{ 
+    $$('.set-field',row).forEach(bindTapToReplace);
+    const dot=$('.set-dot',row), s=ensureCurrentSet(card,dot,index), weight=$('.set-weight',row); weight.placeholder=state.weightUnit; weight.value=Number.isFinite(s.kg)?fmtNum(displayFromKg(s.kg)):''; if(timed){const seconds=$('.set-seconds',row); seconds.value=Number.isFinite(s.seconds)?s.seconds:'';} else {const reps=$('.set-reps',row); reps.value=Number.isFinite(s.reps)?s.reps:''; if(Number.isFinite(s.dropKg)||Number.isFinite(s.dropReps))addDropEditor(row,false); const dw=$('.drop-weight',row), dr=$('.drop-reps',row); if(dw){dw.placeholder=state.weightUnit; dw.value=Number.isFinite(s.dropKg)?fmtNum(displayFromKg(s.dropKg)):'';} if(dr)dr.value=Number.isFinite(s.dropReps)?s.dropReps:'';} });
   const allDone=$$('.set-dot',card).length>0&&$$('.set-dot',card).every(d=>d.classList.contains('done')); if(complete?.classList.contains('exercise-complete-all')){complete.classList.toggle('done',allDone); complete.textContent=allDone?'All sets marked complete ✓':'✓ Complete all sets with usual weight';} renderCurrentSessionSummary(card);
 }
 function refreshDaySetRows(day){ exerciseCardsForDay(day).forEach(card=>renderSetRows(card)); }
@@ -1680,6 +2839,29 @@ function sessionSummary(session,card){
   if(timed){const sets=(session.sets||[]).filter(s=>Number.isFinite(s.seconds)&&s.seconds>0), loads=sets.map(s=>s.kg).filter(Number.isFinite), bestLoad=loads.length?(mode.assistance?Math.min(...loads):Math.max(...loads)):NaN, bestDuration=sets.length?Math.max(...sets.map(s=>s.seconds)):NaN, totalSeconds=sets.reduce((n,s)=>n+s.seconds,0); return {timed:true,bestLoad,bestDuration,totalSeconds,target:null,volume:0,bestRepSegment:null};}
   const target=targetReps(card), segs=(session.sets||[]).flatMap(segmentsFromSet), valid=segs.filter(x=>Number.isFinite(x.kg)&&Number.isFinite(x.reps)&&x.reps>0), loads=valid.map(x=>x.kg), bestLoad=loads.length?(mode.assistance?Math.min(...loads):Math.max(...loads)):NaN, qualifying=target?valid.filter(x=>x.reps>=target):valid, qloads=qualifying.map(x=>x.kg), targetLoad=qloads.length?(mode.assistance?Math.min(...qloads):Math.max(...qloads)):NaN, volume=valid.reduce((n,x)=>n+x.kg*x.reps,0), bestRepSegment=valid.length?valid.reduce((best,x)=>{if(!best)return x;if(mode.assistance){if(x.kg<best.kg||(Math.abs(x.kg-best.kg)<1e-8&&x.reps>best.reps))return x;}else if(x.kg>best.kg||(Math.abs(x.kg-best.kg)<1e-8&&x.reps>best.reps))return x;return best;},null):null; return {timed:false,bestLoad,targetLoad,volume,bestRepSegment,target};
 }
+function workingWeightForSession(session,card){
+  if(!session || !card || isTimedExercise(card)) return NaN;
+  const target=Number(session.targetReps)>0 ? Number(session.targetReps) : targetReps(card);
+  if(!Number.isFinite(target) || target<=0) return NaN;
+  const expected=Number(session.prescribedSets)>0 ? Number(session.prescribedSets) : defaultPrescription(card).sets;
+  const sets=(session.sets||[]).filter(Boolean);
+  if(!Number.isFinite(expected) || expected<=0 || sets.length<expected) return NaN;
+
+  // A working-weight result means every prescribed set hit the target on its
+  // main weight. Extra drop work can exist, but it never upgrades the main result.
+  const prescribed=sets.slice(0,expected);
+  if(!prescribed.every(s=>Number.isFinite(s.reps)&&s.reps>=target)) return NaN;
+  const loads=prescribed.map(s=>s.kg).filter(Number.isFinite);
+  if(loads.length!==expected) return NaN;
+
+  const mode=trackerMode($('.ex-name',card)?.textContent.trim()||'');
+  if(mode.bodyweight && !loads.some(x=>x>0)) return NaN;
+  // For ordinary resistance, the lowest load held across all sets is the
+  // sustainable working weight. For assistance, the highest assistance needed
+  // across the sets is the sustainable assistance level (lower is better).
+  return mode.assistance ? Math.max(...loads) : Math.min(...loads);
+}
+
 function historicalPRsBefore(card,ts){
   const prior=historyFor(card).filter(s=>s.ts<ts), summaries=prior.map(s=>sessionSummary(s,card)), mode=trackerMode($('.ex-name',card)?.textContent.trim()||'');
   const bestLoads=summaries.map(x=>x.bestLoad).filter(Number.isFinite), targetLoads=summaries.map(x=>x.targetLoad).filter(Number.isFinite), vols=summaries.map(x=>x.volume).filter(Number.isFinite), durations=summaries.map(x=>x.bestDuration).filter(Number.isFinite);
@@ -1707,7 +2889,15 @@ function commitWorkoutSets(day,ts){
     if(!sets.some(s=>Number.isFinite(s.kg)||Number.isFinite(s.reps)||Number.isFinite(s.seconds))) return;
 
     state.setHistory[key]=Array.isArray(state.setHistory[key])?state.setHistory[key]:[];
-    const session={ts,sets};
+    const session={
+      ts,
+      sets,
+      prescribedSets:$$('.set-dot',card).length,
+      targetReps:targetReps(card),
+      targetSeconds:targetSeconds(card),
+      day,
+      exercise:$('.ex-name',card)?.textContent.trim()||'Exercise'
+    };
     const before=historicalPRsBefore(card,ts);
     const now=sessionSummary(session,card);
     const mode=trackerMode($('.ex-name',card)?.textContent.trim()||'');
@@ -1734,10 +2924,19 @@ function progressExerciseCatalog(){
   });
 }
 function performanceSeries(card){
-  const rows=historyFor(card).map(s=>({ts:s.ts,...sessionSummary(s,card)})); if(isTimedExercise(card))return rows.filter(x=>Number.isFinite(x.bestDuration)).map(x=>({ts:x.ts,value:x.bestDuration,kind:'seconds',bestLoad:x.bestLoad})); const target=targetReps(card); return rows.filter(x=>Number.isFinite(target?x.targetLoad:x.bestLoad)).map(x=>({ts:x.ts,value:target?x.targetLoad:x.bestLoad,kind:'weight',volume:x.volume,bestLoad:x.bestLoad}));
+  const sessions=historyFor(card);
+  if(isTimedExercise(card)){
+    return sessions.map(s=>({ts:s.ts,...sessionSummary(s,card)}))
+      .filter(x=>Number.isFinite(x.bestDuration))
+      .map(x=>({ts:x.ts,value:x.bestDuration,kind:'seconds',bestLoad:x.bestLoad}));
+  }
+  return sessions.map(s=>{
+    const summary=sessionSummary(s,card);
+    return {ts:s.ts,value:workingWeightForSession(s,card),kind:'weight',volume:summary.volume,bestLoad:summary.bestLoad};
+  }).filter(x=>Number.isFinite(x.value));
 }
 function progressChartSvg(series,mode){
-  if(!series.length)return '<div class="progress-empty">Finish a workout with set details to start this chart.</div>'; const kind=series[0].kind||'weight', vals=series.map(x=>kind==='seconds'?x.value:displayFromKg(x.value)), W=360,H=190,L=42,R=12,T=14,B=30, min0=Math.min(...vals), max0=Math.max(...vals), pad=Math.max((max0-min0)*0.18,kind==='seconds'?2:(state.weightUnit==='kg'?1:2)), min=Math.max(0,min0-pad), max=max0+pad, span=(max-min)||1, pts=vals.map((v,i)=>({x:L+(W-L-R)*(series.length===1?.5:i/(series.length-1)),y:T+(H-T-B)*(1-(v-min)/span),v})), line=pts.map(p=>`${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' '), baseY=H-B, area=`${pts[0].x.toFixed(1)},${baseY} ${line} ${pts.at(-1).x.toFixed(1)},${baseY}`; let grid='',labels=''; for(let i=0;i<4;i++){const y=T+(H-T-B)*(i/3),v=max-(max-min)*(i/3);grid+=`<line class="grid" x1="${L}" y1="${y}" x2="${W-R}" y2="${y}"></line>`;labels+=`<text class="axis-text" x="${L-6}" y="${y+3}" text-anchor="end">${Math.round(v*10)/10}</text>`;} const firstDate=new Date(series[0].ts).toLocaleDateString(undefined,{month:'short',day:'numeric'}), lastDate=new Date(series.at(-1).ts).toLocaleDateString(undefined,{month:'short',day:'numeric'}), dots=pts.map(p=>`<circle class="dot" cx="${p.x}" cy="${p.y}" r="4"></circle>`).join(''), title=kind==='seconds'?'Longest timed set over completed workouts':'Target-rep working weight over completed workouts', unit=kind==='seconds'?'sec':state.weightUnit; return `<div class="progress-chart-title">${title}</div><svg class="progress-chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="${title}">${grid}${labels}<polygon class="area" points="${area}"></polygon><polyline class="line" points="${line}"></polyline>${dots}<text class="axis-text" x="${L}" y="${H-8}">${firstDate}</text><text class="axis-text" x="${W-R}" y="${H-8}" text-anchor="end">${lastDate}</text><text class="axis-text" x="${W-R}" y="${T+9}" text-anchor="end">${unit}</text></svg>`;
+  if(!series.length)return '<div class="progress-empty">Finish a workout with set details to start this chart.</div>'; const kind=series[0].kind||'weight', vals=series.map(x=>kind==='seconds'?x.value:displayFromKg(x.value)), W=360,H=190,L=42,R=12,T=14,B=30, min0=Math.min(...vals), max0=Math.max(...vals), pad=Math.max((max0-min0)*0.18,kind==='seconds'?2:(state.weightUnit==='kg'?1:2)), min=Math.max(0,min0-pad), max=max0+pad, span=(max-min)||1, pts=vals.map((v,i)=>({x:L+(W-L-R)*(series.length===1?.5:i/(series.length-1)),y:T+(H-T-B)*(1-(v-min)/span),v})), line=pts.map(p=>`${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' '), baseY=H-B, area=`${pts[0].x.toFixed(1)},${baseY} ${line} ${pts.at(-1).x.toFixed(1)},${baseY}`; let grid='',labels=''; for(let i=0;i<4;i++){const y=T+(H-T-B)*(i/3),v=max-(max-min)*(i/3);grid+=`<line class="grid" x1="${L}" y1="${y}" x2="${W-R}" y2="${y}"></line>`;labels+=`<text class="axis-text" x="${L-6}" y="${y+3}" text-anchor="end">${Math.round(v*10)/10}</text>`;} const firstDate=new Date(series[0].ts).toLocaleDateString(undefined,{month:'short',day:'numeric'}), lastDate=new Date(series.at(-1).ts).toLocaleDateString(undefined,{month:'short',day:'numeric'}), dots=pts.map(p=>`<circle class="dot" cx="${p.x}" cy="${p.y}" r="4"></circle>`).join(''), title=kind==='seconds'?'Longest timed set over completed workouts':'Full-prescription working weight over completed workouts', unit=kind==='seconds'?'sec':state.weightUnit; return `<div class="progress-chart-title">${title}</div><svg class="progress-chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="${title}">${grid}${labels}<polygon class="area" points="${area}"></polygon><polyline class="line" points="${line}"></polyline>${dots}<text class="axis-text" x="${L}" y="${H-8}">${firstDate}</text><text class="axis-text" x="${W-R}" y="${H-8}" text-anchor="end">${lastDate}</text><text class="axis-text" x="${W-R}" y="${T+9}" text-anchor="end">${unit}</text></svg>`;
 }
 function renderProgress(){
   const select=$('#progress-exercise-select');
@@ -1782,9 +2981,9 @@ function renderProgress(){
     const pct=Number.isFinite(first)&&Math.abs(first)>1e-8&&Number.isFinite(last)
       ? (timed ? (last-first)/first*100 : (chosen.mode.assistance ? (first-last)/first*100 : (last-first)/first*100))
       : NaN;
-    $('#progress-start-label').textContent=timed?'Starting time':'Starting target';
-    $('#progress-latest-label').textContent=timed?'Latest time':'Latest target';
-    $('#progress-best-label').textContent=timed?'Time PR':'Target PR';
+    $('#progress-start-label').textContent=timed?'Starting time':'Starting working';
+    $('#progress-latest-label').textContent=timed?'Latest time':'Latest working';
+    $('#progress-best-label').textContent=timed?'Time PR':'Working PR';
     $('#progress-start').textContent=timed?(Number.isFinite(first)?`${first} sec`:'—'):fmt(first);
     $('#progress-latest').textContent=timed?(Number.isFinite(last)?`${last} sec`:'—'):fmt(last);
     $('#progress-best').textContent=timed?(Number.isFinite(best)?`${best} sec`:'—'):fmt(best);
@@ -1857,6 +3056,7 @@ function renderProgress(){
       hist.appendChild(row);
     });
   }
+  if(window.__liftloopAchievementsReady && typeof renderAchievements==='function') renderAchievements();
 }
 function renderAllSetRows(){
   $$('.exercise:not(.routine-hidden)').forEach(renderSetRows);
@@ -2038,21 +3238,22 @@ $('#save-routine')?.addEventListener('click',()=>{
 
 
 
-
-
+// Beta popup: list ONLY changes introduced since the currently published Beta build.
 const LIFTLOOP_CHANGELOG = {
-  '2026.10.06.2': {
-    title: 'Small cleanup',
+  '2026.10.13.26': {
+    title: 'What’s new in LiftLoop',
     changes: [
-      {
-        icon:'👤',
-        title:'Cleaner profile wording',
-        text:'The profile section now uses neutral app wording and no longer refers to sharing LiftLoop with a friend.'
-      }
+      {icon:'⚡',title:'Faster workout flow',text:'Exercise completion, auto-advance, number entry, and working-weight carry-forward are quicker and more automatic.'},
+      {icon:'🏆',title:'Achievements and Trophy Case',text:'Earn Bronze, Silver, Gold, and Mythic achievements, discover hidden Specials, and keep a favorite achievement visible during workouts.'},
+      {icon:'✦',title:'Special Moments and evolution',text:'Repeatable Specials preserve their Moment history and can evolve into Gilded and Ascended states.'},
+      {icon:'↗',title:'Working Weight PRs',text:'PR progression now focuses on sustainable full-prescription working weight instead of one-off heavier sets.'},
+      {icon:'◈',title:'Achievement reveals',text:'Unlocks use rarity-scaled materials and motion, with stronger Mythic and Special presentations.'},
+      {icon:'∞',title:'Long-term milestones',text:'Major workout-count milestones beyond 100 have their own Mythic identities, and Level visuals scale for very high levels.'},
+      {icon:'★',title:'Featured achievement',text:'Tap the featured badge to preview it in place, or use the arrow to jump directly to it in Progress.'},
+      {icon:'⌄',title:'Cleaner Progress and updates',text:'Progress is less cluttered, achievements focus on Earned and Special, and update status is clearer.'}
     ]
   }
 };
-
 
 function whatsNewStorageKey(){
   return 'liftloop-last-seen-build';
@@ -2075,12 +3276,16 @@ function renderWhatsNew(build=LIFTLOOP_BUILD){
       <div><strong>${change.title}</strong><span>${change.text}</span></div>`;
     list.appendChild(li);
   });
+  overlay.style.pointerEvents='';
   overlay.hidden=false;
   return true;
 }
 function dismissWhatsNew(){
   const overlay=document.getElementById('whats-new-overlay');
-  if(overlay) overlay.hidden=true;
+  if(overlay){
+    overlay.hidden=true;
+    overlay.style.pointerEvents='';
+  }
   try{ localStorage.setItem(whatsNewStorageKey(),LIFTLOOP_BUILD); }catch(e){}
 }
 function maybeShowWhatsNew(){
@@ -2151,40 +3356,1140 @@ if(document.readyState==='loading'){
 }
 
 
-// Independent self-updater: does not depend on a service worker.
+
+// ---------- Achievements, Special discoveries, and Moments ----------
+const ACHIEVEMENT_SYSTEM_VERSION=4;
+const TIER_ORDER={bronze:1,silver:2,gold:3,mythic:4};
+const DAY_NAMES={push:'Push',pull:'Pull',shoulders:'Shoulders + Core'};
+
+function achievementDefList(){
+  return [
+    {id:'first_steps',name:'First Steps',icon:'👟',tier:'bronze',group:'Journey',description:'Complete your first LiftLoop workout.',target:1,metric:'workouts'},
+    {id:'finding_rhythm',name:'Finding Your Rhythm',icon:'◉',tier:'bronze',group:'Journey',description:'Complete 5 workouts.',target:5,metric:'workouts'},
+    {id:'double_digits',name:'Double Digits',icon:'10',tier:'silver',group:'Journey',description:'Complete 10 workouts.',target:10,metric:'workouts'},
+    {id:'quarter_century',name:'Quarter Century',icon:'25',tier:'silver',group:'Journey',description:'Complete 25 workouts.',target:25,metric:'workouts'},
+    {id:'committed',name:'Committed',icon:'◆',tier:'gold',group:'Journey',description:'Complete 50 workouts.',target:50,metric:'workouts'},
+    {id:'long_haul',name:'Long Haul',icon:'75',tier:'gold',group:'Journey',description:'Complete 75 workouts.',target:75,metric:'workouts'},
+    {id:'century_club',name:'Century Club',icon:'100',tier:'mythic',group:'Journey',description:'Complete 100 workouts.',target:100,metric:'workouts'},
+    {id:'double_century',name:'Double Century',icon:'200',tier:'mythic',group:'Journey',description:'Complete 200 workouts.',target:200,metric:'workouts'},
+    {id:'triple_century',name:'Triple Century',icon:'300',tier:'mythic',group:'Journey',description:'Complete 300 workouts.',target:300,metric:'workouts'},
+    {id:'half_grand',name:'Half Grand',icon:'500',tier:'mythic',group:'Journey',description:'Complete 500 workouts.',target:500,metric:'workouts'},
+    {id:'four_digits',name:'Four Digits',icon:'1K',tier:'mythic',group:'Journey',description:'Complete 1,000 workouts.',target:1000,metric:'workouts'},
+    {id:'deep_run',name:'Deep Run',icon:'2.5K',tier:'mythic',group:'Journey',description:'Complete 2,500 workouts.',target:2500,metric:'workouts'},
+    {id:'five_grand',name:'Five Grand',icon:'5K',tier:'mythic',group:'Journey',description:'Complete 5,000 workouts.',target:5000,metric:'workouts'},
+    {id:'five_figures',name:'Five Figures',icon:'10K',tier:'mythic',group:'Journey',description:'Complete 10,000 workouts.',target:10000,metric:'workouts'},
+
+    {id:'in_the_loop',name:'In the Loop',icon:'↻',tier:'bronze',group:'Consistency',description:'Complete 3 workouts inside a rolling 7-day period.',target:3,metric:'maxRolling7'},
+    {id:'locked_in',name:'Locked In',icon:'🔒',tier:'silver',group:'Consistency',description:'Keep the 3-in-7 rolling goal alive for 7 consecutive days.',target:7,metric:'maxGoalDays'},
+    {id:'built_different',name:'Built Different',icon:'⬢',tier:'gold',group:'Consistency',description:'Keep the 3-in-7 rolling goal alive for 30 consecutive days.',target:30,metric:'maxGoalDays'},
+    {id:'four_week_rhythm',name:'Four-Week Rhythm',icon:'4W',tier:'silver',group:'Consistency',description:'Train in 4 consecutive calendar weeks.',target:4,metric:'activeWeekStreak'},
+    {id:'season_in_motion',name:'Season in Motion',icon:'12W',tier:'gold',group:'Consistency',description:'Train in 12 consecutive calendar weeks.',target:12,metric:'activeWeekStreak'},
+    {id:'year_in_motion',name:'Year in Motion',icon:'52W',tier:'mythic',group:'Consistency',description:'Train in 52 consecutive calendar weeks.',target:52,metric:'activeWeekStreak'},
+
+    {id:'first_breakthrough',name:'First Breakthrough',icon:'↗',tier:'bronze',group:'Progress',description:'Earn your first genuine Working Weight PR after establishing a baseline.',target:1,metric:'workingPRs'},
+    {id:'pr_hunter',name:'PR Hunter',icon:'🎯',tier:'silver',group:'Progress',description:'Earn 10 genuine Working Weight PRs.',target:10,metric:'workingPRs'},
+    {id:'limit_breaker',name:'Limit Breaker',icon:'⚡',tier:'gold',group:'Progress',description:'Earn 25 genuine Working Weight PRs.',target:25,metric:'workingPRs'},
+    {id:'broad_gains',name:'Broad Gains',icon:'↗5',tier:'silver',group:'Progress',description:'Earn a genuine Working Weight PR on 5 different exercises.',target:5,metric:'prExercises'},
+    {id:'wide_front',name:'Wide Front',icon:'↗10',tier:'gold',group:'Progress',description:'Earn a genuine Working Weight PR on 10 different exercises.',target:10,metric:'prExercises'},
+    {id:'breakthrough_machine',name:'Breakthrough Machine',icon:'50↗',tier:'mythic',group:'Progress',description:'Earn 50 genuine Working Weight PRs.',target:50,metric:'workingPRs'},
+
+    {id:'full_rotation',name:'Full Rotation',icon:'△',tier:'bronze',group:'Training',description:'Complete Push, Pull, and Shoulders + Core at least once.',target:3,metric:'distinctDays'},
+    {id:'all_rounder',name:'All-Rounder',icon:'△5',tier:'silver',group:'Training',description:'Complete at least 5 Push, 5 Pull, and 5 Shoulders + Core workouts.',target:5,metric:'minDayCount'},
+    {id:'balanced_veteran',name:'Balanced Veteran',icon:'△20',tier:'gold',group:'Training',description:'Complete at least 20 workouts of each workout type.',target:20,metric:'minDayCount'},
+    {id:'split_master',name:'Split Master',icon:'△50',tier:'mythic',group:'Training',description:'Complete at least 50 workouts of each workout type.',target:50,metric:'minDayCount'},
+    {id:'clean_sweep',name:'Clean Sweep',icon:'✓',tier:'bronze',group:'Completion',description:'Complete every planned set in a workout.',target:1,metric:'fullWorkouts'},
+    {id:'five_clean',name:'Five Clean',icon:'✓5',tier:'bronze',group:'Completion',description:'Complete 5 full workouts with every planned set finished.',target:5,metric:'fullWorkouts'},
+    {id:'twenty_clean',name:'Twenty Clean',icon:'✓20',tier:'silver',group:'Completion',description:'Complete 20 full workouts with every planned set finished.',target:20,metric:'fullWorkouts'},
+    {id:'fifty_clean',name:'Fifty Clean',icon:'✓50',tier:'gold',group:'Completion',description:'Complete 50 full workouts with every planned set finished.',target:50,metric:'fullWorkouts'},
+    {id:'flawless_week',name:'Flawless Week',icon:'✦',tier:'gold',group:'Completion',description:'Complete 3 full workouts with no skipped sets inside a rolling 7-day period.',target:3,metric:'maxFullRolling7'},
+    {id:'dialed_in',name:'Dialed In',icon:'⌁',tier:'bronze',group:'Logging',description:'Finish a full workout with complete set details recorded for every completed set.',target:1,metric:'dialedWorkouts'},
+    {id:'training_log',name:'Training Log',icon:'▤10',tier:'silver',group:'Logging',description:'Finish 10 fully detailed workouts with complete set logging.',target:10,metric:'dialedWorkouts'},
+    {id:'archivist',name:'Archivist',icon:'▤25',tier:'gold',group:'Logging',description:'Finish 25 fully detailed workouts with complete set logging.',target:25,metric:'dialedWorkouts'},
+    {id:'against_clock',name:'Against the Clock',icon:'⏱',tier:'bronze',group:'Training',description:'Log a completed timed exercise.',target:1,metric:'timedSessions'},
+    {id:'clockwork',name:'Clockwork',icon:'⏱10',tier:'silver',group:'Training',description:'Complete 10 timed exercise sessions.',target:10,metric:'timedSessions'},
+    {id:'loaded_clock',name:'Loaded Clock',icon:'⏱+',tier:'silver',group:'Training',description:'Complete a timed exercise while also recording added load.',target:1,metric:'loadedTimedSessions'},
+    {id:'loaded_clockwork',name:'Loaded Clockwork',icon:'⏱5+',tier:'gold',group:'Training',description:'Complete 5 timed exercise sessions while also recording added load.',target:5,metric:'loadedTimedSessions'},
+
+    // Specials are deliberately hidden until discovered. They do not count
+    // against achievement completion and do not expose farmable thresholds.
+    {id:'first_lap',name:'First Lap',icon:'↺',tier:'bronze',special:true,group:'Special',description:'Complete Push, Pull, and Shoulders + Core inside one rolling 14-day period.',clue:'A loop can close before it becomes a routine.',momentNoun:'Laps'},
+    {id:'clean_breakthrough',name:'Clean Breakthrough',icon:'✧',tier:'bronze',special:true,group:'Special',description:'A fully completed workout contains a genuine Working Weight PR.',clue:'Sometimes progress and completion arrive together.',momentNoun:'Breakthroughs'},
+    {id:'triple_crown',name:'Triple Crown',icon:'♛',tier:'silver',special:true,group:'Special',description:'Complete all three workout types inside one rolling 7-day period.',clue:'Three paths can meet in a single week.',momentNoun:'Crowns'},
+    {id:'conquered_it',name:'Conquered It',icon:'⚔',tier:'gold',special:true,repeatable:true,group:'Special',description:'A weight that once forced a mid-set reduction is later completed across the full prescription without needing that reduction.',clue:'Some weights are not conquered the first time.',momentNoun:'Conquests'},
+    {id:'steady_climb',name:'Steady Climb',icon:'⛰',tier:'gold',special:true,repeatable:true,group:'Special',description:'The same exercise earns three separate genuine Working Weight PRs over time.',clue:'Some victories only appear when the same lift keeps moving.',momentNoun:'Climbs'},
+    {id:'across_board',name:'Across the Board',icon:'✣',tier:'gold',special:true,group:'Special',description:'Working Weight PRs land across Push, Pull, and Shoulders + Core within the same training chapter.',clue:'Progress is stronger when it is not confined to one day.',momentNoun:'Moments'},
+    {id:'perfect_storm',name:'Perfect Storm',icon:'✺',tier:'gold',special:true,repeatable:true,group:'Special',description:'A full workout, a genuine Working Weight PR, and the rolling weekly goal all land together.',clue:'Sometimes several good things land on the same day.',momentNoun:'Storms'},
+    {id:'balanced_build',name:'Balanced Build',icon:'⬡',tier:'silver',special:true,group:'Special',description:'A substantial run of training stays meaningfully balanced across all three workout types.',clue:'A balanced routine leaves a pattern.',momentNoun:'Moments'},
+    {id:'full_spectrum',name:'Full Spectrum',icon:'◈',tier:'silver',special:true,group:'Special',description:'Your history includes weighted resistance, bodyweight or assisted work, and timed training.',clue:'Strength has more than one language.',momentNoun:'Moments'},
+    {id:'perfect_circuit',name:'Perfect Circuit',icon:'✹',tier:'mythic',special:true,repeatable:true,group:'Special',description:'Push, Pull, and Shoulders + Core are all completed in one rolling 7-day period, with a genuine Working Weight PR inside a full workout for every training day.',clue:'A complete loop can align with progress on every side.',momentNoun:'Circuits'},
+    {id:'three_peaks',name:'Three Peaks',icon:'♜',tier:'mythic',special:true,group:'Special',description:'Long-term progression reaches Steady Climb-level depth in Push, Pull, and Shoulders + Core—three genuine Working Weight PRs on an exercise in every training day.',clue:'Three different peaks can rise from the same training life.',momentNoun:'Peaks'}
+  ];
+}
+function achievementDefs(){ return achievementDefList(); }
+function achievementDef(id){ return achievementDefs().find(x=>x.id===id); }
+function achievementDisplayName(def){ return def?.name||'Achievement'; }
+
+function sortedWorkouts(){ return [...state.workoutHistory].filter(w=>Number.isFinite(Number(w.ts))).sort((a,b)=>Number(a.ts)-Number(b.ts)); }
+function workoutIsFull(w){
+  if(!w) return false;
+  if(w.partial===true) return false;
+  if(Number.isFinite(w.completedSets)&&Number.isFinite(w.totalSets)) return w.totalSets>0 && w.completedSets>=w.totalSets;
+  // Older LiftLoop versions only allowed workout completion after all sets,
+  // so pre-partial-history entries are treated as full.
+  return true;
+}
+function maxRollingCountFor(workouts,days=7){
+  const rows=[...workouts].sort((a,b)=>Number(a.ts)-Number(b.ts));
+  let best=0,left=0,windowMs=days*86400000;
+  for(let right=0;right<rows.length;right++){
+    const end=Number(rows[right].ts);
+    while(left<=right && Number(rows[left].ts)<=end-windowMs) left++;
+    best=Math.max(best,right-left+1);
+  }
+  return best;
+}
+function maxRollingGoalDaysHistorical(){
+  const rows=sortedWorkouts();
+  if(rows.length<3) return 0;
+  const first=new Date(Number(rows[0].ts)); first.setHours(23,59,59,999);
+  const last=new Date(Number(rows.at(-1).ts)); last.setDate(last.getDate()+7); last.setHours(23,59,59,999);
+  let streak=0,best=0;
+  for(let d=new Date(first);d<=last;d.setDate(d.getDate()+1)){
+    const end=d.getTime(), start=end-7*86400000;
+    const count=rows.filter(w=>Number(w.ts)>start&&Number(w.ts)<=end).length;
+    if(count>=3){ streak++; best=Math.max(best,streak); } else streak=0;
+  }
+  return best;
+}
+function distinctWorkoutDays(){ return new Set(sortedWorkouts().map(w=>w.day).filter(d=>['push','pull','shoulders'].includes(d))).size; }
+function workoutDayCounts(){
+  const counts={push:0,pull:0,shoulders:0};
+  sortedWorkouts().forEach(w=>{ if(Object.prototype.hasOwnProperty.call(counts,w.day)) counts[w.day]++; });
+  return counts;
+}
+function minimumWorkoutDayCount(){
+  const c=workoutDayCounts();
+  return Math.min(c.push,c.pull,c.shoulders);
+}
+function localDayNumber(value){
+  const d=value instanceof Date?value:new Date(value);
+  return Math.floor(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())/86400000);
+}
+function localWeekStartDayNumber(value){
+  const d=value instanceof Date?value:new Date(value);
+  return localDayNumber(d)-((d.getDay()+6)%7);
+}
+function longestActiveWeekStreak(){
+  const weeks=[...new Set(sortedWorkouts().map(w=>localWeekStartDayNumber(w.ts)))].sort((x,y)=>x-y);
+  let best=0,run=0,prior=null;
+  weeks.forEach(week=>{
+    run=(prior!==null&&week-prior===7)?run+1:1;
+    best=Math.max(best,run);
+    prior=week;
+  });
+  return best;
+}
+function distinctPRExerciseCount(prs=workingPRTimeline()){
+  return new Set(prs.map(e=>e.key)).size;
+}
+
+function workingPRTimeline(){
+  const events=[];
+  progressExerciseCatalog().forEach(item=>{
+    const sessions=[...historyFor(item.card)].sort((a,b)=>Number(a.ts)-Number(b.ts));
+    let baseline=NaN;
+    sessions.forEach(session=>{
+      const value=workingWeightForSession(session,item.card);
+      if(!Number.isFinite(value)) return;
+      if(!Number.isFinite(baseline)){ baseline=value; return; } // baseline is not a PR
+      const improved=item.mode.assistance ? value<baseline-1e-8 : value>baseline+1e-8;
+      if(improved){
+        events.push({ts:Number(session.ts),key:item.key,name:item.name,day:item.day,value,previous:baseline});
+        baseline=value;
+      }
+    });
+  });
+  return events.sort((a,b)=>a.ts-b.ts);
+}
+
+function setHistorySessionsAt(ts){
+  const out=[];
+  Object.entries(state.setHistory||{}).forEach(([key,sessions])=>{
+    (Array.isArray(sessions)?sessions:[]).forEach(session=>{
+      if(Number(session.ts)===Number(ts)) out.push({key,session});
+    });
+  });
+  return out;
+}
+function nameFromExerciseKey(key){ return String(key||'').split('::').slice(1).join('::')||'Exercise'; }
+function dayFromExerciseKey(key){ return String(key||'').split('::')[0]||''; }
+function dialedInWorkoutCount(){
+  return sortedWorkouts().filter(w=>{
+    if(!workoutIsFull(w)) return false;
+    const sessions=setHistorySessionsAt(w.ts);
+    if(!sessions.length) return false;
+    let loggedSets=0;
+    const valid=sessions.every(({key,session})=>{
+      const name=nameFromExerciseKey(key), mode=trackerMode(name);
+      return (session.sets||[]).every(s=>{
+        loggedSets++;
+        if(Number.isFinite(s.seconds)&&s.seconds>0) return !Number.isFinite(s.kg) || s.kg>=0;
+        if(!Number.isFinite(s.reps)||s.reps<=0) return false;
+        if(!mode.bodyweight && (!Number.isFinite(s.kg)||s.kg<=0)) return false;
+        if(Number.isFinite(s.dropReps)&&s.dropReps>0 && !mode.bodyweight && (!Number.isFinite(s.dropKg)||s.dropKg<=0)) return false;
+        return true;
+      });
+    });
+    if(!valid) return false;
+    return !Number.isFinite(w.completedSets) || loggedSets>=w.completedSets;
+  }).length;
+}
+function timedSessionStats(){
+  let timed=0,loaded=0;
+  Object.values(state.setHistory||{}).filter(Array.isArray).forEach(sessions=>sessions.forEach(session=>{
+    const hasTimed=(session.sets||[]).some(s=>Number.isFinite(s.seconds)&&s.seconds>0);
+    if(hasTimed){
+      timed++;
+      if((session.sets||[]).some(s=>Number.isFinite(s.seconds)&&s.seconds>0&&Number.isFinite(s.kg)&&s.kg>0)) loaded++;
+    }
+  }));
+  return {timed,loaded};
+}
+function workingPREventsInWindow(days=45){
+  const events=workingPRTimeline(), windows=[];
+  for(let i=0;i<events.length;i++){
+    const end=events[i].ts,start=end-days*86400000;
+    windows.push(events.filter(e=>e.ts>start&&e.ts<=end));
+  }
+  return windows;
+}
+function rollingWorkoutCountAt(ts,onlyFull=false){
+  const start=Number(ts)-7*86400000;
+  return sortedWorkouts().filter(w=>Number(w.ts)>start&&Number(w.ts)<=Number(ts)&&(!onlyFull||workoutIsFull(w))).length;
+}
+function firstLapMoment(){
+  const rows=sortedWorkouts();
+  for(const endW of rows){
+    const start=Number(endW.ts)-14*86400000;
+    const window=rows.filter(w=>Number(w.ts)>start&&Number(w.ts)<=Number(endW.ts));
+    const days=new Set(window.map(w=>w.day));
+    if(['push','pull','shoulders'].every(d=>days.has(d))){
+      return {id:'first_lap:first',achievementId:'first_lap',ts:Number(endW.ts),title:'First Lap',detail:'Push, Pull, and Shoulders + Core all landed inside one rolling 14-day period.'};
+    }
+  }
+  return null;
+}
+function cleanBreakthroughMoment(prs){
+  const prTs=new Set(prs.map(e=>Number(e.ts)));
+  const w=sortedWorkouts().find(x=>workoutIsFull(x)&&prTs.has(Number(x.ts)));
+  if(!w) return null;
+  const exerciseNames=[...new Set(prs.filter(e=>Number(e.ts)===Number(w.ts)).map(e=>e.name))];
+  return {
+    id:'clean_breakthrough:first',
+    achievementId:'clean_breakthrough',
+    ts:Number(w.ts),
+    title:`Clean Breakthrough · ${w.name}`,
+    detail:`A full ${w.name} workout also produced a genuine Working Weight PR${exerciseNames.length?` on ${exerciseNames.join(', ')}`:''}.`
+  };
+}
+function tripleCrownMoment(){
+  const rows=sortedWorkouts();
+  for(const endW of rows){
+    const start=Number(endW.ts)-7*86400000;
+    const window=rows.filter(w=>Number(w.ts)>start&&Number(w.ts)<=Number(endW.ts));
+    const days=new Set(window.map(w=>w.day));
+    if(['push','pull','shoulders'].every(d=>days.has(d))){
+      return {id:`triple_crown:${localDateKey(endW.ts)}`,achievementId:'triple_crown',ts:Number(endW.ts),title:'Triple Crown',detail:'Push, Pull, and Shoulders + Core all landed inside one rolling 7-day period.'};
+    }
+  }
+  return null;
+}
+function conqueredMoments(){
+  const moments=[];
+  progressExerciseCatalog().forEach(item=>{
+    const card=item.card, mode=item.mode;
+    if(isTimedExercise(card)||mode.assistance||mode.bodyweight) return;
+    const sessions=[...historyFor(card)].sort((a,b)=>Number(a.ts)-Number(b.ts));
+    const targetNow=targetReps(card);
+    if(!Number.isFinite(targetNow)||targetNow<=0) return;
+    sessions.forEach((session,idx)=>{
+      const target=Number(session.targetReps)>0?Number(session.targetReps):targetNow;
+      (session.sets||[]).forEach(s=>{
+        if(!(Number.isFinite(s.kg)&&s.kg>0&&Number.isFinite(s.dropKg)&&s.dropKg>0&&s.dropKg<s.kg-1e-8&&Number.isFinite(s.dropReps)&&s.dropReps>0)) return;
+        if(!(Number.isFinite(s.reps)&&s.reps<target&&s.reps+s.dropReps>=target)) return;
+        const challenged=s.kg;
+        const later=sessions.slice(idx+1).find(next=>{
+          if(Number(next.ts)-Number(session.ts)<3*86400000) return false;
+          const w=workingWeightForSession(next,card);
+          return Number.isFinite(w)&&w>=challenged-1e-8;
+        });
+        if(!later) return;
+        const weightId=challenged.toFixed(3);
+        moments.push({
+          id:`conquered_it:${item.key}:${weightId}`,
+          achievementId:'conquered_it',
+          ts:Number(later.ts),
+          title:`Conquered It · ${item.name}`,
+          detail:`A load that previously needed a reduction was later completed across the full prescription at ${fmt(displayFromKg(challenged))}.`,
+          exerciseKey:item.key
+        });
+      });
+    });
+  });
+  const seen=new Set();
+  return moments.filter(m=>!seen.has(m.id)&&seen.add(m.id)).sort((a,b)=>a.ts-b.ts);
+}
+function steadyClimbMoments(prs){
+  const by=new Map();
+  prs.forEach(e=>{const arr=by.get(e.key)||[];arr.push(e);by.set(e.key,arr);});
+  const out=[];
+  by.forEach((arr,key)=>{
+    if(arr.length>=3){
+      const third=arr[2];
+      out.push({id:`steady_climb:${key}`,achievementId:'steady_climb',ts:third.ts,title:`Steady Climb · ${third.name}`,detail:'This exercise has produced three separate genuine Working Weight PRs.'});
+    }
+  });
+  return out;
+}
+function acrossBoardMoment(prs){
+  for(const end of prs){
+    const start=end.ts-45*86400000;
+    const win=prs.filter(e=>e.ts>start&&e.ts<=end.ts);
+    const days=new Set(win.map(e=>e.day));
+    if(['push','pull','shoulders'].every(d=>days.has(d))){
+      return {id:`across_board:${localDateKey(end.ts)}`,achievementId:'across_board',ts:end.ts,title:'Across the Board',detail:'Genuine Working Weight PRs appeared across Push, Pull, and Shoulders + Core within the same training chapter.'};
+    }
+  }
+  return null;
+}
+function perfectStormMoments(prs){
+  const prTs=new Set(prs.map(e=>Number(e.ts)));
+  return sortedWorkouts().filter(w=>workoutIsFull(w)&&prTs.has(Number(w.ts))&&rollingWorkoutCountAt(w.ts)>=3).map(w=>({
+    id:`perfect_storm:${Number(w.ts)}`,
+    achievementId:'perfect_storm',
+    ts:Number(w.ts),
+    title:'Perfect Storm',
+    detail:`${w.name}: full completion, a genuine Working Weight PR, and the rolling 3-in-7 goal all landed together.`
+  }));
+}
+function balancedBuildMoment(){
+  const rows=sortedWorkouts();
+  for(let i=11;i<rows.length;i++){
+    const win=rows.slice(i-11,i+1), counts={push:0,pull:0,shoulders:0};
+    win.forEach(w=>{if(counts[w.day]!=null)counts[w.day]++;});
+    if(counts.push>=3&&counts.pull>=3&&counts.shoulders>=3){
+      return {id:`balanced_build:${Number(rows[i].ts)}`,achievementId:'balanced_build',ts:Number(rows[i].ts),title:'Balanced Build',detail:'A 12-workout stretch kept meaningful representation across Push, Pull, and Shoulders + Core.'};
+    }
+  }
+  return null;
+}
+function fullSpectrumMoment(){
+  let weighted=false,body=false,timed=false,lastTs=0;
+  progressExerciseCatalog().forEach(item=>{
+    const mode=item.mode;
+    historyFor(item.card).forEach(session=>{
+      const ts=Number(session.ts)||0;
+      if((session.sets||[]).some(s=>Number.isFinite(s.seconds)&&s.seconds>0)){timed=true;lastTs=Math.max(lastTs,ts);}
+      if(mode.bodyweight||mode.assistance){
+        if((session.sets||[]).some(s=>(Number.isFinite(s.reps)&&s.reps>0)||(Number.isFinite(s.seconds)&&s.seconds>0))){body=true;lastTs=Math.max(lastTs,ts);}
+      }else if((session.sets||[]).some(s=>Number.isFinite(s.kg)&&s.kg>0&&Number.isFinite(s.reps)&&s.reps>0)){weighted=true;lastTs=Math.max(lastTs,ts);}
+    });
+  });
+  return weighted&&body&&timed ? {id:'full_spectrum:first',achievementId:'full_spectrum',ts:lastTs||Date.now(),title:'Full Spectrum',detail:'Your LiftLoop history now spans weighted resistance, bodyweight or assisted work, and timed training.'} : null;
+}
+function perfectCircuitMoments(prs){
+  const full=sortedWorkouts().filter(workoutIsFull);
+  const fullTs=new Set(full.map(w=>Number(w.ts)));
+  const out=[];
+  let lastAccepted=-Infinity;
+  for(const endW of full){
+    const end=Number(endW.ts),start=end-7*86400000;
+    if(end-lastAccepted<7*86400000) continue;
+    const window=full.filter(w=>Number(w.ts)>start&&Number(w.ts)<=end);
+    const workoutDays=new Set(window.map(w=>w.day));
+    if(!['push','pull','shoulders'].every(d=>workoutDays.has(d))) continue;
+    const prWindow=prs.filter(e=>e.ts>start&&e.ts<=end&&fullTs.has(Number(e.ts)));
+    const prDays=new Set(prWindow.map(e=>e.day));
+    if(!['push','pull','shoulders'].every(d=>prDays.has(d))) continue;
+    out.push({
+      id:`perfect_circuit:${localDateKey(end)}`,
+      achievementId:'perfect_circuit',
+      ts:end,
+      title:'Perfect Circuit',
+      detail:'Push, Pull, and Shoulders + Core were all completed inside one rolling week, and each training day contained a genuine Working Weight PR inside a full workout.'
+    });
+    lastAccepted=end;
+  }
+  return out;
+}
+function threePeaksMoment(prs){
+  const qualifying=[];
+  for(const day of ['push','pull','shoulders']){
+    const byExercise=new Map();
+    prs.filter(e=>e.day===day).forEach(e=>{
+      const arr=byExercise.get(e.key)||[];arr.push(e);byExercise.set(e.key,arr);
+    });
+    const candidates=[...byExercise.values()].filter(arr=>arr.length>=3).map(arr=>arr[2]).sort((a,b)=>a.ts-b.ts);
+    if(!candidates.length) return null;
+    qualifying.push(candidates[0]);
+  }
+  const ts=Math.max(...qualifying.map(x=>x.ts));
+  return {
+    id:'three_peaks:first',achievementId:'three_peaks',ts,title:'Three Peaks',
+    detail:`Long-term progression reached three genuine Working Weight PRs on an exercise in each training day: ${qualifying.map(x=>x.name).join(', ')}.`
+  };
+}
+
+function detectSpecialMoments(prs){
+  const out=[];
+  const maybe=x=>{if(x)out.push(x);};
+  maybe(firstLapMoment());
+  maybe(cleanBreakthroughMoment(prs));
+  maybe(tripleCrownMoment());
+  conqueredMoments().forEach(x=>out.push(x));
+  steadyClimbMoments(prs).forEach(x=>out.push(x));
+  maybe(acrossBoardMoment(prs));
+  perfectStormMoments(prs).forEach(x=>out.push(x));
+  maybe(balancedBuildMoment());
+  maybe(fullSpectrumMoment());
+  perfectCircuitMoments(prs).forEach(x=>out.push(x));
+  maybe(threePeaksMoment(prs));
+  const seen=new Set();
+  return out.filter(x=>x&&x.id&&!seen.has(x.id)&&seen.add(x.id)).sort((a,b)=>a.ts-b.ts);
+}
+
+function achievementContext(){
+  const workouts=sortedWorkouts(), full=workouts.filter(workoutIsFull), prs=workingPRTimeline(), timed=timedSessionStats();
+  const specialMoments=detectSpecialMoments(prs);
+  return {
+    workouts:workouts.length,
+    maxRolling7:maxRollingCountFor(workouts,7),
+    maxGoalDays:maxRollingGoalDaysHistorical(),
+    workingPRs:prs.length,
+    workingPREvents:prs,
+    prExercises:distinctPRExerciseCount(prs),
+    distinctDays:distinctWorkoutDays(),
+    minDayCount:minimumWorkoutDayCount(),
+    activeWeekStreak:longestActiveWeekStreak(),
+    fullWorkouts:full.length,
+    maxFullRolling7:maxRollingCountFor(full,7),
+    dialedWorkouts:dialedInWorkoutCount(),
+    timedSessions:timed.timed,
+    loadedTimedSessions:timed.loaded,
+    specialMoments
+  };
+}
+function normalMetricValue(def,ctx){ return Number(ctx[def.metric])||0; }
+function achievementProgress(def,ctx){
+  if(def.special){
+    const count=state.achievementMoments.filter(m=>m.achievementId===def.id).length;
+    return {current:count,target:null,earned:count>0,pct:count>0?100:0};
+  }
+  const current=normalMetricValue(def,ctx), target=Number(def.target)||1;
+  return {current,target,earned:current>=target,pct:Math.max(0,Math.min(100,current/target*100))};
+}
+function specialEvolutionStage(def,count){
+  if(!def?.special||!def.repeatable) return 0;
+  if(count>=7) return 2;
+  if(count>=3) return 1;
+  return 0;
+}
+function specialEvolutionLabel(stage){ return stage>=2?'Ascended':stage===1?'Gilded':''; }
+
+let achievementPresentationQueue=[];
+let achievementPresentationActive=false;
+
+function tierLabel(def){
+  const base=def.tier.charAt(0).toUpperCase()+def.tier.slice(1);
+  return def.special?`${base} · Special`:base;
+}
+function badgeMedalClasses(def,count=0){
+  const stage=specialEvolutionStage(def,count);
+  return `badge-medallion tier-${def.tier}${def.special?' special':''}${stage?` evolved-${stage}`:''}`;
+}
+function badgeDecorationsHtml(def,count=0){
+  const stage=specialEvolutionStage(def,count);
+  const special=def?.special?'<span class="special-marker">✦</span>':'';
+  const evolution=stage===1
+    ? '<span class="evolution-stars gilded" aria-label="Gilded">★</span>'
+    : stage>=2
+      ? '<span class="evolution-stars ascended" aria-label="Ascended">★★★</span>'
+      : '';
+  return `${special}${evolution}`;
+}
+function evolutionStarsText(stage){
+  return stage>=2?'★★★':stage===1?'★':'';
+}
+function queueAchievementPresentation(item){
+  achievementPresentationQueue.push(item);
+  pumpAchievementPresentation();
+}
+function pumpAchievementPresentation(){
+  if(achievementPresentationActive||!achievementPresentationQueue.length) return;
+  const whats=$('#whats-new-overlay');
+  if(whats && !whats.hidden){ setTimeout(pumpAchievementPresentation,700); return; }
+  const item=achievementPresentationQueue.shift();
+  achievementPresentationActive=true;
+  showAchievementPresentation(item);
+}
+function closeAchievementPresentation(){
+  const overlay=$('#achievement-overlay');
+  if(overlay){
+    overlay.hidden=true;
+    overlay.className='achievement-overlay';
+  }
+  const fx=$('#achievement-fx'); if(fx) fx.innerHTML='';
+  const discoveryStage=$('#special-discovery-stage'); if(discoveryStage) discoveryStage.hidden=true;
+  achievementPresentationActive=false;
+  setTimeout(pumpAchievementPresentation,180);
+}
+function achievementShortCopy(def,item={}){
+  if(item.kind==='evolution'){
+    const stage=Number(item.previewCount)>=7?2:Number(item.previewCount)>=3?1:0;
+    return stage>=2?'This Special reached Ascended.':stage===1?'This Special reached Gilded.':'This Special evolved.';
+  }
+  if(item.kind==='moment') return 'Another meaningful Special Moment was recorded.';
+  const special={
+    first_lap:'Completed the full split inside 14 days.',
+    clean_breakthrough:'A full workout also delivered a Working Weight PR.',
+    triple_crown:'Completed all 3 workout types inside 7 days.',
+    conquered_it:'Mastered a load you once had to back off.',
+    steady_climb:'The same lift improved three separate times.',
+    across_board:'Working Weight PRs landed across all 3 workout types.',
+    perfect_storm:'Full workout + PR + weekly goal, together.',
+    balanced_build:'Your training stayed genuinely balanced.',
+    full_spectrum:'Weighted, assisted/bodyweight, and timed work all logged.',
+    perfect_circuit:'All 3 workout types were full — each with a PR.',
+    three_peaks:'Deep PR progression reached all 3 workout types.'
+  };
+  if(def.special&&special[def.id]) return special[def.id];
+  const t=Number(def.target)||0;
+  if(def.metric==='workouts') return `${t.toLocaleString()} workouts complete.`;
+  if(def.metric==='activeWeekStreak') return `${t} consecutive training weeks.`;
+  if(def.metric==='workingPRs') return `${t} genuine Working Weight PRs.`;
+  if(def.metric==='prExercises') return `Working Weight PRs on ${t} different exercises.`;
+  if(def.metric==='minDayCount') return `${t} workouts completed in each workout type.`;
+  if(def.metric==='fullWorkouts') return `${t} fully completed workouts.`;
+  if(def.metric==='maxGoalDays') return `3-in-7 consistency held for ${t} days.`;
+  if(def.metric==='maxRolling7') return `${t} workouts inside one rolling week.`;
+  if(def.metric==='maxFullRolling7') return `${t} full workouts inside one rolling week.`;
+  if(def.metric==='dialedWorkouts') return `${t} fully detailed workout logs.`;
+  if(def.metric==='timedSessions') return `${t} timed training sessions.`;
+  if(def.metric==='loadedTimedSessions') return `${t} loaded timed sessions.`;
+  if(def.metric==='distinctDays') return 'All 3 workout types completed.';
+  return def.description;
+}
+
+function achievementFxLevel(def){
+  if(def.special && def.tier==='mythic') return {particles:30,rays:12};
+  if(def.tier==='mythic') return {particles:20,rays:8};
+  if(def.special&&def.tier==='gold') return {particles:9,rays:0};
+  if(def.special&&def.tier==='silver') return {particles:5,rays:0};
+  if(def.special) return {particles:7,rays:0};
+  if(def.tier==='gold') return {particles:12,rays:0};
+  return {particles:0,rays:0};
+}
+function buildAchievementFx(def){
+  const fx=$('#achievement-fx');
+  if(!fx) return;
+  fx.innerHTML='';
+  const level=achievementFxLevel(def);
+  if(def.tier==='gold'||def.tier==='mythic'||def.special){
+    const ring=document.createElement('span');
+    ring.className='fx-ring';
+    fx.appendChild(ring);
+  }
+  for(let i=0;i<level.particles;i++){
+    const angle=(Math.PI*2*i/Math.max(1,level.particles))+((i%3)*0.13);
+    const distance=(def.tier==='mythic'?105:82)+(i%4)*13;
+    const p=document.createElement('span');
+    p.className='fx-particle';
+    p.style.setProperty('--dx',`${Math.cos(angle)*distance}px`);
+    p.style.setProperty('--dy',`${Math.sin(angle)*distance}px`);
+    p.style.animationDelay=`${0.1+(i%6)*0.035}s`;
+    const size=3+(i%3)*1.5;
+    p.style.width=`${size}px`;
+    p.style.height=`${size}px`;
+    fx.appendChild(p);
+  }
+  for(let i=0;i<level.rays;i++){
+    const r=document.createElement('span');
+    r.className='fx-ray';
+    r.style.setProperty('--r',`${(360/level.rays)*i}deg`);
+    r.style.animationDelay=`${0.04+(i%4)*0.025}s`;
+    fx.appendChild(r);
+  }
+}
+function applyAchievementRevealClasses(overlay,def){
+  if(!overlay) return;
+  overlay.className='achievement-overlay';
+  void overlay.offsetWidth;
+  overlay.classList.add(`reveal-${def.tier}`);
+  if(def.special) overlay.classList.add('reveal-special');
+}
+function showAchievementPresentation(item){
+  const overlay=$('#achievement-overlay'),card=$('#achievement-reveal');
+  if(!overlay||!card){achievementPresentationActive=false;return;}
+  const def=achievementDef(item.achievementId||item.id);
+  if(!def){achievementPresentationActive=false;return;}
+  const actualCount=state.achievementMoments.filter(m=>m.achievementId===def.id).length;
+  const previewCount=Number(item.previewCount);
+  const count=Number.isFinite(previewCount)&&previewCount>0?previewCount:actualCount;
+  const stage=specialEvolutionStage(def,count);
+  applyAchievementRevealClasses(overlay,def);
+  const specialDiscovery=def.special&&item.kind==='unlock';
+  if(specialDiscovery) overlay.classList.add('special-first-discovery');
+  const discoveryStage=$('#special-discovery-stage');
+  if(discoveryStage) discoveryStage.hidden=!specialDiscovery;
+  buildAchievementFx(def);
+  card.className=`achievement-reveal tier-${def.tier}${def.special?' special-reveal':''}`;
+  $('#achievement-reveal-medal').className=`${badgeMedalClasses(def,count)} unlock-medal`;
+  $('#achievement-reveal-icon').textContent=def.icon;
+  $('#achievement-reveal-title').textContent=item.title||achievementDisplayName(def);
+  $('#achievement-reveal-tier').textContent=tierLabel(def)+(stage?` · ${specialEvolutionLabel(stage)}`:'');
+  $('#achievement-reveal-kicker').textContent=item.preview
+    ? (item.kind==='moment'?'Preview · Special Moment':item.kind==='evolution'?'Preview · Badge evolved':def.special?'Preview · Special discovered':'Preview · Achievement unlocked')
+    : (item.kind==='moment'?'Special Moment':item.kind==='evolution'?'Badge evolved':def.special?'Special discovered':'Achievement unlocked');
+  $('#achievement-reveal-copy').textContent=achievementShortCopy(def,item);
+  const countBox=$('#achievement-reveal-count');
+  countBox.textContent=def.special&&count>1 ? `${count} ${def.momentNoun||'moments'}` : '';
+
+  const specialMark=$('#achievement-reveal-special');
+  if(specialMark) specialMark.hidden=!def.special;
+  const evolution=$('#achievement-reveal-evolution');
+  if(evolution){
+    evolution.hidden=!stage;
+    evolution.textContent=evolutionStarsText(stage);
+    evolution.className=`evolution-stars${stage===1?' gilded':stage>=2?' ascended':''}`;
+  }
+
+  const details=$('#achievement-reveal-details');
+  if(details){
+    details.hidden=false;
+    details.onclick=()=>{
+      const opts={preview:!!item.preview};
+      if(Number.isFinite(previewCount)&&previewCount>0) opts.previewMomentCount=previewCount;
+      closeAchievementPresentation();
+      setTimeout(()=>openAchievementDetail(def.id,opts),150);
+    };
+  }
+  overlay.hidden=false;
+}
+function showRetroactiveAchievementSummary(ids){
+  if(!ids.length) return;
+  const overlay=$('#achievement-overlay'),card=$('#achievement-reveal');
+  if(!overlay||!card) return;
+  if($('#whats-new-overlay') && !$('#whats-new-overlay').hidden){ setTimeout(()=>showRetroactiveAchievementSummary(ids),800); return; }
+  achievementPresentationActive=true;
+  const retroDef={tier:'gold',special:false};
+  applyAchievementRevealClasses(overlay,retroDef);
+  buildAchievementFx(retroDef);
+  card.className='achievement-reveal tier-gold';
+  $('#achievement-reveal-kicker').textContent='History recognized';
+  $('#achievement-reveal-medal').className='badge-medallion unlock-medal tier-gold';
+  $('#achievement-reveal-icon').textContent='✦';
+  $('#achievement-reveal-title').textContent=`${ids.length} achievement${ids.length===1?'':'s'} earned`;
+  $('#achievement-reveal-tier').textContent='LiftLoop history';
+  $('#achievement-reveal-copy').textContent='These were awarded from workouts already stored on this device. You did not have to start over when Achievements arrived.';
+  const top=ids.map(achievementDef).filter(Boolean).sort((a,b)=>(TIER_ORDER[b.tier]-TIER_ORDER[a.tier])).slice(0,7);
+  $('#achievement-reveal-count').innerHTML=`<div class="retro-badges">${top.map(def=>{const c=state.achievementMoments.filter(m=>m.achievementId===def.id).length;return `<div class="${badgeMedalClasses(def,c)}"><span>${def.icon}</span>${badgeDecorationsHtml(def,c)}</div>`;}).join('')}</div>`;
+  const details=$('#achievement-reveal-details'); if(details) details.hidden=true;
+  const specialMark=$('#achievement-reveal-special'); if(specialMark) specialMark.hidden=true;
+  const evolution=$('#achievement-reveal-evolution'); if(evolution) evolution.hidden=true;
+  overlay.hidden=false;
+}
+function bindAchievementOverlays(){
+  $('#achievement-reveal-close')?.addEventListener('click',closeAchievementPresentation);
+  $('#achievement-overlay')?.addEventListener('click',e=>{if(e.target.id==='achievement-overlay')closeAchievementPresentation();});
+  $('#achievement-detail-close')?.addEventListener('click',()=>{$('#achievement-detail-overlay').hidden=true;});
+  $('#achievement-detail-overlay')?.addEventListener('click',e=>{if(e.target.id==='achievement-detail-overlay')e.currentTarget.hidden=true;});
+}
+
+function evaluateAchievements(opts={}){
+  const firstInstall=state.achievementSystemVersion<ACHIEVEMENT_SYSTEM_VERSION;
+  const ctx=achievementContext();
+  const oldMomentIds=new Set(state.achievementMoments.map(m=>m.id));
+  const newMoments=[];
+  ctx.specialMoments.forEach(m=>{
+    if(!oldMomentIds.has(m.id)){
+      state.achievementMoments.push(m);
+      oldMomentIds.add(m.id);
+      newMoments.push(m);
+    }
+  });
+  state.achievementMoments.sort((a,b)=>Number(a.ts)-Number(b.ts));
+
+  const newlyUnlocked=[];
+  achievementDefs().forEach(def=>{
+    const p=achievementProgress(def,ctx);
+    if(p.earned&&!state.achievements[def.id]){
+      state.achievements[def.id]={unlockedAt:def.special
+        ? Math.min(...state.achievementMoments.filter(m=>m.achievementId===def.id).map(m=>Number(m.ts)||Date.now()))
+        : Date.now(),evolutionStage:0};
+      newlyUnlocked.push(def.id);
+    }
+    if(def.special&&state.achievements[def.id]){
+      const count=state.achievementMoments.filter(m=>m.achievementId===def.id).length;
+      const stage=specialEvolutionStage(def,count);
+      const prior=Number(state.achievements[def.id].evolutionStage)||0;
+      if(stage>prior&&!firstInstall){
+        state.achievements[def.id].evolutionStage=stage;
+        queueAchievementPresentation({kind:'evolution',achievementId:def.id,title:`${def.name} · ${specialEvolutionLabel(stage)}`,detail:`This Special badge changed because your training history kept adding meaningful ${String(def.momentNoun||'moments').toLowerCase()}.`});
+      }else{
+        state.achievements[def.id].evolutionStage=Math.max(prior,stage);
+      }
+    }
+  });
+
+  state.achievementSystemVersion=ACHIEVEMENT_SYSTEM_VERSION;
+  if(!state.featuredAchievement||!state.achievements[state.featuredAchievement]){
+    const best=achievementDefs().filter(d=>state.achievements[d.id]).sort((a,b)=>TIER_ORDER[b.tier]-TIER_ORDER[a.tier]||Number(!!b.special)-Number(!!a.special))[0];
+    state.featuredAchievement=best?.id||'';
+  }
+  save();
+  renderAchievements();
+
+  if(firstInstall){
+    if(newlyUnlocked.length) setTimeout(()=>showRetroactiveAchievementSummary(newlyUnlocked),1150);
+  }else if(opts.afterWorkout){
+    const delay=Number(opts.recordCount)>0?3700:1900;
+    setTimeout(()=>{
+      newlyUnlocked.forEach(id=>queueAchievementPresentation({kind:'unlock',achievementId:id}));
+      newMoments.filter(m=>state.achievements[m.achievementId]&&!newlyUnlocked.includes(m.achievementId)).forEach(m=>{
+        queueAchievementPresentation({kind:'moment',achievementId:m.achievementId,title:m.title,detail:m.detail});
+      });
+    },delay);
+  }
+  return {newlyUnlocked,newMoments,ctx};
+}
+
+function setFeaturedAchievement(id){
+  const def=achievementDef(id);
+  if(!def||!state.achievements[id]) return false;
+  state.featuredAchievement=id;
+  save();
+  renderAchievements();
+  return true;
+}
+function clearFeaturedAchievement(){
+  state.featuredAchievement='';
+  save();
+  renderAchievements();
+  return true;
+}
+function goToAchievementInProgress(id){
+  const def=achievementDef(id);
+  if(!def) return;
+  state.achievementFilter=def.special?'special':'earned';
+  showDay('progress');
+  renderAchievements();
+
+  const trophy=$('#trophy-case-details');
+  if(trophy) trophy.open=true;
+
+  requestAnimationFrame(()=>{
+    const panel=$('#achievement-panel');
+    if(panel) panel.scrollIntoView({behavior:'smooth',block:'start'});
+    setTimeout(()=>{
+      const card=$(`.achievement-card[data-achievement-id="${id}"]`);
+      if(card){
+        card.scrollIntoView({behavior:'smooth',block:'center'});
+        card.classList.add('achievement-focus-pulse');
+        setTimeout(()=>card.classList.remove('achievement-focus-pulse'),1500);
+      }
+    },300);
+  });
+}
+function renderMainFeaturedAchievement(){
+  const button=$('#main-featured-achievement');
+  if(!button) return;
+  const def=achievementDef(state.featuredAchievement);
+  if(!def||!state.achievements[def.id]){
+    button.hidden=true;
+    return;
+  }
+  const count=state.achievementMoments.filter(m=>m.achievementId===def.id).length;
+  const stage=specialEvolutionStage(def,count);
+  button.hidden=false;
+  button.className=`main-featured-achievement tier-${def.tier}${def.special?' special-card':''}${stage?` evolved-${stage}`:''}`;
+  const mainIcon=$('#main-featured-icon');
+  if(mainIcon){ mainIcon.textContent=''; mainIcon.dataset.icon=def.icon; }
+  $('#main-featured-name').textContent=achievementDisplayName(def);
+  const specialMarker=$('#main-featured-special');
+  if(specialMarker) specialMarker.hidden=!def.special;
+  const evolution=$('#main-featured-evolution');
+  if(evolution){
+    evolution.hidden=!stage;
+    evolution.textContent=evolutionStarsText(stage);
+  }
+  $('#main-featured-tier').textContent=`${tierLabel(def)}${stage?` · ${specialEvolutionLabel(stage)}`:''}`;
+
+  const previewButton=$('#main-featured-preview');
+  if(previewButton){
+    previewButton.onclick=()=>openAchievementDetail(def.id);
+  }
+  const arrowButton=$('#main-featured-arrow-button');
+  if(arrowButton){
+    arrowButton.onclick=()=>goToAchievementInProgress(def.id);
+  }
+}
+
+function renderFeaturedAchievement(){
+  const box=$('#featured-achievement'); if(!box)return;
+  const def=achievementDef(state.featuredAchievement);
+  if(!def||!state.achievements[def.id]){
+    box.className='featured-badge empty';
+    box.textContent='Unlock a badge and you can feature it here.';
+    return;
+  }
+  const count=state.achievementMoments.filter(m=>m.achievementId===def.id).length;
+  const stage=specialEvolutionStage(def,count);
+  box.className=`featured-badge tier-${def.tier}${def.special?' special-card':''}${stage?` evolved-${stage}`:''}`;
+  const momentText=def.special&&count>1?`${count} ${def.momentNoun||'moments'}`:'';
+  box.innerHTML=`<div class="${badgeMedalClasses(def,count)}"><span>${def.icon}</span>${badgeDecorationsHtml(def,count)}</div><div class="featured-copy"><strong>${achievementDisplayName(def)}</strong><span class="featured-subline">${tierLabel(def)}${stage?` · ${specialEvolutionLabel(stage)}`:''}${momentText?` · ${momentText}`:''}</span></div>`;
+  box.onclick=()=>openAchievementDetail(def.id);
+}
+function developerPreviewMoments(def,count=3){
+  const now=Date.now();
+  const examples={
+    conquered_it:[
+      ['Conquered It · Incline Dumbbell Bench Press','A load that once required a mid-set reduction was later completed across the full prescription.'],
+      ['Conquered It · Lat Pulldown','A previously reduced load was later held cleanly across every prescribed set.'],
+      ['Conquered It · Dumbbell Shoulder Press','The original working load was eventually completed without needing the earlier reduction.']
+    ],
+    steady_climb:[
+      ['Steady Climb · Incline Dumbbell Bench Press','This exercise reached another genuine Working Weight PR after multiple earlier improvements.'],
+      ['Steady Climb · Seated Cable Row','A third separate Working Weight PR turned repeated progress into a training story.'],
+      ['Steady Climb · Barbell Curl','Another sustained progression milestone was recorded over time.']
+    ],
+    perfect_storm:[
+      ['Perfect Storm · Push Day','Full workout completion, a genuine Working Weight PR, and the rolling 3-in-7 goal landed together.'],
+      ['Perfect Storm · Pull Day','Three meaningful wins aligned inside the same completed workout.'],
+      ['Perfect Storm · Shoulders + Core','Completion, progression, and consistency all landed on the same session.']
+    ]
+  };
+  const list=examples[def.id]||[
+    [`${def.name} · Moment 1`,def.description],
+    [`${def.name} · Moment 2`,def.description],
+    [`${def.name} · Moment 3`,def.description]
+  ];
+  return Array.from({length:count},(_,i)=>({
+    id:`preview-${def.id}-${i}`,
+    achievementId:def.id,
+    ts:now-(count-1-i)*10*86400000,
+    title:list[i%list.length][0],
+    detail:list[i%list.length][1]
+  }));
+}
+function normalAchievementEvidence(def,ctx){
+  const unlocked=state.achievements[def.id];
+  if(!unlocked) return '';
+  const rows=[];
+  const unlockedAt=Number(unlocked.unlockedAt);
+  if(Number.isFinite(unlockedAt)){
+    rows.push(['Earned',new Date(unlockedAt).toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'})]);
+  }
+  if(def.metric==='workouts') rows.push(['Workouts completed',String(ctx.workouts)]);
+  else if(def.metric==='maxRolling7') rows.push(['Best rolling 7 days',`${ctx.maxRolling7} workouts`]);
+  else if(def.metric==='maxGoalDays') rows.push(['Best goal-maintained run',`${ctx.maxGoalDays} days`]);
+  else if(def.metric==='workingPRs') rows.push(['Working Weight PRs',String(ctx.workingPRs)]);
+  else if(def.metric==='distinctDays') rows.push(['Workout types completed',`${ctx.distinctDays}/3`]);
+  else if(def.metric==='fullWorkouts') rows.push(['Full workouts',String(ctx.fullWorkouts)]);
+  else if(def.metric==='maxFullRolling7') rows.push(['Best full-workout week',`${ctx.maxFullRolling7} workouts`]);
+  else if(def.metric==='dialedWorkouts') rows.push(['Fully detailed workouts',String(ctx.dialedWorkouts)]);
+  else if(def.metric==='timedSessions') rows.push(['Timed sessions',String(ctx.timedSessions)]);
+  else if(def.metric==='loadedTimedSessions') rows.push(['Loaded timed sessions',String(ctx.loadedTimedSessions)]);
+  else if(def.metric==='activeWeekStreak') rows.push(['Longest active-week run',`${ctx.activeWeekStreak} weeks`]);
+  else if(def.metric==='minDayCount'){
+    const c=workoutDayCounts();
+    rows.push(['Push / Pull / Shoulders',`${c.push} / ${c.pull} / ${c.shoulders}`]);
+  }
+  else if(def.metric==='prExercises') rows.push(['Exercises with a Working Weight PR',String(ctx.prExercises)]);
+
+  let extra='';
+  if(def.metric==='workingPRs'){
+    const recent=[...ctx.workingPREvents].slice(-5).reverse();
+    if(recent.length){
+      extra=`<div class="pr-evidence-list">${recent.map(e=>{
+        const from=fmt(displayFromKg(e.previous)),to=fmt(displayFromKg(e.value));
+        return `<div class="pr-evidence"><span><strong>${e.name}</strong><br>${new Date(e.ts).toLocaleDateString(undefined,{month:'short',day:'numeric'})}</span><span>${from} → ${to}</span></div>`;
+      }).join('')}</div>`;
+    }
+  }
+
+  return `<div class="achievement-evidence"><div class="achievement-evidence-title">Your accomplishment</div>${rows.map(r=>`<div class="achievement-evidence-row"><span>${r[0]}</span><strong>${r[1]}</strong></div>`).join('')}${extra}</div>`;
+}
+function specialHistoryHtml(def,moments,stage){
+  if(!moments.length) return '';
+  return `<details class="special-history" ${moments.length<=3?'open':''}>
+    <summary><span>Special Moments</span><strong>${moments.length}${stage?` · ${specialEvolutionLabel(stage)}`:''}</strong></summary>
+    <div class="special-history-list">${[...moments].sort((a,b)=>Number(b.ts)-Number(a.ts)).map((m,i)=>`
+      <div class="special-history-row">
+        <div class="special-history-index">${i+1}</div>
+        <div><strong>${m.title||def.name}</strong><p>${m.detail||def.description}</p></div>
+        <time>${new Date(Number(m.ts)||Date.now()).toLocaleDateString(undefined,{month:'short',day:'numeric',year:'2-digit'})}</time>
+      </div>`).join('')}
+    </div>
+  </details>`;
+}
+function openAchievementDetail(id,opts={}){
+  const def=achievementDef(id),overlay=$('#achievement-detail-overlay');
+  if(!def||!overlay)return;
+  const preview=!!opts.preview;
+  const ctx=achievementContext();
+  const p=achievementProgress(def,ctx);
+  const actualUnlocked=!!state.achievements[id];
+  const unlocked=preview||actualUnlocked;
+  const actualMoments=state.achievementMoments.filter(m=>m.achievementId===id);
+  const requestedPreviewCount=Math.max(1,Number(opts.previewMomentCount)||0);
+  const moments=preview&&def.special
+    ? developerPreviewMoments(def,requestedPreviewCount|| (def.repeatable?3:1))
+    : actualMoments;
+  const count=moments.length;
+  const stage=specialEvolutionStage(def,count);
+
+  const card=$('#achievement-detail-card');
+  card.className=`achievement-reveal tier-${def.tier}${def.special?' special-reveal':''}`;
+  $('#achievement-detail-medal').className=`${badgeMedalClasses(def,count)} unlock-medal`;
+  $('#achievement-detail-icon').textContent=unlocked?def.icon:'?';
+  const detailSpecial=$('#achievement-detail-special');
+  if(detailSpecial) detailSpecial.hidden=!def.special;
+  const detailEvolution=$('#achievement-detail-evolution');
+  if(detailEvolution){
+    detailEvolution.hidden=!stage;
+    detailEvolution.textContent=evolutionStarsText(stage);
+    detailEvolution.className=`evolution-stars${stage===1?' gilded':stage>=2?' ascended':''}`;
+  }
+  $('#achievement-detail-title').textContent=unlocked||!def.special?achievementDisplayName(def):'???';
+  $('#achievement-detail-tier').textContent=unlocked?tierLabel(def)+(stage?` · ${specialEvolutionLabel(stage)}`:''):(def.special?'Special discovery':tierLabel(def));
+  $('#achievement-detail-kicker').textContent=preview?'Developer preview':(unlocked?'Unlocked achievement':'Locked achievement');
+  $('#achievement-detail-copy').textContent=def.special&&!unlocked ? def.clue : def.description;
+
+  const prog=$('#achievement-detail-progress');
+  if(def.special){
+    if(unlocked){
+      prog.innerHTML=specialHistoryHtml(def,moments,stage);
+    }else{
+      prog.innerHTML=`<div class="progress-caption">Hidden until discovered.</div>`;
+    }
+  }else{
+    prog.innerHTML=`<div class="row"><span>Progress</span><strong>${preview?`${p.target} / ${p.target}`:`${Math.min(p.current,p.target)} / ${p.target}`}</strong></div><div class="achievement-progress-track"><div class="achievement-progress-fill" style="width:${preview?100:p.pct}%"></div></div>${preview?`<div class="progress-caption">Preview of the unlocked badge. Requirement: ${def.description}</div>`:normalAchievementEvidence(def,ctx)}`;
+  }
+
+  const feature=$('#achievement-detail-feature');
+  feature.hidden=preview||!actualUnlocked;
+  const isFeatured=state.featuredAchievement===id;
+  feature.textContent=isFeatured?'✓ Featured':'Feature';
+  feature.className=`unlock-btn feature-toggle${isFeatured?' is-featured':''}`;
+  feature.onclick=()=>{
+    if(state.featuredAchievement===id){
+      clearFeaturedAchievement();
+      feature.textContent='Feature';
+      feature.className='unlock-btn feature-toggle';
+    }else if(setFeaturedAchievement(id)){
+      feature.textContent='✓ Featured';
+      feature.className='unlock-btn feature-toggle is-featured';
+    }
+  };
+  overlay.hidden=false;
+}
+
+function renderAchievements(){
+  const summary=$('#achievement-summary'),grid=$('#achievement-grid'),moments=$('#achievement-moments');
+  if(!summary||!grid||!moments)return;
+  const ctx=achievementContext(),defs=achievementDefs(),normal=defs.filter(d=>!d.special),special=defs.filter(d=>d.special);
+  const normalUnlocked=normal.filter(d=>state.achievements[d.id]).length;
+  const specialUnlocked=special.filter(d=>state.achievements[d.id]).length;
+  summary.textContent='';
+  renderFeaturedAchievement();
+  renderMainFeaturedAchievement();
+
+  const filter=['earned','special'].includes(state.achievementFilter)?state.achievementFilter:'earned';
+  $$('.achievement-filter').forEach(b=>b.classList.toggle('active',b.dataset.achFilter===filter));
+
+  let visible=filter==='special'
+    ? special.filter(d=>state.achievements[d.id])
+    : normal.filter(d=>state.achievements[d.id]);
+
+  visible=[...visible].sort((a,b)=>{
+    if(TIER_ORDER[a.tier]!==TIER_ORDER[b.tier]) return TIER_ORDER[b.tier]-TIER_ORDER[a.tier];
+    const at=Number(a.target)||0,bt=Number(b.target)||0;
+    return bt-at||a.name.localeCompare(b.name);
+  });
+
+  grid.innerHTML='';
+  if(!visible.length) grid.innerHTML=`<div class="mystery-card">${filter==='special'?'Special discoveries will appear here.':'Earned achievements will appear here.'}</div>`;
+  visible.forEach(def=>{
+    const unlocked=!!state.achievements[def.id],p=achievementProgress(def,ctx),count=state.achievementMoments.filter(m=>m.achievementId===def.id).length,stage=specialEvolutionStage(def,count);
+    const btn=document.createElement('button');
+    btn.type='button';
+    btn.dataset.achievementId=def.id;
+    btn.className=`achievement-card tier-${def.tier}${unlocked?'':' locked'}${def.special?' special-card':''}${state.featuredAchievement===def.id?' is-featured':''}`;
+    const progress=def.special
+      ? (count>1?`${count} ${def.momentNoun||'moments'}${stage?` · ${specialEvolutionLabel(stage)}`:''}`:'Special discovery')
+      : (unlocked?'Unlocked':`${Math.min(p.current,p.target)} / ${p.target}`);
+    btn.innerHTML=`<div class="${badgeMedalClasses(def,count)}"><span>${unlocked||!def.special?def.icon:'?'}</span>${badgeDecorationsHtml(def,count)}</div><div><span class="name">${unlocked||!def.special?achievementDisplayName(def):'???'}</span><span class="meta">${tierLabel(def)}</span><span class="progress-text">${progress}</span>${!def.special&&!unlocked?`<div class="achievement-progress-track"><div class="achievement-progress-fill" style="width:${p.pct}%"></div></div>`:''}</div>${state.featuredAchievement===def.id?'<span class="featured-card-marker">★ Featured</span>':''}`;
+    btn.addEventListener('click',()=>openAchievementDetail(def.id));
+    grid.appendChild(btn);
+  });
+
+  const rows=[...state.achievementMoments].sort((a,b)=>Number(b.ts)-Number(a.ts));
+  const momentsPanel=$('#special-moments-panel');
+  const momentsCount=$('#special-moments-count');
+  if(momentsPanel) momentsPanel.hidden=!rows.length;
+  if(momentsCount) momentsCount.textContent=rows.length?String(rows.length):'';
+  moments.innerHTML='';
+  if(rows.length){
+    rows.slice(0,20).forEach(m=>{
+      const def=achievementDef(m.achievementId); if(!def)return;
+      const el=document.createElement('button'); el.type='button'; el.className='moment-card';
+      el.innerHTML=`<div class="moment-icon">${def.icon}</div><div><strong>${m.title||def.name}</strong><p>${m.detail||def.description}</p></div><time>${new Date(Number(m.ts)||Date.now()).toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'})}</time><span class="moment-open">›</span>`;
+      el.addEventListener('click',()=>openAchievementDetail(def.id));
+      moments.appendChild(el);
+    });
+  }
+}
+window.__liftloopAchievementsReady=true;
+
+function bindAchievementUI(){
+  bindAchievementOverlays();
+  $$('.achievement-filter').forEach(btn=>btn.addEventListener('click',()=>{
+    state.achievementFilter=btn.dataset.achFilter||'all';
+    save();renderAchievements();
+  }));
+}
+
+if(document.readyState==='loading'){
+  document.addEventListener('DOMContentLoaded',()=>{
+    bindAchievementUI();
+    setTimeout(()=>evaluateAchievements({initial:true}),500);
+  },{once:true});
+}else{
+  bindAchievementUI();
+  setTimeout(()=>evaluateAchievements({initial:true}),500);
+}
+
+
+
+
+
+
+// Independent self-updater + deployment watcher.
 const LIFTLOOP_BUILD=document.documentElement.dataset.build||'unknown';
-async function checkForLiftLoopUpdate(manual=false){
-  const status=document.getElementById('update-status');
+const LIFTLOOP_REPO_FILE='index.html';
+const LIFTLOOP_PAGE_URL='./index.html';
+const LIFTLOOP_RAW_URL='https://raw.githubusercontent.com/perspective2001/LiftLoop/main/index.html';
+let deploymentWatchTimer=null;
+
+function buildFromHtml(text){
+  return text?.match(/<html[^>]*data-build=["']([^"']+)["']/i)?.[1]||'';
+}
+function setDeploymentStatus(kind,text){
+  const watch=document.getElementById('deploy-watch');
+  const watchText=document.getElementById('deploy-watch-text');
+  const bottom=document.getElementById('update-status');
+  if(watch){
+    watch.classList.remove('checking','publishing','ready','error');
+    if(kind) watch.classList.add(kind);
+  }
+  if(watchText) watchText.textContent=text;
+  if(bottom) bottom.textContent=text;
+}
+function scheduleDeploymentWatch(){
+  clearTimeout(deploymentWatchTimer);
+  if(document.visibilityState==='hidden') return;
+  deploymentWatchTimer=setTimeout(()=>checkForLiftLoopUpdate(false,true),4000);
+}
+async function fetchBuild(url){
+  const join=url.includes('?')?'&':'?';
+  const res=await fetch(`${url}${join}__liftloop_status=${Date.now()}`,{
+    cache:'no-store',
+    headers:{'Cache-Control':'no-cache'}
+  });
+  if(!res.ok) throw new Error(`HTTP ${res.status}`);
+  return buildFromHtml(await res.text());
+}
+async function checkForLiftLoopUpdate(manual=false,watching=false){
+  clearTimeout(deploymentWatchTimer);
+  if(manual) setDeploymentStatus('checking','Checking GitHub and GitHub Pages…');
+  else if(!watching) setDeploymentStatus('checking','Checking deployment status…');
+
+  let repoBuild='';
+  let pagesBuild='';
+
   try{
-    if(manual && status) status.textContent='Checking…';
-    const url=`./index.html?__liftloop_update=${Date.now()}`;
-    const res=await fetch(url,{cache:'no-store',headers:{'Cache-Control':'no-cache'}});
-    if(!res.ok) throw new Error(`HTTP ${res.status}`);
-    const text=await res.text();
-    const match=text.match(/<html[^>]*data-build=["']([^"']+)["']/i);
-    const latest=match?.[1];
-    if(latest && latest!==LIFTLOOP_BUILD){
-      if(status) status.textContent=`Updating ${LIFTLOOP_BUILD} → ${latest}…`;
-      const target=`./?v=${encodeURIComponent(latest)}&refresh=${Date.now()}`;
-      location.replace(target);
+    // Repo = committed source. Pages = what the installed app can actually receive.
+    const results=await Promise.allSettled([
+      fetchBuild(LIFTLOOP_RAW_URL),
+      fetchBuild(LIFTLOOP_PAGE_URL)
+    ]);
+    if(results[0].status==='fulfilled') repoBuild=results[0].value;
+    if(results[1].status==='fulfilled') pagesBuild=results[1].value;
+
+    // New commit exists, but GitHub Pages has not published that build yet.
+    if(repoBuild && pagesBuild && repoBuild!==pagesBuild){
+      setDeploymentStatus(
+        'publishing',
+        `Commit received · publishing ${repoBuild}…`
+      );
+      scheduleDeploymentWatch();
+      return false;
+    }
+
+    // Pages now has a build newer than the one currently running.
+    if(pagesBuild && pagesBuild!==LIFTLOOP_BUILD){
+      setDeploymentStatus(
+        'ready',
+        `Published · updating ${LIFTLOOP_BUILD} → ${pagesBuild}…`
+      );
+      const target=`./?v=${encodeURIComponent(pagesBuild)}&refresh=${Date.now()}`;
+      setTimeout(()=>location.replace(target),350);
       return true;
     }
-    if(status) status.textContent=manual ? `You're on the latest build (${LIFTLOOP_BUILD})` : 'Automatic update check enabled';
+
+    // Both sources agree with the currently running build.
+    if((!repoBuild || repoBuild===LIFTLOOP_BUILD) &&
+       (!pagesBuild || pagesBuild===LIFTLOOP_BUILD)){
+      setDeploymentStatus('ready',`Up to date · ${LIFTLOOP_BUILD}`);
+      return false;
+    }
+
+    // Repo may be temporarily unreachable while Pages still confirms we're current.
+    if(pagesBuild===LIFTLOOP_BUILD){
+      setDeploymentStatus('ready',`Pages ready · ${LIFTLOOP_BUILD}`);
+      return false;
+    }
+
+    setDeploymentStatus('checking','Checking deployment status…');
+    return false;
   }catch(err){
-    if(manual && status) status.textContent='Could not check right now — try again when online';
+    // Fallback to the Pages-only update check if the repo source cannot be reached.
+    try{
+      pagesBuild=await fetchBuild(LIFTLOOP_PAGE_URL);
+      if(pagesBuild && pagesBuild!==LIFTLOOP_BUILD){
+        setDeploymentStatus('ready',`Published · updating to ${pagesBuild}…`);
+        const target=`./?v=${encodeURIComponent(pagesBuild)}&refresh=${Date.now()}`;
+        setTimeout(()=>location.replace(target),350);
+        return true;
+      }
+      setDeploymentStatus('ready',`Up to date · ${LIFTLOOP_BUILD}`);
+    }catch(e){
+      setDeploymentStatus('error','Could not check deployment right now');
+    }
   }
   return false;
 }
+
 const updateButton=document.getElementById('update-check');
 if(updateButton) updateButton.addEventListener('click',()=>checkForLiftLoopUpdate(true));
 
-// Check immediately on launch and whenever the standalone app becomes active again.
+// Check immediately, when returning to the app, and keep watching if a commit is awaiting Pages.
 window.addEventListener('load',()=>checkForLiftLoopUpdate(false));
 document.addEventListener('visibilitychange',()=>{
   if(document.visibilityState==='visible') checkForLiftLoopUpdate(false);
+  else clearTimeout(deploymentWatchTimer);
 });
 window.addEventListener('pageshow',()=>checkForLiftLoopUpdate(false));
-
 
 // Keep the Home Screen app current without deleting/re-adding it after every update.
 if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
@@ -2199,6 +4504,44 @@ if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
 }
 
 </script>
+
+
+<div class="achievement-overlay" id="achievement-overlay" hidden>
+  <div class="achievement-fx" id="achievement-fx" aria-hidden="true"></div>
+  <div class="special-discovery-stage" id="special-discovery-stage" hidden aria-hidden="true">
+    <div class="special-discovery-sigil">✦</div>
+    <div class="special-discovery-kicker">Pattern discovered</div>
+    <strong>Special</strong>
+    <span>LiftLoop noticed something unusual in your training.</span>
+  </div>
+  <section class="achievement-reveal" id="achievement-reveal" role="dialog" aria-modal="true" aria-labelledby="achievement-reveal-title">
+    <div class="unlock-kicker" id="achievement-reveal-kicker">Achievement unlocked</div>
+    <div class="badge-medallion unlock-medal" id="achievement-reveal-medal"><span id="achievement-reveal-icon">★</span><span class="special-marker" id="achievement-reveal-special" hidden>✦</span><span class="evolution-stars" id="achievement-reveal-evolution" hidden></span></div>
+    <div class="unlock-title" id="achievement-reveal-title">Achievement</div>
+    <div class="unlock-tier" id="achievement-reveal-tier"></div>
+    <div class="unlock-copy" id="achievement-reveal-copy"></div>
+    <div class="unlock-count" id="achievement-reveal-count"></div>
+    <div class="unlock-actions">
+      <button type="button" class="unlock-btn primary" id="achievement-reveal-close">Continue</button>
+      <button type="button" class="unlock-btn" id="achievement-reveal-details">Details</button>
+    </div>
+  </section>
+</div>
+
+<div class="achievement-overlay" id="achievement-detail-overlay" hidden>
+  <section class="achievement-reveal" id="achievement-detail-card" role="dialog" aria-modal="true" aria-labelledby="achievement-detail-title">
+    <div class="unlock-kicker" id="achievement-detail-kicker">Achievement</div>
+    <div class="badge-medallion unlock-medal" id="achievement-detail-medal"><span id="achievement-detail-icon">★</span><span class="special-marker" id="achievement-detail-special" hidden>✦</span><span class="evolution-stars" id="achievement-detail-evolution" hidden></span></div>
+    <div class="unlock-title" id="achievement-detail-title">Achievement</div>
+    <div class="unlock-tier" id="achievement-detail-tier"></div>
+    <div class="unlock-copy" id="achievement-detail-copy"></div>
+    <div class="detail-progress" id="achievement-detail-progress"></div>
+    <div class="unlock-actions">
+      <button type="button" class="unlock-btn" id="achievement-detail-close">Close</button>
+      <button type="button" class="unlock-btn feature-toggle" id="achievement-detail-feature" hidden>Feature</button>
+    </div>
+  </section>
+</div>
 
 <div class="whats-new-overlay" id="whats-new-overlay" hidden>
   <section class="whats-new-card" id="whats-new-card" role="dialog" aria-modal="true" aria-labelledby="whats-new-title">
@@ -2219,6 +4562,9 @@ if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
     </div>
   </section>
 </div>
+
+
+
 
 </body>
 </html>
