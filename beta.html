@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-build="2026.10.13-beta.26">
+<html lang="en" data-build="2026.10.27-beta.27">
 <head>
 <meta charset="utf-8">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
@@ -1359,6 +1359,45 @@ button{font:inherit}
   .main-featured-arrow-button{min-width:42px!important;min-height:78px!important}
 }
 
+
+/* ---------- Beta 27: Calisthenics mode ---------- */
+.brand{gap:10px}.brand-copy{min-width:0;flex:1}
+.training-mode-switch{margin-left:auto;display:flex;align-items:center;gap:7px;cursor:pointer;color:#8e98a6;font-size:8px;font-weight:900;letter-spacing:.06em;text-transform:uppercase}
+.training-mode-switch input{position:absolute;opacity:0;pointer-events:none}
+.training-mode-track{position:relative;width:42px;height:24px;border-radius:999px;background:#343b46;border:1px solid #464f5c;transition:.18s;flex:0 0 auto}
+.training-mode-thumb{position:absolute;width:18px;height:18px;left:2px;top:2px;border-radius:50%;background:#f4f6f8;transition:.18s;box-shadow:0 2px 6px rgba(0,0,0,.35)}
+.training-mode-switch input:checked + .training-mode-track{background:#3e4f82;border-color:#6176c2}
+.training-mode-switch input:checked + .training-mode-track .training-mode-thumb{transform:translateX(18px)}
+.cali-app{display:none;margin-top:12px}
+body.cali-mode .tabs,body.cali-mode .gamify-card,body.cali-mode .day{display:none!important}
+body.cali-mode .cali-app{display:block!important}.cali-app[hidden]{display:none!important}
+.cali-hero{display:flex;justify-content:space-between;align-items:center;gap:13px;padding:15px;border:1px solid #303846;border-radius:20px;background:radial-gradient(circle at 10% 10%,rgba(100,133,166,.15),transparent 35%),linear-gradient(180deg,#171c24,#12161d)}
+.cali-identity{display:flex;align-items:center;gap:12px;min-width:0}.cali-level-orb{width:62px;height:62px;border-radius:20px;display:grid;place-items:center;background:linear-gradient(145deg,#1d252d,#303d49);border:1px solid #536474;color:#f3f5f7;font-size:20px;font-weight:1000}
+.cali-kicker{font-size:8px;color:#8da0ad;letter-spacing:.15em;font-weight:900}.cali-identity h2{margin:3px 0 0;font-size:22px}.cali-identity p{margin:3px 0 0;color:#7f8996;font-size:9px}
+.cali-hero-stats{display:flex;gap:12px;text-align:right}.cali-hero-stats strong{display:block;font-size:15px}.cali-hero-stats span{display:block;margin-top:2px;color:#7b8694;font-size:7px}
+.cali-weight-card{margin-top:9px;padding:10px 12px;border:1px solid #2f3640;border-radius:15px;background:#151920;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.cali-weight-card strong{display:block;font-size:10px}.cali-weight-card span{display:block;color:#7f8997;font-size:8px;margin-top:2px}.cali-weight-controls{display:flex;align-items:center;gap:5px}
+.cali-weight-controls input{width:82px;height:36px;border:1px solid #343c48;background:#0f1319;color:#fff;border-radius:9px;padding:0 8px;font-size:11px}
+.cali-mini-btn{min-height:36px;border:1px solid #39414e;background:#202630;color:#c3cad4;border-radius:9px;padding:0 9px;font-size:8px;font-weight:900}.cali-mini-btn.primary{background:#39487d;border-color:#5162a5;color:#fff}
+.cali-tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:11px}.cali-tab{border:1px solid #303845;background:#171c23;color:#7f8996;border-radius:11px;padding:9px 8px;font-size:9px;font-weight:900}.cali-tab.active{background:#26354b;border-color:#425b77;color:#f3f5f7}
+.cali-view{display:none;margin-top:11px}.cali-view.active{display:block}.cali-section-head,.cali-panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:9px}.cali-section-head h3,.cali-panel-head h3{margin:0;font-size:15px}.cali-section-head p{margin:3px 0 0;color:#7d8794;font-size:8px}
+.cali-science-pill,.cali-medieval-tag{border:1px solid #34404a;background:#182128;color:#9fb1bd;border-radius:999px;padding:5px 7px;font-size:7px;font-weight:900;white-space:nowrap}
+.cali-train-list{display:grid;gap:8px}.cali-exercise-card{border:1px solid #303743;background:#171b22;border-radius:16px;padding:11px}.cali-exercise-head{display:flex;align-items:center;gap:9px;margin-bottom:8px}
+.cali-exercise-icon{width:36px;height:36px;border-radius:12px;display:grid;place-items:center;background:#222a33;color:#cdd6de;font-size:16px;font-weight:900}.cali-exercise-head strong{display:block;font-size:11px}.cali-exercise-head span:not(.cali-exercise-icon){display:block;color:#778391;font-size:7.5px;margin-top:2px}
+.cali-select{width:100%;min-height:38px;border:1px solid #343c47;background:#10141a;color:#e8ecf1;border-radius:10px;padding:0 10px;font-size:10px}.cali-load-wrap{margin-top:7px}.cali-load-wrap[hidden]{display:none!important}
+.cali-load-wrap label{display:flex;align-items:center;justify-content:space-between;gap:8px;color:#87919e;font-size:8px}.cali-load-input{width:95px;height:34px;border:1px solid #343c47;background:#10141a;color:#fff;border-radius:9px;padding:0 8px;text-align:right}
+.cali-sets{display:grid;grid-template-columns:repeat(3,1fr) auto;gap:6px;align-items:end;margin-top:8px}.cali-sets label{display:grid;grid-template-columns:20px 1fr;align-items:center;background:#11151b;border:1px solid #2d343f;border-radius:10px;overflow:hidden}.cali-sets label span{display:grid;place-items:center;color:#697583;font-size:8px}.cali-set-input{min-width:0;width:100%;height:36px;border:0;background:transparent;color:#fff;padding:0 7px;font-size:11px}.cali-set-unit{align-self:center;color:#6f7a88;font-size:7px}
+.cali-finish{width:100%;margin-top:10px;min-height:44px;border:1px solid #4b6581;background:#2a4660;color:#fff;border-radius:13px;font-size:10px;font-weight:950}.cali-status{min-height:16px;margin-top:6px;color:#8f9aa7;font-size:8px;text-align:center}
+.cali-skills-grid{display:grid;gap:8px}.cali-skill-card{border:1px solid #303743;background:#171b22;border-radius:16px;padding:11px}.cali-skill-head{display:flex;align-items:center;gap:8px}.cali-skill-head>span{width:34px;height:34px;border-radius:11px;background:#222a33;display:grid;place-items:center;font-size:15px}.cali-skill-head strong{display:block;font-size:10px}.cali-skill-head small{display:block;color:#82909d;font-size:7.5px;margin-top:2px}
+.cali-skill-path{display:grid;gap:3px;margin-top:10px}.cali-skill-step{display:grid;grid-template-columns:13px 1fr;gap:7px;align-items:center;color:#5f6975;font-size:8px;padding:4px 0}.cali-skill-step i{width:8px;height:8px;border-radius:50%;background:#2c333e;border:1px solid #46505d}.cali-skill-step.reached{color:#aab5c0}.cali-skill-step.reached i{background:#5c7892}.cali-skill-step.current{color:#fff;font-weight:900}.cali-skill-step.current i{background:#93c4d7;box-shadow:0 0 10px rgba(126,185,213,.45)}
+.cali-progress-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}.cali-stat{border:1px solid #303743;background:#171b22;border-radius:13px;padding:9px}.cali-stat span{display:block;color:#768290;font-size:7px;text-transform:uppercase}.cali-stat strong{display:block;margin-top:4px;font-size:13px}
+.cali-panel{margin-top:9px;border:1px solid #303743;background:#171b22;border-radius:16px;padding:11px}.cali-progress-metric{margin-top:9px}.cali-metric-title{display:flex;align-items:center;gap:8px}.cali-metric-title>span{width:35px;height:35px;border-radius:11px;background:#222a33;display:grid;place-items:center;font-size:15px}.cali-metric-title strong{display:block;font-size:11px}.cali-metric-title small{display:block;color:#74808e;font-size:7.5px;margin-top:2px}
+.cali-metric-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:9px}.cali-metric-grid>div{background:#10141a;border-radius:10px;padding:8px}.cali-metric-grid span{display:block;color:#6f7a87;font-size:6.8px;text-transform:uppercase}.cali-metric-grid strong{display:block;margin-top:4px;font-size:10px}.cali-latest-line{margin-top:7px;color:#8995a2;font-size:8px}.cali-method-note{margin-top:9px;border-top:1px solid #2a313b;padding-top:7px}.cali-method-note summary{cursor:pointer;color:#84909e;font-size:8px;font-weight:850}.cali-method-note div{margin-top:7px;color:#778391;font-size:8px;line-height:1.45}
+.cali-history-row{display:flex;justify-content:space-between;gap:10px;padding:8px 1px;border-top:1px solid #282f39}.cali-history-row:first-child{border-top:0}.cali-history-row strong{display:block;font-size:9px}.cali-history-row span{display:block;color:#77828f;font-size:7.5px;margin-top:2px}.cali-history-row b{font-size:8px;color:#9ba6b2}.cali-empty{color:#747f8c;font-size:8.5px;padding:8px 0}
+.cali-achievements{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.cali-achievement{display:grid;grid-template-columns:42px minmax(0,1fr);gap:8px;align-items:center;border:1px solid #2e3540;background:#14181e;border-radius:13px;padding:8px;opacity:.5}.cali-achievement.unlocked{opacity:1}.cali-achievement-shield{width:42px;height:46px;clip-path:polygon(50% 0,92% 15%,85% 72%,50% 100%,15% 72%,8% 15%);display:grid;place-items:center;background:#29303a;color:#cbd4dc;font-size:13px;font-weight:950}.cali-achievement.tier-bronze.unlocked .cali-achievement-shield{background:linear-gradient(145deg,#6d412a,#b97043)}.cali-achievement.tier-silver.unlocked .cali-achievement-shield{background:linear-gradient(145deg,#59636e,#c4cdd6);color:#171c22}.cali-achievement.tier-gold.unlocked .cali-achievement-shield{background:linear-gradient(145deg,#7d570e,#e9b94e);color:#302000}.cali-achievement.tier-mythic.unlocked .cali-achievement-shield{background:linear-gradient(145deg,#d8f5f5,#d8c3ff,#ffe7b7);color:#151821}.cali-achievement strong{display:block;font-size:9px}.cali-achievement span:not(.cali-achievement-shield){display:block;color:#778391;font-size:7px;line-height:1.3;margin-top:3px}
+.cali-achievement-toast{position:fixed;z-index:9999;left:50%;bottom:22px;transform:translate(-50%,18px);display:flex;align-items:center;gap:9px;min-width:220px;max-width:calc(100vw - 30px);padding:10px 12px;border:1px solid #45515f;background:#11161d;border-radius:14px;box-shadow:0 16px 50px rgba(0,0,0,.5);opacity:0;pointer-events:none;transition:.22s}.cali-achievement-toast.show{opacity:1;transform:translate(-50%,0)}.cali-toast-icon{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:#29313b;font-weight:950}.cali-achievement-toast small{display:block;color:#82909d;font-size:7px;text-transform:uppercase}.cali-achievement-toast strong{display:block;font-size:10px;margin-top:2px}
+@media(max-width:560px){.training-mode-name{display:none}.cali-hero{align-items:flex-start}.cali-hero-stats{display:grid;gap:5px}.cali-weight-card{align-items:flex-start;flex-direction:column}.cali-weight-controls{width:100%}.cali-weight-controls input{flex:1}.cali-progress-grid,.cali-metric-grid{grid-template-columns:repeat(2,1fr)}.cali-achievements{grid-template-columns:1fr}}
+
 </style>
 </head>
 <body>
@@ -1377,7 +1416,12 @@ button{font:inherit}
   </div>
   <header class="brand">
     <img src="icon-180.png" alt="LiftLoop logo">
-    <div><h1>LiftLoop</h1><div class="profile-greeting" id="profile-greeting"></div></div>
+    <div class="brand-copy"><h1>LiftLoop</h1><div class="profile-greeting" id="profile-greeting"></div></div>
+    <label class="training-mode-switch" aria-label="Switch between weights and calisthenics">
+      <span class="training-mode-name" id="training-mode-name">Weights</span>
+      <input type="checkbox" id="training-mode-toggle" role="switch" aria-label="Calisthenics mode">
+      <span class="training-mode-track"><span class="training-mode-thumb"></span></span>
+    </label>
   </header>
 
   <nav class="tabs" aria-label="Workout days">
@@ -1436,6 +1480,88 @@ button{font:inherit}
     </details>
   </section>
 
+
+
+  <section class="cali-app" id="cali-app" hidden aria-label="Calisthenics mode">
+    <div class="cali-hero">
+      <div class="cali-identity">
+        <div class="cali-level-orb"><span id="cali-level">1</span></div>
+        <div>
+          <div class="cali-kicker">CALISTHENICS</div>
+          <h2 id="cali-rank">Page</h2>
+          <p>Bodyweight strength · home + bar</p>
+        </div>
+      </div>
+      <div class="cali-hero-stats">
+        <div><strong id="cali-session-count">0</strong><span>SESSIONS</span></div>
+        <div><strong id="cali-bodyweight-display">—</strong><span>BODY WEIGHT</span></div>
+      </div>
+    </div>
+
+    <div class="cali-weight-card">
+      <div>
+        <strong>Body weight</strong>
+        <span>Used for relative-strength and effective-load calculations.</span>
+      </div>
+      <div class="cali-weight-controls">
+        <input id="cali-bodyweight-input" type="number" inputmode="decimal" min="30" max="700" step="0.1" placeholder="Weight">
+        <button type="button" id="cali-weight-unit" class="cali-mini-btn">lb</button>
+        <button type="button" id="cali-save-bodyweight" class="cali-mini-btn primary">Save</button>
+      </div>
+    </div>
+
+    <nav class="cali-tabs" aria-label="Calisthenics sections">
+      <button type="button" class="cali-tab active" data-cali-tab="train">Train</button>
+      <button type="button" class="cali-tab" data-cali-tab="skills">Skills</button>
+      <button type="button" class="cali-tab" data-cali-tab="progress">Progress</button>
+    </nav>
+
+    <section class="cali-view active" data-cali-view="train">
+      <div class="cali-section-head">
+        <div><h3>Foundation Session</h3><p>Full body · minimal equipment</p></div>
+        <span class="cali-science-pill">Progressive resistance</span>
+      </div>
+      <div id="cali-train-list" class="cali-train-list"></div>
+      <button type="button" class="cali-finish" id="cali-finish-session">Finish session</button>
+      <div class="cali-status" id="cali-train-status"></div>
+    </section>
+
+    <section class="cali-view" data-cali-view="skills">
+      <div class="cali-section-head">
+        <div><h3>Skill paths</h3><p>Harder movement = progression, not just more reps.</p></div>
+      </div>
+      <div id="cali-skills-grid" class="cali-skills-grid"></div>
+    </section>
+
+    <section class="cali-view" data-cali-view="progress">
+      <div class="cali-progress-grid">
+        <div class="cali-stat"><span>Level</span><strong id="cali-progress-level">1</strong></div>
+        <div class="cali-stat"><span>Sessions</span><strong id="cali-progress-sessions">0</strong></div>
+        <div class="cali-stat"><span>Pull strength</span><strong id="cali-pull-ratio">—</strong></div>
+        <div class="cali-stat"><span>Badges</span><strong id="cali-badge-count">0</strong></div>
+      </div>
+
+      <div class="cali-panel">
+        <div class="cali-panel-head"><h3>Movement progress</h3></div>
+        <select id="cali-progress-movement" class="cali-select" aria-label="Choose calisthenics movement"></select>
+        <div id="cali-progress-metric" class="cali-progress-metric"></div>
+        <details class="cali-method-note">
+          <summary>How is this measured?</summary>
+          <div id="cali-method-copy"></div>
+        </details>
+      </div>
+
+      <div class="cali-panel">
+        <div class="cali-panel-head"><h3>Recent sessions</h3></div>
+        <div id="cali-history" class="cali-history"></div>
+      </div>
+
+      <div class="cali-panel">
+        <div class="cali-panel-head"><h3>Calisthenics achievements</h3><span class="cali-medieval-tag">Modern training · old-world titles</span></div>
+        <div id="cali-achievements" class="cali-achievements"></div>
+      </div>
+    </section>
+  </section>
 
   
     <section class="day" id="day-push" data-day="push">
@@ -2305,6 +2431,22 @@ button{font:inherit}
 
         <section class="dev-lab-card compact-card">
           <div class="dev-card-head">
+            <div class="dev-step-icon">C</div>
+            <div>
+              <h4>Calisthenics mode</h4>
+              <p>Open it directly or seed sample progress in Test Mode</p>
+            </div>
+          </div>
+          <div class="dev-actions">
+            <button type="button" class="dev-btn" id="dev-open-cali">Open Calisthenics</button>
+            <button type="button" class="dev-btn" id="dev-open-weights">Open Weights</button>
+            <button type="button" class="dev-btn primary dev-mutating" id="dev-seed-cali">Seed Cali progress</button>
+            <button type="button" class="dev-btn danger dev-mutating" id="dev-reset-cali">Reset Cali progress</button>
+          </div>
+        </section>
+
+        <section class="dev-lab-card compact-card">
+          <div class="dev-card-head">
             <div class="dev-step-icon">3</div>
             <div>
               <h4>Other UI</h4>
@@ -2362,7 +2504,7 @@ button{font:inherit}
     <button type="button" class="update-check" id="open-whats-new" style="margin-left:6px">What’s New</button>
     <div class="update-status" id="update-status">Automatic update check enabled</div>
   </div>
-  <p style="text-align:center;color:#697383;font-size:9px;margin:18px 0 6px">Build 2026.10.13-beta.26 · two-step featured interaction</p>
+  <p style="text-align:center;color:#697383;font-size:9px;margin:18px 0 6px">Build 2026.10.27-beta.27 · calisthenics mode v1</p>
   <p class="credit">
     Video demonstrations are embedded from their original YouTube sources. Previous vector artwork source:
     <a href="https://github.com/InlitX/GymMane" target="_blank" rel="noopener">GymMane</a>,
@@ -2388,7 +2530,10 @@ const LIFTLOOP_BETA_ONLY_STATE_KEYS=[
   'achievementMoments',
   'featuredAchievement',
   'achievementFilter',
-  'achievementSystemVersion'
+  'achievementSystemVersion',
+  'trainingMode',
+  'bodyWeightKg',
+  'calisthenics'
 ];
 
 function safeParseState(raw){
@@ -2450,6 +2595,12 @@ state.achievementMoments = Array.isArray(state.achievementMoments) ? state.achie
 state.featuredAchievement = typeof state.featuredAchievement==='string' ? state.featuredAchievement : '';
 state.achievementFilter = ['earned','special'].includes(state.achievementFilter) ? state.achievementFilter : 'earned';
 state.achievementSystemVersion = Number(state.achievementSystemVersion)||0;
+state.trainingMode = state.trainingMode==='calisthenics' ? 'calisthenics' : 'weights';
+state.bodyWeightKg = Number.isFinite(Number(state.bodyWeightKg)) && Number(state.bodyWeightKg)>0 ? Number(state.bodyWeightKg) : null;
+state.calisthenics = state.calisthenics && typeof state.calisthenics==='object' ? state.calisthenics : {};
+state.calisthenics.history = Array.isArray(state.calisthenics.history) ? state.calisthenics.history : [];
+state.calisthenics.achievements = state.calisthenics.achievements && typeof state.calisthenics.achievements==='object' ? state.calisthenics.achievements : {};
+state.calisthenics.activeTab = ['train','skills','progress'].includes(state.calisthenics.activeTab) ? state.calisthenics.activeTab : 'train';
 const save=()=>{try{localStorage.setItem(LIFTLOOP_STORAGE_KEY,JSON.stringify(state));}catch(e){}};
 
 function showDay(id){
@@ -2975,6 +3126,325 @@ function fmtNum(v){
   if(!Number.isFinite(v)) return '';
   const rounded=Math.round(v*10)/10;
   return Number.isInteger(rounded)?String(rounded):rounded.toFixed(1);
+}
+
+
+/* ---------- Calisthenics mode ---------- */
+const CALI_MOVEMENTS=[
+  {id:'pull',name:'Pull-up',icon:'↑',defaultVariation:'pullup',sets:3,variations:[
+    {id:'assisted',name:'Assisted Pull-up',stage:0,assistance:true,metric:'reps'},
+    {id:'pullup',name:'Pull-up',stage:1,metric:'reps'},
+    {id:'chest',name:'Chest-to-bar',stage:2,metric:'reps'},
+    {id:'weighted',name:'Weighted Pull-up',stage:3,added:true,metric:'reps'}
+  ]},
+  {id:'push',name:'Push-up',icon:'→',defaultVariation:'standard',sets:3,variations:[
+    {id:'knee',name:'Knee Push-up',stage:0,metric:'reps',bodyFactor:.58},
+    {id:'standard',name:'Push-up',stage:1,metric:'reps',bodyFactor:.72},
+    {id:'weighted',name:'Weighted Push-up',stage:2,added:true,metric:'reps',bodyFactor:.72}
+  ]},
+  {id:'overhead',name:'Vertical Push',icon:'⇧',defaultVariation:'pike',sets:3,variations:[
+    {id:'pike',name:'Pike Push-up',stage:0,metric:'reps'},
+    {id:'elevated_pike',name:'Feet-elevated Pike',stage:1,metric:'reps'},
+    {id:'wall_hspu',name:'Wall Handstand Push-up',stage:2,metric:'reps'},
+    {id:'hspu',name:'Freestanding HSPU',stage:3,metric:'reps'}
+  ]},
+  {id:'legs',name:'Single-leg Strength',icon:'◇',defaultVariation:'split',sets:3,variations:[
+    {id:'split',name:'Split Squat',stage:0,metric:'reps',added:true},
+    {id:'bulgarian',name:'Bulgarian Split Squat',stage:1,metric:'reps',added:true},
+    {id:'assisted_pistol',name:'Assisted Pistol Squat',stage:2,metric:'reps'},
+    {id:'pistol',name:'Pistol Squat',stage:3,metric:'reps',added:true}
+  ]},
+  {id:'core',name:'Hanging Core',icon:'⌁',defaultVariation:'knee_raise',sets:3,variations:[
+    {id:'knee_raise',name:'Hanging Knee Raise',stage:0,metric:'reps'},
+    {id:'leg_raise',name:'Hanging Leg Raise',stage:1,metric:'reps'},
+    {id:'tuck_lsit',name:'Tuck L-sit',stage:2,metric:'seconds'},
+    {id:'lsit',name:'L-sit',stage:3,metric:'seconds'}
+  ]}
+];
+
+const CALI_ACHIEVEMENTS=[
+  {id:'first_oath',name:'First Oath',tier:'bronze',icon:'⚔',description:'Complete your first calisthenics session.'},
+  {id:'first_ascent',name:'First Ascent',tier:'bronze',icon:'↑',description:'Complete an unassisted pull-up.'},
+  {id:'tenfold',name:'Tenfold',tier:'silver',icon:'10',description:'Record 10 pull-ups in one set.'},
+  {id:'burdened_ascent',name:'Burdened Ascent',tier:'silver',icon:'✚',description:'Complete a weighted pull-up.'},
+  {id:'handstand_gate',name:'Handstand Gate',tier:'silver',icon:'⇧',description:'Reach wall handstand push-ups.'},
+  {id:'pistol_gate',name:'Pistol Gate',tier:'silver',icon:'◇',description:'Reach a full pistol squat.'},
+  {id:'quarter_crown',name:'Quarter Crown',tier:'gold',icon:'¼',description:'Reach 1.25× bodyweight effective load in the pull-up.'},
+  {id:'iron_crown',name:'Iron Crown',tier:'mythic',icon:'♛',description:'Reach 1.50× bodyweight effective load in the pull-up.'}
+];
+
+function caliRank(level){
+  if(level>=100) return 'Warden';
+  if(level>=50) return 'Champion';
+  if(level>=25) return 'Knight';
+  if(level>=10) return 'Vanguard';
+  if(level>=5) return 'Squire';
+  return 'Page';
+}
+function caliMovement(id){return CALI_MOVEMENTS.find(m=>m.id===id);}
+function caliVariation(movementId,variationId){
+  const m=caliMovement(movementId);
+  return m?.variations.find(v=>v.id===variationId)||m?.variations[0];
+}
+function caliBestStage(movementId){
+  let best=-1;
+  state.calisthenics.history.forEach(s=>(s.exercises||[]).filter(e=>e.id===movementId).forEach(e=>{
+    const v=caliVariation(movementId,e.variation);
+    if(v) best=Math.max(best,Number(v.stage)||0);
+  }));
+  return best;
+}
+function caliPullRatio(entry,session){
+  const bw=Number(session?.bodyWeightKg);
+  if(!(bw>0)) return NaN;
+  return Math.max(0,bw+(Number(entry?.addedKg)||0)-(Number(entry?.assistanceKg)||0))/bw;
+}
+function caliPushEffectiveKg(entry,session){
+  const bw=Number(session?.bodyWeightKg);
+  const v=caliVariation('push',entry?.variation);
+  if(!(bw>0)||!Number.isFinite(v?.bodyFactor)) return NaN;
+  return bw*v.bodyFactor+(Number(entry?.addedKg)||0);
+}
+function caliMetricEntries(movementId){
+  const out=[];
+  state.calisthenics.history.forEach(session=>(session.exercises||[]).filter(e=>e.id===movementId).forEach(entry=>{
+    const variation=caliVariation(movementId,entry.variation);
+    const best=Math.max(0,...(entry.sets||[]).map(Number).filter(Number.isFinite));
+    if(movementId==='pull'){
+      const value=caliPullRatio(entry,session);
+      if(Number.isFinite(value)) out.push({ts:session.ts,value,best,variation:variation?.name||'',kind:'ratio'});
+    }else if(movementId==='push'){
+      const value=caliPushEffectiveKg(entry,session);
+      if(Number.isFinite(value)) out.push({ts:session.ts,value,best,variation:variation?.name||'',kind:'load'});
+    }else{
+      out.push({ts:session.ts,value:Number(variation?.stage)||0,best,variation:variation?.name||'',kind:variation?.metric||'reps'});
+    }
+  }));
+  return out.sort((a,b)=>Number(a.ts)-Number(b.ts));
+}
+function caliBestPullRatio(){
+  const rows=caliMetricEntries('pull');
+  return rows.length?Math.max(...rows.map(x=>x.value).filter(Number.isFinite)):NaN;
+}
+function caliAchievementUnlocked(id){return !!state.calisthenics.achievements[id];}
+function showCaliAchievementToast(def){
+  let toast=$('#cali-achievement-toast');
+  if(!toast){
+    toast=document.createElement('div');
+    toast.id='cali-achievement-toast';
+    toast.className='cali-achievement-toast';
+    document.body.appendChild(toast);
+  }
+  toast.innerHTML=`<span class="cali-toast-icon">${def.icon}</span><span><small>Achievement unlocked</small><strong>${def.name}</strong></span>`;
+  toast.classList.add('show');
+  clearTimeout(showCaliAchievementToast._timer);
+  showCaliAchievementToast._timer=setTimeout(()=>toast.classList.remove('show'),2800);
+}
+function unlockCaliAchievement(id){
+  if(caliAchievementUnlocked(id)) return false;
+  const def=CALI_ACHIEVEMENTS.find(x=>x.id===id);
+  if(!def) return false;
+  state.calisthenics.achievements[id]={unlockedAt:Date.now()};
+  showCaliAchievementToast(def);
+  return true;
+}
+function evaluateCaliAchievements(){
+  const sessions=state.calisthenics.history;
+  if(sessions.length) unlockCaliAchievement('first_oath');
+  const pulls=[];
+  sessions.forEach(session=>(session.exercises||[]).filter(e=>e.id==='pull').forEach(e=>pulls.push({e,session})));
+  if(pulls.some(({e})=>['pullup','chest','weighted'].includes(e.variation)&&Math.max(0,...(e.sets||[]).map(Number))>0)) unlockCaliAchievement('first_ascent');
+  if(pulls.some(({e})=>['pullup','chest','weighted'].includes(e.variation)&&Math.max(0,...(e.sets||[]).map(Number))>=10)) unlockCaliAchievement('tenfold');
+  if(pulls.some(({e})=>e.variation==='weighted'&&Number(e.addedKg)>0)) unlockCaliAchievement('burdened_ascent');
+  if(caliBestStage('overhead')>=2) unlockCaliAchievement('handstand_gate');
+  if(caliBestStage('legs')>=3) unlockCaliAchievement('pistol_gate');
+  const ratio=caliBestPullRatio();
+  if(Number.isFinite(ratio)&&ratio>=1.25) unlockCaliAchievement('quarter_crown');
+  if(Number.isFinite(ratio)&&ratio>=1.50) unlockCaliAchievement('iron_crown');
+}
+
+function setTrainingMode(mode,{persist=true}={}){
+  const next=mode==='calisthenics'?'calisthenics':'weights';
+  state.trainingMode=next;
+  document.body.classList.toggle('cali-mode',next==='calisthenics');
+  const app=$('#cali-app'); if(app) app.hidden=next!=='calisthenics';
+  const toggle=$('#training-mode-toggle'); if(toggle) toggle.checked=next==='calisthenics';
+  const name=$('#training-mode-name'); if(name) name.textContent=next==='calisthenics'?'Calisthenics':'Weights';
+  if(next==='calisthenics') renderCalisthenics();
+  if(persist) save();
+}
+function showCaliTab(tab){
+  const next=['train','skills','progress'].includes(tab)?tab:'train';
+  state.calisthenics.activeTab=next;
+  $$('.cali-tab').forEach(b=>b.classList.toggle('active',b.dataset.caliTab===next));
+  $$('.cali-view').forEach(v=>v.classList.toggle('active',v.dataset.caliView===next));
+  save();
+  if(next==='skills') renderCaliSkills();
+  if(next==='progress') renderCaliProgress();
+}
+function renderCaliHeader(){
+  const sessions=state.calisthenics.history.length;
+  const level=sessions+1;
+  $('#cali-level').textContent=level;
+  $('#cali-rank').textContent=caliRank(level);
+  $('#cali-session-count').textContent=sessions;
+  $('#cali-progress-level').textContent=level;
+  $('#cali-progress-sessions').textContent=sessions;
+  const bw=Number(state.bodyWeightKg);
+  $('#cali-bodyweight-display').textContent=Number.isFinite(bw)&&bw>0?fmt(displayFromKg(bw)):'—';
+  const input=$('#cali-bodyweight-input');
+  if(input&&document.activeElement!==input) input.value=Number.isFinite(bw)&&bw>0?fmtNum(displayFromKg(bw)):'';
+  $('#cali-weight-unit').textContent=state.weightUnit;
+}
+function caliVariationOptions(m,selected){
+  return m.variations.map(v=>`<option value="${v.id}" ${v.id===selected?'selected':''}>${v.name}</option>`).join('');
+}
+function caliCardLoadMode(card){
+  const variation=caliVariation(card.dataset.movement,$('.cali-variation',card)?.value);
+  const wrap=$('.cali-load-wrap',card),label=$('.cali-load-label',card),input=$('.cali-load-input',card);
+  if(!wrap||!label||!input) return;
+  if(variation?.assistance){
+    wrap.hidden=false;label.textContent='Assistance';input.dataset.loadKind='assistance';input.placeholder=state.weightUnit;
+  }else if(variation?.added){
+    wrap.hidden=false;label.textContent='Added load';input.dataset.loadKind='added';input.placeholder=state.weightUnit;
+  }else{
+    wrap.hidden=true;input.value='';input.dataset.loadKind='';
+  }
+  const unit=$('.cali-set-unit',card);
+  if(unit) unit.textContent=variation?.metric==='seconds'?'sec':'reps';
+  $$('.cali-set-input',card).forEach(i=>i.placeholder=variation?.metric==='seconds'?'sec':'reps');
+}
+function renderCaliTrain(){
+  const box=$('#cali-train-list'); if(!box) return;
+  box.innerHTML='';
+  CALI_MOVEMENTS.forEach(m=>{
+    const card=document.createElement('article');
+    card.className='cali-exercise-card';card.dataset.movement=m.id;
+    card.innerHTML=`
+      <div class="cali-exercise-head"><span class="cali-exercise-icon">${m.icon}</span><div><strong>${m.name}</strong><span>${m.sets} working sets</span></div></div>
+      <select class="cali-select cali-variation">${caliVariationOptions(m,m.defaultVariation)}</select>
+      <div class="cali-load-wrap" hidden><label><span class="cali-load-label">Added load</span><input class="cali-load-input" type="number" inputmode="decimal" min="0" step="0.5" placeholder="${state.weightUnit}"></label></div>
+      <div class="cali-sets">${Array.from({length:m.sets},(_,i)=>`<label><span>${i+1}</span><input class="cali-set-input" type="number" inputmode="numeric" min="0" step="1" placeholder="reps"></label>`).join('')}<span class="cali-set-unit">reps</span></div>`;
+    box.appendChild(card);
+    $('.cali-variation',card).addEventListener('change',()=>caliCardLoadMode(card));
+    caliCardLoadMode(card);
+  });
+}
+function caliCollectSession(){
+  const exercises=[];
+  $$('.cali-exercise-card').forEach(card=>{
+    const id=card.dataset.movement,variationId=$('.cali-variation',card)?.value,variation=caliVariation(id,variationId);
+    const sets=$$('.cali-set-input',card).map(i=>Number(i.value)).filter(v=>Number.isFinite(v)&&v>0);
+    if(!sets.length) return;
+    const load=$('.cali-load-input',card),display=Number(load?.value);
+    let addedKg=0,assistanceKg=0;
+    if(Number.isFinite(display)&&display>0){
+      const kg=kgFromDisplay(display);
+      if(load?.dataset.loadKind==='added') addedKg=kg;
+      if(load?.dataset.loadKind==='assistance') assistanceKg=kg;
+    }
+    exercises.push({id,variation:variationId,metric:variation?.metric||'reps',sets,addedKg,assistanceKg});
+  });
+  return exercises;
+}
+function finishCaliSession(){
+  const status=$('#cali-train-status');
+  if(!(Number(state.bodyWeightKg)>0)){
+    if(status) status.textContent='Add your body weight first — LiftLoop uses it for calisthenics strength metrics.';
+    $('#cali-bodyweight-input')?.focus();return;
+  }
+  const exercises=caliCollectSession();
+  if(!exercises.length){if(status)status.textContent='Log at least one working set.';return;}
+  state.calisthenics.history.push({ts:Date.now(),bodyWeightKg:Number(state.bodyWeightKg),exercises});
+  evaluateCaliAchievements();save();
+  $$('.cali-set-input,.cali-load-input').forEach(i=>i.value='');
+  if(status)status.textContent=`Session saved · ${exercises.length} movement${exercises.length===1?'':'s'}.`;
+  renderCalisthenics();
+}
+function renderCaliSkills(){
+  const box=$('#cali-skills-grid');if(!box)return;box.innerHTML='';
+  CALI_MOVEMENTS.forEach(m=>{
+    const best=caliBestStage(m.id);
+    const current=best<0?'Not started':m.variations[Math.min(best,m.variations.length-1)]?.name;
+    const card=document.createElement('div');card.className='cali-skill-card';
+    card.innerHTML=`<div class="cali-skill-head"><span>${m.icon}</span><div><strong>${m.name}</strong><small>${current}</small></div></div>
+      <div class="cali-skill-path">${m.variations.map((v,i)=>`<div class="cali-skill-step ${i<=best?'reached':''} ${i===best?'current':''}"><i></i><span>${v.name}</span></div>`).join('')}</div>`;
+    box.appendChild(card);
+  });
+}
+function caliFormatMetric(id,row){
+  if(!row)return'—';
+  if(id==='pull')return`${row.value.toFixed(2)}× BW`;
+  if(id==='push')return fmt(displayFromKg(row.value));
+  return row.variation;
+}
+function caliProgressChange(id,rows){
+  if(rows.length<2)return'Need another session';
+  if(id==='pull'||id==='push'){
+    const first=rows[0].value,last=rows.at(-1).value;
+    if(!(first>0)||!Number.isFinite(last))return'—';
+    const pct=(last-first)/first*100;return`${pct>=0?'+':''}${pct.toFixed(1)}%`;
+  }
+  const a=rows[0],b=rows.at(-1);
+  if(b.value>a.value)return`Stage ${a.value+1} → ${b.value+1}`;
+  const d=(b.best||0)-(a.best||0);return d?`${d>0?'+':''}${d} ${b.kind==='seconds'?'sec':'reps'}`:'Same stage';
+}
+function caliMethodText(id){
+  if(id==='pull')return'Relative strength = effective pull-up load ÷ body weight. Effective load uses body weight + added load − assistance. Body-mass-normalized pull-up strength is commonly used in strength research.';
+  if(id==='push')return'Estimated push-up load uses body weight and published support-force measurements. LiftLoop uses ~58% for knee push-ups and ~72% for standard/weighted push-ups as a simple average estimate. It is useful for tracking, not an exact force measurement.';
+  return'For skills without a defensible bodyweight-load conversion, LiftLoop does not invent one. Progress is the harder movement stage plus your best reps or hold time.';
+}
+function renderCaliProgressMetric(){
+  const id=$('#cali-progress-movement')?.value||'pull',movement=caliMovement(id),rows=caliMetricEntries(id),box=$('#cali-progress-metric');
+  if(!box||!movement)return;
+  const first=rows[0],latest=rows.at(-1);
+  let best=null;
+  if(rows.length)best=(id==='pull'||id==='push')?rows.reduce((a,b)=>b.value>a.value?b:a,rows[0]):rows.reduce((a,b)=>b.value>a.value||(b.value===a.value&&b.best>a.best)?b:a,rows[0]);
+  box.innerHTML=`<div class="cali-metric-title"><span>${movement.icon}</span><div><strong>${movement.name}</strong><small>${rows.length} logged session${rows.length===1?'':'s'}</small></div></div>
+    <div class="cali-metric-grid"><div><span>Start</span><strong>${caliFormatMetric(id,first)}</strong></div><div><span>Latest</span><strong>${caliFormatMetric(id,latest)}</strong></div><div><span>Best</span><strong>${caliFormatMetric(id,best)}</strong></div><div><span>Change</span><strong>${caliProgressChange(id,rows)}</strong></div></div>
+    ${latest?`<div class="cali-latest-line">${latest.variation} · best ${latest.best} ${latest.kind==='seconds'?'sec':'reps'}</div>`:'<div class="cali-empty">Finish a session to start tracking.</div>'}`;
+  $('#cali-method-copy').textContent=caliMethodText(id);
+}
+function renderCaliAchievements(){
+  const box=$('#cali-achievements');if(!box)return;box.innerHTML='';
+  CALI_ACHIEVEMENTS.forEach(def=>{
+    const unlocked=caliAchievementUnlocked(def.id),card=document.createElement('div');
+    card.className=`cali-achievement tier-${def.tier}${unlocked?' unlocked':' locked'}`;
+    card.innerHTML=`<span class="cali-achievement-shield">${unlocked?def.icon:'?'}</span><div><strong>${unlocked?def.name:'Hidden'}</strong><span>${unlocked?def.description:'Keep training.'}</span></div>`;
+    box.appendChild(card);
+  });
+  $('#cali-badge-count').textContent=Object.keys(state.calisthenics.achievements).length;
+}
+function renderCaliHistory(){
+  const box=$('#cali-history');if(!box)return;
+  const rows=[...state.calisthenics.history].reverse().slice(0,12);
+  box.innerHTML=rows.length?rows.map(s=>`<div class="cali-history-row"><div><strong>${new Date(s.ts).toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'})}</strong><span>${(s.exercises||[]).map(e=>caliMovement(e.id)?.name).filter(Boolean).join(' · ')}</span></div><b>${(s.exercises||[]).reduce((n,e)=>n+(e.sets||[]).length,0)} sets</b></div>`).join(''):'<div class="cali-empty">No calisthenics sessions yet.</div>';
+}
+function renderCaliHeader(){
+  const sessions=state.calisthenics.history.length,level=sessions+1,bw=Number(state.bodyWeightKg);
+  $('#cali-level').textContent=level;$('#cali-rank').textContent=caliRank(level);$('#cali-session-count').textContent=sessions;
+  $('#cali-progress-level').textContent=level;$('#cali-progress-sessions').textContent=sessions;
+  $('#cali-bodyweight-display').textContent=Number.isFinite(bw)&&bw>0?fmt(displayFromKg(bw)):'—';
+  const input=$('#cali-bodyweight-input');if(input&&document.activeElement!==input)input.value=Number.isFinite(bw)&&bw>0?fmtNum(displayFromKg(bw)):'';
+  $('#cali-weight-unit').textContent=state.weightUnit;
+}
+function renderCaliProgress(){
+  renderCaliHeader();
+  const select=$('#cali-progress-movement');
+  if(select){const prior=select.value||'pull';select.innerHTML=CALI_MOVEMENTS.map(m=>`<option value="${m.id}">${m.name}</option>`).join('');select.value=CALI_MOVEMENTS.some(m=>m.id===prior)?prior:'pull';}
+  const pull=caliBestPullRatio();$('#cali-pull-ratio').textContent=Number.isFinite(pull)?`${pull.toFixed(2)}×`:'—';
+  renderCaliProgressMetric();renderCaliHistory();renderCaliAchievements();
+}
+function renderCalisthenics(){renderCaliHeader();renderCaliTrain();renderCaliSkills();renderCaliProgress();showCaliTab(state.calisthenics.activeTab||'train');}
+function seedCaliDemo(){
+  if(!LIFTLOOP_DEV_MODE)return;
+  const now=Date.now();state.bodyWeightKg=75;
+  state.calisthenics.history=[
+    {ts:now-35*86400000,bodyWeightKg:75,exercises:[{id:'pull',variation:'assisted',metric:'reps',sets:[8,7,6],addedKg:0,assistanceKg:15},{id:'push',variation:'standard',metric:'reps',sets:[12,11,10],addedKg:0,assistanceKg:0},{id:'overhead',variation:'pike',metric:'reps',sets:[8,7,6]},{id:'legs',variation:'split',metric:'reps',sets:[10,10,9]},{id:'core',variation:'knee_raise',metric:'reps',sets:[10,9,8]}]},
+    {ts:now-21*86400000,bodyWeightKg:74,exercises:[{id:'pull',variation:'pullup',metric:'reps',sets:[5,4,4],addedKg:0,assistanceKg:0},{id:'push',variation:'standard',metric:'reps',sets:[18,15,13],addedKg:0,assistanceKg:0},{id:'overhead',variation:'elevated_pike',metric:'reps',sets:[6,5,5]},{id:'legs',variation:'bulgarian',metric:'reps',sets:[10,9,8]},{id:'core',variation:'leg_raise',metric:'reps',sets:[8,7,6]}]},
+    {ts:now-7*86400000,bodyWeightKg:74,exercises:[{id:'pull',variation:'weighted',metric:'reps',sets:[6,5,4],addedKg:7.5,assistanceKg:0},{id:'push',variation:'weighted',metric:'reps',sets:[12,10,9],addedKg:10,assistanceKg:0},{id:'overhead',variation:'wall_hspu',metric:'reps',sets:[4,3,3]},{id:'legs',variation:'assisted_pistol',metric:'reps',sets:[6,5,5]},{id:'core',variation:'tuck_lsit',metric:'seconds',sets:[20,17,15]}]}
+  ];
+  state.calisthenics.achievements={};evaluateCaliAchievements();save();renderCalisthenics();
 }
 function trackerMode(name){
   if(name==='Assisted Dips') return {label:'Assistance', bodyweight:false, assistance:true};
@@ -3538,6 +4008,22 @@ function setBackupStatus(msg){
 renderProfile();
 renderRoutineSettings();
 
+$('#training-mode-toggle')?.addEventListener('change',e=>setTrainingMode(e.target.checked?'calisthenics':'weights'));
+$$('.cali-tab').forEach(btn=>btn.addEventListener('click',()=>showCaliTab(btn.dataset.caliTab)));
+$('#cali-save-bodyweight')?.addEventListener('click',()=>{
+  const value=Number($('#cali-bodyweight-input')?.value),status=$('#cali-train-status');
+  if(!Number.isFinite(value)||value<=0){if(status)status.textContent='Enter a valid body weight.';return;}
+  state.bodyWeightKg=kgFromDisplay(value);save();renderCaliHeader();renderCaliProgress();if(status)status.textContent='Body weight saved.';
+});
+$('#cali-weight-unit')?.addEventListener('click',()=>{
+  state.weightUnit=state.weightUnit==='lb'?'kg':'lb';save();renderCalisthenics();
+  $$('.set-weight,.drop-weight').forEach(input=>input.placeholder=state.weightUnit);
+  const p=$('#progress-unit-toggle');if(p)p.textContent=state.weightUnit;
+});
+$('#cali-finish-session')?.addEventListener('click',finishCaliSession);
+$('#cali-progress-movement')?.addEventListener('change',renderCaliProgressMetric);
+setTrainingMode(state.trainingMode,{persist:false});
+
 $('#save-profile')?.addEventListener('click',()=>{
   state.profileName=$('#profile-name')?.value.trim()||'';
   save();
@@ -3679,19 +4165,13 @@ $('#prepare-stable')?.addEventListener('click',async()=>{
 
 // Beta popup: list ONLY changes introduced since the currently published Beta build.
 const LIFTLOOP_CHANGELOG = {
-  '2026.10.13-beta.26': {
+  '2026.10.27-beta.27': {
     title: 'What changed in this Beta update',
     changes: [
-      {
-        icon:'★',
-        title:'Featured badge uses two-step navigation',
-        text:'Tap the large Featured badge/title area for an in-place achievement preview. Only the separate › button jumps to that exact badge in Progress.'
-      },
-      {
-        icon:'🧪',
-        title:'Level and lifetime previews fixed',
-        text:'Developer Lab Level-frame and lifetime-milestone previews now use a delegated tap handler so those safe preview buttons remain responsive.'
-      }
+      {icon:'↔',title:'Weights ↔ Calisthenics',text:'A top-level switch now changes LiftLoop into a separate calisthenics training mode while keeping the same profile and weight unit.'},
+      {icon:'↗',title:'Objective calisthenics progression',text:'Pull-ups track bodyweight-relative strength, push-ups track estimated effective load, and skill movements track progression stage plus reps or hold time.'},
+      {icon:'⚔',title:'Separate calisthenics progression',text:'Calisthenics has its own sessions, Level, medieval-flavoured ranks, skill paths, history, and achievement collection.'},
+      {icon:'🧪',title:'Calisthenics testing',text:'Developer Lab can open either mode and, inside isolated Test Mode, seed or reset realistic sample calisthenics progress.'}
     ]
   }
 };
@@ -5307,6 +5787,21 @@ function bindDeveloperLab(){
     devStatus('Full Trophy Case created in Test Mode.');
   });
   $('#dev-reset-achievements')?.addEventListener('click',devResetAchievements);
+
+  $('#dev-open-cali')?.addEventListener('click',()=>{
+    setTrainingMode('calisthenics');showCaliTab('train');devStatus('Opened Calisthenics mode.');
+  });
+  $('#dev-open-weights')?.addEventListener('click',()=>{
+    setTrainingMode('weights');devStatus('Opened Weights mode.');
+  });
+  $('#dev-seed-cali')?.addEventListener('click',()=>{
+    if(!LIFTLOOP_DEV_MODE)return devStatus('Enter Test Mode before changing sample progress.');
+    seedCaliDemo();setTrainingMode('calisthenics');showCaliTab('progress');devStatus('Seeded sample calisthenics progression in isolated Test Mode.');
+  });
+  $('#dev-reset-cali')?.addEventListener('click',()=>{
+    if(!LIFTLOOP_DEV_MODE)return devStatus('Enter Test Mode before resetting sample progress.');
+    state.calisthenics={history:[],achievements:{},activeTab:'train'};state.bodyWeightKg=null;save();renderCalisthenics();devStatus('Reset isolated calisthenics progress.');
+  });
 
   $('#dev-preview-whats-new')?.addEventListener('click',()=>renderWhatsNew(LIFTLOOP_BUILD));
   $('#dev-preview-level')?.addEventListener('click',()=>showLevelToast(state.workoutHistory.length+2));
