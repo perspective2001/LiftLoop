@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-build="2026.10.29-beta.29">
+<html lang="en" data-build="2026.10.31-beta.30">
 <head>
 <meta charset="utf-8">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
@@ -1496,6 +1496,29 @@ body.cali-mode .cali-demo-pill:before{content:'▶';font-size:7px}
 body.cali-mode .cali-demo-source a{color:#f0d39e;text-decoration:none;font-weight:850}
 body.cali-mode .cali-demo-note{margin-top:6px;color:#9f8875;font-size:7.5px;line-height:1.35}
 
+
+/* Beta 30: optional five-minute Core circuit */
+.core-format-card{margin:0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:linear-gradient(180deg,#171b23,#13171e);padding:12px 13px}
+.core-format-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.core-format-head strong{display:block;font-size:11px;color:#f0f3f7}
+.core-format-head span{display:block;margin-top:3px;color:#7e8998;font-size:8px;line-height:1.35}
+.core-format-switch{display:flex;gap:4px;padding:3px;border:1px solid #343c48;border-radius:11px;background:#10141a;flex:0 0 auto}
+.core-format-btn{border:0;background:transparent;color:#84909e;border-radius:8px;padding:7px 9px;font-size:8px;font-weight:900;white-space:nowrap}
+.core-format-btn.active{background:#33415d;color:#fff;box-shadow:0 4px 10px rgba(0,0,0,.2)}
+.core-five-panel{display:grid;grid-template-columns:72px minmax(0,1fr) auto;align-items:center;gap:11px;margin-top:11px;padding:11px;border:1px solid #3b4655;border-radius:14px;background:radial-gradient(circle at 10% 20%,rgba(117,132,229,.12),transparent 35%),#11151b}
+.core-five-panel[hidden]{display:none!important}
+.core-five-clock{font-variant-numeric:tabular-nums;font-size:24px;font-weight:1000;letter-spacing:-.04em;color:#f6f8fb;text-align:center}
+.core-five-copy strong{display:block;font-size:10px}.core-five-copy span{display:block;margin-top:3px;color:#8995a4;font-size:8px;line-height:1.4}
+.core-five-actions{display:flex;gap:5px;flex-direction:column}
+.core-five-btn{min-width:66px;min-height:32px;border:1px solid #394451;background:#1d242d;color:#aeb8c5;border-radius:9px;font-size:8px;font-weight:900}
+.core-five-btn.primary{background:#354871;border-color:#50669a;color:#fff}.core-five-btn:disabled{opacity:.7}
+.core-five-panel.complete{border-color:#456553;background:radial-gradient(circle at 10% 20%,rgba(88,190,131,.12),transparent 35%),#11171a}
+.core-five-panel.complete .core-five-clock{color:#91e0ae}
+.core-five-complete-dot{display:none!important}
+#day-shoulders.core-five-mode .core-circuit-movement .set-label,#day-shoulders.core-five-mode .core-circuit-movement .sets{display:none!important}
+#day-shoulders.core-five-mode .core-circuit-movement .exercise-body .right-col:after{content:'Included in the 5-minute circuit';display:block;margin-top:8px;color:#8290a0;font-size:8px;font-weight:800}
+@media(max-width:560px){.core-format-head{align-items:flex-start;flex-direction:column}.core-format-switch{width:100%;display:grid;grid-template-columns:1fr 1fr}.core-five-panel{grid-template-columns:66px minmax(0,1fr);}.core-five-actions{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr}.core-five-btn{min-height:38px}}
+
 </style>
 </head>
 <body>
@@ -2146,7 +2169,28 @@ body.cali-mode .cali-demo-note{margin-top:6px;color:#9f8875;font-size:7.5px;line
         </div>
       </div>
     </article>
-    <article class="exercise" data-day="shoulders" data-art="russian-twist">
+    <div class="core-format-card" id="core-format-card">
+      <div class="core-format-head">
+        <div><strong>Core format</strong><span>Keep the circuit, or run the same block continuously for five minutes.</span></div>
+        <div class="core-format-switch" role="group" aria-label="Core workout format">
+          <button type="button" class="core-format-btn active" data-core-mode="rounds">2 Rounds</button>
+          <button type="button" class="core-format-btn" data-core-mode="five">5 Minutes</button>
+        </div>
+      </div>
+      <div class="core-five-panel" id="core-five-panel" hidden>
+        <div class="core-five-clock" id="core-five-clock">05:00</div>
+        <div class="core-five-copy">
+          <strong>5-minute Core circuit</strong>
+          <span>Cycle Russian Twists → Leg Raises → Jackknife Sit-Ups → Push-Ups at a controlled pace. Rest only as needed.</span>
+        </div>
+        <div class="core-five-actions">
+          <button type="button" class="core-five-btn primary" id="core-five-start">Start</button>
+          <button type="button" class="core-five-btn" id="core-five-reset">Reset</button>
+        </div>
+        <button type="button" class="set-dot core-five-complete-dot" id="core-five-complete-dot" data-key="shoulders-corefive-0" aria-label="5-minute Core block complete" hidden>1</button>
+      </div>
+    </div>
+    <article class="exercise core-circuit-movement" data-day="shoulders" data-art="russian-twist">
       <button type="button" class="exercise-head" aria-expanded="false">
         <span class="ex-num">5</span>
         <span class="ex-main"><span class="ex-name">Russian Twists</span><span class="dose">Circuit · 2 rounds</span></span>
@@ -2173,7 +2217,7 @@ body.cali-mode .cali-demo-note{margin-top:6px;color:#9f8875;font-size:7.5px;line
         </div>
       </div>
     </article>
-    <article class="exercise" data-day="shoulders" data-art="lying-leg-raise">
+    <article class="exercise core-circuit-movement" data-day="shoulders" data-art="lying-leg-raise">
       <button type="button" class="exercise-head" aria-expanded="false">
         <span class="ex-num">6</span>
         <span class="ex-main"><span class="ex-name">Leg Raises</span><span class="dose">Circuit · 2 rounds</span></span>
@@ -2200,7 +2244,7 @@ body.cali-mode .cali-demo-note{margin-top:6px;color:#9f8875;font-size:7.5px;line
         </div>
       </div>
     </article>
-    <article class="exercise" data-day="shoulders" data-art="v-up">
+    <article class="exercise core-circuit-movement" data-day="shoulders" data-art="v-up">
       <button type="button" class="exercise-head" aria-expanded="false">
         <span class="ex-num">7</span>
         <span class="ex-main"><span class="ex-name">Jackknife Sit-Ups</span><span class="dose">Circuit · 2 rounds</span></span>
@@ -2227,7 +2271,7 @@ body.cali-mode .cali-demo-note{margin-top:6px;color:#9f8875;font-size:7.5px;line
         </div>
       </div>
     </article>
-    <article class="exercise" data-day="shoulders" data-art="push-up">
+    <article class="exercise core-circuit-movement" data-day="shoulders" data-art="push-up">
       <button type="button" class="exercise-head" aria-expanded="false">
         <span class="ex-num">8</span>
         <span class="ex-main"><span class="ex-name">Push-Ups</span><span class="dose">Circuit · 2 rounds</span></span>
@@ -2556,6 +2600,8 @@ body.cali-mode .cali-demo-note{margin-top:6px;color:#9f8875;font-size:7.5px;line
             <button type="button" class="dev-btn" id="dev-preview-whats-new">📣 What’s New</button>
             <button type="button" class="dev-btn" id="dev-preview-level">⬆ Level-up toast</button>
             <button type="button" class="dev-btn" id="dev-preview-pr">↗ PR toast</button>
+            <button type="button" class="dev-btn" id="dev-open-core-five">⏱ Open 5-min Core</button>
+            <button type="button" class="dev-btn primary dev-mutating" id="dev-fast-core-five">⚡ 5-sec Core timer</button>
           </div>
         </section>
 
@@ -2632,7 +2678,9 @@ const LIFTLOOP_BETA_ONLY_STATE_KEYS=[
   'achievementSystemVersion',
   'trainingMode',
   'bodyWeightKg',
-  'calisthenics'
+  'calisthenics',
+  'shouldersCoreMode',
+  'coreFiveTimer'
 ];
 
 function safeParseState(raw){
@@ -2700,6 +2748,11 @@ state.calisthenics = state.calisthenics && typeof state.calisthenics==='object' 
 state.calisthenics.history = Array.isArray(state.calisthenics.history) ? state.calisthenics.history : [];
 state.calisthenics.achievements = state.calisthenics.achievements && typeof state.calisthenics.achievements==='object' ? state.calisthenics.achievements : {};
 state.calisthenics.activeTab = ['train','skills','progress'].includes(state.calisthenics.activeTab) ? state.calisthenics.activeTab : 'train';
+state.shouldersCoreMode = state.shouldersCoreMode==='five' ? 'five' : 'rounds';
+state.coreFiveTimer = state.coreFiveTimer && typeof state.coreFiveTimer==='object' ? state.coreFiveTimer : {};
+state.coreFiveTimer.remainingSec = Number.isFinite(Number(state.coreFiveTimer.remainingSec)) ? Math.max(0,Math.min(300,Number(state.coreFiveTimer.remainingSec))) : 300;
+state.coreFiveTimer.running = !!state.coreFiveTimer.running;
+state.coreFiveTimer.endAt = Number.isFinite(Number(state.coreFiveTimer.endAt)) ? Number(state.coreFiveTimer.endAt) : null;
 const save=()=>{try{localStorage.setItem(LIFTLOOP_STORAGE_KEY,JSON.stringify(state));}catch(e){}};
 
 function showDay(id){
@@ -2860,6 +2913,128 @@ function exerciseMetricMode(card){
 function isTimedExercise(card){
   return exerciseMetricMode(card)==='time';
 }
+
+let coreFiveTimerInterval=null;
+function coreFiveDot(){ return $('#core-five-complete-dot'); }
+function coreFiveRemaining(){
+  if(state.coreFiveTimer.running && Number.isFinite(Number(state.coreFiveTimer.endAt))){
+    return Math.max(0,Math.ceil((Number(state.coreFiveTimer.endAt)-Date.now())/1000));
+  }
+  return Math.max(0,Math.min(300,Number(state.coreFiveTimer.remainingSec)||0));
+}
+function formatCoreClock(seconds){
+  const safe=Math.max(0,Math.floor(Number(seconds)||0));
+  return `${String(Math.floor(safe/60)).padStart(2,'0')}:${String(safe%60).padStart(2,'0')}`;
+}
+function renderCoreFiveTimer(){
+  const clock=$('#core-five-clock'), start=$('#core-five-start'), panel=$('#core-five-panel');
+  if(!clock||!start||!panel) return;
+  const remaining=coreFiveRemaining();
+  state.coreFiveTimer.remainingSec=remaining;
+  clock.textContent=formatCoreClock(remaining);
+  panel.classList.toggle('complete',remaining===0&&!!state[coreFiveDot()?.dataset.key]);
+  start.textContent=remaining===0 ? 'Complete ✓' : (state.coreFiveTimer.running?'Pause':'Start');
+  start.disabled=remaining===0;
+  if(remaining<=0 && state.coreFiveTimer.running) completeCoreFiveTimer();
+}
+function ensureCoreFiveTimerTick(){
+  if(coreFiveTimerInterval) return;
+  coreFiveTimerInterval=setInterval(()=>{
+    if(!state.coreFiveTimer.running) return;
+    const remaining=coreFiveRemaining();
+    state.coreFiveTimer.remainingSec=remaining;
+    if(remaining<=0){ completeCoreFiveTimer(); return; }
+    renderCoreFiveTimer();
+  },250);
+}
+function startOrPauseCoreFiveTimer(){
+  if(state.shouldersCoreMode!=='five') setCoreMode('five');
+  if(coreFiveRemaining()<=0) return;
+  if(state.coreFiveTimer.running){
+    state.coreFiveTimer.remainingSec=coreFiveRemaining();
+    state.coreFiveTimer.running=false;
+    state.coreFiveTimer.endAt=null;
+  }else{
+    const remaining=coreFiveRemaining()||300;
+    state.coreFiveTimer.remainingSec=remaining;
+    state.coreFiveTimer.running=true;
+    state.coreFiveTimer.endAt=Date.now()+remaining*1000;
+    ensureCoreFiveTimerTick();
+  }
+  save();renderCoreFiveTimer();
+}
+function completeCoreFiveTimer(){
+  const dot=coreFiveDot();
+  state.coreFiveTimer.remainingSec=0;
+  state.coreFiveTimer.running=false;
+  state.coreFiveTimer.endAt=null;
+  if(dot){
+    dot.classList.add('done');
+    state[dot.dataset.key]=true;
+    state.currentSets[dot.dataset.key]={...(state.currentSets[dot.dataset.key]||{}),seconds:300};
+  }
+  save();
+  updateProgress('shoulders');
+  renderCoreFiveTimer();
+  const toast=$('#level-toast');
+  if(toast){
+    toast.textContent='5-minute Core complete ✓';
+    toast.classList.add('show');
+    setTimeout(()=>toast.classList.remove('show'),1600);
+  }
+}
+function resetCoreFiveTimer({keepMode=true}={}){
+  const dot=coreFiveDot();
+  state.coreFiveTimer={remainingSec:300,running:false,endAt:null};
+  if(dot){
+    dot.classList.remove('done');
+    delete state[dot.dataset.key];
+    delete state.currentSets[dot.dataset.key];
+  }
+  if(!keepMode) state.shouldersCoreMode='rounds';
+  save();
+  applyCoreMode();
+  renderCoreFiveTimer();
+  updateProgress('shoulders');
+}
+function applyCoreMode(){
+  const mode=state.shouldersCoreMode==='five'?'five':'rounds';
+  const section=$('#day-shoulders');
+  if(section) section.classList.toggle('core-five-mode',mode==='five');
+  $$('[data-core-mode]').forEach(btn=>btn.classList.toggle('active',btn.dataset.coreMode===mode));
+  const panel=$('#core-five-panel'); if(panel) panel.hidden=mode!=='five';
+  $$('.core-circuit-movement').forEach(card=>{
+    const dose=$('.dose',card);
+    if(dose) dose.textContent=mode==='five'?'5-min circuit movement':'Circuit · 2 rounds';
+  });
+  renderCoreFiveTimer();
+}
+function setCoreMode(mode){
+  const next=mode==='five'?'five':'rounds';
+  if(next==='rounds' && state.coreFiveTimer.running){
+    state.coreFiveTimer.remainingSec=coreFiveRemaining();
+    state.coreFiveTimer.running=false;
+    state.coreFiveTimer.endAt=null;
+  }
+  state.shouldersCoreMode=next;
+  save();applyCoreMode();updateProgress('shoulders');renderGamify();
+}
+function commitCoreFiveSession(ts){
+  const dot=coreFiveDot();
+  if(state.shouldersCoreMode!=='five'||!dot||!dot.classList.contains('done')) return;
+  const key='shoulders::5-Minute Core Circuit';
+  state.setHistory[key]=Array.isArray(state.setHistory[key])?state.setHistory[key]:[];
+  if(state.setHistory[key].some(x=>Number(x.ts)===Number(ts))) return;
+  state.setHistory[key].push({
+    ts,
+    sets:[{kg:null,reps:null,seconds:300,dropKg:null,dropReps:null}],
+    prescribedSets:1,
+    targetReps:null,
+    targetSeconds:300,
+    day:'shoulders',
+    exercise:'5-Minute Core Circuit'
+  });
+}
 function defaultPrescription(card){
   const dose=$('.dose',card)?.textContent||'';
   const repsMatch=dose.match(/(\d+)\s*[×x]\s*(\d+)/);
@@ -2913,7 +3088,19 @@ applyRoutinePreferences();
 function visibleSetDots(day){
   const section=$(`#day-${day}`);
   if(!section) return [];
-  return $$('.exercise:not(.routine-hidden) .set-dot',section);
+  let dots=$$('.exercise:not(.routine-hidden) .set-dot',section);
+  if(day==='shoulders'){
+    const five=state.shouldersCoreMode==='five';
+    dots=dots.filter(dot=>{
+      const card=dot.closest('.exercise');
+      return !(five && card?.classList.contains('core-circuit-movement'));
+    });
+    if(five){
+      const timerDot=coreFiveDot();
+      if(timerDot) dots.push(timerDot);
+    }
+  }
+  return dots;
 }
 
 function updateExerciseCompletion(card){
@@ -2986,11 +3173,17 @@ function autoAdvanceCompletedExercise(btn){
 
   // Find the next enabled exercise in this workout, in displayed order.
   const day=card.dataset.day;
-  const cards=$$('.exercise').filter(x=>x.dataset.day===day && !x.classList.contains('routine-hidden'));
+  const cards=exerciseCardsForDay(day);
   const index=cards.indexOf(card);
   const next=cards.slice(index+1).find(x=>!x.classList.contains('routine-hidden'));
 
-  if(!next) return;
+  if(!next){
+    if(day==='shoulders'&&state.shouldersCoreMode==='five'){
+      const core=$('#core-format-card');
+      if(core) setTimeout(()=>{try{core.scrollIntoView({behavior:'smooth',block:'center'});}catch(e){}},80);
+    }
+    return;
+  }
 
   const nextHead=$('.exercise-head',next);
   if(!nextHead) return;
@@ -3027,6 +3220,12 @@ function bindSetDot(btn){
   });
 }
 $$('.set-dot').forEach(bindSetDot);
+$$('[data-core-mode]').forEach(btn=>btn.addEventListener('click',()=>setCoreMode(btn.dataset.coreMode)));
+$('#core-five-start')?.addEventListener('click',startOrPauseCoreFiveTimer);
+$('#core-five-reset')?.addEventListener('click',()=>resetCoreFiveTimer());
+applyCoreMode();
+ensureCoreFiveTimerTick();
+renderCoreFiveTimer();
 ['push','pull','shoulders'].forEach(updateProgress);
 
 $$('.reset-day').forEach(btn=>btn.addEventListener('click',()=>{
@@ -3037,6 +3236,7 @@ $$('.reset-day').forEach(btn=>btn.addEventListener('click',()=>{
   });
   state.sessionCompleted[day]=false;
   Object.keys(state.currentSets).forEach(k=>{ if(k.startsWith(day+'-')) delete state.currentSets[k]; });
+  if(day==='shoulders') resetCoreFiveTimer();
   save();
   updateProgress(day);
   renderGamify();
@@ -3194,6 +3394,7 @@ $$('.finish-workout').forEach(btn=>btn.addEventListener('click',()=>{
   const title=$(`#day-${day} h2`)?.textContent || day;
   const ts=Date.now();
   const prCount=commitWorkoutSets(day,ts);
+  if(day==='shoulders') commitCoreFiveSession(ts);
   state.workoutHistory.push({ts,day,name:title,completedSets:done,totalSets:dots.length,partial:done<dots.length});
   state.sessionCompleted[day]=true;
   save();
@@ -3622,7 +3823,7 @@ function seedCaliDemo(){
 function trackerMode(name){
   if(name==='Assisted Dips') return {label:'Assistance', bodyweight:false, assistance:true};
   if(name.includes('Pull-Ups / Assisted')) return {label:'Load / assistance', bodyweight:true, assistance:false};
-  if(/Push-Ups|Russian Twists|Leg Raises|Jackknife|Incline Sit-Ups|Plank/i.test(name)) return {label:'Added load (optional)', bodyweight:true, assistance:false};
+  if(/Push-Ups|Russian Twists|Leg Raises|Jackknife|Incline Sit-Ups|Plank|5-Minute Core Circuit/i.test(name)) return {label:'Added load (optional)', bodyweight:true, assistance:false};
   return {label:'Working weight', bodyweight:false, assistance:false};
 }
 function exerciseKey(card){ const day=card.dataset.day||'day'; const name=$('.ex-name',card)?.textContent.trim()||'Exercise'; return `${day}::${name}`; }
@@ -3638,7 +3839,7 @@ function targetSeconds(card){
   if(Number(pref.seconds)>0) return Number(pref.seconds);
   const m=($('.dose',card)?.textContent||'').match(/(\d+)\s*(?:sec|secs|seconds|s)\b/i); return m?Number(m[1]):null;
 }
-function exerciseCardsForDay(day){ return $$('.exercise').filter(c=>c.dataset.day===day && !c.classList.contains('routine-hidden')); }
+function exerciseCardsForDay(day){ return $$('.exercise').filter(c=>c.dataset.day===day && !c.classList.contains('routine-hidden') && !(day==='shoulders'&&state.shouldersCoreMode==='five'&&c.classList.contains('core-circuit-movement'))); }
 function historyFor(card){ const key=exerciseKey(card); return Array.isArray(state.setHistory[key]) ? state.setHistory[key] : []; }
 function segmentsFromSet(s){ const out=[]; if(Number.isFinite(s.kg)&&Number.isFinite(s.reps)&&s.reps>0) out.push({kg:s.kg,reps:s.reps}); if(Number.isFinite(s.dropKg)&&Number.isFinite(s.dropReps)&&s.dropReps>0) out.push({kg:s.dropKg,reps:s.dropReps,drop:true}); return out; }
 function loggedSegmentCount(s){ let n=0; if(Number.isFinite(s.seconds)&&s.seconds>0)n++; else if(Number.isFinite(s.reps)&&s.reps>0)n++; if(Number.isFinite(s.dropReps)&&s.dropReps>0)n++; return n; }
@@ -3998,6 +4199,7 @@ function renderProgress(){
     $('#progress-start').textContent=timed?(Number.isFinite(first)?`${first} sec`:'—'):fmt(first);
     $('#progress-latest').textContent=timed?(Number.isFinite(last)?`${last} sec`:'—'):fmt(last);
     $('#progress-best').textContent=timed?(Number.isFinite(best)?`${best} sec`:'—'):fmt(best);
+
     const ch=$('#progress-change');
     ch.className='';
     if(!Number.isFinite(pct) || series.length<2){
@@ -4337,13 +4539,12 @@ $('#prepare-stable')?.addEventListener('click',async()=>{
 
 // Beta popup: list ONLY changes introduced since the currently published Beta build.
 const LIFTLOOP_CHANGELOG = {
-  '2026.10.29-beta.29': {
+  '2026.10.31-beta.30': {
     title: 'What changed in this Beta update',
     changes: [
-      {icon:'🏰',title:'Ironkeep companion mode',text:'Calisthenics now feels like a separate companion app inside LiftLoop rather than just another tab.'},
-      {icon:'🎨',title:'Medieval visual theme',text:'The calisthenics side now uses a stylized medieval-fantasy interface with parchment, iron, and gold accents instead of a standard modern card theme.'},
-      {icon:'▶',title:'Exercise form demos',text:'Each Ironkeep movement card now has a variation-aware form-demo panel using the same privacy-friendly video approach as LiftLoop, plus a direct source link.'},
-      {icon:'↗',title:'Objective calisthenics progression',text:'Pull-ups track bodyweight-relative strength, push-ups track estimated effective load, and skill movements track progression stage plus reps or hold time.'}
+      {icon:'⏱',title:'5-minute Core option',text:'Shoulders + Core can now use the normal 2-round circuit or one continuous five-minute Core block.'},
+      {icon:'✓',title:'Timer completion is tracked',text:'Finishing the five-minute timer counts the Core block toward the workout and records it as timed training.'},
+      {icon:'🧪',title:'Fast timer test',text:'Developer Lab can open the new Core format and shorten the timer to five seconds inside isolated Test Mode.'}
     ]
   }
 };
@@ -5975,6 +6176,19 @@ function bindDeveloperLab(){
     state.calisthenics={history:[],achievements:{},activeTab:'train'};state.bodyWeightKg=null;save();renderCalisthenics();devStatus('Reset isolated calisthenics progress.');
   });
 
+  $('#dev-open-core-five')?.addEventListener('click',()=>{
+    setTrainingMode('weights');showDay('shoulders');setCoreMode('five');
+    setTimeout(()=>$('#core-format-card')?.scrollIntoView({behavior:'smooth',block:'center'}),100);
+    devStatus('Opened the 5-minute Core option.');
+  });
+  $('#dev-fast-core-five')?.addEventListener('click',()=>{
+    if(!LIFTLOOP_DEV_MODE)return devStatus('Enter Test Mode before changing the timer.');
+    setTrainingMode('weights');showDay('shoulders');setCoreMode('five');resetCoreFiveTimer();
+    state.coreFiveTimer={remainingSec:5,running:false,endAt:null};save();renderCoreFiveTimer();
+    setTimeout(()=>$('#core-format-card')?.scrollIntoView({behavior:'smooth',block:'center'}),100);
+    devStatus('5-minute Core shortened to 5 seconds in isolated Test Mode.');
+  });
+
   $('#dev-preview-whats-new')?.addEventListener('click',()=>renderWhatsNew(LIFTLOOP_BUILD));
   $('#dev-preview-level')?.addEventListener('click',()=>showLevelToast(state.workoutHistory.length+2));
   $('#dev-preview-pr')?.addEventListener('click',()=>{
@@ -5995,6 +6209,7 @@ if(document.readyState==='loading'){
   bindDeveloperLab();
 }
 // BETA_DEV_LAB_JS_END
+
 
 // Independent self-updater + deployment watcher.
 const LIFTLOOP_BUILD=document.documentElement.dataset.build||'unknown';
